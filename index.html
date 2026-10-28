@@ -722,16 +722,16 @@ window.GRAMMAR_SETS['wh-to'] = {
   // ── MISSION 4 · 동료 만나기: 문장 OX 판단 ──
   m4: {
     typeLabel: 'OX 판단',
-    hints: ["올바른 형태는 <strong>의문사 + to + 동사원형</strong>이에요.", "<strong>why</strong>는 to부정사와 함께 쓰지 않아요.", "'what <strong>should we</strong> eat'처럼 의문사 뒤에 주어·조동사가 오면 to부정사 형태가 아니에요."],
+    hints: ["올바른 형태는 <strong>의문사 + to + 동사원형</strong>이에요.", "<strong>why</strong>는 to부정사와 함께 쓰지 않아요.", "'what <strong>should we</strong> eat'은 의문문 어순이라 틀려요. 문장 속에서는 <strong>의문사 + 주어 + 동사</strong>(what <strong>we should</strong> eat) 또는 <strong>의문사 + to부정사</strong>(what to eat)로 써요."],
     instructionKr: '각 문장이 올바른 의문사+to부정사인지 판단하세요.',
     passCount: 4,
     items: [
       { sentence: '"I know <strong>what to do</strong> next!"', correct: true, reason: '올바른 의문사+to부정사 ✅' },
       { sentence: '"I know <strong>why to go</strong> there!"', correct: false, reason: 'why는 to부정사와 함께 쓸 수 없어요 ❌' },
       { sentence: '"Tell me <strong>how to find</strong> water!"', correct: true, reason: '올바른 의문사+to부정사 ✅' },
-      { sentence: '"I\'ll show you <strong>what should we eat</strong>!"', correct: false, reason: '의문사+to부정사 형태가 아니에요 ❌' },
+      { sentence: '"I\'ll show you <strong>what should we eat</strong>!"', correct: false, reason: '문장 속 의문사는 <strong>의문사 + 주어 + 동사</strong> 순서예요 → what we should eat (= what to eat) ❌' },
       { sentence: '"I have no idea <strong>who to trust</strong>!"', correct: true, reason: '올바른 의문사+to부정사 ✅' },
-      { sentence: '"Let me decide <strong>where should we go</strong>!"', correct: false, reason: '의문사+to부정사 형태가 아니에요 ❌' },
+      { sentence: '"Let me decide <strong>where should we go</strong>!"', correct: false, reason: '문장 속 의문사는 <strong>의문사 + 주어 + 동사</strong> 순서예요 → where we should go (= where to go) ❌' },
     ],
   },
 
