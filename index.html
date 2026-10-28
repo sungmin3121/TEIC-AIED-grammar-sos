@@ -539,6 +539,13 @@ window.dispatchEvent(new Event('firebaseReady'));
     <button onclick="teacherSyncNow()" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);border-radius:4px;padding:.3rem .7rem;font-size:.72rem;color:var(--accent2);cursor:pointer;">🔄 동기화</button>
     <button onclick="teacherResetRoom()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:4px;padding:.3rem .7rem;font-size:.72rem;color:var(--danger);cursor:pointer;">🗑️ 초기화</button>
   </div>
+  <!-- 문법 세트 선택 -->
+  <div style="display:flex;align-items:center;flex-wrap:wrap;gap:.6rem;padding:.6rem 1rem;background:rgba(56,189,248,.05);border-bottom:1px solid var(--border);flex-shrink:0;">
+    <div style="font-size:.75rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;white-space:nowrap;">📚 문법 세트</div>
+    <select id="tdGrammarSelect" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.75rem;color:var(--text);max-width:100%;"></select>
+    <button onclick="tdApplyGrammar()" style="background:var(--accent2);border:none;border-radius:4px;padding:.3rem .8rem;font-size:.72rem;color:#0b1120;font-weight:700;cursor:pointer;white-space:nowrap;">이 문법으로 진행 →</button>
+    <div id="tdGrammarCurrent" style="font-size:.7rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;"></div>
+  </div>
   <!-- 모둠 카드 그리드 -->
   <div style="flex:1;overflow-y:auto;padding:1rem;">
     <div id="tdGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;"></div>
@@ -629,6 +636,7 @@ window.dispatchEvent(new Event('firebaseReady'));
 window.GRAMMAR_SETS = window.GRAMMAR_SETS || {};
 window.GRAMMAR_SETS['wh-to'] = {
   id: 'wh-to',
+  description: '3과 · 교생실습 6차시 원본',
   title: '의문사 + to부정사',
   titleEn: 'Wh-word + to-infinitive',
   tagline: '의문사 + to부정사로 살아남아라',
@@ -830,15 +838,273 @@ window.GRAMMAR_SETS['wh-to'] = {
   },
 };
 </script>
+<script id="grammar-set-participle">
+// ══════════════════════════════════════════════════════════════
+//  문법 세트: 분사의 후치 수식 (3과 두 번째 목표 문법) — 시범 초안, 검토 필요
+//  구조는 위 'wh-to' 세트와 같다. 문장 조각(m2 answer, m6 pieces)은
+//  한 문장 안에서 같은 조각이 두 번 나오지 않게 만든다.
+// ══════════════════════════════════════════════════════════════
+window.GRAMMAR_SETS = window.GRAMMAR_SETS || {};
+window.GRAMMAR_SETS['participle'] = {
+  id: 'participle',
+  description: '3과 · 시범 초안 (검토 필요)',
+  title: '분사의 후치 수식',
+  titleEn: 'Post-nominal participial phrases',
+  tagline: '분사로 명사를 꾸며 살아남아라',
+
+  m1: {
+    typeLabel: '분사 카드 선택',
+    stepLabel: '빈칸에 알맞은 형태를 선택하세요',
+    promptBefore: '"I see a path ',
+    promptAfter: ' to the hill. Where does it go?"',
+    promptKr: '언덕으로 이어지는 길이 보여요! 어디로 가는 길일까요?',
+    options: [
+      { word: 'lead', kr: '동사원형' },
+      { word: 'leading', kr: '현재분사 (~하는)' },
+      { word: 'led', kr: '과거분사 (~된)' },
+      { word: 'leads', kr: '3인칭 단수 동사' },
+    ],
+    answer: 'leading',
+    correctFeedback: '<strong>a path LEADING to the hill</strong> — "언덕으로 이어지는 길" 맞아요!',
+    wrongHint: '명사(a path)를 뒤에서 꾸미는 말이 필요해요. 길이 "이어지는" 것은 능동이에요!',
+  },
+
+  m2: {
+    typeLabel: '문장 조각 배열',
+    promptKr: '나뭇잎으로 만든 쉼터를 보여 달라고 하세요! (a shelter made of ~)',
+    answer: ['show', 'us', 'a shelter', 'made', 'of', 'leaves'],
+    wrongHint: '"show us a shelter ___ of leaves" 형태예요. 쉼터는 "만들어진" 것!',
+  },
+
+  m3: {
+    typeLabel: '명사-분사구 매칭',
+    stepLabel: '명사와 그 명사를 꾸미는 분사구를 연결하세요 (3개 모두)',
+    promptBefore: '"We need ',
+    promptAfter: '. Help me!"',
+    promptKr: '명사를 선택하고, 뒤에서 꾸며 줄 분사구와 연결하세요!',
+    leftLabel: '명사',
+    leftSuffix: '',
+    left: [
+      { word: 'fruit', kr: '과일', color: '#f97316' },
+      { word: 'fish', kr: '물고기', color: '#38bdf8' },
+      { word: 'water', kr: '물', color: '#22c55e' },
+    ],
+    rightLabel: '분사구',
+    right: [
+      { text: 'swimming near the shore', correct: 'fish' },
+      { text: 'collected in a shell', correct: 'water' },
+      { text: 'hanging from the trees', correct: 'fruit' },
+    ],
+    doneFeedback: '모두 완성! 이제 어떤 식량을 먹을지 선택하세요!',
+    aiLine: 'Here is the food found on this island. Choose the one you want!',
+    foodLabels: [
+      { word: 'FOOD', rest: ' found: ', color: '#f97316' },
+      { word: 'PLACE', rest: ' marked: ', color: '#38bdf8' },
+      { word: 'METHOD', rest: ' suggested: ', color: '#22c55e' },
+    ],
+  },
+
+  m4: {
+    typeLabel: 'OX 판단',
+    instructionKr: '각 문장에서 명사를 꾸미는 분사가 올바른지 판단하세요.',
+    passCount: 4,
+    items: [
+      { sentence: '"Look at the boy <strong>sitting</strong> on the rock!"', correct: true, reason: '소년이 "앉아 있는" 것 → 현재분사 ✅' },
+      { sentence: '"I found a letter <strong>writing</strong> in English!"', correct: false, reason: '편지는 "쓰인" 것 → written(과거분사)이어야 해요 ❌' },
+      { sentence: '"We need a boat <strong>made</strong> of strong wood!"', correct: true, reason: '보트는 "만들어진" 것 → 과거분사 ✅' },
+      { sentence: '"The girl <strong>wears</strong> a red hat is our leader!"', correct: false, reason: '동사가 두 개예요. wearing(현재분사)으로 꾸며야 해요 ❌' },
+      { sentence: '"Don\'t eat the fruit <strong>covered</strong> with ash!"', correct: true, reason: '열매가 재로 "덮인" 것 → 과거분사 ✅' },
+      { sentence: '"The people <strong>lived</strong> in this home are kind!"', correct: false, reason: '사람들이 "사는" 것 → living(현재분사)이어야 해요 ❌' },
+    ],
+  },
+
+  moon: {
+    introEn: 'A meteor shower is incoming! Type the correct phrases to destroy them.<br>\n      <strong>Typing a phrase with a base verb will damage your HP! Watch out!</strong>',
+    introKr: '운석이 쏟아진다! 명사 + 분사 구문을 입력해서 운석을 격파하라.<br>\n        <strong style="color:var(--danger);">동사원형이 들어간 틀린 구문을 입력하면 HP가 깎인다!</strong>',
+    placeholder: '명사 + 분사 입력 후 Enter...',
+    examples: '예: a girl singing / a letter written / a bird flying / a house built (띄어쓰기 포함해서 입력)',
+    trapPrefixes: [],
+    trapMessage: '⚠️ 동사원형은 명사를 꾸밀 수 없어요! HP -1',
+    phrases: [
+      { text: 'a girl singing', trap: false },
+      { text: 'a letter written', trap: false },
+      { text: 'a dog barking', trap: false },
+      { text: 'a window broken', trap: false },
+      { text: 'people living here', trap: false },
+      { text: 'a bird flying', trap: false },
+      { text: 'food cooked', trap: false },
+      { text: 'a man waiting', trap: false },
+      { text: 'a map drawn', trap: false },
+      { text: 'a fire burning', trap: false },
+      { text: 'a house built', trap: false },
+      { text: 'a baby sleeping', trap: false },
+      { text: 'a boy running', trap: false },
+      { text: 'a door locked', trap: false },
+      { text: 'a song sung', trap: false },
+      { text: 'a boy run', trap: true },
+      { text: 'a map draw', trap: true },
+      { text: 'a girl sing', trap: true },
+      { text: 'a letter write', trap: true },
+    ],
+  },
+
+  m5: {
+    typeLabel: '7초 암기 후 릴레이 발화',
+    keyPrefix: '',
+    memoExampleA: 'Look at the lava flowing toward us!',
+    memoExampleB: 'Run to the rock standing on the hill!',
+    successText: '<strong>분사로 명사를 꾸미는 표현</strong>을 활용해서 위기를 극복했어요! 대단해요! 💪',
+    islands: [
+      { sentence: 'Look at the lava flowing toward us! Run to the rock standing on the hill!', kr: '우리 쪽으로 흘러오는 용암을 봐! 언덕 위에 서 있는 바위로 달려!', key: 'the rock standing on the hill' },
+      { sentence: 'There is a polar bear hiding behind the ice! Find the cave covered with snow!', kr: '얼음 뒤에 숨어 있는 북극곰이 있어! 눈으로 덮인 동굴을 찾아!', key: 'the cave covered with snow' },
+      { sentence: 'A jaguar watching us is in the tree! Take the path leading to the river!', kr: '우리를 지켜보는 재규어가 나무 위에 있어! 강으로 이어지는 길로 가!', key: 'the path leading to the river' },
+      { sentence: 'The sandstorm coming from the east is huge! Hide behind the wall built of stone!', kr: '동쪽에서 오는 모래폭풍이 거대해! 돌로 지어진 벽 뒤에 숨어!', key: 'the wall built of stone' },
+      { sentence: 'A shark circling our raft is getting closer! Grab the rope tied to the tree!', kr: '뗏목 주위를 도는 상어가 가까워지고 있어! 나무에 묶인 밧줄을 잡아!', key: 'the rope tied to the tree' },
+      { sentence: 'The T-Rex running toward us is very fast! Jump into the hole dug by the dinosaurs!', kr: '우리를 향해 달려오는 티라노가 정말 빨라! 공룡들이 판 구멍으로 뛰어들어!', key: 'the hole dug by the dinosaurs' },
+    ],
+  },
+
+  m6: {
+    typeLabel: '두 모둠 협동',
+    teamBHint: '💡 두 문장 모두 <strong>명사를 뒤에서 꾸미는 분사구</strong>가 들어가요!',
+    teamBLabel1: '문장 1 — 명사 + 분사구',
+    teamBLabel2: '문장 2 — 명사 + 분사구',
+    pairs: [
+      {
+        item: '화산 유리 거울 🪞', itemEn: 'a volcanic glass mirror',
+        teamA_given: 'We have a volcanic glass mirror.',
+        teamA_pieces: ['Is', 'this', 'a mirror', 'used', 'for', 'signals', '?'],
+        teamA_correct: ['Is', 'this', 'a mirror', 'used', 'for', 'signals', '?'],
+        teamA_full: 'We have a volcanic glass mirror. Is this a mirror used for signals?',
+        teamB_pieces1: ['Yes,', 'it', 'is', 'a tool', 'loved', 'by', 'sailors', '.'],
+        teamB_correct1: ['Yes,', 'it', 'is', 'a tool', 'loved', 'by', 'sailors', '.'],
+        teamB_pieces2: ['Point', 'the light', 'reflected', 'by', 'it', 'at', 'the plane', '!'],
+        teamB_correct2: ['Point', 'the light', 'reflected', 'by', 'it', 'at', 'the plane', '!'],
+        teamB_full: 'Yes, it is a tool loved by sailors. Point the light reflected by it at the plane!',
+      },
+      {
+        item: '야자나무 횃불 🔦', itemEn: 'a palm tree torch',
+        teamA_given: 'We have a palm tree torch.',
+        teamA_pieces: ['Do', 'you', 'know', 'a place', 'hidden', 'from', 'the wind', '?'],
+        teamA_correct: ['Do', 'you', 'know', 'a place', 'hidden', 'from', 'the wind', '?'],
+        teamA_full: 'We have a palm tree torch. Do you know a place hidden from the wind?',
+        teamB_pieces1: ['Light', 'it', 'on', 'the rock', 'standing', 'near', 'the beach', '.'],
+        teamB_correct1: ['Light', 'it', 'on', 'the rock', 'standing', 'near', 'the beach', '.'],
+        teamB_pieces2: ['People', 'flying', 'above', 'us', 'will', 'see', 'the fire', '!'],
+        teamB_correct2: ['People', 'flying', 'above', 'us', 'will', 'see', 'the fire', '!'],
+        teamB_full: 'Light it on the rock standing near the beach. People flying above us will see the fire!',
+      },
+      {
+        item: '조개껍데기 나팔 🐚', itemEn: 'a shell horn',
+        teamA_given: 'We have a shell horn.',
+        teamA_pieces: ['Can', 'you', 'hear', 'the sound', 'coming', 'from', 'it', '?'],
+        teamA_correct: ['Can', 'you', 'hear', 'the sound', 'coming', 'from', 'it', '?'],
+        teamA_full: 'We have a shell horn. Can you hear the sound coming from it?',
+        teamB_pieces1: ['Blow', 'it', 'toward', 'the boat', 'sailing', 'near', 'us', '.'],
+        teamB_correct1: ['Blow', 'it', 'toward', 'the boat', 'sailing', 'near', 'us', '.'],
+        teamB_pieces2: ['The sailors', 'looking', 'for', 'us', 'will', 'come', '!'],
+        teamB_correct2: ['The sailors', 'looking', 'for', 'us', 'will', 'come', '!'],
+        teamB_full: 'Blow it toward the boat sailing near us. The sailors looking for us will come!',
+      },
+    ],
+  },
+
+  m7: {
+    typeLabel: '자유 작문 + 발화',
+    islands: [
+      { island: 'volcano', key: 'the field located far from the lava', keyKr: '착륙 장소', warning: '용암 때문에', hint: 'the field located far from the lava' },
+      { island: 'arctic', key: 'the bear hiding behind the ice', keyKr: '피해야 할 것', warning: '북극곰 때문에', hint: 'the polar bear hiding behind the ice' },
+      { island: 'jungle', key: 'the river running through the jungle', keyKr: '접근 경로', warning: '나무가 빽빽해서', hint: 'the river running through the jungle' },
+      { island: 'desert', key: 'the road leading to the oasis', keyKr: '올 방향', warning: '모래폭풍 때문에', hint: 'the road leading to the oasis' },
+      { island: 'ocean', key: 'the beach covered with white sand', keyKr: '착륙 장소', warning: '파도가 높아서', hint: 'the beach covered with white sand' },
+      { island: 'dino', key: 'the T-Rex sleeping near the cave', keyKr: '피해야 할 것', warning: '공룡 때문에', hint: 'the T-Rex sleeping near the cave' },
+    ],
+    // 자주 쓰는 "명사 + 분사" 표현을 센다 (학생이 다른 분사를 쓰면 선생님이 확인)
+    target: {
+      label: '명사 + 분사구',
+      hint: 'located / covered with / standing / waiting / made of ...',
+      minCount: 2,
+      patterns: ['located', 'covered with', 'standing', 'waiting', 'made of', 'built', 'leading to', 'running', 'sleeping', 'hiding', 'called', 'filled with', 'surrounded by', 'living'],
+    },
+    bonus: [
+      { cardHtml: '<strong>waiting for</strong> 포함 +1', checkLabel: 'waiting for 포함', scoreLabel: 'waiting for +1', patterns: ['waiting for'] },
+      { cardHtml: '<strong>located</strong> 또는 <strong>surrounded by</strong> 포함 +1', checkLabel: 'located / surrounded by 포함', scoreLabel: 'located / surrounded by +1', patterns: ['located', 'surrounded by'] },
+    ],
+    gradingNote: '💡 <strong>채점 기준:</strong> 명사를 꾸미는 분사 표현의 문법 오류 여부만 채점해요.<br>\n          모르는 단어는 한글로 쓰거나 사전을 찾아봐도 돼요!',
+    templateHtml: '"Dear rescue team,<br>\n          We are stranded on {island}.<br>\n          We are the survivors <span style="color:var(--accent2);">waiting for</span> your help.<br>\n          Please land on the field <span style="color:var(--accent2);">located</span> _______________.<br>\n          Look for a flag _______________ (e.g. made of leaves).<br>\n          Watch out for _______________ (e.g. rocks covered with ash).<br>\n          <span style="color:var(--accent);">(명사 + 분사구)</span> will help you find us.<br>\n          Thank you, Survivors"',
+  },
+};
+</script>
 <script>
 // ══ GRAMMAR SET ══
 // 어떤 문법으로 게임을 진행할지 정한다. 문법별 내용은 위의 '문법 세트' 블록 참고.
-const ACTIVE_GRAMMAR_SET = 'wh-to';
-const G = window.GRAMMAR_SETS[ACTIVE_GRAMMAR_SET];
+// 교사가 대시보드에서 다른 세트를 고르면 applyGrammarSet()으로 바뀐다.
+const DEFAULT_GRAMMAR_SET = 'wh-to';
+let G = window.GRAMMAR_SETS[DEFAULT_GRAMMAR_SET];
 (function applyGrammarSetToStaticText() {
   const sub = document.querySelector('.main-sub');
   if(sub) sub.innerHTML = G.tagline;
 })();
+
+// 문법 세트가 게임에 필요한 내용을 모두 갖췄는지 검사. 문제가 있으면 이유(문자열), 없으면 null.
+function validateGrammarSet(s) {
+  const isStr = v => typeof v === 'string' && v.length > 0;
+  const isArr = (v, n) => Array.isArray(v) && (n == null ? v.length > 0 : v.length === n);
+  const uniq = a => new Set(a).size === a.length;
+  try {
+    if(!s || typeof s !== 'object') return '세트가 비어 있어요';
+    if(!isStr(s.id) || !isStr(s.title)) return 'id / title 없음';
+    if(!isArr(s.m1.options) || !s.m1.options.some(o => o.word === s.m1.answer)) return '미션1: 정답 카드가 보기에 없어요';
+    if(!isArr(s.m2.answer) || !uniq(s.m2.answer)) return '미션2: 조각이 비었거나 같은 조각이 두 번 있어요';
+    if(!isArr(s.m3.left) || s.m3.left.length !== s.m3.right.length) return '미션3: 왼쪽·오른쪽 카드 수가 달라요';
+    const leftWords = s.m3.left.map(l => l.word);
+    if(!s.m3.right.every(r => leftWords.includes(r.correct))) return '미션3: 짝이 없는 카드가 있어요';
+    if(!isArr(s.m3.foodLabels, 3)) return '미션3: 식량 카드 설명이 3개가 아니에요';
+    if(!isArr(s.m4.items) || !(s.m4.passCount <= s.m4.items.length)) return '미션4: 문장 수 / 통과 기준 확인';
+    const ph = s.moon.phrases || [];
+    if(!ph.some(p => p.trap) || !ph.some(p => !p.trap)) return '달 기지: 정답·함정 표현이 모두 있어야 해요';
+    if(!isArr(s.m5.islands, 6)) return '미션5: 섬 6개 문장이 필요해요';
+    if(!isArr(s.m6.pairs, 3)) return '미션6: 짝꿍 대화 3세트가 필요해요';
+    for(const p of s.m6.pairs) {
+      for(const k of ['teamA_correct', 'teamB_correct1', 'teamB_correct2']) {
+        if(!isArr(p[k]) || !uniq(p[k])) return '미션6: ' + k + ' 조각이 비었거나 중복돼요';
+      }
+    }
+    if(!isArr(s.m7.islands, 6)) return '미션7: 섬 6개 안내가 필요해요';
+    if(!isArr(s.m7.target.patterns) || !isArr(s.m7.bonus, 2)) return '미션7: 목표 표현 / 보너스 2개 확인';
+  } catch(e) {
+    return '빠진 항목이 있어요 (' + e.message + ')';
+  }
+  return null;
+}
+
+// 문법 세트를 바꾼다. 미션 데이터도 함께 갈아 끼운다. 성공하면 true.
+function applyGrammarSet(set) {
+  const err = validateGrammarSet(set);
+  if(err) { console.warn('문법 세트를 적용하지 못했어요:', err); return false; }
+  G = set;
+  if(!G.moon.trapPrefixes) G.moon.trapPrefixes = []; // Firebase는 빈 배열을 저장하지 않음
+  M2_CORRECT = G.m2.answer;
+  MISSION4_QUESTIONS = G.m4.items;
+  M4_TOTAL = MISSION4_QUESTIONS.length;
+  MOON_PHRASES = G.moon.phrases;
+  MISSION5_DATA = MISSION5_STORY.map((s, i) => Object.assign({}, s, G.m5.islands[i]));
+  MISSION6_DATA = [0,0,1,1,2,2].map(pi => G.m6.pairs[pi]);
+  MISSION7_DATA = G.m7.islands;
+  const sub = document.querySelector('.main-sub');
+  if(sub) sub.innerHTML = G.tagline;
+  return true;
+}
+
+// 문법이 바뀌면 이전 문법으로 섞어 둔 조각·답안은 버린다 (진행 단계와 코인은 유지)
+function clearGrammarCaches() {
+  ['m2pieces','m2dropped','m3match','m4answers','m6pieces','m6dropped'].forEach(k => { delete state[k]; });
+}
+
+// 인라인 onclick 안에 문자열을 안전하게 넣기 (따옴표·어포스트로피가 있어도 깨지지 않게)
+function jsArg(s) {
+  return JSON.stringify(String(s)).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+}
 
 // ══ DATA ══
 const ISLANDS = [
@@ -1302,9 +1568,9 @@ function renderMission3(teamNum) {
         <!-- 의문사 -->
         <div>
           <div class="step-label" style="margin-bottom:.5rem;">${G.m3.leftLabel}</div>
-          ${wh.map(w=>`
+          ${wh.map((w,wi)=>`
             <div class="wh-card" style="min-width:unset;margin-bottom:.5rem;border-color:${state.m3match[ti][w.word]?w.color:'var(--border)'};background:${state.m3match[ti][w.word]?'rgba(255,255,255,.04)':'var(--surface)'};"
-              onclick="m3SelectWh(${ti},'${w.word}','${w.color}')" id="m3wh-${ti}-${w.word}">
+              onclick="m3SelectWh(${ti},${jsArg(w.word)},${jsArg(w.color)})" id="m3wh-${ti}-${wi}">
               <div class="wh-word" style="color:${w.color}">${w.word.toUpperCase()}</div>
               <div class="wh-kr">${w.kr}${G.m3.leftSuffix}</div>
               ${state.m3match[ti][w.word]?'<div style="font-size:.65rem;color:'+w.color+';margin-top:.25rem;">→ '+state.m3match[ti][w.word]+'</div>':''}
@@ -1322,7 +1588,7 @@ function renderMission3(teamNum) {
             const matched = Object.values(state.m3match[ti]).includes(v.text);
             const matchedStyle = matched ? 'opacity:.35;pointer-events:none;' : '';
             return '<div class="wh-card" style="min-width:unset;margin-bottom:.5rem;'+matchedStyle+'"'
-              +' onclick="m3SelectVerb('+ti+',\''+v.text+'\',\''+v.correct+'\')">  '
+              +' onclick="m3SelectVerb('+ti+','+jsArg(v.text)+','+jsArg(v.correct)+')">  '
               +'<div style="font-family:monospace;font-size:.85rem;">'+v.text+'</div>'
               +'</div>';
           }).join('')}
@@ -1379,7 +1645,7 @@ function m3SelectWh(ti, word, color) {
   m3SelectedWh = word;
   m3SelectedColor = color;
   document.querySelectorAll(`#m3step1-${ti} .wh-card`).forEach(c=>c.style.boxShadow='');
-  const el = document.getElementById(`m3wh-${ti}-${word}`);
+  const el = document.getElementById(`m3wh-${ti}-${G.m3.left.findIndex(l=>l.word===word)}`);
   if(el) el.style.boxShadow=`0 0 0 2px ${color}`;
 }
 
@@ -1480,7 +1746,7 @@ function m3Pick(ti, idx){
 }
 
 // ══ MISSION 2: 거주지 짓기 ══
-const M2_CORRECT = G.m2.answer;
+let M2_CORRECT = G.m2.answer;
 
 function renderMission2(teamNum) {
   const isl = ISLANDS[teamNum-1];
@@ -1523,8 +1789,8 @@ function renderMission2(teamNum) {
       <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem;" id="m2pieces-${ti}">
         ${state.m2pieces[ti].map((p,i)=>`
           <div class="wh-card" style="min-width:unset;padding:.55rem .9rem;cursor:grab;"
-            draggable="true" ondragstart="m2DragStart(event,'${p}',${ti})"
-            onclick="m2Click('${p}',${ti})" id="m2p-${ti}-${i}"
+            draggable="true" ondragstart="m2DragStart(event,${jsArg(p)},${ti})"
+            onclick="m2Click(${jsArg(p)},${ti})" id="m2p-${ti}-${i}"
             ${state.m2dropped[ti].includes(p)?'style="min-width:unset;padding:.55rem .9rem;cursor:grab;opacity:.3;pointer-events:none;"':''}>
             <div style="font-family:monospace;font-size:.85rem;">${p}</div>
           </div>
@@ -1871,7 +2137,7 @@ function renderResult(ti, choice) {
 
 // ══ MOON EVENT: 달 기지 산성비 타자 게임 ══
 // trap: true = 틀린 표현 (입력하면 HP 감소)
-const MOON_PHRASES = G.moon.phrases;
+let MOON_PHRASES = G.moon.phrases;
 function moonIsTrapInput(val) {
   return G.moon.phrases.some(p => p.trap && p.text.toLowerCase() === val)
     || (G.moon.trapPrefixes || []).some(pre => val.startsWith(pre.toLowerCase()));
@@ -2399,7 +2665,7 @@ const MISSION5_STORY = [
   { crisis:'상어', emoji:'🌊', penalty:'상어한테 코인 -2! 🦈' },
   { crisis:'티라노사우루스', emoji:'🦕', penalty:'티라노한테 밟혀 코인 -2! 🦕' },
 ];
-const MISSION5_DATA = MISSION5_STORY.map((s, i) => Object.assign({}, s, G.m5.islands[i]));
+let MISSION5_DATA = MISSION5_STORY.map((s, i) => Object.assign({}, s, G.m5.islands[i]));
 
 function renderMission5(teamNum) {
   const isl = ISLANDS[teamNum-1];
@@ -2580,7 +2846,7 @@ const MISSION6_PAIRS = [
 ];
 
 // 짝꿍 모둠 대화 내용은 문법 세트에서 가져온다 (pairs 0~2 → 팀 0·1, 2·3, 4·5)
-const MISSION6_DATA = [0,0,1,1,2,2].map(pi => G.m6.pairs[pi]);
+let MISSION6_DATA = [0,0,1,1,2,2].map(pi => G.m6.pairs[pi]);
 
 function getPairRole(ti) {
   // 짝꿍 모둠에서 A(질문)인지 B(답변)인지
@@ -2711,7 +2977,7 @@ function m6renderTeamA(ti, m6) {
         const pc=shuffled.slice(0,i+1).filter(s=>s===p).length;
         const used=pc<=dc;
         return '<div class="wh-card" style="min-width:unset;padding:.45rem .75rem;cursor:grab;'+(used?'opacity:.3;pointer-events:none;':'')+'"'
-          +' draggable="true" ondragstart="m6DragStartA(event,\'' +p+ '\','+ti+')" onclick="m6ClickA(\'' +p+ '\','+ti+')">'
+          +' draggable="true" ondragstart="m6DragStartA(event,' +jsArg(p)+ ','+ti+')" onclick="m6ClickA(' +jsArg(p)+ ','+ti+')">'
           +'<div style="font-family:Space Mono,monospace;font-size:.82rem;">'+p+'</div>'
           +'</div>';
       }).join('')}
@@ -2750,7 +3016,7 @@ function m6renderTeamB(ti, m6) {
         const pc=state.m6pieces[ti+'b1'].slice(0,i+1).filter(s=>s===p).length;
         const used=pc<=dc;
         return '<div class="wh-card" style="min-width:unset;padding:.45rem .75rem;cursor:grab;'+(used?'opacity:.3;pointer-events:none;':'')+'"'
-          +' draggable="true" ondragstart="m6DragStartB1(event,\'' +p+ '\','+ti+')" onclick="m6ClickB1(\'' +p+ '\','+ti+')">'
+          +' draggable="true" ondragstart="m6DragStartB1(event,' +jsArg(p)+ ','+ti+')" onclick="m6ClickB1(' +jsArg(p)+ ','+ti+')">'
           +'<div style="font-family:Space Mono,monospace;font-size:.82rem;">'+p+'</div>'
           +'</div>';
       }).join('')}
@@ -2769,7 +3035,7 @@ function m6renderTeamB(ti, m6) {
         const pc=state.m6pieces[ti+'b2'].slice(0,i+1).filter(s=>s===p).length;
         const used=pc<=dc;
         return '<div class="wh-card" style="min-width:unset;padding:.45rem .75rem;cursor:grab;'+(used?'opacity:.3;pointer-events:none;':'')+'"'
-          +' draggable="true" ondragstart="m6DragStartB2(event,\'' +p+ '\','+ti+')" onclick="m6ClickB2(\'' +p+ '\','+ti+')">'
+          +' draggable="true" ondragstart="m6DragStartB2(event,' +jsArg(p)+ ','+ti+')" onclick="m6ClickB2(' +jsArg(p)+ ','+ti+')">'
           +'<div style="font-family:Space Mono,monospace;font-size:.82rem;">'+p+'</div>'
           +'</div>';
       }).join('')}
@@ -2953,8 +3219,8 @@ const MISSION4_NPC = [
   { name:'Rex', emoji:'🦖', buff:'앞으로 모든 미션에서 코인 +1 보너스!', buffId:'coin_bonus', color:'#a855f7' },
 ];
 
-const MISSION4_QUESTIONS = G.m4.items;
-const M4_TOTAL = MISSION4_QUESTIONS.length;
+let MISSION4_QUESTIONS = G.m4.items;
+let M4_TOTAL = MISSION4_QUESTIONS.length;
 
 function renderMission4(teamNum) {
   const isl = ISLANDS[teamNum-1];
@@ -3119,7 +3385,7 @@ function m4RenderResult(ti, correct, coins) {
 
 
 // ══ MISSION 7: 최종 탈출 ══
-const MISSION7_DATA = G.m7.islands;
+let MISSION7_DATA = G.m7.islands;
 
 // 작문 자동 체크: 문법 세트의 목표 표현·보너스 표현을 찾는다 (대소문자 무시)
 function m7HasAny(text, patterns) {
@@ -3501,6 +3767,8 @@ createdAt: Date.now()
 } else {
 const remoteState = snap.val().state;
 if(remoteState) { Object.assign(state, remoteState); sanitizeState(); }
+// 이 방에서 교사가 고른 문법 세트로 시작
+if(snap.val().grammarSet) receiveRoomGrammarSet(snap.val().grammarSet);
 }
 await window.firebaseUpdate(
 window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom+'/connectedRoles'),
@@ -3551,6 +3819,28 @@ refreshCurrentScreen();
 }
 );
 fbUnsubscribes.push(unsub);
+
+// 문법 세트 변경 감지 (교사가 바꾸면 모든 기기에 바로 반영)
+const grammarUnsub = window.firebaseOnValue(
+  window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom+'/grammarSet'),
+  (snap) => {
+    const changed = receiveRoomGrammarSet(snap.exists() ? snap.val() : null);
+    if(!changed) return;
+    if(myRole === 'teacher') {
+      renderGrammarSelector();
+      updateTeacherDashboard();
+      return;
+    }
+    // 학생: 지금 풀고 있는 미션 화면을 새 문법으로 다시 그림 (대기 화면이면 그대로)
+    const onMission = document.getElementById('screen-mission').classList.contains('active');
+    const moonRunning = typeof moonState !== 'undefined' && moonState && moonState.active;
+    if(onMission && !waitingForMission && !waitingForFinal && !moonRunning) {
+      const teamNum = ROLE_TO_TEAM[myRole];
+      if(teamNum) initMission(teamNum, state.teamMission[teamNum-1] || 1);
+    }
+  }
+);
+fbUnsubscribes.push(grammarUnsub);
 
 // 접속자 변경 감지 (교사용)
 if(myRole === 'teacher') {
@@ -3671,7 +3961,59 @@ if(sel && !sel.options.length) {
 }
 const lbl = document.getElementById('tdRoomLabel');
 if(lbl) lbl.textContent = myRoom+'반';
+renderGrammarSelector();
 updateTeacherDashboard();
+}
+
+// ── 문법 세트 선택 (교사) ──
+function renderGrammarSelector() {
+  const sel = document.getElementById('tdGrammarSelect');
+  const cur = document.getElementById('tdGrammarCurrent');
+  if(!sel) return;
+  const sets = Object.assign({}, window.GRAMMAR_SETS);
+  if(G && !sets[G.id]) sets[G.id] = G; // 방에 저장된 (내장되지 않은) 세트도 목록에 표시
+  sel.innerHTML = Object.values(sets).map(s =>
+    '<option value="'+s.id.replace(/"/g,'&quot;')+'"'+(s.id===G.id?' selected':'')+'>'
+    + s.title + (s.description ? ' — '+s.description : '') + '</option>'
+  ).join('');
+  if(cur) cur.innerHTML = '지금 진행 중: <strong style="color:var(--text);">'+G.title+'</strong>';
+}
+
+// 교사가 고른 세트를 방에 저장 → 같은 방의 모든 기기가 이 세트로 바뀐다
+async function tdApplyGrammar() {
+  const sel = document.getElementById('tdGrammarSelect');
+  if(!sel) return;
+  const id = sel.value;
+  const set = window.GRAMMAR_SETS[id] || (G && G.id === id ? G : null);
+  if(!set) return;
+  if(set.id === G.id) { alert('이미 이 문법으로 진행 중이에요.'); return; }
+  const err = validateGrammarSet(set);
+  if(err) { alert('이 문법 세트는 사용할 수 없어요: '+err); return; }
+  const started = (state.teamMission||[]).some(m => (m||1) > 1) || Object.keys(state.missionStep||{}).length > 0;
+  const msg = started
+    ? `"${set.title}"(으)로 바꿀까요?\n\n이미 게임이 진행 중이에요. 코인과 미션 위치는 그대로 두고, 지금 풀고 있는 문제만 새 문법으로 바뀌어요.\n(가능하면 게임 시작 전에 바꾸는 걸 권장해요)`
+    : `모든 모둠을 "${set.title}"(으)로 진행할까요?`;
+  if(!confirm(msg)) return;
+  // _v: 적용 시각. 같은 세트를 다시 받았는지 구분하는 데 쓴다
+  const toSave = JSON.parse(JSON.stringify(set));
+  toSave._v = Date.now();
+  clearGrammarCaches();
+  applyGrammarSet(toSave);
+  renderGrammarSelector();
+  if(window.firebaseReady && myRoom) {
+    await window.firebaseSet(window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom+'/grammarSet'), toSave);
+    await fbSaveState();
+  }
+}
+
+// 방에 저장된 문법 세트를 받아 적용 (학생·교사 공통). 바뀌었으면 true.
+function grammarSetKey(s) { return s ? s.id + '|' + (s._v || '') : ''; }
+function receiveRoomGrammarSet(set) {
+  const next = set || window.GRAMMAR_SETS[DEFAULT_GRAMMAR_SET];
+  if(grammarSetKey(next) === grammarSetKey(G)) return false;
+  if(!applyGrammarSet(next)) return false;
+  clearGrammarCaches();
+  return true;
 }
 
 function updateTeacherDashboard() {
