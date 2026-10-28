@@ -614,7 +614,18 @@ window.dispatchEvent(new Event('firebaseReady'));
   </div>
 </div>
 
+<!-- 문법 세트: 문법 관련 문장·정답·힌트는 grammar-sets/ 폴더의 파일에 있음 -->
+<script src="grammar-sets/wh-to.js"></script>
 <script>
+// ══ GRAMMAR SET ══
+// 어떤 문법으로 게임을 진행할지 정한다. 문법별 내용은 grammar-sets/*.js 참고.
+const ACTIVE_GRAMMAR_SET = 'wh-to';
+const G = window.GRAMMAR_SETS[ACTIVE_GRAMMAR_SET];
+(function applyGrammarSetToStaticText() {
+  const sub = document.querySelector('.main-sub');
+  if(sub) sub.innerHTML = G.tagline;
+})();
+
 // ══ DATA ══
 const ISLANDS = [
   { id:'volcano', emoji:'🌋', name:'화산 섬', nameEn:'VOLCANO ISLAND', crisis:'용암', color:'#ef4444',
@@ -1045,21 +1056,13 @@ function renderMission3(teamNum) {
   if(!state.m3match[ti]) state.m3match[ti]={};
   const step = state.missionStep['m3_'+ti];
 
-  const wh = [
-    { word:'what', kr:'무엇을', color:'#f97316' },
-    { word:'where', kr:'어디서', color:'#38bdf8' },
-    { word:'how', kr:'어떻게', color:'#22c55e' },
-  ];
-  const verbs = [
-    { text:'to find food', correct:'where' },
-    { text:'to cook it', correct:'how' },
-    { text:'to eat', correct:'what' },
-  ];
+  const wh = G.m3.left;
+  const verbs = G.m3.right;
 
   const main = document.getElementById('missionMain');
   main.innerHTML = `
     <div class="mission-header">
-      <div class="mission-num">MISSION 03 / 07 · ⭐⭐ 의문사-동사 매칭</div>
+      <div class="mission-num">MISSION 03 / 07 · ⭐⭐ ${G.m3.typeLabel}</div>
       <div class="mission-title">🍖 식량 구하기</div>
     </div>
     <div class="mission-situation">
@@ -1071,21 +1074,21 @@ function renderMission3(teamNum) {
 
     <!-- STEP 1: 매칭 -->
     <div class="step ${step===1?'active':''}" id="m3step1-${ti}">
-      <div class="step-label">STEP 1 · 의문사와 동사를 올바르게 매칭하세요 (3개 모두)</div>
+      <div class="step-label">STEP 1 · ${G.m3.stepLabel}</div>
       <div class="wh-prompt" style="margin-bottom:1.25rem;">
-        💬 <em>"We have no idea <span style="color:var(--accent);">___</span>. Help me!"</em><br>
-        <span style="font-size:.72rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">의문사를 선택하고 맞는 동사와 연결하세요!</span>
+        💬 <em>${G.m3.promptBefore}<span style="color:var(--accent);">___</span>${G.m3.promptAfter}</em><br>
+        <span style="font-size:.72rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">${G.m3.promptKr}</span>
       </div>
 
       <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:start;margin-bottom:1.5rem;">
         <!-- 의문사 -->
         <div>
-          <div class="step-label" style="margin-bottom:.5rem;">의문사</div>
+          <div class="step-label" style="margin-bottom:.5rem;">${G.m3.leftLabel}</div>
           ${wh.map(w=>`
             <div class="wh-card" style="min-width:unset;margin-bottom:.5rem;border-color:${state.m3match[ti][w.word]?w.color:'var(--border)'};background:${state.m3match[ti][w.word]?'rgba(255,255,255,.04)':'var(--surface)'};"
               onclick="m3SelectWh(${ti},'${w.word}','${w.color}')" id="m3wh-${ti}-${w.word}">
               <div class="wh-word" style="color:${w.color}">${w.word.toUpperCase()}</div>
-              <div class="wh-kr">${w.kr} ~할지</div>
+              <div class="wh-kr">${w.kr}${G.m3.leftSuffix}</div>
               ${state.m3match[ti][w.word]?'<div style="font-size:.65rem;color:'+w.color+';margin-top:.25rem;">→ '+state.m3match[ti][w.word]+'</div>':''}
             </div>
           `).join('')}
@@ -1096,7 +1099,7 @@ function renderMission3(teamNum) {
 
         <!-- 동사 -->
         <div>
-          <div class="step-label" style="margin-bottom:.5rem;">동사구</div>
+          <div class="step-label" style="margin-bottom:.5rem;">${G.m3.rightLabel}</div>
           ${verbs.map((v,i)=>{
             const matched = Object.values(state.m3match[ti]).includes(v.text);
             const matchedStyle = matched ? 'opacity:.35;pointer-events:none;' : '';
@@ -1120,7 +1123,7 @@ function renderMission3(teamNum) {
     <div class="step ${step===2?'active':''}" id="m3step2-${ti}">
       <div class="step-label">STEP 2 · AI가 알려준 식량 정보를 보고 선택하세요</div>
       <div class="mission-situation" style="margin-bottom:1rem;">
-        🤖 AI: <em>"Here are your options. Choose what to eat, where to find it, and how to cook it!"</em>
+        🤖 AI: <em>"${G.m3.aiLine}"</em>
       </div>
       ${state.items[ti].includes('antidote') ? '<div class="feedback-box show feedback-wrong" style="margin-bottom:.75rem;">🧪 해독제 효과: <strong>C번</strong>은 독이 있어요! ☠️ 피하세요!</div>' : ''}
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.25rem;">
@@ -1131,9 +1134,10 @@ function renderMission3(teamNum) {
             +'<div style="font-size:1.8rem;text-align:center;margin-bottom:.5rem;">'+f.name.split(' ')[0]+(isDangerous?' ☠️':'')+'</div>'
             +'<div style="font-family:Bebas Neue,sans-serif;font-size:1rem;letter-spacing:.05em;margin-bottom:.75rem;text-align:center;">'+String.fromCharCode(65+idx)+'. '+f.name+'</div>'
             +'<div style="font-size:.7rem;color:var(--text3);line-height:1.7;border-top:1px solid var(--border);padding-top:.6rem;">'
-            +'<span style="color:#f97316;">WHAT</span> to eat: '+f.what+'<br>'
-            +'<span style="color:#38bdf8;">WHERE</span> to find: '+f.where+'<br>'
-            +'<span style="color:#22c55e;">HOW</span> to cook: '+f.how
+            +[f.what, f.where, f.how].map((val,k)=>{
+              const lb = G.m3.foodLabels[k];
+              return '<span style="color:'+lb.color+';">'+lb.word+'</span>'+lb.rest+val;
+            }).join('<br>')
             +'</div></div>';
         }).join('')}
       </div>
@@ -1165,7 +1169,7 @@ function m3SelectVerb(ti, verbText, correctWh) {
   if(!m3SelectedWh) {
     const fb = document.getElementById(`m3matchFeedback-${ti}`);
     fb.className='feedback-box show feedback-wrong';
-    fb.innerHTML='⚠️ 먼저 왼쪽에서 의문사를 선택하세요!';
+    fb.innerHTML='⚠️ 먼저 왼쪽에서 '+G.m3.leftLabel+'를 선택하세요!';
     setTimeout(()=>fb.classList.remove('show'),1500);
     return;
   }
@@ -1184,7 +1188,7 @@ function m3SelectVerb(ti, verbText, correctWh) {
   }
   setTimeout(()=>{
     const btn = document.getElementById(`m3check-${ti}`);
-    if(btn && Object.keys(state.m3match[ti]||{}).length===3){ btn.style.opacity='1'; btn.style.pointerEvents='auto'; }
+    if(btn && Object.keys(state.m3match[ti]||{}).length===G.m3.left.length){ btn.style.opacity='1'; btn.style.pointerEvents='auto'; }
   },100);
 }
 
@@ -1197,7 +1201,7 @@ function m3ResetMatch(ti){
 function m3CheckMatch(ti){
   const fb = document.getElementById(`m3matchFeedback-${ti}`);
   fb.className='feedback-box show feedback-correct';
-  fb.innerHTML='✅ 모두 완성! 이제 무엇을 먹을지 선택하세요!';
+  fb.innerHTML='✅ '+G.m3.doneFeedback;
   setTimeout(()=>{ state.missionStep['m3_'+ti]=2; renderMission3(ti+1); },1200);
 }
 
@@ -1258,7 +1262,7 @@ function m3Pick(ti, idx){
 }
 
 // ══ MISSION 2: 거주지 짓기 ══
-const M2_CORRECT = ['tell','us','how','to','build','a shelter'];
+const M2_CORRECT = G.m2.answer;
 
 function renderMission2(teamNum) {
   const isl = ISLANDS[teamNum-1];
@@ -1274,7 +1278,7 @@ function renderMission2(teamNum) {
   const main = document.getElementById('missionMain');
   main.innerHTML = `
     <div class="mission-header">
-      <div class="mission-num">MISSION 02 / 07 · ⭐ 문장 조각 배열</div>
+      <div class="mission-num">MISSION 02 / 07 · ⭐ ${G.m2.typeLabel}</div>
       <div class="mission-title">🏕️ 거주지 짓기</div>
     </div>
     <div class="mission-situation">
@@ -1288,8 +1292,8 @@ function renderMission2(teamNum) {
     <div class="step ${step===1?'active':''}" id="m2step1-${ti}">
       <div class="step-label">STEP 1 · 조각을 올바른 순서로 배열하세요</div>
       <div class="wh-prompt" style="margin-bottom:.75rem;">
-        💬 <span style="color:var(--text3);font-size:.8rem;">"___ ___ ___ ___ ___ ___"</span><br>
-        <span style="font-size:.72rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">어떻게 쉼터를 지어야 할지 물어보세요! (how to build)</span>
+        💬 <span style="color:var(--text3);font-size:.8rem;">"${M2_CORRECT.map(()=>'___').join(' ')}"</span><br>
+        <span style="font-size:.72rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">${G.m2.promptKr}</span>
       </div>
       <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:1rem;min-height:56px;margin-bottom:1rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;"
         id="m2zone-${ti}" ondragover="event.preventDefault()" ondrop="m2Drop(event,${ti})">
@@ -1399,11 +1403,11 @@ function m2Check(ti){
   fb.classList.add('show');
   if(ok){
     fb.className='feedback-box show feedback-correct';
-    fb.innerHTML=`✅ 정답! <strong>"tell us how to build a shelter"</strong><br><span style="font-size:.78rem;color:var(--text2)">이제 AI가 선택지를 알려줬어요. 가장 안전한 거처를 고르세요!</span>`;
+    fb.innerHTML=`✅ 정답! <strong>"${M2_CORRECT.join(' ')}"</strong><br><span style="font-size:.78rem;color:var(--text2)">이제 AI가 선택지를 알려줬어요. 가장 안전한 거처를 고르세요!</span>`;
     setTimeout(()=>{state.missionStep['m2_'+ti]=2;renderMission2(ti+1);},1500);
   } else {
     fb.className='feedback-box show feedback-wrong';
-    fb.innerHTML=`❌ 순서가 틀렸어요!<br><span style="font-size:.78rem;color:var(--text2)">힌트: "tell us ___ to ___ a shelter" 형태예요.</span>`;
+    fb.innerHTML=`❌ 순서가 틀렸어요!<br><span style="font-size:.78rem;color:var(--text2)">힌트: ${G.m2.wrongHint}</span>`;
     setTimeout(()=>{fb.classList.remove('show');},2000);
   }
 }
@@ -1503,7 +1507,7 @@ function renderMission1(teamNum) {
   const main = document.getElementById('missionMain');
   main.innerHTML = `
     <div class="mission-header">
-      <div class="mission-num">MISSION 01 / 07 · ⭐ 의문사 카드 선택</div>
+      <div class="mission-num">MISSION 01 / 07 · ⭐ ${G.m1.typeLabel}</div>
       <div class="mission-title">🧭 위치 파악</div>
     </div>
     <div class="mission-situation">
@@ -1515,16 +1519,16 @@ function renderMission1(teamNum) {
 
     <!-- STEP 1: 의문사 선택 -->
     <div class="step ${state.missionStep[ti]===1?'active':''}" id="step1-${ti}">
-      <div class="step-label">STEP 1 · 올바른 의문사를 선택하세요</div>
+      <div class="step-label">STEP 1 · ${G.m1.stepLabel}</div>
       <div class="wh-prompt">
-        💬 "I don't know <span class="blank" id="blank-${ti}">___</span> to go. Help me!"<br>
-        <span style="font-size:.72rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">어디로 가야 할지 모르겠어요! 도와주세요!</span>
+        💬 ${G.m1.promptBefore}<span class="blank" id="blank-${ti}">___</span>${G.m1.promptAfter}<br>
+        <span style="font-size:.72rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">${G.m1.promptKr}</span>
       </div>
       <div class="wh-cards" id="whCards-${ti}">
-        ${['what','where','how','who'].map(w=>`
-          <div class="wh-card" onclick="selectWh(${ti},'${w}')">
-            <div class="wh-word">${w.toUpperCase()}</div>
-            <div class="wh-kr">${{what:'무엇을',where:'어디서/어디로',how:'어떻게',who:'누구를'}[w]}</div>
+        ${G.m1.options.map((o,oi)=>`
+          <div class="wh-card" onclick="selectWh(${ti},${oi})">
+            <div class="wh-word">${o.word.toUpperCase()}</div>
+            <div class="wh-kr">${o.kr}</div>
           </div>
         `).join('')}
       </div>
@@ -1560,14 +1564,16 @@ function renderMission1(teamNum) {
   }
 }
 
-function selectWh(ti, word) {
-  const correct = 'where';
+function selectWh(ti, pick) {
+  // pick: 카드 번호(0부터) 또는 카드 단어
+  const word = typeof pick === 'number' ? G.m1.options[pick].word : pick;
+  const correct = G.m1.answer;
   const cards = document.querySelectorAll(`#whCards-${ti} .wh-card`);
   const blank = document.getElementById(`blank-${ti}`);
   const fb = document.getElementById(`feedback1-${ti}`);
 
   cards.forEach((c,i) => {
-    const w = ['what','where','how','who'][i];
+    const w = G.m1.options[i].word;
     if(w===word) {
       if(word===correct) { c.classList.add('correct'); blank.textContent=word; blank.style.background='rgba(34,197,94,.15)'; blank.style.borderColor='var(--success)'; blank.style.color='var(--success)'; }
       else c.classList.add('wrong');
@@ -1577,11 +1583,11 @@ function selectWh(ti, word) {
   fb.classList.add('show');
   if(word===correct) {
     fb.className='feedback-box show feedback-correct';
-    fb.innerHTML=`✅ 정답! <strong>WHERE to go</strong> — "어디로 가야 할지" 맞아요!<br><span style="font-size:.78rem;color:var(--text2)">이제 AI가 방향을 알려줬어요. 어디로 갈지 선택하세요!</span>`;
+    fb.innerHTML=`✅ 정답! ${G.m1.correctFeedback}<br><span style="font-size:.78rem;color:var(--text2)">이제 AI가 방향을 알려줬어요. 어디로 갈지 선택하세요!</span>`;
     setTimeout(()=>{ state.missionStep[ti]=2; renderMission1(ti+1); },1500);
   } else {
     fb.className='feedback-box show feedback-wrong';
-    fb.innerHTML=`❌ <strong>${word.toUpperCase()}</strong>는 이 상황에 맞지 않아요.<br><span style="font-size:.78rem;color:var(--text2)">"어디로 가야 할지"에 맞는 의문사를 다시 골라보세요!</span>`;
+    fb.innerHTML=`❌ <strong>${word.toUpperCase()}</strong>는 이 상황에 맞지 않아요.<br><span style="font-size:.78rem;color:var(--text2)">${G.m1.wrongHint}</span>`;
     setTimeout(()=>{ fb.classList.remove('show'); cards.forEach(c=>c.classList.remove('wrong')); }, 1500);
   }
 }
@@ -1646,27 +1652,12 @@ function renderResult(ti, choice) {
 
 
 // ══ MOON EVENT: 달 기지 산성비 타자 게임 ══
-const MOON_PHRASES = [
-  { text:'what to do', why:false },
-  { text:'where to go', why:false },
-  { text:'how to survive', why:false },
-  { text:'who to trust', why:false },
-  { text:'when to leave', why:false },
-  { text:'what to eat', why:false },
-  { text:'where to find', why:false },
-  { text:'how to build', why:false },
-  { text:'who to contact', why:false },
-  { text:'when to signal', why:false },
-  { text:'what to bring', why:false },
-  { text:'where to hide', why:false },
-  { text:'how to escape', why:false },
-  { text:'who to meet', why:false },
-  { text:'when to run', why:false },
-  { text:'why to go', why:true },
-  { text:'why to stay', why:true },
-  { text:'why to leave', why:true },
-  { text:'why to hide', why:true },
-];
+// trap: true = 틀린 표현 (입력하면 HP 감소)
+const MOON_PHRASES = G.moon.phrases;
+function moonIsTrapInput(val) {
+  return G.moon.phrases.some(p => p.trap && p.text.toLowerCase() === val)
+    || (G.moon.trapPrefixes || []).some(pre => val.startsWith(pre.toLowerCase()));
+}
 
 let moonState = null;
 
@@ -1701,11 +1692,9 @@ function renderMoonEvent(teamNum) {
       <div class="mission-title">☄️ 산성비 타자 게임</div>
     </div>
     <div class="mission-situation">
-      A meteor shower is incoming! Type the correct phrases to destroy them.<br>
-      <strong>Typing WHY will damage your HP! Watch out!</strong>
+      ${G.moon.introEn}
       <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
-        운석이 쏟아진다! 올바른 의문사+to부정사 구문을 입력해서 운석을 격파하라.<br>
-        <strong style="color:var(--danger);">WHY가 포함된 구문을 입력하면 HP가 깎인다!</strong>
+        ${G.moon.introKr}
       </div>
     </div>
     <div class="moon-score-row">
@@ -1720,11 +1709,11 @@ function renderMoonEvent(teamNum) {
       <div class="moon-stars"></div>
     </div>
     <div class="moon-input-row">
-      <input class="moon-input" id="moonInput" placeholder="의문사+to부정사 입력 후 Enter..." autocomplete="off" spellcheck="false"/>
+      <input class="moon-input" id="moonInput" placeholder="${G.moon.placeholder}" autocomplete="off" spellcheck="false"/>
       <button class="btn btn-primary" id="moonStartBtn" onclick="moonStart(${ti})" style="white-space:nowrap;">▶ 시작!</button>
     </div>
     <div style="font-size:.7rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
-      예: what to do / where to go / how to survive / who to trust (띄어쓰기 포함해서 입력)
+      ${G.moon.examples}
     </div>
   `;
   document.getElementById('moonInput').addEventListener('keydown', (e) => {
@@ -1768,10 +1757,10 @@ function moonSpawnMeteor(ti) {
   const screen = document.getElementById('moonScreen');
   if(!screen) return;
 
-  // why 구문 20% 확률
+  // 함정(틀린) 표현 20% 확률
   const pool = Math.random() < 0.2
-    ? MOON_PHRASES.filter(p => p.why)
-    : MOON_PHRASES.filter(p => !p.why);
+    ? MOON_PHRASES.filter(p => p.trap)
+    : MOON_PHRASES.filter(p => !p.trap);
   const phrase = pool[Math.floor(Math.random() * pool.length)];
 
   const id = 'meteor-' + Date.now() + Math.random();
@@ -1785,7 +1774,7 @@ function moonSpawnMeteor(ti) {
   div.style.top = '0px';
   screen.appendChild(div);
 
-  const meteorObj = { id, text: phrase.text, why: phrase.why, el: div, destroyed: false };
+  const meteorObj = { id, text: phrase.text, why: phrase.trap, el: div, destroyed: false };
   moonState.meteors.push(meteorObj);
 
   // 떨어지는 애니메이션
@@ -1798,8 +1787,8 @@ function moonSpawnMeteor(ti) {
     const elapsed = Date.now() - start;
     const progress = elapsed / duration;
     if(progress >= 1) {
-      // 바닥 도달 → HP 감소 (why가 아닌 것만)
-      if(!phrase.why) {
+      // 바닥 도달 → HP 감소 (함정 표현이 아닌 것만)
+      if(!phrase.trap) {
         moonDamage(ti, '운석이 바닥에 떨어졌다!');
       }
       div.remove();
@@ -1819,9 +1808,9 @@ function moonSubmit(ti) {
   const val = input.value.trim().toLowerCase();
   if(!val) return;
 
-  // why 체크
-  if(val.startsWith('why')) {
-    moonDamage(ti, '⚠️ WHY 입력! HP -1');
+  // 함정 표현 체크
+  if(moonIsTrapInput(val)) {
+    moonDamage(ti, G.moon.trapMessage);
     input.classList.add('miss');
     setTimeout(() => input.classList.remove('miss'), 500);
     input.value = '';
@@ -1829,7 +1818,7 @@ function moonSubmit(ti) {
   }
 
   // 운석 매칭
-  const match = moonState.meteors.find(m => !m.destroyed && m.text === val);
+  const match = moonState.meteors.find(m => !m.destroyed && m.text.toLowerCase() === val);
   if(match) {
     match.destroyed = true;
     match.el.classList.add('destroyed');
@@ -2183,14 +2172,16 @@ function m3RestoreResult(ti) {
 
 
 // ══ MISSION 5: 위기 대응 ══
-const MISSION5_DATA = [
-  { crisis:'용암', emoji:'🌋', sentence:'The lava is flowing toward us! Make sure to decide where to run before it is too late!', kr:'용암이 흘러온다! 너무 늦기 전에 어디로 달아날지 꼭 결정해야 한다!', key:'where to run', penalty:'용암에 아이템 소멸! 🌋' },
-  { crisis:'북극곰', emoji:'🧊', sentence:'A huge polar bear is right behind us! Make sure to find where to hide before it catches us!', kr:'거대한 북극곰이 바로 뒤에 있다! 잡히기 전에 어디에 숨을지 꼭 찾아야 한다!', key:'where to hide', penalty:'북극곰이 코인 2개 가져감! 🐻' },
-  { crisis:'재규어', emoji:'🌴', sentence:'A jaguar is stalking us through the jungle! Make sure to figure out how to escape right now!', kr:'재규어가 정글 속에서 우리를 노리고 있다! 지금 당장 어떻게 탈출할지 꼭 알아야 한다!', key:'how to escape', penalty:'재규어한테 물려 코인 -2! 🐆' },
-  { crisis:'모래폭풍', emoji:'🏜️', sentence:'A massive sandstorm is heading our way! Make sure to decide where to take shelter before it hits!', kr:'거대한 모래폭풍이 다가오고 있다! 모래폭풍이 치기 전에 어디로 대피할지 꼭 결정해야 한다!', key:'where to take shelter', penalty:'모래폭풍에 아이템 소멸! 🌪️' },
-  { crisis:'상어', emoji:'🌊', sentence:'A great white shark is circling around us! Make sure to know what to do before it attacks!', kr:'흰 상어가 우리 주위를 맴돌고 있다! 공격하기 전에 무엇을 해야 할지 꼭 알아야 한다!', key:'what to do', penalty:'상어한테 코인 -2! 🦈' },
-  { crisis:'티라노사우루스', emoji:'🦕', sentence:'The Tyrannosaurus is charging toward us! Make sure to decide where to run before it is too late!', kr:'티라노사우루스가 우리를 향해 돌진하고 있다! 너무 늦기 전에 어디로 달아날지 꼭 결정해야 한다!', key:'where to run', penalty:'티라노한테 밟혀 코인 -2! 🦕' },
+// 섬별 위기 상황(스토리)은 여기, 외울 문장(sentence/kr/key)은 문법 세트에서 가져와 합친다
+const MISSION5_STORY = [
+  { crisis:'용암', emoji:'🌋', penalty:'용암에 아이템 소멸! 🌋' },
+  { crisis:'북극곰', emoji:'🧊', penalty:'북극곰이 코인 2개 가져감! 🐻' },
+  { crisis:'재규어', emoji:'🌴', penalty:'재규어한테 물려 코인 -2! 🐆' },
+  { crisis:'모래폭풍', emoji:'🏜️', penalty:'모래폭풍에 아이템 소멸! 🌪️' },
+  { crisis:'상어', emoji:'🌊', penalty:'상어한테 코인 -2! 🦈' },
+  { crisis:'티라노사우루스', emoji:'🦕', penalty:'티라노한테 밟혀 코인 -2! 🦕' },
 ];
+const MISSION5_DATA = MISSION5_STORY.map((s, i) => Object.assign({}, s, G.m5.islands[i]));
 
 function renderMission5(teamNum) {
   const isl = ISLANDS[teamNum-1];
@@ -2202,7 +2193,7 @@ function renderMission5(teamNum) {
   const main = document.getElementById('missionMain');
   main.innerHTML = `
     <div class="mission-header">
-      <div class="mission-num">MISSION 05 / 07 · ⭐⭐⭐ 7초 암기 후 릴레이 발화</div>
+      <div class="mission-num">MISSION 05 / 07 · ⭐⭐⭐ ${G.m5.typeLabel}</div>
       <div class="mission-title">⚡ 위기 대응</div>
     </div>
     <div class="mission-situation">
@@ -2224,8 +2215,8 @@ function renderMission5(teamNum) {
       <div style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);border-radius:8px;padding:.85rem 1rem;margin-bottom:1rem;font-size:.8rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
         📢 <strong>외우는 방법:</strong><br>
         문장을 모둠원끼리 나눠서 각자 한 부분씩 외우세요!<br>
-        예: 1번 사람 → <em>"The lava is flowing! Make sure to decide"</em><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2번 사람 → <em>"where to run before it is too late!"</em><br>
+        예: 1번 사람 → <em>"${G.m5.memoExampleA}"</em><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2번 사람 → <em>"${G.m5.memoExampleB}"</em><br>
         7초 후 화면이 가려지면 모둠원 모두 함께 이어서 발화하세요!
       </div>
 
@@ -2234,7 +2225,7 @@ function renderMission5(teamNum) {
         <div style="font-size:.78rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">${m5.kr}</div>
         <div style="margin-top:.75rem;padding:.4rem .75rem;background:rgba(249,115,22,.1);border-radius:4px;display:inline-block;">
           <span style="font-size:.68rem;color:var(--text3);">핵심 표현: </span>
-          <span style="font-size:.8rem;color:var(--accent);font-family:'Space Mono',monospace;font-weight:700;">make sure to + ${m5.key}</span>
+          <span style="font-size:.8rem;color:var(--accent);font-family:'Space Mono',monospace;font-weight:700;">${G.m5.keyPrefix}${m5.key}</span>
         </div>
       </div>
 
@@ -2257,7 +2248,7 @@ function renderMission5(teamNum) {
       <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:1.5rem;text-align:center;margin-bottom:1rem;">
         <div style="font-size:.8rem;color:var(--text3);margin-bottom:.5rem;font-family:'Noto Sans KR',sans-serif;">문장이 가려졌어요! 기억나는 대로 발화하세요</div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.1em;color:var(--text3);">??? ??? ??? ??? ???</div>
-        <div style="font-size:.72rem;color:var(--accent);margin-top:.75rem;font-family:'Space Mono',monospace;">힌트: make sure to + ${m5.key}</div>
+        <div style="font-size:.72rem;color:var(--accent);margin-top:.75rem;font-family:'Space Mono',monospace;">힌트: ${G.m5.keyPrefix}${m5.key}</div>
       </div>
       <div style="font-size:.8rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:1rem;background:var(--surface);border-radius:8px;padding:.85rem;">
         📢 <strong>발화 방법:</strong> 모둠원이 릴레이로 문장을 이어서 완성하세요!<br>
@@ -2340,7 +2331,7 @@ function m5RenderResult(ti, success) {
       <div class="result-coin ${success?'positive':'negative'}">${success?'+3':'-1'} 🪙</div>
       <div class="result-desc" style="font-family:'Noto Sans KR',sans-serif;">
         ${success
-          ? '<strong>make sure to</strong>를 활용해서 위기를 극복했어요! 대단해요! 💪'
+          ? G.m5.successText
           : '이번엔 실패했어요. 하지만 다음엔 더 잘할 수 있어요!<br><span style="font-size:.75rem;color:var(--danger);">' + m5.penalty + '</span>'}
       </div>
       <div style="background:var(--surface);border-radius:8px;padding:.85rem;margin:.75rem 0;text-align:left;">
@@ -2370,83 +2361,8 @@ const MISSION6_PAIRS = [
   { teamA: 4, teamB: 5 },
 ];
 
-const MISSION6_DATA = [
-  // 화산+북극 (ti=0,1)
-  {
-    item: '화산 유리 거울 🪞', itemEn: 'a volcanic glass mirror',
-    teamA_given: 'We have a volcanic glass mirror.',
-    teamA_pieces: ['Do', 'you', 'know', 'how to use', 'it', '?'],
-    teamA_correct: ['Do', 'you', 'know', 'how to use', 'it', '?'],
-    teamA_full: 'We have a volcanic glass mirror. Do you know how to use it?',
-    teamB_pieces1: ['It', 'is', 'important', 'to stand', 'in', 'an', 'open', 'area', '.'],
-    teamB_correct1: ['It', 'is', 'important', 'to stand', 'in', 'an', 'open', 'area', '.'],
-    teamB_pieces2: ['Make', 'sure', 'to decide', 'where', 'to aim', 'it', '!'],
-    teamB_correct2: ['Make', 'sure', 'to decide', 'where', 'to aim', 'it', '!'],
-    teamB_full: 'It is important to stand in an open area. Make sure to decide where to aim it!',
-  },
-  {
-    item: '화산 유리 거울 🪞', itemEn: 'a volcanic glass mirror',
-    teamA_given: 'We have a volcanic glass mirror.',
-    teamA_pieces: ['Do', 'you', 'know', 'how to use', 'it', '?'],
-    teamA_correct: ['Do', 'you', 'know', 'how to use', 'it', '?'],
-    teamA_full: 'We have a volcanic glass mirror. Do you know how to use it?',
-    teamB_pieces1: ['It', 'is', 'important', 'to stand', 'in', 'an', 'open', 'area', '.'],
-    teamB_correct1: ['It', 'is', 'important', 'to stand', 'in', 'an', 'open', 'area', '.'],
-    teamB_pieces2: ['Make', 'sure', 'to decide', 'where', 'to aim', 'it', '!'],
-    teamB_correct2: ['Make', 'sure', 'to decide', 'where', 'to aim', 'it', '!'],
-    teamB_full: 'It is important to stand in an open area. Make sure to decide where to aim it!',
-  },
-  // 정글+사막 (ti=2,3)
-  {
-    item: '야자나무 횃불 🔦', itemEn: 'a palm tree torch',
-    teamA_given: 'We have a palm tree torch.',
-    teamA_pieces: ['Do', 'you', 'know', 'where to place', 'it', '?'],
-    teamA_correct: ['Do', 'you', 'know', 'where to place', 'it', '?'],
-    teamA_full: 'We have a palm tree torch. Do you know where to place it?',
-    teamB_pieces1: ['It', 'is', 'important', 'to find', 'the', 'tallest', 'rock', '.'],
-    teamB_correct1: ['It', 'is', 'important', 'to find', 'the', 'tallest', 'rock', '.'],
-    teamB_pieces2: ['Make', 'sure', 'to decide', 'when', 'to light', 'it', '!'],
-    teamB_correct2: ['Make', 'sure', 'to decide', 'when', 'to light', 'it', '!'],
-    teamB_full: 'It is important to find the tallest rock. Make sure to decide when to light it!',
-  },
-  {
-    item: '야자나무 횃불 🔦', itemEn: 'a palm tree torch',
-    teamA_given: 'We have a palm tree torch.',
-    teamA_pieces: ['Do', 'you', 'know', 'where to place', 'it', '?'],
-    teamA_correct: ['Do', 'you', 'know', 'where to place', 'it', '?'],
-    teamA_full: 'We have a palm tree torch. Do you know where to place it?',
-    teamB_pieces1: ['It', 'is', 'important', 'to find', 'the', 'tallest', 'rock', '.'],
-    teamB_correct1: ['It', 'is', 'important', 'to find', 'the', 'tallest', 'rock', '.'],
-    teamB_pieces2: ['Make', 'sure', 'to decide', 'when', 'to light', 'it', '!'],
-    teamB_correct2: ['Make', 'sure', 'to decide', 'when', 'to light', 'it', '!'],
-    teamB_full: 'It is important to find the tallest rock. Make sure to decide when to light it!',
-  },
-  // 바다+공룡 (ti=4,5)
-  {
-    item: '조개껍데기 나팔 🐚', itemEn: 'a shell horn',
-    teamA_given: 'We have a shell horn.',
-    teamA_pieces: ['Do', 'you', 'know', 'how to use', 'it', '?'],
-    teamA_correct: ['Do', 'you', 'know', 'how to use', 'it', '?'],
-    teamA_full: 'We have a shell horn. Do you know how to use it?',
-    teamB_pieces1: ['It', 'is', 'important', 'to take', 'a', 'deep', 'breath', 'before', 'you', 'blow', '.'],
-    teamB_correct1: ['It', 'is', 'important', 'to take', 'a', 'deep', 'breath', 'before', 'you', 'blow', '.'],
-    teamB_pieces2: ['Make', 'sure', 'to decide', 'how long', 'to blow', 'it', '!'],
-    teamB_correct2: ['Make', 'sure', 'to decide', 'how long', 'to blow', 'it', '!'],
-    teamB_full: 'It is important to take a deep breath before you blow. Make sure to decide how long to blow it!',
-  },
-  {
-    item: '조개껍데기 나팔 🐚', itemEn: 'a shell horn',
-    teamA_given: 'We have a shell horn.',
-    teamA_pieces: ['Do', 'you', 'know', 'how to use', 'it', '?'],
-    teamA_correct: ['Do', 'you', 'know', 'how to use', 'it', '?'],
-    teamA_full: 'We have a shell horn. Do you know how to use it?',
-    teamB_pieces1: ['It', 'is', 'important', 'to take', 'a', 'deep', 'breath', 'before', 'you', 'blow', '.'],
-    teamB_correct1: ['It', 'is', 'important', 'to take', 'a', 'deep', 'breath', 'before', 'you', 'blow', '.'],
-    teamB_pieces2: ['Make', 'sure', 'to decide', 'how long', 'to blow', 'it', '!'],
-    teamB_correct2: ['Make', 'sure', 'to decide', 'how long', 'to blow', 'it', '!'],
-    teamB_full: 'It is important to take a deep breath before you blow. Make sure to decide how long to blow it!',
-  },
-];
+// 짝꿍 모둠 대화 내용은 문법 세트에서 가져온다 (pairs 0~2 → 팀 0·1, 2·3, 4·5)
+const MISSION6_DATA = [0,0,1,1,2,2].map(pi => G.m6.pairs[pi]);
 
 function getPairRole(ti) {
   // 짝꿍 모둠에서 A(질문)인지 B(답변)인지
@@ -2490,7 +2406,7 @@ function renderMission6(teamNum) {
 
   main.innerHTML = `
     <div class="mission-header">
-      <div class="mission-num">MISSION 06 / 07 · ⭐⭐⭐ 두 모둠 협동</div>
+      <div class="mission-num">MISSION 06 / 07 · ⭐⭐⭐ ${G.m6.typeLabel}</div>
       <div class="mission-title">🗣️ 신호 보내기</div>
     </div>
     <div class="mission-situation">
@@ -2600,10 +2516,10 @@ function m6renderTeamB(ti, m6) {
   return `
     <div class="step-label">STEP 1 · 두 문장의 조각을 각각 배열하세요</div>
     <div style="font-size:.75rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:.75rem;background:var(--surface);border-radius:6px;padding:.65rem;">
-      💡 <strong>it is important to</strong> 문장과 <strong>make sure to</strong> 문장을 모두 완성해야 해요!
+      ${G.m6.teamBHint}
     </div>
 
-    <div style="font-size:.7rem;color:var(--accent2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">문장 1 — it is important to...</div>
+    <div style="font-size:.7rem;color:var(--accent2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">${G.m6.teamBLabel1}</div>
     <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:.75rem;min-height:48px;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;margin-bottom:.5rem;"
       id="m6zoneB1-${ti}" ondragover="event.preventDefault()" ondrop="m6DropB1(event,${ti})">
       ${dropped1.length===0
@@ -2622,7 +2538,7 @@ function m6renderTeamB(ti, m6) {
       }).join('')}
     </div>
 
-    <div style="font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">문장 2 — make sure to...</div>
+    <div style="font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">${G.m6.teamBLabel2}</div>
     <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:.75rem;min-height:48px;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;margin-bottom:.5rem;"
       id="m6zoneB2-${ti}" ondragover="event.preventDefault()" ondrop="m6DropB2(event,${ti})">
       ${dropped2.length===0
@@ -2819,14 +2735,8 @@ const MISSION4_NPC = [
   { name:'Rex', emoji:'🦖', buff:'앞으로 모든 미션에서 코인 +1 보너스!', buffId:'coin_bonus', color:'#a855f7' },
 ];
 
-const MISSION4_QUESTIONS = [
-  { sentence: '"I know <strong>what to do</strong> next!"', correct: true,  reason: '올바른 의문사+to부정사 ✅' },
-  { sentence: '"I know <strong>why to go</strong> there!"', correct: false, reason: 'why는 to부정사와 함께 쓸 수 없어요 ❌' },
-  { sentence: '"Tell me <strong>how to find</strong> water!"', correct: true,  reason: '올바른 의문사+to부정사 ✅' },
-  { sentence: '"I\'ll show you <strong>what should we eat</strong>!"', correct: false, reason: '의문사+to부정사 형태가 아니에요 ❌' },
-  { sentence: '"I have no idea <strong>who to trust</strong>!"', correct: true,  reason: '올바른 의문사+to부정사 ✅' },
-  { sentence: '"Let me decide <strong>where should we go</strong>!"', correct: false, reason: '의문사+to부정사 형태가 아니에요 ❌' },
-];
+const MISSION4_QUESTIONS = G.m4.items;
+const M4_TOTAL = MISSION4_QUESTIONS.length;
 
 function renderMission4(teamNum) {
   const isl = ISLANDS[teamNum-1];
@@ -2840,7 +2750,7 @@ function renderMission4(teamNum) {
   const main = document.getElementById('missionMain');
   main.innerHTML = `
     <div class="mission-header">
-      <div class="mission-num">MISSION 04 / 07 · ⭐⭐ OX 판단</div>
+      <div class="mission-num">MISSION 04 / 07 · ⭐⭐ ${G.m4.typeLabel}</div>
       <div class="mission-title">🤝 동료 만나기</div>
     </div>
     <div class="mission-situation">
@@ -2848,7 +2758,7 @@ function renderMission4(teamNum) {
       <strong>only the ones who speak correctly can be trusted!</strong>
       <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
         낯선 사람들이 나타났다. 올바른 문장을 말하는 사람만 동료로 삼을 수 있다!<br>
-        각 문장이 올바른 의문사+to부정사인지 판단하세요.
+        ${G.m4.instructionKr}
       </div>
     </div>
 
@@ -2876,7 +2786,7 @@ function renderMission4(teamNum) {
       <div class="feedback-box" id="m4feedback-${ti}"></div>
       <div style="margin-top:1rem;">
         <button class="btn btn-primary" id="m4checkBtn-${ti}" onclick="m4Check(${ti})"
-          style="${Object.keys(state.m4answers[ti]).length===6?'':'opacity:.4;pointer-events:none;'}">
+          style="${Object.keys(state.m4answers[ti]).length===M4_TOTAL?'':'opacity:.4;pointer-events:none;'}">
           결과 확인 →
         </button>
       </div>
@@ -2910,9 +2820,9 @@ function m4Answer(ti, idx, answer) {
     `;
   }
 
-  // 6개 다 답하면 확인 버튼 활성화
+  // 모두 답하면 확인 버튼 활성화
   const btn = document.getElementById(`m4checkBtn-${ti}`);
-  if(btn && Object.keys(state.m4answers[ti]).length === 6) {
+  if(btn && Object.keys(state.m4answers[ti]).length === M4_TOTAL) {
     btn.style.opacity = '1';
     btn.style.pointerEvents = 'auto';
   }
@@ -2922,16 +2832,16 @@ function m4Check(ti) {
   const correct = Object.entries(state.m4answers[ti]).filter(([idx,ans]) =>
     ans === MISSION4_QUESTIONS[idx].correct
   ).length;
-  const total = 6;
+  const total = M4_TOTAL;
   const npc = MISSION4_NPC[ti];
 
   const fb = document.getElementById(`m4feedback-${ti}`);
   fb.classList.add('show');
-  if(correct >= 4) {
+  if(correct >= G.m4.passCount) {
     fb.className = 'feedback-box show feedback-correct';
     fb.innerHTML = `✅ ${correct}/${total} 정답! 동료를 찾았어요! ${npc.emoji} <strong>${npc.name}</strong> 획득!`;
     setTimeout(() => {
-      const rawCoins4 = correct === 6 ? 3 : 2;
+      const rawCoins4 = correct === total ? 3 : 2;
       const m4coins = applyCoins(ti, rawCoins4);
       state.coins[ti] += m4coins;
       if(!state.npc) state.npc = {};
@@ -2959,7 +2869,7 @@ function m4RenderResult(ti, correct, coins) {
   const npc = MISSION4_NPC[ti];
   const rc = document.getElementById(`m4result-${ti}`);
   if(!rc) return;
-  const failed = correct < 4;
+  const failed = correct < G.m4.passCount;
   rc.innerHTML = `
     <div class="result-box">
       <span class="result-emoji">${failed ? '😢' : npc.emoji}</span>
@@ -2975,7 +2885,7 @@ function m4RenderResult(ti, correct, coins) {
       <div class="result-desc">동료를 얻지 못했어요. 다음 미션에서 더 조심하세요!</div>`}
       <div style="font-size:.75rem;color:var(--text2);margin-bottom:1.25rem;font-family:'Noto Sans KR',sans-serif;">
         ${correct}/${MISSION4_QUESTIONS.length}개 정답
-        ${correct===6?'완벽해요! 🎉':correct>=4?'잘했어요! 👍':'조금 아쉬워요 😅'}
+        ${correct===M4_TOTAL?'완벽해요! 🎉':correct>=G.m4.passCount?'잘했어요! 👍':'조금 아쉬워요 😅'}
       </div>
       <div style="display:flex;gap:.75rem;justify-content:center;">
         <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button>
@@ -2991,14 +2901,35 @@ function m4RenderResult(ti, correct, coins) {
 
 
 // ══ MISSION 7: 최종 탈출 ══
-const MISSION7_DATA = [
-  { island:'volcano', key:'where to land', keyKr:'착륙 장소', warning:'용암 때문에', hint:'where to land safely away from lava' },
-  { island:'arctic',  key:'who/what to avoid', keyKr:'피해야 할 것', warning:'북극곰 때문에', hint:'what to avoid (polar bears!)' },
-  { island:'jungle',  key:'how to reach', keyKr:'접근 방법', warning:'나무가 빽빽해서', hint:'how to reach us through the trees' },
-  { island:'desert',  key:'which way to come', keyKr:'올 방향', warning:'모래폭풍 때문에', hint:'which way to come to avoid the storm' },
-  { island:'ocean',   key:'how to land', keyKr:'착륙 방법', warning:'파도가 높아서', hint:'how to land safely on the water' },
-  { island:'dino',    key:'who/what to avoid', keyKr:'피해야 할 것', warning:'공룡 때문에', hint:'what to avoid (T-Rex and meteors!)' },
-];
+const MISSION7_DATA = G.m7.islands;
+
+// 작문 자동 체크: 문법 세트의 목표 표현·보너스 표현을 찾는다 (대소문자 무시)
+function m7HasAny(text, patterns) {
+  const lower = text.toLowerCase();
+  return patterns.some(p => lower.includes(p.toLowerCase()));
+}
+// 채점 화면용: 목표 표현이 등장한 횟수 (겹치는 위치는 한 번만)
+function m7CountTargetOccurrences(text) {
+  const lowerText = text.toLowerCase();
+  let count = 0;
+  const usedPositions = new Set();
+  G.m7.target.patterns.forEach(raw => {
+    const w = raw.toLowerCase();
+    let pos = 0;
+    while((pos = lowerText.indexOf(w, pos)) !== -1) {
+      let overlap = false;
+      for(let p of usedPositions) { if(Math.abs(p-pos)<6) { overlap=true; break; } }
+      if(!overlap) { count++; usedPositions.add(pos); }
+      pos += w.length;
+    }
+  });
+  return count;
+}
+// 점수 계산용: 서로 다른 목표 표현이 몇 종류 쓰였는지
+function m7CountTargetKinds(text) {
+  const lower = text.toLowerCase();
+  return G.m7.target.patterns.filter(w => lower.includes(w.toLowerCase())).length;
+}
 
 function renderMission7(teamNum) {
   const ti = teamNum - 1;
@@ -3010,7 +2941,7 @@ function renderMission7(teamNum) {
   const main = document.getElementById('missionMain');
   main.innerHTML = `
     <div class="mission-header">
-      <div class="mission-num">MISSION 07 / 07 · ⭐⭐⭐⭐ 자유 작문 + 발화</div>
+      <div class="mission-num">MISSION 07 / 07 · ⭐⭐⭐⭐ ${G.m7.typeLabel}</div>
       <div class="mission-title">🚁 최종 탈출</div>
     </div>
     <div class="mission-situation">
@@ -3036,8 +2967,8 @@ function renderMission7(teamNum) {
           </div>
           <div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:6px;padding:.5rem .75rem;">
             <div style="color:var(--success);font-weight:700;margin-bottom:.2rem;">✅ 필수</div>
-            <div style="color:var(--text2);">의문사+to부정사 <strong>3개 이상</strong></div>
-            <div style="color:var(--text3);font-size:.68rem;margin-top:.2rem;">what/where/how/who/when to-v</div>
+            <div style="color:var(--text2);">${G.m7.target.label} <strong>${G.m7.target.minCount}개 이상</strong></div>
+            <div style="color:var(--text3);font-size:.68rem;margin-top:.2rem;">${G.m7.target.hint}</div>
           </div>
           <div style="background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:6px;padding:.5rem .75rem;">
             <div style="color:var(--accent2);font-weight:700;margin-bottom:.2rem;">⭐ 보너스</div>
@@ -3046,16 +2977,15 @@ function renderMission7(teamNum) {
           </div>
           <div style="background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:6px;padding:.5rem .75rem;">
             <div style="color:var(--accent2);font-weight:700;margin-bottom:.2rem;">⭐ 보너스</div>
-            <div style="color:var(--text2);"><strong>it is important to</strong> 포함 +1</div>
+            <div style="color:var(--text2);">${G.m7.bonus[0].cardHtml}</div>
           </div>
           <div style="background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:6px;padding:.5rem .75rem;grid-column:span 2;">
             <div style="color:var(--accent2);font-weight:700;margin-bottom:.2rem;">⭐ 보너스</div>
-            <div style="color:var(--text2);"><strong>make sure to</strong> 또는 <strong>we made sure to</strong> 포함 +1</div>
+            <div style="color:var(--text2);">${G.m7.bonus[1].cardHtml}</div>
           </div>
         </div>
         <div style="margin-top:.75rem;padding:.6rem .75rem;background:rgba(255,255,255,.04);border-radius:6px;font-size:.72rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;line-height:1.7;">
-          💡 <strong>채점 기준:</strong> 의문사+to부정사 문법 오류 여부만 채점해요.<br>
-          모르는 단어는 한글로 쓰거나 사전을 찾아봐도 돼요!
+          ${G.m7.gradingNote}
         </div>
       </div>
 
@@ -3063,15 +2993,7 @@ function renderMission7(teamNum) {
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-bottom:1rem;">
         <div style="font-size:.68rem;color:var(--text3);margin-bottom:.6rem;letter-spacing:.1em;text-transform:uppercase;">📄 템플릿 (참고용 — 자유롭게 변형 가능)</div>
         <div style="font-size:.77rem;color:var(--text2);line-height:2.1;font-family:'Space Mono',monospace;">
-          "Dear rescue team,<br>
-          We are stranded on ${isl.name}.<br>
-          <span style="color:var(--accent2);">It is important to</span> _______________.<br>
-          Please <span style="color:var(--accent2);">make sure to</span> _______________.<br>
-          We <span style="color:var(--accent2);">made sure to</span> _______________, but we need help.<br>
-          We don't know _______________, so please guide us.<br>
-          <span style="color:var(--accent);">(의문사+to부정사)</span> was the most important thing for our survival.<br>
-          We will signal you by _______________.<br>
-          Thank you, Survivors"
+          ${G.m7.templateHtml.split('{island}').join(isl.name)}
         </div>
       </div>
 
@@ -3140,27 +3062,13 @@ if(!sc) return;
 const m7 = MISSION7_DATA[ti];
 const text = (state.m7text && state.m7text[ti]) || '';
 
-// 자동 체크
-const hasItImportant = /it is important to/i.test(text);
-const hasMakeSure = /(make sure to|made sure to)/i.test(text);
-const whPatterns = ['what to','where to','how to','who to','when to','which way to','how long to'];
-const lowerText = text.toLowerCase();
-// 각 패턴의 실제 등장 횟수 합산 (중복 위치 카운트)
-let whCount = 0;
-const usedPositions = new Set();
-whPatterns.forEach(w => {
-let pos = 0;
-while((pos = lowerText.indexOf(w, pos)) !== -1) {
-// 이미 카운트된 위치와 겹치지 않으면 카운트
-let overlap = false;
-for(let p of usedPositions) { if(Math.abs(p-pos)<6) { overlap=true; break; } }
-if(!overlap) { whCount++; usedPositions.add(pos); }
-pos += w.length;
-}
-});
+// 자동 체크 (목표 표현·보너스 표현은 문법 세트 기준)
+const hasItImportant = m7HasAny(text, G.m7.bonus[0].patterns);
+const hasMakeSure = m7HasAny(text, G.m7.bonus[1].patterns);
+const whCount = m7CountTargetOccurrences(text);
 const isEnglish = /[a-zA-Z]/.test(text) && text.replace(/[^a-zA-Z\s]/g,'').length > text.replace(/[^가-힣\s]/g,'').length;
 
-sc.innerHTML = `<div style="margin-bottom:1.25rem;"> <div style="font-size:.72rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;">📝 작성한 안내문</div> <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;font-size:.82rem;color:var(--text);line-height:1.8;white-space:pre-wrap;font-family:'Noto Sans KR',sans-serif;">${text}</div> </div> <div style="font-size:.72rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;">✅ 자동 체크</div> <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1.25rem;"> ${m7CheckItem('it is important to 포함', hasItImportant)} ${m7CheckItem('make sure to / made sure to 포함', hasMakeSure)} ${m7CheckItem('의문사+to부정사 3개 이상', whCount>=3, whCount+'개 발견')} ${m7CheckItem('영어로 작성', isEnglish, isEnglish?'보너스 적용!':'한국어 → 보너스 없음')} </div> <div style="font-size:.72rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;">👩‍🏫 선생님 채점</div> <div style="background:var(--surface);border-radius:8px;padding:1rem;margin-bottom:1rem;font-family:'Noto Sans KR',sans-serif;font-size:.82rem;color:var(--text2);line-height:1.8;"> <strong style="color:${MISSION7_DATA[ti].island==='volcano'?ISLANDS[0].color:ISLANDS[ti].color};">필수 내용 (${MISSION7_DATA[ti].warning} ${MISSION7_DATA[ti].keyKr} 안내)</strong>가 포함됐나요?<br> 모둠 대표가 발화까지 완료했나요? </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:1rem;"> <button class="btn btn-primary" onclick="m7Score(${ti},'perfect')" style="background:var(--success);font-size:.8rem;padding:.6rem .5rem;">✅ 필수내용 포함<br>+ 발화 성공</button> <button class="btn btn-primary" onclick="m7Score(${ti},'partial')" style="background:var(--accent);font-size:.8rem;padding:.6rem .5rem;">⚡ 필수내용 포함<br>발화 미완성</button> <button class="btn btn-primary" onclick="m7Score(${ti},'miss')" style="background:var(--danger);font-size:.8rem;padding:.6rem .5rem;">❌ 필수내용<br>미포함</button> </div> <button class="btn-ghost" onclick="m7Edit(${ti})" style="width:100%;font-size:.72rem;">✏️ 다시 작성하기</button>`;
+sc.innerHTML = `<div style="margin-bottom:1.25rem;"> <div style="font-size:.72rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;">📝 작성한 안내문</div> <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;font-size:.82rem;color:var(--text);line-height:1.8;white-space:pre-wrap;font-family:'Noto Sans KR',sans-serif;">${text}</div> </div> <div style="font-size:.72rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;">✅ 자동 체크</div> <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1.25rem;"> ${m7CheckItem(G.m7.bonus[0].checkLabel, hasItImportant)} ${m7CheckItem(G.m7.bonus[1].checkLabel, hasMakeSure)} ${m7CheckItem(G.m7.target.label+' '+G.m7.target.minCount+'개 이상', whCount>=G.m7.target.minCount, whCount+'개 발견')} ${m7CheckItem('영어로 작성', isEnglish, isEnglish?'보너스 적용!':'한국어 → 보너스 없음')} </div> <div style="font-size:.72rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;">👩‍🏫 선생님 채점</div> <div style="background:var(--surface);border-radius:8px;padding:1rem;margin-bottom:1rem;font-family:'Noto Sans KR',sans-serif;font-size:.82rem;color:var(--text2);line-height:1.8;"> <strong style="color:${MISSION7_DATA[ti].island==='volcano'?ISLANDS[0].color:ISLANDS[ti].color};">필수 내용 (${MISSION7_DATA[ti].warning} ${MISSION7_DATA[ti].keyKr} 안내)</strong>가 포함됐나요?<br> 모둠 대표가 발화까지 완료했나요? </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:1rem;"> <button class="btn btn-primary" onclick="m7Score(${ti},'perfect')" style="background:var(--success);font-size:.8rem;padding:.6rem .5rem;">✅ 필수내용 포함<br>+ 발화 성공</button> <button class="btn btn-primary" onclick="m7Score(${ti},'partial')" style="background:var(--accent);font-size:.8rem;padding:.6rem .5rem;">⚡ 필수내용 포함<br>발화 미완성</button> <button class="btn btn-primary" onclick="m7Score(${ti},'miss')" style="background:var(--danger);font-size:.8rem;padding:.6rem .5rem;">❌ 필수내용<br>미포함</button> </div> <button class="btn-ghost" onclick="m7Edit(${ti})" style="width:100%;font-size:.72rem;">✏️ 다시 작성하기</button>`;
 }
 
 function m7CheckItem(label, passed, note) {
@@ -3179,10 +3087,9 @@ function m7Score(ti, grade) {
 const text = (state.m7text && state.m7text[ti]) || '';
 const isEnglish = /[a-zA-Z]/.test(text) && text.replace(/[^a-zA-Z\s]/g,'').length > text.replace(/[^가-힣\s]/g,'').length;
 const hasGrammarError = /[가-힣]/.test(text) && isEnglish;
-const whWords = ['what to','where to','how to','who to','when to','which way to','how long to'];
-const whCount = whWords.filter(w => text.toLowerCase().includes(w)).length;
-const hasItImportant = /it is important to/i.test(text);
-const hasMakeSure = /(make sure to|made sure to)/i.test(text);
+const whCount = m7CountTargetKinds(text);
+const hasItImportant = m7HasAny(text, G.m7.bonus[0].patterns);
+const hasMakeSure = m7HasAny(text, G.m7.bonus[1].patterns);
 
 let coins = 0;
 let breakdown = [];
@@ -3196,11 +3103,12 @@ coins += 2; breakdown.push('필수 내용 포함 +2');
 breakdown.push('필수 내용 미포함 +0');
 }
 
-if(whCount>=3) { coins+=2; breakdown.push('의문사+to부정사 3개↑ +2'); }
-else if(whCount>=1) { coins+=1; breakdown.push('의문사+to부정사 '+whCount+'개 +1'); }
+const tgt = G.m7.target;
+if(whCount>=tgt.minCount) { coins+=2; breakdown.push(tgt.label+' '+tgt.minCount+'개↑ +2'); }
+else if(whCount>=1) { coins+=1; breakdown.push(tgt.label+' '+whCount+'개 +1'); }
 
-if(hasItImportant) { coins+=1; breakdown.push('it is important to +1'); }
-if(hasMakeSure) { coins+=1; breakdown.push('make sure to +1'); }
+if(hasItImportant) { coins+=1; breakdown.push(G.m7.bonus[0].scoreLabel); }
+if(hasMakeSure) { coins+=1; breakdown.push(G.m7.bonus[1].scoreLabel); }
 
 if(isEnglish && grade!=='miss') {
 coins+=2; breakdown.push('영어 문법 오류 없음 +2');
