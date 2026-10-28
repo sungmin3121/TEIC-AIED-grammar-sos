@@ -3927,7 +3927,10 @@ const teamNum = ROLE_TO_TEAM[myRole];
 const ti = teamNum - 1;
 clearMissionProgress(ti, cmd.missionId);
 state.teamMission[ti] = cmd.missionId;
+state.completedMission = state.completedMission || [0,0,0,0,0,0];
+state.completedMission[ti] = cmd.missionId - 1;
 waitingForMission = null;
+waitingForFinal = false; // 최종 대기 화면에 있던 모둠도 되돌릴 수 있게
 initMission(teamNum, cmd.missionId);
 } else if(cmd.type === 'forceAllMission') {
 const teamNum = ROLE_TO_TEAM[myRole];
@@ -3939,6 +3942,7 @@ state.missionStep = {};
 state.m7text = {};
 state.m7result = {};
 waitingForMission = null;
+waitingForFinal = false;
 initMission(teamNum, cmd.missionId);
 } else if(cmd.type === 'resetRoom') {
 location.reload();
@@ -4153,7 +4157,8 @@ const role = TEAM_TO_ROLE[i];
 if(missionId <= (state.teamMission[i] || 1)) applyRollback(i, missionId);
 state.teamMission[i] = missionId;
 state.completedMission = state.completedMission || [0,0,0,0,0,0];
-state.completedMission[i] = Math.max(state.completedMission[i]||0, missionId-1);
+// 앞으로 보내든 뒤로 되돌리든, 이 모둠은 '바로 앞 미션까지 완료'한 상태가 된다
+state.completedMission[i] = missionId - 1;
 checkGlobalGate(); // 이 모둠만 이동, 전체 잠금은 가장 느린 모둠 기준 유지
 await fbSaveState();
 if(window.firebaseReady) {
@@ -4274,7 +4279,8 @@ if(missionId <= (state.teamMission[ti] || 1)) applyRollback(ti, missionId);
 state.teamMission[ti] = missionId;
 // 스킵된 팀의 완료 기록 & 글로벌 게이트 조정
 state.completedMission = state.completedMission || [0,0,0,0,0,0];
-state.completedMission[ti] = Math.max(state.completedMission[ti] || 0, missionId - 1);
+// 앞으로 보내든 뒤로 되돌리든, 이 모둠은 '바로 앞 미션까지 완료'한 상태가 된다
+state.completedMission[ti] = missionId - 1;
 checkGlobalGate(); // 이 모둠만 이동, 전체 잠금은 가장 느린 모둠 기준 유지
 await fbSaveState();
 // 해당 팀에게 명령 전송
