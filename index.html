@@ -200,6 +200,15 @@ text-align:left;
 .ts-btn:hover { border-color:var(--text3); color:var(--text); }
 .ts-btn.active { border-color:var(--btn-color,var(--accent)); color:var(--btn-color,var(--accent)); background:rgba(255,255,255,.03); }
 
+/* 교사 대시보드: 휴대폰에서는 상단 버튼을 줄바꿈하고 모둠 카드를 1~2열로 */
+@media(max-width:768px) {
+.td-topbar { flex-wrap:wrap; }
+.td-topbar button, .td-topbar select { white-space:nowrap; }
+.td-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
+}
+@media(max-width:520px) {
+.td-grid { grid-template-columns:minmax(0,1fr) !important; }
+}
 @media(max-width:768px) {
 .mission-layout { grid-template-columns:1fr; }
 .mission-sidebar { display:none; }
@@ -529,9 +538,9 @@ window.dispatchEvent(new Event('firebaseReady'));
 <!-- ══ TEACHER DASHBOARD ══ -->
 <div id="screen-teacher" class="screen" style="background:var(--bg);flex-direction:column;">
   <!-- 상단 바 -->
-  <div style="display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.1em;color:var(--accent);">👩‍🏫 교사 대시보드</div>
-    <div id="tdRoomLabel" style="font-size:.7rem;color:var(--text3);flex:1;"></div>
+  <div class="td-topbar" style="display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.1em;color:var(--accent);white-space:nowrap;">👩‍🏫 교사 대시보드</div>
+    <div id="tdRoomLabel" style="font-size:.7rem;color:var(--text3);flex:1;white-space:nowrap;"></div>
     <!-- 전체 강제 이동 -->
     <select id="tdForceSelect" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.72rem;color:var(--text);"></select>
     <button onclick="tdForceAll()" style="background:var(--accent);border:none;border-radius:4px;padding:.3rem .8rem;font-size:.72rem;color:#fff;cursor:pointer;white-space:nowrap;">전체 이동 →</button>
@@ -548,7 +557,7 @@ window.dispatchEvent(new Event('firebaseReady'));
   </div>
   <!-- 모둠 카드 그리드 -->
   <div style="flex:1;overflow-y:auto;padding:1rem;">
-    <div id="tdGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;"></div>
+    <div id="tdGrid" class="td-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;"></div>
   </div>
 </div>
 
