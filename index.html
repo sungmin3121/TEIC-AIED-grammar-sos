@@ -1,0 +1,3999 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOS: Secure Our Survival</title>
+<script src="https://www.youtube.com/iframe_api"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e1a;
+  --surface: #1a2235;
+  --border: rgba(255,255,255,0.08);
+  --accent: #f97316;
+  --accent2: #38bdf8;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --text: #f1f5f9;
+  --text2: #94a3b8;
+  --text3: #475569;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Space Mono','Noto Sans KR',monospace; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+.screen { display:none; min-height:100vh; flex-direction:column; }
+.screen.active { display:flex; }
+body::before { content:''; position:fixed; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px); pointer-events:none; z-index:999; }
+
+/* ── MAIN ── */
+#screen-main { align-items:center; justify-content:center; position:relative;
+background:radial-gradient(ellipse at 50% 0%,rgba(249,115,22,.15) 0%,transparent 60%),
+radial-gradient(ellipse at 80% 80%,rgba(56,189,248,.08) 0%,transparent 50%),var(--bg); }
+.float-bg { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+.float-bg span { position:absolute; font-size:clamp(36px,7vw,72px); opacity:.06; animation:floatUp linear infinite; }
+@keyframes floatUp { 0%{transform:translateY(110vh) rotate(0deg)} 100%{transform:translateY(-20vh) rotate(360deg)} }
+.main-content { text-align:center; z-index:1; padding:2rem; }
+.sos-badge { display:inline-block; background:var(--danger); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:.3em; padding:.3rem 1.2rem; border-radius:2px; margin-bottom:1.5rem; animation:badgePulse 2s ease-in-out infinite; }
+@keyframes badgePulse { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)} 50%{box-shadow:0 0 0 8px rgba(239,68,68,0)} }
+.main-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem,10vw,7rem); line-height:.9; letter-spacing:.05em; margin-bottom:.5rem; }
+.title-sos { color:var(--text); }
+.title-secure { color:var(--accent); text-shadow:0 0 40px rgba(249,115,22,.5); animation:glitch 4s infinite; }
+.title-our { color:var(--accent2); }
+@keyframes glitch { 0%,90%,100%{text-shadow:0 0 40px rgba(249,115,22,.5)} 92%{text-shadow:-3px 0 var(--danger),3px 0 var(--accent2)} 94%{text-shadow:3px 0 var(--danger),-3px 0 var(--accent2)} 96%{text-shadow:0 0 40px rgba(249,115,22,.5)} }
+.main-sub { font-size:.75rem; color:var(--text2); letter-spacing:.2em; margin:1rem 0 .4rem; text-transform:uppercase; }
+.main-desc { font-size:.8rem; color:var(--text3); margin-bottom:2.5rem; font-family:'Noto Sans KR',sans-serif; line-height:1.8; }
+.stat-row { display:flex; gap:2rem; justify-content:center; margin-top:2.5rem; padding-top:2rem; border-top:1px solid var(--border); }
+.stat-num { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:var(--accent2); }
+.stat-label { font-size:.62rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; }
+
+/* ── BUTTONS ── */
+.btn { border:none; border-radius:4px; cursor:pointer; transition:all .2s; font-family:'Bebas Neue',sans-serif; }
+.btn-primary { background:var(--accent); color:#fff; font-size:1.3rem; letter-spacing:.15em; padding:.85rem 2.5rem; }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(249,115,22,.4); }
+.btn-primary:active { transform:translateY(0); }
+.btn-secondary { background:transparent; color:var(--text2); border:1px solid var(--border); font-family:'Space Mono',monospace; font-size:.72rem; letter-spacing:.08em; padding:.55rem 1.4rem; border-radius:4px; cursor:pointer; transition:all .2s; margin-top:.75rem; }
+.btn-secondary:hover { border-color:var(--text3); color:var(--text); }
+.btn-ghost { background:transparent; color:var(--text3); border:1px solid var(--border); font-family:'Space Mono',monospace; font-size:.68rem; padding:.4rem .8rem; border-radius:4px; cursor:pointer; transition:all .2s; }
+.btn-ghost:hover { color:var(--text); border-color:var(--text3); }
+
+/* ── LOBBY ── */
+#screen-lobby { background:var(--bg); padding:1.5rem; }
+.lobby-header { text-align:center; margin-bottom:1.5rem; }
+.lobby-title { font-family:'Bebas Neue',sans-serif; font-size:2.8rem; letter-spacing:.1em; color:var(--accent); }
+.lobby-sub { font-size:.7rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; margin-top:.2rem; }
+.team-cards-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.85rem; margin-bottom:1.5rem; }
+.team-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.9rem 1rem; display:flex; align-items:center; gap:.75rem; cursor:pointer; transition:all .2s; }
+.team-card:hover { border-color:var(--card-color,var(--accent)); transform:translateY(-2px); }
+.team-card.active-team { border-color:var(--card-color,var(--accent)); box-shadow:0 0 0 2px var(--card-color,var(--accent)); }
+.tc-emoji { font-size:1.8rem; }
+.tc-info { flex:1; }
+.tc-name { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:.08em; }
+.tc-island { font-size:.62rem; letter-spacing:.05em; text-transform:uppercase; }
+.tc-coins { text-align:right; }
+.tc-coin-num { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--accent); }
+.tc-coin-label { font-size:.55rem; color:var(--text3); letter-spacing:.05em; }
+.mission-progress { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1rem 1.1rem; margin-bottom:1.25rem; }
+.mp-title { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:.1em; color:var(--text2); margin-bottom:.75rem; }
+.mp-items { display:grid; grid-template-columns:repeat(8,1fr); gap:.4rem; }
+.mp-item { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:.45rem .25rem; text-align:center; opacity:.4; transition:all .3s; }
+.mp-item.current { opacity:1; border-color:var(--accent); box-shadow:0 0 12px rgba(249,115,22,.25); }
+.mp-item.done { opacity:.7; border-color:var(--success); }
+.mp-emoji { font-size:1.1rem; display:block; margin-bottom:.12rem; }
+.mp-name { font-size:.52rem; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
+.bottom-bar { display:flex; gap:.75rem; align-items:center; justify-content:flex-end; padding-top:1rem; border-top:1px solid var(--border); }
+.bottom-bar-left { flex:1; font-size:.72rem; color:var(--text3); }
+
+/* ── MISSION SCREEN ── */
+#screen-mission { background:var(--bg); }
+.mission-layout { display:grid; grid-template-columns:280px 1fr; min-height:100vh; }
+.mission-sidebar { background:var(--surface); border-right:1px solid var(--border); padding:1.25rem; display:flex; flex-direction:column; gap:1rem; }
+.sidebar-island { text-align:center; padding:1rem; border-radius:8px; border:1px solid var(--border); }
+.sidebar-island-emoji { font-size:3rem; display:block; margin-bottom:.5rem; }
+.sidebar-island-name { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:.08em; }
+.sidebar-island-crisis { font-size:.65rem; color:var(--text3); margin-top:.2rem; text-transform:uppercase; }
+.sidebar-coins { background:var(--bg); border-radius:8px; padding:.85rem; text-align:center; border:1px solid var(--border); }
+.sidebar-coin-label { font-size:.62rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.25rem; }
+.sidebar-coin-num { font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:var(--accent); }
+.sidebar-items { background:var(--bg); border-radius:8px; padding:.85rem; border:1px solid var(--border); }
+.sidebar-items-label { font-size:.62rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.5rem; }
+.items-list { display:flex; flex-wrap:wrap; gap:.4rem; }
+.item-chip { background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:.25rem .6rem; font-size:.7rem; color:var(--text2); }
+.sidebar-mission-list { flex:1; }
+.sml-title { font-size:.62rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.5rem; }
+.sml-item { display:flex; align-items:center; gap:.5rem; padding:.35rem .5rem; border-radius:4px; font-size:.72rem; color:var(--text3); margin-bottom:.25rem; transition:all .2s; }
+.sml-item.current { background:rgba(249,115,22,.1); color:var(--accent); border:1px solid rgba(249,115,22,.2); }
+.sml-item.done { color:var(--success); }
+.sml-emoji { font-size:.9rem; }
+
+/* MISSION MAIN */
+.mission-main { padding:2rem; overflow-y:auto; display:flex; flex-direction:column; }
+.mission-header { margin-bottom:1.5rem; }
+.mission-num { font-size:.7rem; color:var(--text3); letter-spacing:.2em; text-transform:uppercase; margin-bottom:.3rem; }
+.mission-title { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; letter-spacing:.08em; color:var(--text); }
+.mission-situation {
+background:var(--surface);
+border:1px solid var(--border);
+border-left:3px solid var(--accent);
+border-radius:0 8px 8px 0;
+padding:1rem 1.25rem;
+margin-bottom:1.75rem;
+font-size:.82rem;
+line-height:1.7;
+color:var(--text2);
+font-family:'Noto Sans KR',sans-serif;
+}
+.mission-situation strong { color:var(--accent); font-family:'Space Mono',monospace; }
+
+/* STEP SYSTEM */
+.step { display:none; }
+.step.active { display:block; animation:fadeIn .35s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+@keyframes pulseGlow { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.15)} }
+
+/* STEP 1: 의문사 선택 */
+.step-label { font-size:.7rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; margin-bottom:1rem; }
+.wh-prompt { font-size:1.1rem; color:var(--text2); margin-bottom:1.5rem; font-family:'Noto Sans KR',sans-serif; line-height:1.8; }
+.wh-prompt .blank { display:inline-block; background:rgba(249,115,22,.15); border:1px dashed var(--accent); border-radius:4px; padding:.1rem .8rem; min-width:80px; text-align:center; color:var(--accent); font-family:'Space Mono',monospace; font-size:.9rem; vertical-align:middle; }
+.wh-cards { display:flex; gap:.85rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+.wh-card {
+background:var(--surface);
+border:2px solid var(--border);
+border-radius:8px;
+padding:1rem 1.5rem;
+cursor:pointer;
+transition:all .2s;
+text-align:center;
+min-width:100px;
+}
+.wh-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+.wh-card.selected { border-color:var(--accent); background:rgba(249,115,22,.1); box-shadow:0 0 16px rgba(249,115,22,.2); }
+.wh-card.wrong { border-color:var(--danger); background:rgba(239,68,68,.1); animation:shake .3s ease; }
+.wh-card.correct { border-color:var(--success); background:rgba(34,197,94,.1); }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+.wh-word { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:.1em; }
+.wh-kr { font-size:.65rem; color:var(--text3); margin-top:.2rem; font-family:'Noto Sans KR',sans-serif; }
+.feedback-box { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1rem 1.25rem; margin-top:1rem; font-size:.82rem; line-height:1.7; display:none; }
+.feedback-box.show { display:block; animation:fadeIn .3s ease; }
+.feedback-correct { border-color:var(--success); color:var(--success); }
+.feedback-wrong { border-color:var(--danger); color:var(--danger); }
+
+/* STEP 2: 선택지 */
+.choice-label { font-size:.7rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; margin-bottom:.75rem; }
+.choices { display:flex; flex-direction:column; gap:.75rem; margin-bottom:1.5rem; }
+.choice-btn {
+background:var(--surface);
+border:1px solid var(--border);
+border-radius:8px;
+padding:1rem 1.25rem;
+cursor:pointer;
+transition:all .2s;
+display:flex;
+align-items:center;
+gap:1rem;
+text-align:left;
+}
+.choice-btn:hover { border-color:var(--accent2); transform:translateX(4px); }
+.choice-btn.chosen { border-color:var(--accent2); background:rgba(56,189,248,.08); pointer-events:none; }
+.choice-letter { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--text3); min-width:28px; }
+.choice-btn:hover .choice-letter, .choice-btn.chosen .choice-letter { color:var(--accent2); }
+.choice-text { flex:1; }
+.choice-main { font-size:.9rem; color:var(--text); font-family:'Noto Sans KR',sans-serif; }
+.choice-sub { font-size:.72rem; color:var(--text3); margin-top:.2rem; font-family:'Space Mono',monospace; }
+
+/* STEP 3: 결과 */
+.result-box { text-align:center; padding:2rem; }
+.result-emoji { font-size:4rem; display:block; margin-bottom:1rem; animation:popIn .4s cubic-bezier(.34,1.56,.64,1); }
+@keyframes popIn { from{transform:scale(0)} to{transform:scale(1)} }
+.result-title { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:.1em; margin-bottom:.5rem; }
+.result-coin { font-family:'Bebas Neue',sans-serif; font-size:3rem; margin:.75rem 0; }
+.result-coin.positive { color:var(--success); }
+.result-coin.negative { color:var(--danger); }
+.result-coin.neutral { color:var(--text2); }
+.result-desc { font-size:.82rem; color:var(--text2); line-height:1.7; font-family:'Noto Sans KR',sans-serif; margin-bottom:1.5rem; }
+.result-item { display:inline-block; background:rgba(249,115,22,.1); border:1px solid rgba(249,115,22,.3); border-radius:6px; padding:.4rem 1rem; font-size:.8rem; color:var(--accent); margin-bottom:1.5rem; }
+
+/* TEAM SELECTOR */
+.team-selector { background:var(--surface); border-bottom:1px solid var(--border); padding:.75rem 1.5rem; display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; position:sticky; top:0; z-index:50; }
+.ts-label { font-size:.65rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; }
+.ts-btn { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:.3rem .7rem; font-size:.72rem; font-family:'Space Mono',monospace; color:var(--text3); cursor:pointer; transition:all .2s; }
+.ts-btn:hover { border-color:var(--text3); color:var(--text); }
+.ts-btn.active { border-color:var(--btn-color,var(--accent)); color:var(--btn-color,var(--accent)); background:rgba(255,255,255,.03); }
+
+@media(max-width:768px) {
+.mission-layout { grid-template-columns:1fr; }
+.mission-sidebar { display:none; }
+.team-cards-grid { grid-template-columns:repeat(2,1fr); }
+.mp-items { grid-template-columns:repeat(4,1fr); }
+}
+.m2-chip {
+background:rgba(249,115,22,.12);
+border:1px solid rgba(249,115,22,.3);
+border-radius:6px;
+padding:.4rem .8rem;
+font-family:'Space Mono',monospace;
+font-size:.85rem;
+color:var(--accent);
+cursor:pointer;
+transition:all .15s;
+display:inline-flex;
+align-items:center;
+gap:.3rem;
+}
+.m2-chip:hover { background:rgba(249,115,22,.22); }
+.m3-food-card:hover { border-color:var(--accent) !important; transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,.3); }
+
+/* LOGIN */
+.room-btn {
+background: var(--bg);
+border: 1px solid var(--border);
+border-radius: 6px;
+padding: .6rem;
+font-family: 'Bebas Neue', sans-serif;
+font-size: 1.2rem;
+color: var(--text3);
+cursor: pointer;
+transition: all .2s;
+width: 100%;
+}
+.room-btn:hover { border-color: var(--text3); color: var(--text); }
+.room-btn.selected { border-color: var(--accent) !important; color: #fff !important; background: var(--accent) !important; box-shadow: 0 0 10px rgba(249,115,22,.5); }
+.room-btn.selected:hover { border-color: var(--accent) !important; color: #fff !important; background: var(--accent) !important; }
+.role-btn {
+background: var(--bg);
+border: 1px solid var(--border);
+border-radius: 6px;
+padding: .6rem .4rem;
+font-family: 'Noto Sans KR', sans-serif;
+font-size: .72rem;
+color: var(--text3);
+cursor: pointer;
+transition: all .2s;
+text-align: center;
+width: 100%;
+}
+.role-btn:hover { border-color: var(--text3); color: var(--text); }
+.role-btn.selected { border-color: var(--accent) !important; color: var(--accent) !important; background: rgba(249,115,22,.18) !important; box-shadow: 0 0 0 2px var(--accent), 0 0 14px rgba(249,115,22,.3); }
+.role-btn.selected:hover { border-color: var(--accent) !important; color: var(--accent) !important; background: rgba(249,115,22,.18) !important; }
+
+/* MOON EVENT */
+.moon-screen {
+position: relative;
+background: #050810;
+min-height: 400px;
+border-radius: 8px;
+border: 1px solid rgba(56,189,248,.2);
+overflow: hidden;
+margin-bottom: 1rem;
+}
+.moon-stars {
+position: absolute;
+inset: 0;
+background-image: radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.8) 0%, transparent 100%),
+radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,.6) 0%, transparent 100%),
+radial-gradient(1px 1px at 50% 60%, rgba(255,255,255,.4) 0%, transparent 100%),
+radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,.7) 0%, transparent 100%),
+radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,.5) 0%, transparent 100%);
+pointer-events: none;
+}
+.moon-hp-bar {
+height: 8px;
+background: rgba(255,255,255,.1);
+border-radius: 4px;
+margin-bottom: .75rem;
+overflow: hidden;
+}
+.moon-hp-fill {
+height: 100%;
+background: linear-gradient(90deg, var(--success), #86efac);
+border-radius: 4px;
+transition: width .4s ease, background .4s;
+}
+.moon-hp-fill.danger { background: linear-gradient(90deg, var(--danger), #fca5a5); }
+.meteor {
+position: absolute;
+background: rgba(56,189,248,.12);
+border: 1px solid rgba(56,189,248,.3);
+border-radius: 6px;
+padding: .3rem .7rem;
+font-family: 'Space Mono', monospace;
+font-size: .8rem;
+color: var(--accent2);
+white-space: nowrap;
+cursor: default;
+user-select: none;
+transition: opacity .2s;
+}
+.meteor.why { color: var(--danger); border-color: rgba(239,68,68,.4); background: rgba(239,68,68,.1); }
+.meteor.destroyed { opacity: 0; transform: scale(1.3); transition: all .2s; }
+.moon-input-row {
+display: flex;
+gap: .75rem;
+align-items: center;
+margin-top: .75rem;
+}
+.moon-input {
+flex: 1;
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: 6px;
+padding: .6rem 1rem;
+font-family: 'Space Mono', monospace;
+font-size: .85rem;
+color: var(--text);
+outline: none;
+transition: border-color .2s;
+}
+.moon-input:focus { border-color: var(--accent2); }
+.moon-input.hit { border-color: var(--success); background: rgba(34,197,94,.08); }
+.moon-input.miss { border-color: var(--danger); background: rgba(239,68,68,.08); animation: shake .3s; }
+.moon-score-row {
+display: flex;
+gap: 1rem;
+align-items: center;
+font-size: .78rem;
+color: var(--text3);
+margin-bottom: .5rem;
+}
+.moon-score-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; }
+.moon-score-val.accent { color: var(--accent2); }
+.moon-score-val.danger { color: var(--danger); }
+
+/* MISSION 4 */
+.m4-question {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: 8px;
+padding: .9rem 1.1rem;
+margin-bottom: .6rem;
+transition: all .25s;
+}
+.m4-question.m4-correct { border-color: var(--success); background: rgba(34,197,94,.06); }
+.m4-question.m4-wrong { border-color: var(--danger); background: rgba(239,68,68,.06); }
+.m4-sentence { font-size: .9rem; color: var(--text); margin-bottom: .6rem; line-height: 1.6; }
+.m4-result { font-size: .78rem; color: var(--text2); font-family: 'Noto Sans KR', sans-serif; }
+.m4-btns { display: flex; gap: .5rem; }
+.m4-ox-btn {
+border: none; border-radius: 6px; padding: .4rem 1.2rem;
+font-family: 'Space Mono', monospace; font-size: .8rem;
+cursor: pointer; transition: all .2s;
+}
+.m4-o { background: rgba(34,197,94,.15); color: var(--success); border: 1px solid rgba(34,197,94,.3); }
+.m4-o:hover { background: rgba(34,197,94,.25); }
+.m4-x { background: rgba(239,68,68,.15); color: var(--danger); border: 1px solid rgba(239,68,68,.3); }
+.m4-x:hover { background: rgba(239,68,68,.25); }
+/* ── HUD ── */
+.hud {
+display: flex;
+gap: .5rem;
+align-items: center;
+}
+.hud-coin {
+background: rgba(10,14,26,.85);
+border: 1px solid rgba(249,115,22,.35);
+border-radius: 6px;
+padding: .35rem .75rem;
+font-family: 'Bebas Neue', sans-serif;
+font-size: 1.1rem;
+color: var(--accent);
+backdrop-filter: blur(8px);
+display: flex;
+align-items: center;
+gap: .35rem;
+}
+.hud-items {
+background: rgba(10,14,26,.85);
+border: 1px solid rgba(255,255,255,.08);
+border-radius: 6px;
+padding: .35rem .75rem;
+font-size: .8rem;
+color: var(--text2);
+backdrop-filter: blur(8px);
+display: flex;
+align-items: center;
+gap: .3rem;
+min-width: 60px;
+}
+.hud-island {
+background: rgba(10,14,26,.85);
+border: 1px solid rgba(255,255,255,.08);
+border-radius: 6px;
+padding: .35rem .75rem;
+font-size: .75rem;
+color: var(--text3);
+backdrop-filter: blur(8px);
+font-family: 'Space Mono', monospace;
+}
+
+</style>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, set, get, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyABfoRLNzMaW3X4-XVgQgO4T_rGSgJmrNc",
+authDomain: "sos-survival.firebaseapp.com",
+databaseURL: "https://sos-survival-default-rtdb.firebaseio.com",
+projectId: "sos-survival",
+storageBucket: "sos-survival.firebasestorage.app",
+messagingSenderId: "248764760707",
+appId: "1:248764760707:web:2cfd7f06c6ced0db4e11b6"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// 전역으로 노출
+window.firebaseDB = db;
+window.firebaseRef = ref;
+window.firebaseSet = set;
+window.firebaseGet = get;
+window.firebaseOnValue = onValue;
+window.firebaseUpdate = update;
+window.firebaseRemove = remove;
+window.firebaseReady = true;
+
+// Firebase 준비 완료 이벤트
+window.dispatchEvent(new Event('firebaseReady'));
+</script>
+
+</head>
+<body>
+
+<!-- ══ LOGIN SCREEN ══ -->
+
+<div id="screen-login" class="screen active" style="align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 50% 0%,rgba(249,115,22,.15) 0%,transparent 60%),var(--bg);">
+  <div style="text-align:center;z-index:1;padding:2rem;max-width:480px;width:100%;">
+    <div class="sos-badge">🆘 SOS: SECURE OUR SURVIVAL</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--accent);letter-spacing:.05em;margin-bottom:.25rem;">접속하기</div>
+    <div style="font-size:.75rem;color:var(--text3);margin-bottom:2rem;font-family:'Noto Sans KR',sans-serif;">방 번호와 섬을 선택하세요</div>
+
+<!-- 방 번호 -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem;text-align:left;">
+  <div style="font-size:.68rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">🏫 방 번호 (반 구분용)</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;">
+    <button onclick="selectRoom(5)" id="roomBtn-5" class="room-btn">5반</button>
+    <button onclick="selectRoom(6)" id="roomBtn-6" class="room-btn">6반</button>
+    <button onclick="selectRoom(7)" id="roomBtn-7" class="room-btn">7반</button>
+    <button onclick="selectRoom(8)" id="roomBtn-8" class="room-btn">8반</button>
+  </div>
+</div>
+
+<!-- 섬 선택 (학생용) -->
+<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem;text-align:left;">
+  <div style="font-size:.68rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">🏝️ 내 섬 선택</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;">
+    <button onclick="selectRole('volcano')" id="roleBtn-volcano" class="role-btn">
+      <div style="font-size:1.2rem;">🌋</div><div>화산 섬</div>
+    </button>
+    <button onclick="selectRole('arctic')" id="roleBtn-arctic" class="role-btn">
+      <div style="font-size:1.2rem;">🧊</div><div>북극 섬</div>
+    </button>
+    <button onclick="selectRole('jungle')" id="roleBtn-jungle" class="role-btn">
+      <div style="font-size:1.2rem;">🌴</div><div>정글 섬</div>
+    </button>
+    <button onclick="selectRole('desert')" id="roleBtn-desert" class="role-btn">
+      <div style="font-size:1.2rem;">🏜️</div><div>사막 섬</div>
+    </button>
+    <button onclick="selectRole('ocean')" id="roleBtn-ocean" class="role-btn">
+      <div style="font-size:1.2rem;">🌊</div><div>바다 섬</div>
+    </button>
+    <button onclick="selectRole('dino')" id="roleBtn-dino" class="role-btn">
+      <div style="font-size:1.2rem;">🦕</div><div>공룡 섬</div>
+    </button>
+  </div>
+</div>
+
+<!-- 교사 접속 (URL에 ?teacher=sos2024 있을 때만 표시) -->
+<div id="teacherLoginBox" style="display:none;background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:8px;padding:1rem;margin-bottom:1rem;text-align:left;">
+  <div style="font-size:.68rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">👩‍🏫 교사 접속</div>
+  <button onclick="selectRole('teacher')" id="roleBtn-teacher" class="role-btn" style="width:100%;padding:.75rem;font-size:.9rem;">
+    👩‍🏫 교사로 접속
+  </button>
+</div>
+
+<div id="loginStatus" style="font-size:.75rem;color:var(--text3);margin-bottom:1rem;font-family:'Noto Sans KR',sans-serif;min-height:1.2rem;"></div>
+<button id="loginBtn" onclick="doLogin()"
+  style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:.9rem;
+  font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.1em;cursor:pointer;opacity:.4;pointer-events:none;transition:all .2s;">
+  ▶ 접속하기
+</button>
+
+  </div>
+</div>
+
+<!-- ══ MAIN ══ -->
+
+<div id="screen-main" class="screen">
+  <div class="float-bg" id="floatBg"></div>
+  <div class="main-content">
+    <div class="sos-badge">🆘 EMERGENCY BROADCAST</div>
+    <div class="main-title">
+      <div class="title-sos">SOS:</div>
+      <div class="title-secure">SECURE</div>
+      <div class="title-our">OUR SURVIVAL</div>
+    </div>
+    <div class="main-sub">의문사 + to부정사로 살아남아라</div>
+    <div class="main-desc">AI 기기 하나만 들고 낯선 섬에 조난당했다.<br>올바른 영어로 질문해야만 살아남을 수 있다.</div>
+    <button class="btn btn-primary" onclick="showScreen('lobby')">▶ START MISSION</button>
+    <div><button class="btn-secondary" onclick="showScreen('mission');initMission(1,1)">바로 미션 1 시작 (테스트)</button></div>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-num">6</div><div class="stat-label">Islands</div></div>
+      <div class="stat"><div class="stat-num">7</div><div class="stat-label">Missions</div></div>
+      <div class="stat"><div class="stat-num">6</div><div class="stat-label">Teams</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TEACHER DASHBOARD ══ -->
+<div id="screen-teacher" class="screen" style="background:var(--bg);flex-direction:column;">
+  <!-- 상단 바 -->
+  <div style="display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.1em;color:var(--accent);">👩‍🏫 교사 대시보드</div>
+    <div id="tdRoomLabel" style="font-size:.7rem;color:var(--text3);flex:1;"></div>
+    <!-- 전체 강제 이동 -->
+    <select id="tdForceSelect" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.72rem;color:var(--text);"></select>
+    <button onclick="tdForceAll()" style="background:var(--accent);border:none;border-radius:4px;padding:.3rem .8rem;font-size:.72rem;color:#fff;cursor:pointer;white-space:nowrap;">전체 이동 →</button>
+    <button onclick="showM7Review()" style="background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);border-radius:4px;padding:.3rem .7rem;font-size:.72rem;color:#a855f7;cursor:pointer;">📝 미션8 응답</button>
+    <button onclick="teacherSyncNow()" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);border-radius:4px;padding:.3rem .7rem;font-size:.72rem;color:var(--accent2);cursor:pointer;">🔄 동기화</button>
+    <button onclick="teacherResetRoom()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:4px;padding:.3rem .7rem;font-size:.72rem;color:var(--danger);cursor:pointer;">🗑️ 초기화</button>
+  </div>
+  <!-- 모둠 카드 그리드 -->
+  <div style="flex:1;overflow-y:auto;padding:1rem;">
+    <div id="tdGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;"></div>
+  </div>
+</div>
+
+<!-- ══ LOBBY ══ -->
+
+<div id="screen-lobby" class="screen">
+  <div style="padding:1.5rem;flex:1;overflow-y:auto;">
+    <div class="lobby-header">
+      <div class="sos-badge">MISSION CONTROL</div>
+      <div class="lobby-title">SURVIVAL HQ</div>
+      <div class="lobby-sub">모둠을 선택해서 미션을 시작하세요</div>
+    </div>
+    <div class="team-cards-grid" id="lobbyCards"></div>
+    <div class="mission-progress">
+      <div class="mp-title">MISSION PROGRESS</div>
+      <div class="mp-items">
+        <div class="mp-item current" id="mp-1"><span class="mp-emoji">🧭</span><div class="mp-name">위치 파악</div></div>
+        <div class="mp-item" id="mp-2"><span class="mp-emoji">🏕️</span><div class="mp-name">거주지</div></div>
+        <div class="mp-item" id="mp-3"><span class="mp-emoji">🍖</span><div class="mp-name">식량</div></div>
+        <div class="mp-item" id="mp-4"><span class="mp-emoji">🤝</span><div class="mp-name">동료</div></div>
+        <div class="mp-item" id="mp-moon"><span class="mp-emoji">🌑</span><div class="mp-name">달 기지</div></div>
+        <div class="mp-item" id="mp-5"><span class="mp-emoji">⚡</span><div class="mp-name">위기 대응</div></div>
+        <div class="mp-item" id="mp-6"><span class="mp-emoji">🗣️</span><div class="mp-name">신호</div></div>
+        <div class="mp-item" id="mp-7"><span class="mp-emoji">🚁</span><div class="mp-name">탈출</div></div>
+      </div>
+    </div>
+    <div class="bottom-bar">
+      <div class="bottom-bar-left">모둠 카드를 클릭해서 해당 모둠 미션 화면으로 이동</div>
+      <button class="btn-ghost" onclick="showScreen('main')">← 메인으로</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MISSION ══ -->
+
+<div id="screen-mission" class="screen">
+  <!-- 팀 선택 바 + HUD -->
+  <div style="display:flex;align-items:center;border-bottom:1px solid var(--border);background:var(--surface);">
+    <div class="team-selector" id="teamSelector" style="border-bottom:none;flex:1;"></div>
+    <div class="hud" id="hud" style="padding:.5rem 1rem;">
+      <div class="hud-island" id="hudIsland">🌋 화산 섬</div>
+      <div class="hud-coin">🪙 <span id="hudCoins">0</span></div>
+      <div class="hud-items" id="hudItems">🎒 없음</div>
+    </div>
+  </div>
+  <div class="mission-layout">
+    <!-- 사이드바 -->
+    <div class="mission-sidebar">
+      <div class="sidebar-island" id="sideIsland">
+        <span class="sidebar-island-emoji" id="sideEmoji">🌋</span>
+        <div class="sidebar-island-name" id="sideName">화산 섬</div>
+        <div class="sidebar-island-crisis" id="sideCrisis">⚠️ 용암</div>
+      </div>
+      <div class="sidebar-coins">
+        <div class="sidebar-coin-label">🪙 MY COINS</div>
+        <div class="sidebar-coin-num" id="sideCoins">0</div>
+      </div>
+      <div class="sidebar-items">
+        <div class="sidebar-items-label">🎒 ITEMS</div>
+        <div class="items-list" id="sideItems"><span style="font-size:.7rem;color:var(--text3)">없음</span></div>
+      </div>
+      <div class="sidebar-mission-list">
+        <div class="sml-title">MISSIONS</div>
+        <div id="smlList"></div>
+      </div>
+      <button class="btn-ghost" id="backBtn" onclick="myRole==='teacher'?showTeacherDashboard():showScreen('lobby')" style="margin-top:auto;">← 로비로</button>
+    </div>
+    <!-- 메인 콘텐츠 -->
+    <div class="mission-main" id="missionMain"></div>
+  </div>
+</div>
+
+<script>
+// ══ DATA ══
+const ISLANDS = [
+  { id:'volcano', emoji:'🌋', name:'화산 섬', nameEn:'VOLCANO ISLAND', crisis:'용암', color:'#ef4444',
+    choices:[
+      { text:'🏔️ 용암 반대편 높은 곳으로 올라가기', sub:'High ground away from lava', coins:2, item:'map' },
+      { text:'🌊 해안가로 이동하기', sub:'Move toward the shore', coins:1, item:null },
+      { text:'🌋 연기 피어오르는 쪽으로 이동', sub:'Head toward the smoke', coins:-1, item:null },
+    ]},
+  { id:'arctic', emoji:'🧊', name:'북극 섬', nameEn:'ARCTIC ISLAND', crisis:'눈보라 / 북극곰', color:'#38bdf8',
+    choices:[
+      { text:'🏔️ 빙하 위로 올라가기', sub:'Climb up the glacier', coins:2, item:'map' },
+      { text:'🏕️ 눈 동굴 찾기', sub:'Search for a snow cave', coins:1, item:null },
+      { text:'🌊 얼음 아래 강 쪽으로 이동', sub:'Head toward the river under ice', coins:-1, item:null },
+    ]},
+  { id:'jungle', emoji:'🌴', name:'정글 섬', nameEn:'JUNGLE ISLAND', crisis:'홍수 / 재규어', color:'#22c55e',
+    choices:[
+      { text:'🌴 나무 위로 올라가기', sub:'Climb up a tall tree', coins:2, item:'map' },
+      { text:'🌊 강 소리 따라가기', sub:'Follow the sound of the river', coins:1, item:null },
+      { text:'🌿 덤불 속으로 들어가기', sub:'Head into the thick bushes', coins:-1, item:null },
+    ]},
+  { id:'desert', emoji:'🏜️', name:'사막 섬', nameEn:'DESERT ISLAND', crisis:'모래폭풍', color:'#f59e0b',
+    choices:[
+      { text:'🏔️ 모래 언덕 올라가기', sub:'Climb the highest sand dune', coins:2, item:'map' },
+      { text:'🌵 선인장 군락 쪽으로 이동', sub:'Head toward cactus clusters', coins:1, item:null },
+      { text:'☀️ 태양 방향으로 무작정 걷기', sub:'Walk straight toward the sun', coins:-1, item:null },
+    ]},
+  { id:'ocean', emoji:'🌊', name:'바다 섬', nameEn:'OCEAN ISLAND', crisis:'상어', color:'#6366f1',
+    choices:[
+      { text:'🪸 산호초 위쪽으로 이동', sub:'Move above the coral reef', coins:2, item:'map' },
+      { text:'🌊 해류 따라가기', sub:'Follow the ocean current', coins:1, item:null },
+      { text:'🌑 깊은 바다 쪽으로 이동', sub:'Head toward deeper water', coins:-1, item:null },
+    ]},
+  { id:'dino', emoji:'🦕', name:'공룡 섬', nameEn:'DINO ISLAND', crisis:'운석 / 티라노사우루스', color:'#a855f7',
+    choices:[
+      { text:'🏔️ 높은 바위 위로 올라가기', sub:'Climb the tall rock formation', coins:2, item:'map' },
+      { text:'🌿 풀숲 속으로 숨기', sub:'Hide in the tall grass', coins:1, item:null },
+      { text:'🦕 공룡 소리 따라가기', sub:'Follow the dinosaur sounds', coins:-1, item:null },
+    ]},
+];
+
+const ITEMS = {
+  map: { emoji:'🗺️', name:'지도', desc:'다음 미션 함정 미리 공개' },
+  torch: { emoji:'🔦', name:'손전등', desc:'다음 미션 힌트 공개' },
+  antidote: { emoji:'🧪', name:'해독제', desc:'페널티 1회 무효화' },
+  lucky: { emoji:'🍀', name:'행운의 열매', desc:'주사위 한 번 더' },
+};
+
+const MISSIONS = [
+  { id:1, emoji:'🧭', name:'위치 파악' },
+  { id:2, emoji:'🏕️', name:'거주지 짓기' },
+  { id:3, emoji:'🍖', name:'식량 구하기' },
+  { id:4, emoji:'🤝', name:'동료 만나기' },
+  { id:'moon', emoji:'🌑', name:'달 기지 이벤트' },
+  { id:5, emoji:'⚡', name:'위기 대응' },
+  { id:6, emoji:'🗣️', name:'신호 보내기' },
+  { id:7, emoji:'🚁', name:'최종 탈출' },
+];
+
+// ══ STATE ══
+const state = {
+  coins: [0,0,0,0,0,0],
+  items: [[],[],[],[],[],[]],
+  currentMission: 1,
+  currentTeam: 0,
+  missionStep: {},
+  missionChoice: {},
+  teamMission: [1,1,1,1,1,1], // 각 팀의 현재 미션 번호
+  completedMission: [0,0,0,0,0,0], // 각 팀이 완료한 마지막 미션 번호
+  globalMission: 1, // 전체 모둠이 진행 가능한 미션 번호
+};
+
+// Firebase는 빈 배열 []을 null로 변환하므로 읽어온 뒤 복원
+function sanitizeState() {
+  if(!Array.isArray(state.items)) state.items = [[],[],[],[],[],[]];
+  else for(let i=0;i<6;i++) { if(!Array.isArray(state.items[i])) state.items[i] = []; }
+  if(!Array.isArray(state.coins)) state.coins = [0,0,0,0,0,0];
+  else for(let i=0;i<6;i++) { if(state.coins[i]==null) state.coins[i] = 0; }
+  if(!Array.isArray(state.teamMission)) state.teamMission = [1,1,1,1,1,1];
+  else for(let i=0;i<6;i++) { if(state.teamMission[i]==null) state.teamMission[i] = 1; }
+  if(!Array.isArray(state.completedMission)) state.completedMission = [0,0,0,0,0,0];
+  else for(let i=0;i<6;i++) { if(state.completedMission[i]==null) state.completedMission[i] = 0; }
+  if(!state.missionStep || typeof state.missionStep !== 'object' || Array.isArray(state.missionStep)) state.missionStep = {};
+}
+
+// ══ SCREEN ══
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  if(id==='lobby') { renderLobby(); hideHUD(); }
+  if(id==='main') { renderFloatBg(); hideHUD(); }
+  // 교사 전용: 미션 화면에선 대시보드 복귀 버튼 표시, 나머지는 숨김
+  if(myRole === 'teacher') {
+    const bb = document.getElementById('teacherBackBtn');
+    if(id === 'mission') { ensureTeacherBackBtn(); if(bb) bb.style.display=''; }
+    else if(bb) bb.style.display = 'none';
+  }
+}
+
+// ══ FLOAT BG ══
+function renderFloatBg() {
+  const bg = document.getElementById('floatBg');
+  const emojis = ['🌋','🧊','🌴','🏜️','🌊','🦕','🆘','⚡','🤖','📡','🪙','🎲'];
+  bg.innerHTML = '';
+  for(let i=0;i<14;i++) {
+    const s = document.createElement('span');
+    s.textContent = emojis[i%emojis.length];
+    s.style.left = (Math.random()*100)+'%';
+    s.style.animationDuration = (9+Math.random()*12)+'s';
+    s.style.animationDelay = (-Math.random()*16)+'s';
+    bg.appendChild(s);
+  }
+}
+
+// ══ LOBBY ══
+function renderLobby() {
+  const c = document.getElementById('lobbyCards');
+  c.innerHTML = '';
+  ISLANDS.forEach((isl,i) => {
+    const div = document.createElement('div');
+    div.className = 'team-card';
+    div.style.setProperty('--card-color', isl.color);
+    div.innerHTML = `
+      <div class="tc-emoji">${isl.emoji}</div>
+      <div class="tc-info">
+        <div class="tc-name" style="color:${isl.color}">${i+1}모둠</div>
+        <div class="tc-island" style="color:${isl.color}">${isl.name}</div>
+      </div>
+      <div class="tc-coins">
+        <div class="tc-coin-num">${state.coins[i]}</div>
+        <div class="tc-coin-label">🪙 COINS</div>
+      </div>
+    `;
+    div.onclick = () => { showScreen('mission'); initMission(i+1, state.teamMission[i]); };
+    c.appendChild(div);
+  });
+  updateMissionProgress();
+}
+
+function updateMissionProgress() {
+  MISSIONS.forEach(m => {
+    const el = document.getElementById('mp-'+m.id);
+    if(!el) return;
+    el.classList.remove('current','done');
+    if(m.id === state.currentMission) el.classList.add('current');
+    else if(typeof m.id === 'number' && m.id < state.currentMission) el.classList.add('done');
+  });
+}
+
+// ══ 단계 제한 게이트 ══
+let waitingForMission = null;
+let moonPollIntervalId = null;
+let waitingForFinal = false;
+
+function tryAdvanceMission(ti, toMission) {
+  state.completedMission = state.completedMission || [0,0,0,0,0,0];
+  state.completedMission[ti] = Math.max(state.completedMission[ti] || 0, toMission - 1);
+  // 미션 시작 직전 코인/아이템 스냅샷 저장 (교사 롤백 복원용)
+  state.coinSnapshot = state.coinSnapshot || {};
+  state.itemSnapshot = state.itemSnapshot || {};
+  state.coinSnapshot[ti+'_'+toMission] = state.coins[ti];
+  state.itemSnapshot[ti+'_'+toMission] = [...(state.items[ti]||[])];
+  // teamMission을 저장 전에 업데이트해야 다른 탭의 변경 감지가 작동함
+  state.teamMission[ti] = Math.max(state.teamMission[ti] || 1, toMission);
+  checkGlobalGate();
+  fbSaveState();
+  if(canAdvance(toMission)) {
+    waitingForMission = null;
+    initMission(ti + 1, toMission);
+  } else {
+    waitingForMission = { ti, toMission };
+    showWaitingForTeams(ti, toMission);
+  }
+}
+
+function clearMissionProgress(ti, missionId) {
+  // Clear this team's interaction data and missionStep for missions >= missionId
+  // (Called on both teacher and student side; does NOT touch coins/items)
+  if(missionId <= 2) { if(state.m2dropped) delete state.m2dropped[ti]; if(state.m2pieces) delete state.m2pieces[ti]; }
+  if(missionId <= 3 && state.m3match) delete state.m3match[ti];
+  if(missionId <= 4 && state.m4answers) delete state.m4answers[ti];
+  if(missionId <= 5 && state.moonScores) {
+    delete state.moonScores[ti];
+    if(!Object.keys(state.moonScores).length) { state.moonAllDone = false; delete state.moonCleared; }
+  }
+  if(missionId <= 7) { if(state.m6dropped) delete state.m6dropped[ti]; if(state.m6pieces) delete state.m6pieces[ti]; }
+  if(missionId <= 8) { if(state.m7text) delete state.m7text[ti]; if(state.m7result) delete state.m7result[ti]; }
+  const stepKeys = [[1,String(ti)],[2,'m2_'+ti],[3,'m3_'+ti],[4,'m4_'+ti],[6,'m5_'+ti],[7,'m6_'+ti],[8,'m7_'+ti]];
+  if(state.missionStep) {
+    for(const [mid, key] of stepKeys) { if(mid >= missionId) delete state.missionStep[key]; }
+  }
+}
+
+function applyRollback(ti, missionId) {
+  const coinSnap = (state.coinSnapshot || {})[ti+'_'+missionId];
+  state.coins[ti] = (coinSnap != null) ? coinSnap : 0;
+  const itemSnap = (state.itemSnapshot || {})[ti+'_'+missionId];
+  state.items[ti] = Array.isArray(itemSnap) ? [...itemSnap] : [];
+  clearMissionProgress(ti, missionId);
+}
+
+function canAdvance(toMission) {
+  if(myRole === 'teacher') return true;
+  return toMission <= (state.globalMission || 1);
+}
+
+function checkGlobalGate() {
+  const current = state.globalMission || 1;
+  const cm = state.completedMission || [0,0,0,0,0,0];
+  const allDone = cm.every(c => (c || 0) >= current);
+  if(allDone && current < 8) {
+    state.globalMission = current + 1;
+  }
+}
+
+function showWaitingForTeams(ti, toMission) {
+  const main = document.getElementById('missionMain');
+  if(!main) return;
+  const MN = {1:'위치파악',2:'거주지',3:'식량',4:'동료',5:'달기지',6:'위기',7:'신호',8:'탈출'};
+  const cm = state.completedMission || [0,0,0,0,0,0];
+  const done = cm.filter(c => (c || 0) >= toMission-1).length;
+  main.innerHTML = `
+    <div class="mission-header">
+      <div class="mission-num">⏳ 다음 미션 대기 중</div>
+      <div class="mission-title">🕐 ${MN[toMission] || '다음 미션'} 대기 중...</div>
+    </div>
+    <div class="result-box">
+      <span class="result-emoji" style="animation:pulseGlow 1.5s ease-in-out infinite;">⏳</span>
+      <div class="result-title">WAITING FOR OTHERS</div>
+      <div style="font-size:.82rem;color:var(--accent2);margin:.5rem 0 1rem;font-family:'Noto Sans KR',sans-serif;">
+        ${MN[toMission-1]||'이전 미션'} 완료! 다른 모둠이 완료할 때까지 기다려주세요.
+      </div>
+      <div style="background:var(--surface);border-radius:8px;padding:1rem;margin-bottom:1rem;">
+        <div style="font-size:.7rem;color:var(--text3);margin-bottom:.65rem;text-transform:uppercase;letter-spacing:.1em;">모둠 완료 현황</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;">
+          ${ISLANDS.map((isl,i)=>{
+            const ok=(state.completedMission||[])[i]>=toMission-1;
+            return '<div style="background:var(--bg);border:1px solid '+(ok?isl.color:'var(--border)')+';border-radius:6px;padding:.5rem;text-align:center;">'
+              +'<div style="font-size:1.1rem;">'+isl.emoji+'</div>'
+              +'<div style="font-size:.6rem;color:'+(ok?isl.color:'var(--text3)')+';">'+(ok?'✅ 완료':'⏳ 진행중')+'</div>'
+              +'</div>';
+          }).join('')}
+        </div>
+      </div>
+      <div style="font-size:.75rem;color:var(--text3);font-family:\'Noto Sans KR\',sans-serif;margin-bottom:.75rem;">${done}/6 모둠 완료 — 모두 완료되면 자동으로 다음 미션이 시작돼요!</div>
+      <button onclick="inAppRefresh()" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:.5rem 1.25rem;font-size:.78rem;color:var(--text2);cursor:pointer;font-family:'Space Mono',monospace;">🔄 현황 새로고침</button>
+    </div>`;
+}
+
+async function inAppRefresh() {
+  if(!window.firebaseReady || !window.firebaseDB) { location.reload(); return; }
+  try {
+    const snap = await window.firebaseGet(window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom+'/state'));
+    if(!snap.exists()) return;
+    const remote = snap.val();
+    const savedTeam = state.currentTeam;
+    const savedMission = state.currentMission;
+    const nestedKeys = ['m6dropped','m6pieces','m4answers','m3match','m2dropped','m2pieces','missionStep'];
+    const savedNested = {};
+    for(const k of nestedKeys) savedNested[k] = state[k] ? {...state[k]} : {};
+    Object.assign(state, remote);
+    sanitizeState();
+    for(const k of nestedKeys) state[k] = Object.assign({}, remote[k]||{}, savedNested[k]);
+    state.currentTeam = savedTeam;
+    state.currentMission = savedMission;
+    refreshCurrentScreen();
+  } catch(e) { console.warn('inAppRefresh error:', e); }
+}
+
+// ── 코인 적용 헬퍼 (NPC 버프 + 행운의 열매 효과 포함) ──
+function applyCoins(ti, baseCoins) {
+  let coins = baseCoins;
+  // 행운의 열매: 다음 미션 코인 2배 (1회 발동 후 소멸)
+  if(state.luckyActive && state.luckyActive[ti]) {
+    coins = coins * 2;
+    state.luckyActive[ti] = false;
+    // 아이템에서도 제거
+    if(!Array.isArray(state.items[ti])) state.items[ti] = [];
+    const idx = state.items[ti].indexOf('lucky');
+    if(idx >= 0) state.items[ti].splice(idx, 1);
+  }
+  // NPC 버프: 동료 있으면 +1
+  if(state.npc && state.npc[ti]) {
+    coins += 1;
+  }
+  return coins;
+}
+
+// ══ MISSION 2 DATA ══
+const MISSION2_CHOICES = [
+  { island:'volcano', choices:[
+    { text:'🪨 용암 바위로 벽 세우기', sub:'Build walls with volcanic rock', coins:2, item:'antidote' },
+    { text:'🌋 용암 동굴 안으로 들어가기', sub:'Enter the lava cave', coins:-1, item:null },
+    { text:'🌿 화산 주변 식물로 덮기', sub:'Cover with volcanic plants', coins:1, item:null },
+  ]},
+  { island:'arctic', choices:[
+    { text:'🧊 눈 블록으로 이글루 짓기', sub:'Build an igloo with snow blocks', coins:2, item:'antidote' },
+    { text:'🌲 얼어붙은 나뭇가지로 덮기', sub:'Cover with frozen branches', coins:1, item:null },
+    { text:'🏕️ 눈 속에 구덩이 파기', sub:'Dig a hole in the snow', coins:-1, item:null },
+  ]},
+  { island:'jungle', choices:[
+    { text:'🌴 야자나무 잎으로 지붕 만들기', sub:'Make a roof with palm leaves', coins:2, item:'antidote' },
+    { text:'🌿 덩굴로 벽 엮기', sub:'Weave walls with vines', coins:1, item:null },
+    { text:'🌲 나무 위에서 자기', sub:'Sleep in the tree', coins:-1, item:null },
+  ]},
+  { island:'desert', choices:[
+    { text:'🪨 바위 그늘 아래 자리 잡기', sub:'Rest under a rock shade', coins:2, item:'antidote' },
+    { text:'🏕️ 모래 속에 구덩이 파기', sub:'Dig a hole in the sand', coins:1, item:null },
+    { text:'🌵 선인장으로 벽 세우기', sub:'Build walls with cactus', coins:-1, item:null },
+  ]},
+  { island:'ocean', choices:[
+    { text:'🪸 산호초 동굴 찾기', sub:'Find a coral cave', coins:2, item:'antidote' },
+    { text:'🌿 해초로 벽 만들기', sub:'Build walls with seaweed', coins:1, item:null },
+    { text:'🐚 조개껍데기로 지붕 덮기', sub:'Cover with seashells', coins:-1, item:null },
+  ]},
+  { island:'dino', choices:[
+    { text:'🪨 거대 바위 뒤에 숨기', sub:'Hide behind a giant rock', coins:2, item:'antidote' },
+    { text:'🌿 고사리로 지붕 만들기', sub:'Make a roof with ferns', coins:1, item:null },
+    { text:'🦕 공룡 뼈로 벽 세우기', sub:'Build walls with dinosaur bones', coins:-1, item:null },
+  ]},
+];
+
+function updateHUD(teamNum) {
+  const ti = teamNum - 1;
+  const isl = ISLANDS[ti];
+  const hud = document.getElementById('hud');
+  const hudCoins = document.getElementById('hudCoins');
+  const hudItems = document.getElementById('hudItems');
+  const hudIsland = document.getElementById('hudIsland');
+  if(!hud) return;
+  // hud always visible within mission screen
+  hudCoins.textContent = state.coins[ti];
+  hudIsland.textContent = isl.emoji + ' ' + isl.name;
+  hudIsland.style.borderColor = isl.color;
+  if(!Array.isArray(state.items[ti])) state.items[ti] = [];
+  const myItems = state.items[ti];
+  if(myItems.length === 0) {
+    hudItems.textContent = '🎒 없음';
+  } else {
+    hudItems.innerHTML = myItems.map(k => ITEMS[k].emoji).join(' ');
+  }
+}
+
+function hideHUD() {
+  // HUD는 mission screen 안에 있으므로 screen 전환시 자동으로 안 보임
+}
+
+// ══ MISSION INIT ══
+// ══ MISSION 3 DATA ══
+const MISSION3_DATA = [
+  { island:'volcano', food:[
+    { name:'🌿 붉은 열매', what:'Red volcanic berries', where:'On the rocks near lava', how:'Eat it raw' },
+    { name:'🍄 화산재 버섯', what:'Ash mushrooms', where:'In the dark caves', how:'Roast it over lava' },
+    { name:'🪲 특수 곤충', what:'Fire beetles', where:'Under the hot rocks', how:'Crush and boil it' },
+  ]},
+  { island:'arctic', food:[
+    { name:'🐟 얼음 물고기', what:'Arctic fish', where:'In the hole on the iceberg', how:'Cook it with fire' },
+    { name:'🌿 뿌리채소', what:'Root vegetables', where:'Under the snow', how:'Boil it in water' },
+    { name:'🦭 북극 이끼', what:'Arctic moss', where:'On the rocks near the shore', how:'Eat it raw' },
+  ]},
+  { island:'jungle', food:[
+    { name:'🥭 망고', what:'Mangoes', where:'At the top of tall trees', how:'Eat it raw' },
+    { name:'🥥 코코넛', what:'Coconuts', where:'Near the river', how:'Break it open with a rock' },
+    { name:'🍌 바나나', what:'Bananas', where:'In the shaded areas', how:'Grill it over fire' },
+  ]},
+  { island:'desert', food:[
+    { name:'🌵 선인장 열매', what:'Cactus fruit', where:'On top of tall cacti', how:'Peel and eat it raw' },
+    { name:'🍄 모래 버섯', what:'Sand mushrooms', where:'Under the sand', how:'Dry it under the sun' },
+    { name:'🦂 전갈', what:'Scorpions', where:'Near rocks at night', how:'Remove the tail and roast it' },
+  ]},
+  { island:'ocean', food:[
+    { name:'🐟 물고기', what:'Fish', where:'Near the coral reef', how:'Grill it over fire' },
+    { name:'🦀 게', what:'Crabs', where:'Under the rocks', how:'Boil it in seawater' },
+    { name:'🌿 해초', what:'Seaweed', where:'Floating near the surface', how:'Eat it raw' },
+  ]},
+  { island:'dino', food:[
+    { name:'🍓 원시 열매', what:'Primitive berries', where:'On the small bushes', how:'Eat it raw' },
+    { name:'🌿 고사리', what:'Ferns', where:'Near the swamp', how:'Boil it in water' },
+    { name:'🍄 거대 버섯', what:'Giant mushrooms', where:'In the dark forest', how:'Roast it over fire' },
+  ]},
+];
+
+const MISSION3_RANDOM = [
+  { emoji:'😱', title:'POISONED!', desc:'독이 있었다! 배가 아파요...', coins:-2, kr:'독이 있었다!' },
+  { emoji:'🌧️', title:'BAD LUCK...', desc:'스콜이 와서 절반만 건졌어요.', coins:-1, kr:'스콜로 절반만 건졌다!' },
+  { emoji:'😐', title:'JUST OKAY...', desc:'먹을 만 해요. 생존에는 문제없어요.', coins:0, kr:'먹을 만 하다.' },
+  { emoji:'😋', title:'TASTY!', desc:'맛있어요! 에너지가 조금 올랐어요.', coins:1, kr:'맛있다!' },
+  { emoji:'🍽️', title:'NUTRITIOUS!', desc:'맛있고 영양만점! 힘이 넘쳐요!', coins:2, kr:'맛있고 영양만점!' },
+  { emoji:'🎉', title:'JACKPOT!', desc:'숨겨진 식량을 추가로 발견했어요!', coins:2, item:'lucky', kr:'숨겨진 식량 발견!' },
+];
+
+const MISSION3_ISLAND_RANDOM = [
+  ['🌋 독성 식물이었다!','🌧️ 화산재 비가 내렸다','☁️ 화산재 냄새가 나지만 먹을 만 하다','😋 뜨겁지만 맛있다!','🌋 화산 미네랄로 영양만점!','🌋 용암 근처 희귀 열매 발견!'],
+  ['❄️ 독성 열매였다!','🌨️ 눈보라로 절반 날아감','🌨️ 눈보라가 쳤지만 먹을 만 하다','😋 차갑지만 신선하고 맛있다!','❄️ 상쾌하고 영양만점!','❄️ 얼음 속 냉동 식량 발견!'],
+  ['🐍 독이 있는 과일이었다!','🌧️ 스콜로 절반 날아감','🌧️ 스콜이 왔지만 먹을 만 하다','😋 달콤하고 맛있다!','🌴 열대 과일이 영양만점!','🌴 과일 나무 군락 발견!'],
+  ['🌵 독선인장이었다!','🏜️ 모래폭풍으로 절반 날아감','🏜️ 모래가 좀 섞였지만 먹을 만 하다','😋 고소하고 맛있다!','☀️ 완벽한 사막 식량, 영양만점!','🏜️ 오아시스 발견!'],
+  ['☠️ 독어였다!','🌊 파도로 절반 날아감','🌊 조금 비리지만 먹을 만 하다','😋 신선하고 맛있다!','🌊 바다 식재료로 영양만점!','🌊 보물 상자 발견!'],
+  ['🦕 독이 든 원시 식물이었다!','🌿 스콜로 절반 날아감','🌿 질기지만 먹을 만 하다','😋 원시의 맛이 일품이다!','🦕 원시 영양소 가득, 영양만점!','🦕 공룡 알 발견!'],
+];
+
+function initMission(teamNum, missionId) {
+  sanitizeState();
+  state.currentTeam = teamNum - 1;
+  const ti = teamNum - 1;
+  // 팀별 현재 미션 업데이트 (뒤로 가지 않음)
+  if(missionId > (state.teamMission[ti]||1)) {
+    state.teamMission[ti] = missionId;
+  }
+  state.currentMission = missionId;
+  renderTeamSelector(teamNum);
+  renderSidebar(teamNum);
+  if(missionId===1) renderMission1(teamNum);
+  else if(missionId===2) renderMission2(teamNum);
+  else if(missionId===3) renderMission3(teamNum);
+  else if(missionId===4) renderMission4(teamNum);
+  else if(missionId===5) renderMoonEvent(teamNum);
+  else if(missionId===6) renderMission5(teamNum);
+  else if(missionId===7) renderMission6(teamNum);
+  else if(missionId===8) renderMission7(teamNum);
+}
+
+// ══ MISSION 3: 식량 구하기 ══
+function renderMission3(teamNum) {
+  const isl = ISLANDS[teamNum-1];
+  const ti = teamNum-1;
+  const m3data = MISSION3_DATA[ti];
+  if(!state.missionStep['m3_'+ti]) state.missionStep['m3_'+ti]=1;
+  if(!state.m3match) state.m3match={};
+  if(!state.m3match[ti]) state.m3match[ti]={};
+  const step = state.missionStep['m3_'+ti];
+
+  const wh = [
+    { word:'what', kr:'무엇을', color:'#f97316' },
+    { word:'where', kr:'어디서', color:'#38bdf8' },
+    { word:'how', kr:'어떻게', color:'#22c55e' },
+  ];
+  const verbs = [
+    { text:'to find food', correct:'where' },
+    { text:'to cook it', correct:'how' },
+    { text:'to eat', correct:'what' },
+  ];
+
+  const main = document.getElementById('missionMain');
+  main.innerHTML = `
+    <div class="mission-header">
+      <div class="mission-num">MISSION 03 / 07 · ⭐⭐ 의문사-동사 매칭</div>
+      <div class="mission-title">🍖 식량 구하기</div>
+    </div>
+    <div class="mission-situation">
+      You built your shelter, but now you're starving.<br>
+      <strong>The only thing you have is your AI chatbot device.</strong><br>
+      Ask your AI for help!
+      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">거처는 만들었지만 배가 너무 고프다. AI 기기 하나만 있다. AI에게 도움을 요청하라!</div>
+    </div>
+
+    <!-- STEP 1: 매칭 -->
+    <div class="step ${step===1?'active':''}" id="m3step1-${ti}">
+      <div class="step-label">STEP 1 · 의문사와 동사를 올바르게 매칭하세요 (3개 모두)</div>
+      <div class="wh-prompt" style="margin-bottom:1.25rem;">
+        💬 <em>"We have no idea <span style="color:var(--accent);">___</span>. Help me!"</em><br>
+        <span style="font-size:.72rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">의문사를 선택하고 맞는 동사와 연결하세요!</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:start;margin-bottom:1.5rem;">
+        <!-- 의문사 -->
+        <div>
+          <div class="step-label" style="margin-bottom:.5rem;">의문사</div>
+          ${wh.map(w=>`
+            <div class="wh-card" style="min-width:unset;margin-bottom:.5rem;border-color:${state.m3match[ti][w.word]?w.color:'var(--border)'};background:${state.m3match[ti][w.word]?'rgba(255,255,255,.04)':'var(--surface)'};"
+              onclick="m3SelectWh(${ti},'${w.word}','${w.color}')" id="m3wh-${ti}-${w.word}">
+              <div class="wh-word" style="color:${w.color}">${w.word.toUpperCase()}</div>
+              <div class="wh-kr">${w.kr} ~할지</div>
+              ${state.m3match[ti][w.word]?'<div style="font-size:.65rem;color:'+w.color+';margin-top:.25rem;">→ '+state.m3match[ti][w.word]+'</div>':''}
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- 화살표 -->
+        <div style="padding-top:2rem;font-size:1.5rem;color:var(--text3);">→</div>
+
+        <!-- 동사 -->
+        <div>
+          <div class="step-label" style="margin-bottom:.5rem;">동사구</div>
+          ${verbs.map((v,i)=>{
+            const matched = Object.values(state.m3match[ti]).includes(v.text);
+            const matchedStyle = matched ? 'opacity:.35;pointer-events:none;' : '';
+            return '<div class="wh-card" style="min-width:unset;margin-bottom:.5rem;'+matchedStyle+'"'
+              +' onclick="m3SelectVerb('+ti+',\''+v.text+'\',\''+v.correct+'\')">  '
+              +'<div style="font-family:monospace;font-size:.85rem;">'+v.text+'</div>'
+              +'</div>';
+          }).join('')}
+        </div>
+      </div>
+
+      <div id="m3matchFeedback-${ti}" class="feedback-box"></div>
+      <div style="display:flex;gap:.75rem;align-items:center;margin-top:.75rem;">
+        <button class="btn-ghost" onclick="m3ResetMatch(${ti})">↺ 초기화</button>
+        <button class="btn btn-primary" id="m3check-${ti}" onclick="m3CheckMatch(${ti})"
+          id="m3check-${ti}" style="opacity:.4;pointer-events:none;">확인 →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: 음식 선택 -->
+    <div class="step ${step===2?'active':''}" id="m3step2-${ti}">
+      <div class="step-label">STEP 2 · AI가 알려준 식량 정보를 보고 선택하세요</div>
+      <div class="mission-situation" style="margin-bottom:1rem;">
+        🤖 AI: <em>"Here are your options. Choose what to eat, where to find it, and how to cook it!"</em>
+      </div>
+      ${state.items[ti].includes('antidote') ? '<div class="feedback-box show feedback-wrong" style="margin-bottom:.75rem;">🧪 해독제 효과: <strong>C번</strong>은 독이 있어요! ☠️ 피하세요!</div>' : ''}
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.25rem;">
+        ${m3data.food.map((f,idx)=>{
+          const isDangerous = state.items[ti].includes('antidote') && idx===2;
+          return '<div style="background:var(--surface);border:1px solid '+(isDangerous?'rgba(239,68,68,.4)':'var(--border)')+';border-radius:8px;padding:1rem;cursor:pointer;transition:all .2s;"'
+            +' onclick="m3Pick('+ti+','+idx+')" class="m3-food-card" id="m3food-'+ti+'-'+idx+'">'
+            +'<div style="font-size:1.8rem;text-align:center;margin-bottom:.5rem;">'+f.name.split(' ')[0]+(isDangerous?' ☠️':'')+'</div>'
+            +'<div style="font-family:Bebas Neue,sans-serif;font-size:1rem;letter-spacing:.05em;margin-bottom:.75rem;text-align:center;">'+String.fromCharCode(65+idx)+'. '+f.name+'</div>'
+            +'<div style="font-size:.7rem;color:var(--text3);line-height:1.7;border-top:1px solid var(--border);padding-top:.6rem;">'
+            +'<span style="color:#f97316;">WHAT</span> to eat: '+f.what+'<br>'
+            +'<span style="color:#38bdf8;">WHERE</span> to find: '+f.where+'<br>'
+            +'<span style="color:#22c55e;">HOW</span> to cook: '+f.how
+            +'</div></div>';
+        }).join('')}
+      </div>
+    </div>
+
+    <!-- STEP 3: 주사위 결과 -->
+    <div class="step ${step===3?'active':''}" id="m3step3-${ti}">
+      <div id="m3result-${ti}"></div>
+    </div>
+  `;
+  if(step===3 && state.m3result && state.m3result[ti] && state.teamMission[ti]===3) {
+    setTimeout(() => m3RestoreResult(ti), 50);
+  }
+}
+
+let m3SelectedWh = null;
+let m3SelectedColor = null;
+
+function m3SelectWh(ti, word, color) {
+  if(state.m3match[ti][word]) return;
+  m3SelectedWh = word;
+  m3SelectedColor = color;
+  document.querySelectorAll(`#m3step1-${ti} .wh-card`).forEach(c=>c.style.boxShadow='');
+  const el = document.getElementById(`m3wh-${ti}-${word}`);
+  if(el) el.style.boxShadow=`0 0 0 2px ${color}`;
+}
+
+function m3SelectVerb(ti, verbText, correctWh) {
+  if(!m3SelectedWh) {
+    const fb = document.getElementById(`m3matchFeedback-${ti}`);
+    fb.className='feedback-box show feedback-wrong';
+    fb.innerHTML='⚠️ 먼저 왼쪽에서 의문사를 선택하세요!';
+    setTimeout(()=>fb.classList.remove('show'),1500);
+    return;
+  }
+  const isCorrect = m3SelectedWh === correctWh;
+  const fb = document.getElementById(`m3matchFeedback-${ti}`);
+  if(isCorrect){
+    state.m3match[ti][m3SelectedWh] = verbText;
+    fb.className='feedback-box show feedback-correct';
+    fb.innerHTML=`✅ <strong>${m3SelectedWh.toUpperCase()} ${verbText}</strong> — 정답!`;
+    m3SelectedWh=null; m3SelectedColor=null;
+    renderMission3(ti+1);
+  } else {
+    fb.className='feedback-box show feedback-wrong';
+    fb.innerHTML=`❌ <strong>${m3SelectedWh.toUpperCase()} ${verbText}</strong> — 맞지 않아요. 다시 생각해보세요!`;
+    setTimeout(()=>fb.classList.remove('show'),1800);
+  }
+  setTimeout(()=>{
+    const btn = document.getElementById(`m3check-${ti}`);
+    if(btn && Object.keys(state.m3match[ti]||{}).length===3){ btn.style.opacity='1'; btn.style.pointerEvents='auto'; }
+  },100);
+}
+
+function m3ResetMatch(ti){
+  state.m3match[ti]={};
+  m3SelectedWh=null; m3SelectedColor=null;
+  renderMission3(ti+1);
+}
+
+function m3CheckMatch(ti){
+  const fb = document.getElementById(`m3matchFeedback-${ti}`);
+  fb.className='feedback-box show feedback-correct';
+  fb.innerHTML='✅ 모두 완성! 이제 무엇을 먹을지 선택하세요!';
+  setTimeout(()=>{ state.missionStep['m3_'+ti]=2; renderMission3(ti+1); },1200);
+}
+
+function m3Pick(ti, idx){
+  document.querySelectorAll(`#m3step2-${ti} .m3-food-card`).forEach((c,i)=>{
+    c.style.pointerEvents='none';
+    if(i===idx) c.style.border='2px solid var(--accent)';
+    else c.style.opacity='.4';
+  });
+  setTimeout(()=>{
+    state.missionStep['m3_'+ti]=3;
+    // 해독제 있고 C번(독) 선택 시 무조건 독 결과
+    const hasAntidote = state.items[ti].includes('antidote');
+    const forcePoison = hasAntidote && idx===2;
+    // 해독제 있고 C가 아닌 선택지 → 독(roll=0) 제외
+    let roll;
+    if(forcePoison) {
+      roll = 0;
+    } else if(hasAntidote && idx!==2) {
+      roll = Math.floor(Math.random()*5) + 1; // 1~5만 (독 제외)
+    } else {
+      roll = Math.floor(Math.random()*6);
+    }
+    const base = MISSION3_RANDOM[roll];
+    const foodName = MISSION3_DATA[ti].food[idx].what;
+    const islandDesc = forcePoison
+      ? '☠️ ' + foodName + ' — 독이 있었다!'
+      : MISSION3_ISLAND_RANDOM[ti][roll];
+    const rawCoins3 = MISSION3_RANDOM[roll].coins !== undefined ? MISSION3_RANDOM[roll].coins : (roll===2?0:roll===3?1:2);
+    const coins = applyCoins(ti, rawCoins3);
+    state.coins[ti]+=coins;
+    if(roll===5) { if(!Array.isArray(state.items[ti])) state.items[ti]=[]; state.items[ti].push('lucky'); state.luckyActive = state.luckyActive || {}; state.luckyActive[ti] = true; }
+    state.m3result = state.m3result || {};
+    state.m3result[ti] = { roll, base, islandDesc, coins };
+    fbSaveState();
+    renderMission3(ti+1);
+    renderSidebar(ti+1);
+    setTimeout(()=>{
+      const rc=document.getElementById(`m3result-${ti}`);
+      if(!rc) return;
+      const coinClass=coins>0?'positive':coins===0?'neutral':'negative';
+      rc.innerHTML=`
+        <div class="result-box">
+          <span class="result-emoji">${base.emoji}</span>
+          <div class="result-title">${base.title}</div>
+          <div style="font-size:.85rem;color:var(--accent2);margin:.25rem 0 .75rem;font-family:monospace;">${islandDesc}</div>
+          <div class="result-coin ${coinClass}">${coins>0?'+'+coins:coins} 🪙</div>
+              ${roll===5?'<div class="result-item">'+ITEMS['lucky'].emoji+' '+ITEMS['lucky'].name+' 획득!</div>':''}
+          <div class="result-desc">${base.desc}</div>
+          <div style="display:flex;gap:.75rem;justify-content:center;">
+            <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button>
+            <button class="btn btn-primary" id="m3next">미션 4 → 🤝</button>
+          </div>
+        </div>`;
+      const nb3=document.getElementById('m3next'); if(nb3) nb3.onclick=()=>tryAdvanceMission(ti,4);
+    },50);
+  },700);
+}
+
+// ══ MISSION 2: 거주지 짓기 ══
+const M2_CORRECT = ['tell','us','how','to','build','a shelter'];
+
+function renderMission2(teamNum) {
+  const isl = ISLANDS[teamNum-1];
+  const ti = teamNum-1;
+  const m2data = MISSION2_CHOICES[ti];
+  if(!state.missionStep['m2_'+ti]) state.missionStep['m2_'+ti]=1;
+  if(!state.m2pieces) state.m2pieces={};
+  if(!state.m2pieces[ti]) state.m2pieces[ti]=[...M2_CORRECT].sort(()=>Math.random()-.5);
+  if(!state.m2dropped) state.m2dropped={};
+  if(!state.m2dropped[ti]) state.m2dropped[ti]=[];
+  const step = state.missionStep['m2_'+ti];
+
+  const main = document.getElementById('missionMain');
+  main.innerHTML = `
+    <div class="mission-header">
+      <div class="mission-num">MISSION 02 / 07 · ⭐ 문장 조각 배열</div>
+      <div class="mission-title">🏕️ 거주지 짓기</div>
+    </div>
+    <div class="mission-situation">
+      It's getting dark and the temperature is dropping fast.<br>
+      <strong>You need to build a shelter before nightfall.</strong><br>
+      Ask your AI for help!
+      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">날이 어두워지고 기온이 떨어지고 있다. 밤이 오기 전에 거처를 만들어야 한다. AI에게 도움을 요청하라!</div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="step ${step===1?'active':''}" id="m2step1-${ti}">
+      <div class="step-label">STEP 1 · 조각을 올바른 순서로 배열하세요</div>
+      <div class="wh-prompt" style="margin-bottom:.75rem;">
+        💬 <span style="color:var(--text3);font-size:.8rem;">"___ ___ ___ ___ ___ ___"</span><br>
+        <span style="font-size:.72rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">어떻게 쉼터를 지어야 할지 물어보세요! (how to build)</span>
+      </div>
+      <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:1rem;min-height:56px;margin-bottom:1rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;"
+        id="m2zone-${ti}" ondragover="event.preventDefault()" ondrop="m2Drop(event,${ti})">
+        ${state.m2dropped[ti].length===0
+          ? `<span style="font-size:.72rem;color:var(--text3);">여기에 조각을 끌어다 놓거나 클릭하세요 →</span>`
+          : state.m2dropped[ti].map((w,i)=>`<div class="m2-chip" onclick="m2Remove(${ti},${i})">${w} <span style="font-size:.6rem;opacity:.5;">✕</span></div>`).join('')
+        }
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem;" id="m2pieces-${ti}">
+        ${state.m2pieces[ti].map((p,i)=>`
+          <div class="wh-card" style="min-width:unset;padding:.55rem .9rem;cursor:grab;"
+            draggable="true" ondragstart="m2DragStart(event,'${p}',${ti})"
+            onclick="m2Click('${p}',${ti})" id="m2p-${ti}-${i}"
+            ${state.m2dropped[ti].includes(p)?'style="min-width:unset;padding:.55rem .9rem;cursor:grab;opacity:.3;pointer-events:none;"':''}>
+            <div style="font-family:monospace;font-size:.85rem;">${p}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="display:flex;gap:.75rem;align-items:center;">
+        <button class="btn-ghost" onclick="m2Reset(${ti})">↺ 초기화</button>
+        <button class="btn btn-primary" id="m2check-${ti}" onclick="m2Check(${ti})"
+          style="${state.m2dropped[ti].length===M2_CORRECT.length?'':'opacity:.4;pointer-events:none;'}">확인 →</button>
+      </div>
+      <div class="feedback-box" id="m2fb-${ti}"></div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step ${step===2?'active':''}" id="m2step2-${ti}">
+      <div class="step-label">STEP 2 · AI의 답변을 확인하고 선택하세요</div>
+      <div class="mission-situation" style="margin-bottom:1.25rem;">
+        🤖 AI: <em>"Here are 3 shelter options for ${isl.name}. Choose the safest one!"</em>
+      </div>
+      <div class="choices" id="m2choices-${ti}">
+        ${state.items[ti].includes('map') ? '<div class="feedback-box show feedback-correct" style="margin-bottom:.75rem;">🗺️ 지도 효과: 가장 안전한 선택지는 <strong>A번</strong>이에요!</div>' : ''}
+        ${m2data.choices.map((ch,idx)=>`
+          <button class="choice-btn" onclick="m2Pick(${ti},${idx})" ${state.items[ti].includes('map')&&idx===0?'style="border-color:var(--success);background:rgba(34,197,94,.06);"':''}>
+            <div class="choice-letter">${String.fromCharCode(65+idx)}</div>
+            <div class="choice-text">
+              <div class="choice-main">${ch.text}${state.items[ti].includes('map')&&idx===0?' ⭐':''}</div>
+              <div class="choice-sub">${ch.sub}</div>
+            </div>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step ${step===3?'active':''}" id="m2step3-${ti}">
+      <div id="m2result-${ti}"></div>
+    </div>
+  `;
+  if(step===3 && state.m2result && state.m2result[ti] && state.teamMission[ti]===2) {
+    setTimeout(() => m2RestoreResult(ti), 50);
+  }
+}
+
+let m2Drag = null;
+function m2DragStart(e,w,ti){m2Drag=w;e.dataTransfer.setData('text',w);}
+function m2Drop(e,ti){e.preventDefault();if(m2Drag){m2Add(m2Drag,ti);m2Drag=null;}}
+function m2Click(w,ti){m2Add(w,ti);}
+
+function m2Add(w,ti){
+  if(!state.m2dropped[ti]) state.m2dropped[ti]=[];
+  if(state.m2dropped[ti].includes(w)) return;
+  state.m2dropped[ti].push(w);
+  m2UpdateUI(ti);
+}
+
+function m2Remove(ti,idx){
+  state.m2dropped[ti].splice(idx,1);
+  m2UpdateUI(ti);
+}
+
+function m2Reset(ti){
+  state.m2dropped[ti]=[];
+  m2UpdateUI(ti);
+}
+
+function m2UpdateUI(ti){
+  const zone = document.getElementById('m2zone-'+ti);
+  if(zone){
+    if(state.m2dropped[ti].length===0){
+      zone.innerHTML='<span style="font-size:.72rem;color:var(--text3);">여기에 조각을 끌어다 놓거나 클릭하세요 →</span>';
+    } else {
+      zone.innerHTML=state.m2dropped[ti].map((w,i)=>'<div class="m2-chip" onclick="m2Remove('+ti+','+i+')">'+w+' <span style="font-size:.6rem;opacity:.5;">✕</span></div>').join('');
+    }
+  }
+  const pieces = document.querySelectorAll('#m2pieces-'+ti+' .wh-card');
+  pieces.forEach(function(p){
+    const word = p.querySelector('div').textContent;
+    const used = state.m2dropped[ti].includes(word);
+    p.style.opacity = used ? '0.3' : '1';
+    p.style.pointerEvents = used ? 'none' : 'auto';
+    p.style.cursor = used ? 'default' : 'grab';
+  });
+  const btn = document.getElementById('m2check-'+ti);
+  if(btn){
+    const ready = state.m2dropped[ti].length === M2_CORRECT.length;
+    btn.style.opacity = ready ? '1' : '0.4';
+    btn.style.pointerEvents = ready ? 'auto' : 'none';
+  }
+}
+
+function m2Check(ti){
+  const ok = M2_CORRECT.every((w,i)=>state.m2dropped[ti][i]===w);
+  const fb = document.getElementById(`m2fb-${ti}`);
+  fb.classList.add('show');
+  if(ok){
+    fb.className='feedback-box show feedback-correct';
+    fb.innerHTML=`✅ 정답! <strong>"tell us how to build a shelter"</strong><br><span style="font-size:.78rem;color:var(--text2)">이제 AI가 선택지를 알려줬어요. 가장 안전한 거처를 고르세요!</span>`;
+    setTimeout(()=>{state.missionStep['m2_'+ti]=2;renderMission2(ti+1);},1500);
+  } else {
+    fb.className='feedback-box show feedback-wrong';
+    fb.innerHTML=`❌ 순서가 틀렸어요!<br><span style="font-size:.78rem;color:var(--text2)">힌트: "tell us ___ to ___ a shelter" 형태예요.</span>`;
+    setTimeout(()=>{fb.classList.remove('show');},2000);
+  }
+}
+
+function m2Pick(ti,idx){
+  const ch = MISSION2_CHOICES[ti].choices[idx];
+  document.querySelectorAll(`#m2choices-${ti} .choice-btn`).forEach((b,i)=>{if(i===idx)b.classList.add('chosen');b.disabled=true;});
+  setTimeout(()=>{
+    const m2coins = applyCoins(ti, ch.coins);
+    state.coins[ti]+=m2coins;
+    if(ch.item) { if(!Array.isArray(state.items[ti])) state.items[ti]=[]; state.items[ti].push(ch.item); }
+    state.m2result = state.m2result || {};
+    state.m2result[ti] = ch;
+    state.missionStep['m2_'+ti]=3;
+    fbSaveState();
+    renderMission2(ti+1);
+    renderSidebar(ti+1);
+    setTimeout(()=>{
+      const rc=document.getElementById(`m2result-${ti}`);
+      if(!rc) return;
+      const emoji=ch.coins>=2?'🏕️':ch.coins===1?'😊':'😰';
+      const title=ch.coins>=2?'SHELTER BUILT!':ch.coins===1?'NOT BAD!':'DANGEROUS!';
+      const cc=ch.coins>0?'positive':ch.coins===0?'neutral':'negative';
+      rc.innerHTML=`
+        <div class="result-box">
+          <span class="result-emoji">${emoji}</span>
+          <div class="result-title">${title}</div>
+          <div class="result-coin ${cc}">${ch.coins>0?'+'+ch.coins:ch.coins} 🪙</div>
+          ${ch.item?'<div class="result-item">'+ITEMS[ch.item].emoji+' '+ITEMS[ch.item].name+' 획득!':''}
+          <div class="result-desc"><strong>${ch.text}</strong><br>
+            ${ch.coins>=2?'안전하고 튼튼한 거처 완성! 오늘 밤은 살아남을 수 있어요. 💪'
+              :ch.coins===1?'그럭저럭 지낼 만한 거처예요. 하지만 더 좋은 방법이 있었어요.'
+              :'위험한 선택이었어요! 밤새 고생했습니다. 😰'}
+          </div>
+          <div style="display:flex;gap:.75rem;justify-content:center;">
+            <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button>
+            <button class="btn btn-primary" id="m2next">미션 3 → 🍖</button>
+          </div>
+        </div>`;
+      const nb=document.getElementById('m2next'); if(nb) nb.onclick=()=>tryAdvanceMission(ti,3);
+    },50);
+  },600);
+}
+
+function renderTeamSelector(activeTeam) {
+  const c = document.getElementById('teamSelector');
+  if(myRole !== 'teacher') {
+    // 학생은 자기 섬만 표시, 전환 불가
+    const isl = ISLANDS[activeTeam-1];
+    c.innerHTML = `<span class="ts-label" style="color:${isl.color};font-size:.85rem;">${isl.emoji} ${isl.name}</span>`;
+    return;
+  }
+  c.innerHTML = '<span class="ts-label">모둠 선택:</span>';
+  ISLANDS.forEach((isl,i) => {
+    const btn = document.createElement('button');
+    btn.className = 'ts-btn' + (i+1===activeTeam?' active':'');
+    btn.style.setProperty('--btn-color', isl.color);
+    btn.textContent = `${isl.emoji} ${isl.name}`;
+    btn.onclick = () => { state.currentTeam=i; renderTeamSelector(i+1); renderSidebar(i+1); initMission(i+1, state.teamMission[i]); };
+    c.appendChild(btn);
+  });
+}
+
+function renderSidebar(teamNum) {
+  const isl = ISLANDS[teamNum-1];
+  document.getElementById('sideEmoji').textContent = isl.emoji;
+  document.getElementById('sideName').textContent = isl.name;
+  document.getElementById('sideCrisis').textContent = '⚠️ '+isl.crisis;
+  document.getElementById('sideIsland').style.borderColor = isl.color;
+  document.getElementById('sideCoins').textContent = state.coins[teamNum-1];
+  // items
+  const itemsEl = document.getElementById('sideItems');
+  const myItems = state.items[teamNum-1] || [];
+  if(myItems.length===0) {
+    itemsEl.innerHTML = '<span style="font-size:.7rem;color:var(--text3)">없음</span>';
+  } else {
+    itemsEl.innerHTML = myItems.map(k=>`<span class="item-chip">${ITEMS[k].emoji} ${ITEMS[k].name}</span>`).join('');
+  }
+  // HUD 업데이트
+  updateHUD(teamNum);
+  // mission list
+  const sml = document.getElementById('smlList');
+  const teamMission = state.teamMission[teamNum-1];
+  sml.innerHTML = MISSIONS.map(m=>`
+    <div class="sml-item ${m.id===teamMission?'current':typeof m.id==='number'&&m.id<teamMission?'done':''}">
+      <span class="sml-emoji">${m.emoji}</span>${m.name}
+    </div>
+  `).join('');
+}
+
+// ══ MISSION 1: 위치 파악 ══
+function renderMission1(teamNum) {
+  const isl = ISLANDS[teamNum-1];
+  const ti = teamNum-1;
+  if(!state.missionStep[ti]) state.missionStep[ti] = 1;
+
+  const main = document.getElementById('missionMain');
+  main.innerHTML = `
+    <div class="mission-header">
+      <div class="mission-num">MISSION 01 / 07 · ⭐ 의문사 카드 선택</div>
+      <div class="mission-title">🧭 위치 파악</div>
+    </div>
+    <div class="mission-situation">
+      You just woke up on a strange island. You have no idea where you are.<br>
+      <strong>The only thing you have in your pocket is your AI chatbot device.</strong><br>
+      Ask your AI for help!
+      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">낯선 섬에서 눈을 떴다. 어디인지 전혀 모른다. 주머니에는 AI 기기 하나뿐. AI에게 도움을 요청하라!</div>
+    </div>
+
+    <!-- STEP 1: 의문사 선택 -->
+    <div class="step ${state.missionStep[ti]===1?'active':''}" id="step1-${ti}">
+      <div class="step-label">STEP 1 · 올바른 의문사를 선택하세요</div>
+      <div class="wh-prompt">
+        💬 "I don't know <span class="blank" id="blank-${ti}">___</span> to go. Help me!"<br>
+        <span style="font-size:.72rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">어디로 가야 할지 모르겠어요! 도와주세요!</span>
+      </div>
+      <div class="wh-cards" id="whCards-${ti}">
+        ${['what','where','how','who'].map(w=>`
+          <div class="wh-card" onclick="selectWh(${ti},'${w}')">
+            <div class="wh-word">${w.toUpperCase()}</div>
+            <div class="wh-kr">${{what:'무엇을',where:'어디서/어디로',how:'어떻게',who:'누구를'}[w]}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="feedback-box" id="feedback1-${ti}"></div>
+    </div>
+
+    <!-- STEP 2: 선택지 -->
+    <div class="step ${state.missionStep[ti]===2?'active':''}" id="step2-${ti}">
+      <div class="step-label">STEP 2 · AI의 답변을 확인하고 선택하세요</div>
+      <div class="mission-situation" style="margin-bottom:1.25rem;">
+        🤖 AI: <em>"There are 3 options. Choose wisely — your survival depends on it!"</em>
+      </div>
+      <div class="choices" id="choices-${ti}">
+        ${isl.choices.map((ch,idx)=>`
+          <button class="choice-btn" onclick="selectChoice(${ti},${idx})">
+            <div class="choice-letter">${String.fromCharCode(65+idx)}</div>
+            <div class="choice-text">
+              <div class="choice-main">${ch.text}</div>
+              <div class="choice-sub">${ch.sub}</div>
+            </div>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- STEP 3: 결과 -->
+    <div class="step ${state.missionStep[ti]===3?'active':''}" id="step3-${ti}">
+      <div id="resultContent-${ti}"></div>
+    </div>
+  `;
+  if(state.missionStep[ti]===3 && state.m1result && state.m1result[ti] && state.teamMission[ti]===1) {
+    setTimeout(() => renderResult(ti, state.m1result[ti]), 50);
+  }
+}
+
+function selectWh(ti, word) {
+  const correct = 'where';
+  const cards = document.querySelectorAll(`#whCards-${ti} .wh-card`);
+  const blank = document.getElementById(`blank-${ti}`);
+  const fb = document.getElementById(`feedback1-${ti}`);
+
+  cards.forEach((c,i) => {
+    const w = ['what','where','how','who'][i];
+    if(w===word) {
+      if(word===correct) { c.classList.add('correct'); blank.textContent=word; blank.style.background='rgba(34,197,94,.15)'; blank.style.borderColor='var(--success)'; blank.style.color='var(--success)'; }
+      else c.classList.add('wrong');
+    }
+  });
+
+  fb.classList.add('show');
+  if(word===correct) {
+    fb.className='feedback-box show feedback-correct';
+    fb.innerHTML=`✅ 정답! <strong>WHERE to go</strong> — "어디로 가야 할지" 맞아요!<br><span style="font-size:.78rem;color:var(--text2)">이제 AI가 방향을 알려줬어요. 어디로 갈지 선택하세요!</span>`;
+    setTimeout(()=>{ state.missionStep[ti]=2; renderMission1(ti+1); },1500);
+  } else {
+    fb.className='feedback-box show feedback-wrong';
+    fb.innerHTML=`❌ <strong>${word.toUpperCase()}</strong>는 이 상황에 맞지 않아요.<br><span style="font-size:.78rem;color:var(--text2)">"어디로 가야 할지"에 맞는 의문사를 다시 골라보세요!</span>`;
+    setTimeout(()=>{ fb.classList.remove('show'); cards.forEach(c=>c.classList.remove('wrong')); }, 1500);
+  }
+}
+
+function selectChoice(ti, idx) {
+  const isl = ISLANDS[ti];
+  const choice = isl.choices[idx];
+  state.missionChoice[ti] = idx;
+
+  // disable buttons
+  document.querySelectorAll(`#choices-${ti} .choice-btn`).forEach((b,i)=>{
+    if(i===idx) b.classList.add('chosen');
+    b.disabled=true;
+  });
+
+  setTimeout(()=>{
+    const m1coins = applyCoins(ti, choice.coins);
+    state.coins[ti] += m1coins;
+    if(choice.item) { if(!Array.isArray(state.items[ti])) state.items[ti]=[]; state.items[ti].push(choice.item); }
+    // 결과 저장 (다른 섬 갔다와도 복원)
+    state.m1result = state.m1result || {};
+    state.m1result[ti] = choice;
+    state.missionStep[ti] = 3;
+    fbSaveState();
+    renderMission1(ti+1);
+    renderSidebar(ti+1);
+    setTimeout(()=>renderResult(ti, choice), 50);
+  }, 600);
+}
+
+function renderResult(ti, choice) {
+  const isPositive = choice.coins > 0;
+  const isNeutral = choice.coins === 0;
+  const emoji = choice.coins >= 2 ? '🎉' : choice.coins === 1 ? '😊' : choice.coins === 0 ? '😐' : '😱';
+  const title = choice.coins >= 2 ? 'GREAT CHOICE!' : choice.coins === 1 ? 'NOT BAD!' : choice.coins === 0 ? 'JUST OKAY...' : 'WRONG MOVE!';
+  const coinClass = isPositive ? 'positive' : isNeutral ? 'neutral' : 'negative';
+  const coinText = choice.coins > 0 ? `+${choice.coins}` : `${choice.coins}`;
+
+  const rc = document.getElementById(`resultContent-${ti}`);
+  rc.innerHTML = `
+    <div class="result-box">
+      <span class="result-emoji">${emoji}</span>
+      <div class="result-title">${title}</div>
+      <div class="result-coin ${coinClass}">${coinText} 🪙</div>
+      ${choice.item ? '<div class="result-item">'+ITEMS[choice.item].emoji+' '+ITEMS[choice.item].name+' 획득!</div>' : ''}
+      <div class="result-desc">
+        ${choice.coins >= 2
+          ? `<strong>${choice.text}</strong><br>높은 곳에서 섬 전체를 파악했어요! 생존 가능성이 높아졌습니다.${choice.item?'<br>🗺️ 지도도 발견했어요! 다음 미션에서 유용하게 쓸 수 있어요.':''}`
+          : choice.coins === 1
+          ? `<strong>${choice.text}</strong><br>나쁘지 않은 선택이에요. 하지만 더 좋은 방법이 있었어요.`
+          : `<strong>${choice.text}</strong><br>위험한 방향이었어요! 소중한 시간을 낭비했습니다. 😰`}
+      </div>
+      <div style="display:flex;gap:.75rem;justify-content:center;">
+        <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button>
+        <button class="btn btn-primary" id="m1next">미션 2 → 🏕️</button>
+      </div>
+    </div>
+  `;
+  state.missionStep[ti] = 3;
+  setTimeout(()=>{ const b=document.getElementById('m1next'); if(b) b.onclick=()=>tryAdvanceMission(ti,2); },50);
+}
+
+
+// ══ MOON EVENT: 달 기지 산성비 타자 게임 ══
+const MOON_PHRASES = [
+  { text:'what to do', why:false },
+  { text:'where to go', why:false },
+  { text:'how to survive', why:false },
+  { text:'who to trust', why:false },
+  { text:'when to leave', why:false },
+  { text:'what to eat', why:false },
+  { text:'where to find', why:false },
+  { text:'how to build', why:false },
+  { text:'who to contact', why:false },
+  { text:'when to signal', why:false },
+  { text:'what to bring', why:false },
+  { text:'where to hide', why:false },
+  { text:'how to escape', why:false },
+  { text:'who to meet', why:false },
+  { text:'when to run', why:false },
+  { text:'why to go', why:true },
+  { text:'why to stay', why:true },
+  { text:'why to leave', why:true },
+  { text:'why to hide', why:true },
+];
+
+let moonState = null;
+
+function renderMoonEvent(teamNum) {
+  const ti = teamNum - 1;
+  const main = document.getElementById('missionMain');
+
+  // 이미 모든 팀 완료된 경우 최종 결과 표시
+  if(state.moonAllDone) {
+    const scores = state.moonScores || {};
+    const total = Object.values(scores).reduce((a,b)=>a+b,0);
+    const target = Math.floor(12 * 6 / 2);
+    main.innerHTML = moonFinalHTML(ti, total, target, state.moonCleared);
+    setTimeout(()=>{
+      const nb = document.getElementById('moonFinalNext');
+      if(nb) nb.onclick = () => initMission(ti+1, 6);
+      renderSidebar(ti+1);
+    }, 50);
+    return;
+  }
+
+  // 이미 완료된 경우 버퍼링 페이지
+  if(state.moonResult && state.moonResult[ti]) {
+    const score = state.moonScores && state.moonScores[ti] !== undefined ? state.moonScores[ti] : 0;
+    main.innerHTML = moonBufferingHTML(ti, score);
+    return;
+  }
+
+  main.innerHTML = `
+    <div class="mission-header">
+      <div class="mission-num">🌑 달 기지 이벤트 · 전체 참여!</div>
+      <div class="mission-title">☄️ 산성비 타자 게임</div>
+    </div>
+    <div class="mission-situation">
+      A meteor shower is incoming! Type the correct phrases to destroy them.<br>
+      <strong>Typing WHY will damage your HP! Watch out!</strong>
+      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
+        운석이 쏟아진다! 올바른 의문사+to부정사 구문을 입력해서 운석을 격파하라.<br>
+        <strong style="color:var(--danger);">WHY가 포함된 구문을 입력하면 HP가 깎인다!</strong>
+      </div>
+    </div>
+    <div class="moon-score-row">
+      <span>격파:</span><span class="moon-score-val accent" id="moonScore">0</span>
+      <span style="margin-left:.5rem;">HP:</span>
+      <span class="moon-score-val" id="moonHpNum">5</span>
+      <span style="margin-left:.5rem;">남은 운석:</span>
+      <span class="moon-score-val" id="moonLeft">0</span>
+    </div>
+    <div class="moon-hp-bar"><div class="moon-hp-fill" id="moonHpBar" style="width:100%"></div></div>
+    <div class="moon-screen" id="moonScreen">
+      <div class="moon-stars"></div>
+    </div>
+    <div class="moon-input-row">
+      <input class="moon-input" id="moonInput" placeholder="의문사+to부정사 입력 후 Enter..." autocomplete="off" spellcheck="false"/>
+      <button class="btn btn-primary" id="moonStartBtn" onclick="moonStart(${ti})" style="white-space:nowrap;">▶ 시작!</button>
+    </div>
+    <div style="font-size:.7rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
+      예: what to do / where to go / how to survive / who to trust (띄어쓰기 포함해서 입력)
+    </div>
+  `;
+  document.getElementById('moonInput').addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') moonSubmit(ti);
+  });
+}
+
+function moonStart(ti) {
+  document.getElementById('moonStartBtn').style.display = 'none';
+  document.getElementById('moonInput').focus();
+
+  // 게임 상태 초기화
+  if(!state.moonScores) state.moonScores = {};
+  moonState = {
+    ti,
+    hp: 5,
+    score: 0,
+    meteors: [],
+    active: true,
+    intervalId: null,
+    spawnCount: 0,
+    maxSpawn: 12,
+  };
+
+  // 운석 스폰
+  moonState.intervalId = setInterval(() => {
+    if(!moonState.active) return;
+    if(moonState.spawnCount >= moonState.maxSpawn) {
+      clearInterval(moonState.intervalId);
+      // 모든 운석이 떨어질 때까지 기다림
+      setTimeout(() => moonCheckEnd(ti), 3000);
+      return;
+    }
+    moonSpawnMeteor(ti);
+    moonState.spawnCount++;
+    document.getElementById('moonLeft').textContent = moonState.meteors.filter(m => !m.destroyed).length;
+  }, 1200);
+}
+
+function moonSpawnMeteor(ti) {
+  const screen = document.getElementById('moonScreen');
+  if(!screen) return;
+
+  // why 구문 20% 확률
+  const pool = Math.random() < 0.2
+    ? MOON_PHRASES.filter(p => p.why)
+    : MOON_PHRASES.filter(p => !p.why);
+  const phrase = pool[Math.floor(Math.random() * pool.length)];
+
+  const id = 'meteor-' + Date.now() + Math.random();
+  const div = document.createElement('div');
+  div.className = 'meteor';
+  div.id = id;
+  div.textContent = phrase.text;
+
+  const leftPct = 5 + Math.random() * 80;
+  div.style.left = leftPct + '%';
+  div.style.top = '0px';
+  screen.appendChild(div);
+
+  const meteorObj = { id, text: phrase.text, why: phrase.why, el: div, destroyed: false };
+  moonState.meteors.push(meteorObj);
+
+  // 떨어지는 애니메이션
+  const screenH = screen.offsetHeight || 400;
+  const duration = 13000 + Math.random() * 5000;
+  const start = Date.now();
+
+  function fall() {
+    if(!moonState.active || meteorObj.destroyed) return;
+    const elapsed = Date.now() - start;
+    const progress = elapsed / duration;
+    if(progress >= 1) {
+      // 바닥 도달 → HP 감소 (why가 아닌 것만)
+      if(!phrase.why) {
+        moonDamage(ti, '운석이 바닥에 떨어졌다!');
+      }
+      div.remove();
+      meteorObj.destroyed = true;
+      moonUpdateLeft();
+      return;
+    }
+    div.style.top = (progress * (screenH - 40)) + 'px';
+    requestAnimationFrame(fall);
+  }
+  requestAnimationFrame(fall);
+}
+
+function moonSubmit(ti) {
+  const input = document.getElementById('moonInput');
+  if(!input || !moonState || !moonState.active) return;
+  const val = input.value.trim().toLowerCase();
+  if(!val) return;
+
+  // why 체크
+  if(val.startsWith('why')) {
+    moonDamage(ti, '⚠️ WHY 입력! HP -1');
+    input.classList.add('miss');
+    setTimeout(() => input.classList.remove('miss'), 500);
+    input.value = '';
+    return;
+  }
+
+  // 운석 매칭
+  const match = moonState.meteors.find(m => !m.destroyed && m.text === val);
+  if(match) {
+    match.destroyed = true;
+    match.el.classList.add('destroyed');
+    setTimeout(() => match.el.remove(), 200);
+    moonState.score++;
+    document.getElementById('moonScore').textContent = moonState.score;
+    input.classList.add('hit');
+    setTimeout(() => input.classList.remove('hit'), 400);
+  } else {
+    input.classList.add('miss');
+    setTimeout(() => input.classList.remove('miss'), 400);
+  }
+  input.value = '';
+  moonUpdateLeft();
+}
+
+function moonDamage(ti, msg) {
+  if(!moonState) return;
+  moonState.hp = Math.max(0, moonState.hp - 1);
+  const hpNum = document.getElementById('moonHpNum');
+  const hpBar = document.getElementById('moonHpBar');
+  if(hpNum) hpNum.textContent = moonState.hp;
+  if(hpBar) {
+    hpBar.style.width = (moonState.hp / 5 * 100) + '%';
+    if(moonState.hp <= 2) hpBar.classList.add('danger');
+  }
+  if(moonState.hp <= 0) {
+    moonEnd(ti, false);
+  }
+}
+
+function moonUpdateLeft() {
+  const el = document.getElementById('moonLeft');
+  if(el && moonState) el.textContent = moonState.meteors.filter(m => !m.destroyed).length;
+}
+
+function moonCheckEnd(ti) {
+  if(!moonState || !moonState.active) return;
+  // 남은 운석 모두 바닥 도달 기다린 후 종료
+  const remaining = moonState.meteors.filter(m => !m.destroyed).length;
+  if(remaining === 0 || moonState.spawnCount >= moonState.maxSpawn) {
+    moonEnd(ti, moonState.hp > 0);
+  }
+}
+
+function moonEnd(ti, survived) {
+  if(!moonState || !moonState.active) return;
+  moonState.active = false;
+  clearInterval(moonState.intervalId);
+
+  const score = moonState.score;
+  const hp = moonState.hp;
+  // 코인은 합산 결과로만 처리
+  const coins = 0;
+  const penalty = 0;
+
+  state.moonResult = state.moonResult || {};
+  state.moonResult[ti] = { score, hp, coins, survived };
+  state.moonScores = state.moonScores || {};
+  state.moonScores[ti] = score;
+
+  // 달 기지 완료 기록 (게이트용)
+  state.completedMission = state.completedMission || [0,0,0,0,0,0];
+  state.completedMission[ti] = Math.max(state.completedMission[ti] || 0, 5);
+  checkGlobalGate();
+
+  renderSidebar(ti+1);
+
+  state.moonResult = state.moonResult || {};
+  state.moonResult[ti] = { score, hp, coins: 0, survived };
+
+  const main = document.getElementById('missionMain');
+  if(main) {
+    main.innerHTML = moonBufferingHTML(ti, score);
+    // 점수 Firebase에 저장 후 폴링 시작
+    fbSaveState();
+    moonPollResult(ti);
+  }
+}
+
+function moonResultHTML(ti, result) {
+  const { score, hp, coins, survived } = result;
+  const emoji = survived ? (score >= 15 ? '🎉' : '😮‍💨') : '💥';
+  const title = survived ? (score >= 15 ? 'METEOR CLEARED!' : 'SURVIVED!') : 'DESTROYED!';
+  return `
+    <div class="mission-header">
+      <div class="mission-num">🌑 달 기지 이벤트 · 결과</div>
+      <div class="mission-title">☄️ 산성비 타자 게임</div>
+    </div>
+    <div class="result-box">
+      <span class="result-emoji">${emoji}</span>
+      <div class="result-title">${title}</div>
+      <div style="display:flex;gap:1.5rem;justify-content:center;margin:.75rem 0;flex-wrap:wrap;">
+        <div style="text-align:center;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--accent2);">${score}</div>
+          <div style="font-size:.65rem;color:var(--text3);text-transform:uppercase;">격파</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:${hp>2?'var(--success)':'var(--danger)'};">${hp}/5</div>
+          <div style="font-size:.65rem;color:var(--text3);text-transform:uppercase;">HP 잔여</div>
+        </div>
+      </div>
+      <div class="result-coin ${cc}">${coins>=0?'+'+coins:coins} 🪙</div>
+      <div class="result-desc" style="font-family:'Noto Sans KR',sans-serif;">
+        ${score>=15?'완벽한 방어! 모든 운석을 격파했어요! 🎉'
+          :score>=10?'잘 막았어요! 꽤 많은 운석을 격파했네요.'
+          :score>=5?'그럭저럭 버텼어요. 다음엔 더 빠르게!'
+          :'운석에 많이 당했어요. 하지만 살아남았다면 충분해요!'}
+        ${!survived?'<br><span style="color:var(--danger);">HP가 모두 소진됐어요! 코인 -1 😢</span>':''}
+      </div>
+      <div style="display:flex;gap:.75rem;justify-content:center;margin-top:1.25rem;flex-wrap:wrap;">
+        <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button>
+        <button class="btn-secondary" id="moonSummaryBtn">📊 전체 합산 보기</button>
+        <button class="btn btn-primary" id="moonNext">미션 5 → ⚡</button>
+      </div>
+    </div>
+  `;
+}
+
+
+
+function moonBufferingHTML(ti, score) {
+  const completed = Object.keys(state.moonScores||{}).length;
+  return `
+    <div class="mission-header">
+      <div class="mission-num">🌑 달 기지 이벤트 · 결과 산정 중</div>
+      <div class="mission-title">⏳ 다른 모둠 참여 대기 중...</div>
+    </div>
+    <div class="result-box">
+      <span class="result-emoji" style="animation:pulseGlow 1.5s infinite;">🛸</span>
+      <div class="result-title">CALCULATING...</div>
+      <div style="font-size:.85rem;color:var(--accent2);margin:.5rem 0;font-family:'Bebas Neue',sans-serif;">${score}개 격파</div>
+      <div style="background:var(--surface);border-radius:8px;padding:1rem;margin:1rem 0;">
+        <div style="font-size:.72rem;color:var(--text3);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.1em;">모둠 참여 현황</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;">
+          ${ISLANDS.map((isl,i)=>{
+            const done = state.moonScores && state.moonScores[i] !== undefined;
+            return '<div style="background:var(--bg);border:1px solid '+(done?isl.color:'var(--border)')+';border-radius:6px;padding:.4rem;text-align:center;">'
+              +'<div style="font-size:1rem;">'+isl.emoji+'</div>'
+              +'<div style="font-size:.6rem;color:'+(done?isl.color:'var(--text3)')+';">'+(done?state.moonScores[i]+'개':'대기중')+'</div>'
+              +'</div>';
+          }).join('')}
+        </div>
+      </div>
+      <div style="font-size:.75rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">
+        ${completed}/6 모둠 완료 — 모두 완료되면 결과가 자동으로 표시돼요!
+      </div>
+    </div>
+  `;
+}
+
+function moonPollResult(ti) {
+  // 기존 인터벌 정리
+  if(moonPollIntervalId) {
+    clearInterval(moonPollIntervalId);
+    moonPollIntervalId = null;
+  }
+  moonPollIntervalId = setInterval(() => {
+    const completed = Object.keys(state.moonScores||{}).length;
+    if(completed >= 6) {
+      clearInterval(moonPollIntervalId);
+      moonPollIntervalId = null;
+      // state만 업데이트 (화면은 건드리지 않음)
+      if(!state.moonBonusGiven) {
+        state.moonBonusGiven = true;
+        const scores = state.moonScores || {};
+        const total = Object.values(scores).reduce((a,b)=>a+b,0);
+        const target = Math.floor(12 * 6 / 2);
+        const cleared = total >= target;
+        if(cleared) { for(let i=0;i<6;i++) state.coins[i]+=3; }
+        else { for(let i=0;i<6;i++) state.coins[i]-=3; }
+        state.moonAllDone = true;
+        state.moonCleared = cleared;
+        fbSaveState();
+      }
+      // 현재 화면이 달 기지 버퍼링 페이지인 ti의 화면만 업데이트
+      if(state.currentTeam === ti) {
+        const main = document.getElementById('missionMain');
+        if(main) {
+          const scores = state.moonScores || {};
+          const total = Object.values(scores).reduce((a,b)=>a+b,0);
+          const target = Math.floor(12 * 6 / 2);
+          main.innerHTML = moonFinalHTML(ti, total, target, state.moonCleared);
+          setTimeout(()=>{
+            const nb = document.getElementById('moonFinalNext');
+            if(nb) nb.onclick = () => initMission(ti+1, 6);
+            renderSidebar(ti+1);
+          }, 50);
+        }
+      }
+    }
+    // 버퍼링 중엔 화면 건드리지 않음 (renderMoonEvent가 알아서 처리)
+  }, 2000);
+}
+
+function moonApplyFinalResult(ti) {
+  const scores = state.moonScores || {};
+  const total = Object.values(scores).reduce((a,b)=>a+b,0);
+  const maxSpawnPerTeam = 12;
+  const totalMeteors = maxSpawnPerTeam * 6; // 72개
+  const target = Math.floor(totalMeteors / 2); // 절반 = 36개
+  const cleared = total >= target;
+
+  if(!state.moonBonusGiven) {
+    state.moonBonusGiven = true;
+    if(cleared) { for(let i=0;i<6;i++) state.coins[i]+=3; }
+    else { for(let i=0;i<6;i++) state.coins[i]-=3; }
+    renderSidebar(ti+1);
+  }
+
+  const main = document.getElementById('missionMain');
+  if(main) {
+    main.innerHTML = moonFinalHTML(ti, total, target, cleared);
+    setTimeout(()=>{
+      const nb = document.getElementById('moonFinalNext');
+      if(nb) nb.onclick = () => initMission(ti+1, 6);
+    }, 50);
+  }
+}
+
+function moonFinalHTML(ti, total, target, cleared) {
+  return `
+    <div class="mission-header">
+      <div class="mission-num">🌑 달 기지 이벤트 · 최종 결과</div>
+      <div class="mission-title">${cleared?'☄️ METEORS DEFEATED!':'💥 SHIELD BROKEN!'}</div>
+    </div>
+    <div class="result-box">
+      <span class="result-emoji">${cleared?'🎉':'😢'}</span>
+      <div class="result-title">${cleared?'MISSION CLEARED!':'NOT ENOUGH...'}</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--accent2);margin:.5rem 0;">${total} / ${target}</div>
+      <div style="font-size:.72rem;color:var(--text3);margin-bottom:1rem;">전체 격파 수 (목표: ${target}개 이상)</div>
+      <div class="result-coin ${cleared?'positive':'negative'}">${cleared?'+3':'-3'} 🪙 전체 지급</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:1rem 0;">
+        ${ISLANDS.map((isl,i)=>{
+          const s = state.moonScores && state.moonScores[i];
+          return '<div style="background:var(--surface);border:1px solid '+isl.color+'55;border-radius:6px;padding:.5rem;text-align:center;">'
+            +'<div>'+isl.emoji+'</div>'
+            +'<div style="font-family:Bebas Neue,sans-serif;font-size:1.3rem;color:'+isl.color+';">'+(s||0)+'</div>'
+            +'<div style="font-size:.6rem;color:var(--text3);">격파</div>'
+            +'</div>';
+        }).join('')}
+      </div>
+      <div style="font-size:.78rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:1rem;">
+        ${cleared?'🎉 운석을 절반 이상 막았어요! 모든 모둠 코인 +3!':'😢 운석을 절반도 못 막았어요. 모든 모둠 코인 -3...'}
+      </div>
+      <div style="display:flex;gap:.75rem;justify-content:center;">
+        <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button>
+        <button class="btn btn-primary" id="moonFinalNext">미션 5 → ⚡</button>
+      </div>
+    </div>
+  `;
+}
+
+function moonShowSummary(ti) {
+  const scores = state.moonScores || {};
+  const total = Object.values(scores).reduce((a,b) => a+b, 0);
+  const target = Math.floor(12 * 6 / 2); // 총 운석의 절반 = 36개
+  const completed = Object.keys(scores).length;
+  const cleared = total >= target;
+
+  const main = document.getElementById('missionMain');
+  if(!main) return;
+  main.innerHTML = `
+    <div class="mission-header">
+      <div class="mission-num">🌑 달 기지 이벤트 · 전체 합산</div>
+      <div class="mission-title">☄️ TEAM TOTAL SCORE</div>
+    </div>
+    <div class="result-box">
+      <span class="result-emoji">${cleared ? '🎉' : completed < 6 ? '⏳' : '😢'}</span>
+      <div class="result-title">${cleared ? 'MISSION CLEARED!' : completed < 6 ? 'WAITING...' : 'NOT ENOUGH...'}</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--accent2);margin:.5rem 0;">${total} / ${target}</div>
+      <div style="font-size:.75rem;color:var(--text3);margin-bottom:1.25rem;">전체 격파 수 (목표: ${target}개)</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1.25rem;">
+        ${ISLANDS.map((isl,i) => {
+          const s = scores[i];
+          return '<div style="background:var(--surface);border:1px solid '+(s!==undefined?isl.color+'55':'var(--border)')+';border-radius:6px;padding:.5rem;text-align:center;">'
+            +'<div style="font-size:1.2rem;">'+isl.emoji+'</div>'
+            +'<div style="font-size:.65rem;color:var(--text3);margin:.2rem 0;">'+isl.name+'</div>'
+            +'<div style="font-family:Bebas Neue,sans-serif;font-size:1.4rem;color:'+(s!==undefined?isl.color:'var(--text3)')+';">'+(s!==undefined?s:'?')+'</div>'
+            +'</div>';
+        }).join('')}
+      </div>
+      ${cleared ? '<div class="result-coin positive">전체 보너스 +1 🪙 지급!</div>' : ''}
+      <div style="font-size:.78rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin:.75rem 0;">
+        ${completed < 6 ? '아직 '+completed+'/6 모둠만 완료했어요. 나머지 모둠도 플레이해주세요!' : cleared ? '🎉 목표 달성! 모든 모둠 코인 +3!' : '😢 목표 미달... 모든 모둠 코인 -3!'}
+      </div>
+      ${cleared && completed===6 ? '<div id="moonBonusApplied"></div>' : ''}
+      <div style="display:flex;gap:.75rem;justify-content:center;margin-top:1rem;">
+        <button class="btn-ghost" onclick="moonShowSummary('+ti+')">↺ 새로고침</button>
+        <button class="btn btn-primary" id="moonNext2">미션 5 → ⚡</button>
+      </div>
+    </div>
+  `;
+  // moonApplyFinalResult에서 처리
+  setTimeout(() => {
+    const nb2 = document.getElementById('moonNext2');
+    if(nb2) nb2.onclick = () => initMission(ti+1, 6);
+  }, 50);
+}
+
+// 복원 함수들
+function m2RestoreResult(ti) {
+  const ch = state.m2result && state.m2result[ti];
+  if(!ch) return;
+  const rc = document.getElementById(`m2result-${ti}`);
+  if(!rc) return;
+  const emoji=ch.coins>=2?'🏕️':ch.coins===1?'😊':'😰';
+  const title=ch.coins>=2?'SHELTER BUILT!':ch.coins===1?'NOT BAD!':'DANGEROUS!';
+  const cc=ch.coins>0?'positive':ch.coins===0?'neutral':'negative';
+  rc.innerHTML=`
+    <div class="result-box">
+      <span class="result-emoji">${emoji}</span>
+      <div class="result-title">${title}</div>
+      <div class="result-coin ${cc}">${ch.coins>0?'+'+ch.coins:ch.coins} 🪙</div>
+      ${ch.item?'<div class="result-item">'+ITEMS[ch.item].emoji+' '+ITEMS[ch.item].name+' 획득!</div>':''}
+      <div class="result-desc"><strong>${ch.text}</strong><br>
+        ${ch.coins>=2?'안전하고 튼튼한 거처 완성! 오늘 밤은 살아남을 수 있어요. 💪'
+          :ch.coins===1?'그럭저럭 지낼 만한 거처예요. 하지만 더 좋은 방법이 있었어요.'
+          :'위험한 선택이었어요! 밤새 고생했습니다. 😰'}
+      </div>
+      <div style="display:flex;gap:.75rem;justify-content:center;">
+        <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button>
+        <button class="btn btn-primary" id="m2next">미션 3 → 🍖</button>
+      </div>
+    </div>`;
+  setTimeout(()=>{ const nb=document.getElementById('m2next'); if(nb) nb.onclick=()=>tryAdvanceMission(ti,3); },50);
+}
+
+function m3RestoreResult(ti) {
+  const saved = state.m3result && state.m3result[ti];
+  if(!saved) return;
+  const rc = document.getElementById('m3result-'+ti);
+  if(!rc) return;
+  const { base, islandDesc, coins } = saved;
+  const coinClass=coins>0?'positive':coins===0?'neutral':'negative';
+  rc.innerHTML=`
+    <div class="result-box">
+      <span class="result-emoji">${base.emoji}</span>
+      <div class="result-title">${base.title}</div>
+      <div style="font-size:.85rem;color:var(--accent2);margin:.25rem 0 .75rem;font-family:monospace;">${islandDesc}</div>
+      <div class="result-coin ${coinClass}">${coins>0?'+'+coins:coins} 🪙</div>
+      ${saved.roll===5?'<div class="result-item">'+ITEMS['lucky'].emoji+' '+ITEMS['lucky'].name+' 획득!</div>':''}
+      <div class="result-desc">${base.desc}</div>
+      <div style="display:flex;gap:.75rem;justify-content:center;">
+        <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button>
+        <button class="btn btn-primary" id="m3next">미션 4 → 🤝</button>
+      </div>
+    </div>`;
+  setTimeout(()=>{ const nb=document.getElementById('m3next'); if(nb) nb.onclick=()=>tryAdvanceMission(ti,4); },50);
+}
+
+
+// ══ MISSION 5: 위기 대응 ══
+const MISSION5_DATA = [
+  { crisis:'용암', emoji:'🌋', sentence:'The lava is flowing toward us! Make sure to decide where to run before it is too late!', kr:'용암이 흘러온다! 너무 늦기 전에 어디로 달아날지 꼭 결정해야 한다!', key:'where to run', penalty:'용암에 아이템 소멸! 🌋' },
+  { crisis:'북극곰', emoji:'🧊', sentence:'A huge polar bear is right behind us! Make sure to find where to hide before it catches us!', kr:'거대한 북극곰이 바로 뒤에 있다! 잡히기 전에 어디에 숨을지 꼭 찾아야 한다!', key:'where to hide', penalty:'북극곰이 코인 2개 가져감! 🐻' },
+  { crisis:'재규어', emoji:'🌴', sentence:'A jaguar is stalking us through the jungle! Make sure to figure out how to escape right now!', kr:'재규어가 정글 속에서 우리를 노리고 있다! 지금 당장 어떻게 탈출할지 꼭 알아야 한다!', key:'how to escape', penalty:'재규어한테 물려 코인 -2! 🐆' },
+  { crisis:'모래폭풍', emoji:'🏜️', sentence:'A massive sandstorm is heading our way! Make sure to decide where to take shelter before it hits!', kr:'거대한 모래폭풍이 다가오고 있다! 모래폭풍이 치기 전에 어디로 대피할지 꼭 결정해야 한다!', key:'where to take shelter', penalty:'모래폭풍에 아이템 소멸! 🌪️' },
+  { crisis:'상어', emoji:'🌊', sentence:'A great white shark is circling around us! Make sure to know what to do before it attacks!', kr:'흰 상어가 우리 주위를 맴돌고 있다! 공격하기 전에 무엇을 해야 할지 꼭 알아야 한다!', key:'what to do', penalty:'상어한테 코인 -2! 🦈' },
+  { crisis:'티라노사우루스', emoji:'🦕', sentence:'The Tyrannosaurus is charging toward us! Make sure to decide where to run before it is too late!', kr:'티라노사우루스가 우리를 향해 돌진하고 있다! 너무 늦기 전에 어디로 달아날지 꼭 결정해야 한다!', key:'where to run', penalty:'티라노한테 밟혀 코인 -2! 🦕' },
+];
+
+function renderMission5(teamNum) {
+  const isl = ISLANDS[teamNum-1];
+  const ti = teamNum-1;
+  const m5 = MISSION5_DATA[ti];
+  if(!state.missionStep['m5_'+ti]) state.missionStep['m5_'+ti] = 1;
+  const step = state.missionStep['m5_'+ti];
+
+  const main = document.getElementById('missionMain');
+  main.innerHTML = `
+    <div class="mission-header">
+      <div class="mission-num">MISSION 05 / 07 · ⭐⭐⭐ 7초 암기 후 릴레이 발화</div>
+      <div class="mission-title">⚡ 위기 대응</div>
+    </div>
+    <div class="mission-situation">
+      Danger! A sudden crisis is hitting your island.<br>
+      <strong>You have 7 seconds to memorize the sentence, then say it out loud!</strong>
+      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
+        위기 상황이다! 7초 안에 문장을 외우고, 화면이 가려지면 모둠원 릴레이로 발화하세요!
+      </div>
+    </div>
+
+    <!-- STEP 1: 문장 암기 -->
+    <div class="step ${step===1?'active':''}" id="m5step1-${ti}">
+      <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:1rem;margin-bottom:1rem;text-align:center;">
+        <div style="font-size:.75rem;color:var(--danger);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.5rem;">⚠️ ${m5.crisis} 위기 발생!</div>
+        <div style="font-size:1.8rem;">${m5.emoji}</div>
+      </div>
+
+      <div class="step-label">STEP 1 · 7초 안에 문장을 외우세요!</div>
+      <div style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);border-radius:8px;padding:.85rem 1rem;margin-bottom:1rem;font-size:.8rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
+        📢 <strong>외우는 방법:</strong><br>
+        문장을 모둠원끼리 나눠서 각자 한 부분씩 외우세요!<br>
+        예: 1번 사람 → <em>"The lava is flowing! Make sure to decide"</em><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2번 사람 → <em>"where to run before it is too late!"</em><br>
+        7초 후 화면이 가려지면 모둠원 모두 함께 이어서 발화하세요!
+      </div>
+
+      <div id="m5sentenceBox-${ti}" style="background:var(--surface);border:1px solid var(--accent);border-radius:8px;padding:1.25rem;margin-bottom:1rem;position:relative;">
+        <div style="font-size:.95rem;color:var(--text);line-height:1.8;font-family:'Space Mono',monospace;">"${m5.sentence}"</div>
+        <div style="font-size:.78rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">${m5.kr}</div>
+        <div style="margin-top:.75rem;padding:.4rem .75rem;background:rgba(249,115,22,.1);border-radius:4px;display:inline-block;">
+          <span style="font-size:.68rem;color:var(--text3);">핵심 표현: </span>
+          <span style="font-size:.8rem;color:var(--accent);font-family:'Space Mono',monospace;font-weight:700;">make sure to + ${m5.key}</span>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-bottom:1rem;">
+        <div id="m5timer-${ti}" style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--accent2);">7</div>
+        <div style="font-size:.7rem;color:var(--text3);">seconds remaining</div>
+      </div>
+
+      <button class="btn btn-primary" id="m5startBtn-${ti}" onclick="m5StartTimer(${ti})" style="width:100%;">
+        ▶ 암기 시작!
+      </button>
+    </div>
+
+    <!-- STEP 2: 발화 -->
+    <div class="step ${step===2?'active':''}" id="m5step2-${ti}">
+      <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:1rem;margin-bottom:1rem;text-align:center;">
+        <div style="font-size:2rem;">${m5.emoji}</div>
+        <div style="font-size:.85rem;color:var(--danger);margin-top:.25rem;font-family:'Noto Sans KR',sans-serif;">⚠️ ${m5.crisis}가 나타났다! 지금 말해라!</div>
+      </div>
+      <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:1.5rem;text-align:center;margin-bottom:1rem;">
+        <div style="font-size:.8rem;color:var(--text3);margin-bottom:.5rem;font-family:'Noto Sans KR',sans-serif;">문장이 가려졌어요! 기억나는 대로 발화하세요</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.1em;color:var(--text3);">??? ??? ??? ??? ???</div>
+        <div style="font-size:.72rem;color:var(--accent);margin-top:.75rem;font-family:'Space Mono',monospace;">힌트: make sure to + ${m5.key}</div>
+      </div>
+      <div style="font-size:.8rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:1rem;background:var(--surface);border-radius:8px;padding:.85rem;">
+        📢 <strong>발화 방법:</strong> 모둠원이 릴레이로 문장을 이어서 완성하세요!<br>
+        완성되면 선생님께 확인 받은 후 결과 버튼을 눌러주세요.
+      </div>
+      <div style="display:flex;gap:.75rem;">
+        <button class="btn btn-primary" onclick="m5Result(${ti}, true)" style="flex:1;background:var(--success);">✅ 발화 성공!</button>
+        <button class="btn btn-primary" onclick="m5Result(${ti}, false)" style="flex:1;background:var(--danger);">❌ 발화 실패</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: 결과 -->
+    <div class="step ${step===3?'active':''}" id="m5step3-${ti}">
+      <div id="m5result-${ti}"></div>
+    </div>
+  `;
+
+  // step 3 복원
+  if(step===3 && state.m5result && state.m5result[ti] !== undefined) {
+    setTimeout(() => m5RenderResult(ti, state.m5result[ti]), 50);
+  }
+}
+
+function m5StartTimer(ti) {
+  const btn = document.getElementById(`m5startBtn-${ti}`);
+  if(btn) btn.disabled = true;
+  const timerEl = document.getElementById(`m5timer-${ti}`);
+  let count = 7;
+
+  const interval = setInterval(() => {
+    count--;
+    if(timerEl) {
+      timerEl.textContent = count;
+      if(count <= 3) timerEl.style.color = 'var(--danger)';
+    }
+    if(count <= 0) {
+      clearInterval(interval);
+      // 문장 가리기
+      const box = document.getElementById(`m5sentenceBox-${ti}`);
+      if(box) box.style.filter = 'blur(8px)';
+      // 발화 단계로
+      setTimeout(() => {
+        state.missionStep['m5_'+ti] = 2;
+        renderMission5(ti+1);
+      }, 500);
+    }
+  }, 1000);
+}
+
+function m5Result(ti, success) {
+  const m5 = MISSION5_DATA[ti];
+  const rawCoins5 = success ? 3 : -1;
+  const m5coins = applyCoins(ti, rawCoins5);
+  state.coins[ti] += m5coins;
+  if(!success) {
+    // 페널티: 아이템 소멸 또는 코인 감소
+    if(!Array.isArray(state.items[ti])) state.items[ti] = [];
+    if(state.items[ti].length > 0 && (ti===0||ti===3)) {
+      state.items[ti].pop(); // 화산, 사막: 아이템 소멸
+    }
+  }
+  state.m5result = state.m5result || {};
+  state.m5result[ti] = success;
+  state.missionStep['m5_'+ti] = 3;
+  fbSaveState();
+  renderMission5(ti+1);
+  renderSidebar(ti+1);
+  setTimeout(() => m5RenderResult(ti, success), 50);
+}
+
+function m5RenderResult(ti, success) {
+  const m5 = MISSION5_DATA[ti];
+  const rc = document.getElementById(`m5result-${ti}`);
+  if(!rc) return;
+  const coins = success ? 3 : -1;
+  rc.innerHTML = `
+    <div class="result-box">
+      <span class="result-emoji">${success ? '💪' : '😰'}</span>
+      <div class="result-title">${success ? 'CRISIS SURVIVED!' : 'FAILED!'}</div>
+      <div class="result-coin ${success?'positive':'negative'}">${success?'+3':'-1'} 🪙</div>
+      <div class="result-desc" style="font-family:'Noto Sans KR',sans-serif;">
+        ${success
+          ? '<strong>make sure to</strong>를 활용해서 위기를 극복했어요! 대단해요! 💪'
+          : '이번엔 실패했어요. 하지만 다음엔 더 잘할 수 있어요!<br><span style="font-size:.75rem;color:var(--danger);">' + m5.penalty + '</span>'}
+      </div>
+      <div style="background:var(--surface);border-radius:8px;padding:.85rem;margin:.75rem 0;text-align:left;">
+        <div style="font-size:.68rem;color:var(--text3);margin-bottom:.35rem;">정답 문장:</div>
+        <div style="font-size:.8rem;color:var(--accent2);font-family:'Space Mono',monospace;line-height:1.6;">"${m5.sentence}"</div>
+      </div>
+      <div style="display:flex;gap:.75rem;justify-content:center;">
+        <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button>
+        <button class="btn btn-primary" id="m5next">미션 6 → 🗣️</button>
+      </div>
+    </div>
+  `;
+  setTimeout(() => {
+    const nb = document.getElementById('m5next');
+    if(nb) nb.onclick = () => tryAdvanceMission(ti, 7);
+  }, 50);
+}
+
+
+// ══ MISSION 6: 신호 보내기 ══
+const MISSION6_PAIRS = [
+  { teamA: 0, teamB: 1 },  // 화산+북극
+  { teamA: 0, teamB: 1 },
+  { teamA: 2, teamB: 3 },  // 정글+사막
+  { teamA: 2, teamB: 3 },
+  { teamA: 4, teamB: 5 },  // 바다+공룡
+  { teamA: 4, teamB: 5 },
+];
+
+const MISSION6_DATA = [
+  // 화산+북극 (ti=0,1)
+  {
+    item: '화산 유리 거울 🪞', itemEn: 'a volcanic glass mirror',
+    teamA_given: 'We have a volcanic glass mirror.',
+    teamA_pieces: ['Do', 'you', 'know', 'how to use', 'it', '?'],
+    teamA_correct: ['Do', 'you', 'know', 'how to use', 'it', '?'],
+    teamA_full: 'We have a volcanic glass mirror. Do you know how to use it?',
+    teamB_pieces1: ['It', 'is', 'important', 'to stand', 'in', 'an', 'open', 'area', '.'],
+    teamB_correct1: ['It', 'is', 'important', 'to stand', 'in', 'an', 'open', 'area', '.'],
+    teamB_pieces2: ['Make', 'sure', 'to decide', 'where', 'to aim', 'it', '!'],
+    teamB_correct2: ['Make', 'sure', 'to decide', 'where', 'to aim', 'it', '!'],
+    teamB_full: 'It is important to stand in an open area. Make sure to decide where to aim it!',
+  },
+  {
+    item: '화산 유리 거울 🪞', itemEn: 'a volcanic glass mirror',
+    teamA_given: 'We have a volcanic glass mirror.',
+    teamA_pieces: ['Do', 'you', 'know', 'how to use', 'it', '?'],
+    teamA_correct: ['Do', 'you', 'know', 'how to use', 'it', '?'],
+    teamA_full: 'We have a volcanic glass mirror. Do you know how to use it?',
+    teamB_pieces1: ['It', 'is', 'important', 'to stand', 'in', 'an', 'open', 'area', '.'],
+    teamB_correct1: ['It', 'is', 'important', 'to stand', 'in', 'an', 'open', 'area', '.'],
+    teamB_pieces2: ['Make', 'sure', 'to decide', 'where', 'to aim', 'it', '!'],
+    teamB_correct2: ['Make', 'sure', 'to decide', 'where', 'to aim', 'it', '!'],
+    teamB_full: 'It is important to stand in an open area. Make sure to decide where to aim it!',
+  },
+  // 정글+사막 (ti=2,3)
+  {
+    item: '야자나무 횃불 🔦', itemEn: 'a palm tree torch',
+    teamA_given: 'We have a palm tree torch.',
+    teamA_pieces: ['Do', 'you', 'know', 'where to place', 'it', '?'],
+    teamA_correct: ['Do', 'you', 'know', 'where to place', 'it', '?'],
+    teamA_full: 'We have a palm tree torch. Do you know where to place it?',
+    teamB_pieces1: ['It', 'is', 'important', 'to find', 'the', 'tallest', 'rock', '.'],
+    teamB_correct1: ['It', 'is', 'important', 'to find', 'the', 'tallest', 'rock', '.'],
+    teamB_pieces2: ['Make', 'sure', 'to decide', 'when', 'to light', 'it', '!'],
+    teamB_correct2: ['Make', 'sure', 'to decide', 'when', 'to light', 'it', '!'],
+    teamB_full: 'It is important to find the tallest rock. Make sure to decide when to light it!',
+  },
+  {
+    item: '야자나무 횃불 🔦', itemEn: 'a palm tree torch',
+    teamA_given: 'We have a palm tree torch.',
+    teamA_pieces: ['Do', 'you', 'know', 'where to place', 'it', '?'],
+    teamA_correct: ['Do', 'you', 'know', 'where to place', 'it', '?'],
+    teamA_full: 'We have a palm tree torch. Do you know where to place it?',
+    teamB_pieces1: ['It', 'is', 'important', 'to find', 'the', 'tallest', 'rock', '.'],
+    teamB_correct1: ['It', 'is', 'important', 'to find', 'the', 'tallest', 'rock', '.'],
+    teamB_pieces2: ['Make', 'sure', 'to decide', 'when', 'to light', 'it', '!'],
+    teamB_correct2: ['Make', 'sure', 'to decide', 'when', 'to light', 'it', '!'],
+    teamB_full: 'It is important to find the tallest rock. Make sure to decide when to light it!',
+  },
+  // 바다+공룡 (ti=4,5)
+  {
+    item: '조개껍데기 나팔 🐚', itemEn: 'a shell horn',
+    teamA_given: 'We have a shell horn.',
+    teamA_pieces: ['Do', 'you', 'know', 'how to use', 'it', '?'],
+    teamA_correct: ['Do', 'you', 'know', 'how to use', 'it', '?'],
+    teamA_full: 'We have a shell horn. Do you know how to use it?',
+    teamB_pieces1: ['It', 'is', 'important', 'to take', 'a', 'deep', 'breath', 'before', 'you', 'blow', '.'],
+    teamB_correct1: ['It', 'is', 'important', 'to take', 'a', 'deep', 'breath', 'before', 'you', 'blow', '.'],
+    teamB_pieces2: ['Make', 'sure', 'to decide', 'how long', 'to blow', 'it', '!'],
+    teamB_correct2: ['Make', 'sure', 'to decide', 'how long', 'to blow', 'it', '!'],
+    teamB_full: 'It is important to take a deep breath before you blow. Make sure to decide how long to blow it!',
+  },
+  {
+    item: '조개껍데기 나팔 🐚', itemEn: 'a shell horn',
+    teamA_given: 'We have a shell horn.',
+    teamA_pieces: ['Do', 'you', 'know', 'how to use', 'it', '?'],
+    teamA_correct: ['Do', 'you', 'know', 'how to use', 'it', '?'],
+    teamA_full: 'We have a shell horn. Do you know how to use it?',
+    teamB_pieces1: ['It', 'is', 'important', 'to take', 'a', 'deep', 'breath', 'before', 'you', 'blow', '.'],
+    teamB_correct1: ['It', 'is', 'important', 'to take', 'a', 'deep', 'breath', 'before', 'you', 'blow', '.'],
+    teamB_pieces2: ['Make', 'sure', 'to decide', 'how long', 'to blow', 'it', '!'],
+    teamB_correct2: ['Make', 'sure', 'to decide', 'how long', 'to blow', 'it', '!'],
+    teamB_full: 'It is important to take a deep breath before you blow. Make sure to decide how long to blow it!',
+  },
+];
+
+function getPairRole(ti) {
+  // 짝꿍 모둠에서 A(질문)인지 B(답변)인지
+  const pairs = [[0,1],[2,3],[4,5]];
+  for(const [a,b] of pairs) {
+    if(ti===a) return 'A';
+    if(ti===b) return 'B';
+  }
+  return 'A';
+}
+
+function getPairPartner(ti) {
+  const pairs = [[0,1],[2,3],[4,5]];
+  for(const [a,b] of pairs) {
+    if(ti===a) return b;
+    if(ti===b) return a;
+  }
+  return 0;
+}
+
+function renderMission6(teamNum) {
+  const ti = teamNum-1;
+  const isl = ISLANDS[ti];
+  const m6 = MISSION6_DATA[ti];
+  const role = getPairRole(ti);
+  const partnerTi = getPairPartner(ti);
+  const partnerIsl = ISLANDS[partnerTi];
+
+  if(!state.missionStep['m6_'+ti]) state.missionStep['m6_'+ti] = 1;
+  if(!state.m6dropped) state.m6dropped = {};
+  if(!state.m6dropped[ti+'a']) state.m6dropped[ti+'a'] = [];
+  if(!state.m6dropped[ti+'b1']) state.m6dropped[ti+'b1'] = [];
+  if(!state.m6dropped[ti+'b2']) state.m6dropped[ti+'b2'] = [];
+  const step = state.missionStep['m6_'+ti];
+
+  const M6_CORRECT_A = m6.teamA_correct;
+  const M6_CORRECT_B1 = m6.teamB_correct1;
+  const M6_CORRECT_B2 = m6.teamB_correct2;
+
+  const main = document.getElementById('missionMain');
+
+  main.innerHTML = `
+    <div class="mission-header">
+      <div class="mission-num">MISSION 06 / 07 · ⭐⭐⭐ 두 모둠 협동</div>
+      <div class="mission-title">🗣️ 신호 보내기</div>
+    </div>
+    <div class="mission-situation">
+      To send a rescue signal, you need to work with another team!<br>
+      <strong>${isl.emoji} ${isl.name} + ${partnerIsl.emoji} ${partnerIsl.name} → 함께 협동!</strong>
+      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
+        구조 신호를 보내려면 짝꿍 모둠과 협동해야 해요!<br>
+        ${role==='A'
+          ? isl.emoji+' '+isl.name+' (우리 모둠): 아이템 소개 + 질문하기'
+          : partnerIsl.emoji+' '+partnerIsl.name+' 모둠이 질문하면, 우리 모둠이 사용법을 알려줘요!'}
+      </div>
+    </div>
+
+    <!-- STEP 1: 문장 배열 -->
+    <div class="step ${step===1?'active':''}" id="m6step1-${ti}">
+      ${step===1 ? (role==='A' ? m6renderTeamA(ti, m6) : m6renderTeamB(ti, m6)) : '<div style="text-align:center;color:var(--text3);padding:1rem;">✅ 완료</div>'}
+    </div>
+
+    <!-- STEP 2: 발화 -->
+    <div class="step ${step===2?'active':''}" id="m6step2-${ti}">
+      <div style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);border-radius:8px;padding:1rem;margin-bottom:1rem;">
+        <div style="font-size:.78rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
+          📢 <strong>발화 방법:</strong><br>
+          짝꿍 모둠과 함께 완성된 대화를 주고받으세요!<br>
+          ${role==='A'
+            ? isl.emoji+' 우리 모둠이 먼저 질문하면 → '+partnerIsl.emoji+' 짝꿍 모둠이 답변!'
+            : partnerIsl.emoji+' 짝꿍 모둠이 질문하면 → '+isl.emoji+' 우리 모둠이 답변!'}
+        </div>
+      </div>
+      <div style="background:var(--surface);border-radius:8px;padding:1rem;margin-bottom:1rem;">
+        <div style="font-size:.68rem;color:var(--text3);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.1em;">완성 대화:</div>
+        <div style="font-size:.82rem;color:var(--accent2);font-family:'Space Mono',monospace;line-height:2;">
+          <span style="color:${ISLANDS[MISSION6_PAIRS[ti].teamA].color};">${ISLANDS[MISSION6_PAIRS[ti].teamA].emoji}</span> "${m6.teamA_full}"<br>
+          <span style="color:${ISLANDS[MISSION6_PAIRS[ti].teamB].color};">${ISLANDS[MISSION6_PAIRS[ti].teamB].emoji}</span> "${m6.teamB_full}"
+        </div>
+      </div>
+      <div style="font-size:.78rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;background:var(--surface);border-radius:8px;padding:.85rem;margin-bottom:1rem;">
+        발화 완료 후 선생님 확인 받고 버튼을 눌러주세요!
+      </div>
+      <div style="display:flex;gap:.75rem;">
+        <button class="btn btn-primary" onclick="m6Result(${ti}, true)" style="flex:1;background:var(--success);">✅ 발화 성공!</button>
+        <button class="btn btn-primary" onclick="m6Result(${ti}, false)" style="flex:1;background:var(--danger);">❌ 발화 실패</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: 결과 -->
+    <div class="step ${step===3?'active':''}" id="m6step3-${ti}">
+      <div id="m6result-${ti}"></div>
+    </div>
+  `;
+
+  if(step===3 && state.m6result && state.m6result[ti] !== undefined) {
+    setTimeout(() => m6RenderResult(ti, state.m6result[ti]), 50);
+  }
+}
+
+function m6renderTeamA(ti, m6) {
+  const dropped = state.m6dropped[ti+'a'] || [];
+  const correct = m6.teamA_correct;
+  const pieces = [...m6.teamA_pieces].sort(() => Math.random()-0.5);
+  // 이미 섞인 상태면 재사용
+  if(!state.m6pieces) state.m6pieces = {};
+  if(!state.m6pieces[ti+'a']) state.m6pieces[ti+'a'] = [...m6.teamA_pieces].sort(() => Math.random()-0.5);
+  const shuffled = state.m6pieces[ti+'a'];
+
+  return `
+    <div class="step-label">STEP 1 · 조각을 올바른 순서로 배열하세요</div>
+    <div style="background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:8px;padding:.75rem;margin-bottom:1rem;">
+      <span style="font-size:.7rem;color:var(--accent);">주어진 문장: </span>
+      <span style="font-family:'Space Mono',monospace;font-size:.82rem;color:var(--text);">"${m6.teamA_given}"</span>
+    </div>
+    <div style="font-size:.78rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:.75rem;">
+      👆 위 문장 뒤에 이어질 질문을 조각을 배열해서 완성하세요!
+    </div>
+    <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:.85rem;min-height:52px;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;margin-bottom:.75rem;"
+      id="m6zoneA-${ti}" ondragover="event.preventDefault()" ondrop="m6DropA(event,${ti})">
+      ${dropped.length===0
+        ? '<span style="font-size:.7rem;color:var(--text3);">여기에 조각을 끌어다 놓거나 클릭하세요</span>'
+        : dropped.map((w,i)=>`<div class="m2-chip" onclick="m6RemoveA(${ti},${i})">${w} <span style="font-size:.55rem;opacity:.5;">✕</span></div>`).join('')}
+    </div>
+    <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;" id="m6piecesA-${ti}">
+      ${shuffled.map((p,i)=>{
+        const dc=dropped.filter(d=>d===p).length;
+        const pc=shuffled.slice(0,i+1).filter(s=>s===p).length;
+        const used=pc<=dc;
+        return '<div class="wh-card" style="min-width:unset;padding:.45rem .75rem;cursor:grab;'+(used?'opacity:.3;pointer-events:none;':'')+'"'
+          +' draggable="true" ondragstart="m6DragStartA(event,\'' +p+ '\','+ti+')" onclick="m6ClickA(\'' +p+ '\','+ti+')">'
+          +'<div style="font-family:Space Mono,monospace;font-size:.82rem;">'+p+'</div>'
+          +'</div>';
+      }).join('')}
+    </div>
+    <div style="display:flex;gap:.75rem;align-items:center;">
+      <button class="btn-ghost" onclick="m6ResetA(${ti})">↺ 초기화</button>
+      <button class="btn btn-primary" id="m6checkA-${ti}" onclick="m6CheckA(${ti})" style="opacity:.4;pointer-events:none;">확인 →</button>
+    </div>
+    <div class="feedback-box" id="m6fbA-${ti}"></div>
+  `;
+}
+
+function m6renderTeamB(ti, m6) {
+  const dropped1 = state.m6dropped[ti+'b1'] || [];
+  const dropped2 = state.m6dropped[ti+'b2'] || [];
+  if(!state.m6pieces) state.m6pieces = {};
+  if(!state.m6pieces[ti+'b1']) state.m6pieces[ti+'b1'] = [...m6.teamB_pieces1].sort(() => Math.random()-0.5);
+  if(!state.m6pieces[ti+'b2']) state.m6pieces[ti+'b2'] = [...m6.teamB_pieces2].sort(() => Math.random()-0.5);
+
+  return `
+    <div class="step-label">STEP 1 · 두 문장의 조각을 각각 배열하세요</div>
+    <div style="font-size:.75rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:.75rem;background:var(--surface);border-radius:6px;padding:.65rem;">
+      💡 <strong>it is important to</strong> 문장과 <strong>make sure to</strong> 문장을 모두 완성해야 해요!
+    </div>
+
+    <div style="font-size:.7rem;color:var(--accent2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">문장 1 — it is important to...</div>
+    <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:.75rem;min-height:48px;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;margin-bottom:.5rem;"
+      id="m6zoneB1-${ti}" ondragover="event.preventDefault()" ondrop="m6DropB1(event,${ti})">
+      ${dropped1.length===0
+        ? '<span style="font-size:.68rem;color:var(--text3);">여기에 조각을 끌어다 놓으세요</span>'
+        : dropped1.map((w,i)=>`<div class="m2-chip" onclick="m6RemoveB1(${ti},${i})">${w} <span style="font-size:.55rem;opacity:.5;">✕</span></div>`).join('')}
+    </div>
+    <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;" id="m6piecesB1-${ti}">
+      ${state.m6pieces[ti+'b1'].map((p,i)=>{
+        const dc=dropped1.filter(d=>d===p).length;
+        const pc=state.m6pieces[ti+'b1'].slice(0,i+1).filter(s=>s===p).length;
+        const used=pc<=dc;
+        return '<div class="wh-card" style="min-width:unset;padding:.45rem .75rem;cursor:grab;'+(used?'opacity:.3;pointer-events:none;':'')+'"'
+          +' draggable="true" ondragstart="m6DragStartB1(event,\'' +p+ '\','+ti+')" onclick="m6ClickB1(\'' +p+ '\','+ti+')">'
+          +'<div style="font-family:Space Mono,monospace;font-size:.82rem;">'+p+'</div>'
+          +'</div>';
+      }).join('')}
+    </div>
+
+    <div style="font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">문장 2 — make sure to...</div>
+    <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:.75rem;min-height:48px;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;margin-bottom:.5rem;"
+      id="m6zoneB2-${ti}" ondragover="event.preventDefault()" ondrop="m6DropB2(event,${ti})">
+      ${dropped2.length===0
+        ? '<span style="font-size:.68rem;color:var(--text3);">여기에 조각을 끌어다 놓으세요</span>'
+        : dropped2.map((w,i)=>`<div class="m2-chip" onclick="m6RemoveB2(${ti},${i})">${w} <span style="font-size:.55rem;opacity:.5;">✕</span></div>`).join('')}
+    </div>
+    <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;" id="m6piecesB2-${ti}">
+      ${state.m6pieces[ti+'b2'].map((p,i)=>{
+        const dc=dropped2.filter(d=>d===p).length;
+        const pc=state.m6pieces[ti+'b2'].slice(0,i+1).filter(s=>s===p).length;
+        const used=pc<=dc;
+        return '<div class="wh-card" style="min-width:unset;padding:.45rem .75rem;cursor:grab;'+(used?'opacity:.3;pointer-events:none;':'')+'"'
+          +' draggable="true" ondragstart="m6DragStartB2(event,\'' +p+ '\','+ti+')" onclick="m6ClickB2(\'' +p+ '\','+ti+')">'
+          +'<div style="font-family:Space Mono,monospace;font-size:.82rem;">'+p+'</div>'
+          +'</div>';
+      }).join('')}
+    </div>
+
+    <div style="display:flex;gap:.75rem;align-items:center;">
+      <button class="btn-ghost" onclick="m6ResetB(${ti})">↺ 초기화</button>
+      <button class="btn btn-primary" id="m6checkB-${ti}" onclick="m6CheckB(${ti})" style="opacity:.4;pointer-events:none;">확인 →</button>
+    </div>
+    <div class="feedback-box" id="m6fbB-${ti}"></div>
+  `;
+}
+
+// ── 드래그 & 클릭 핸들러 ──
+let m6DragWord = null, m6DragType = null;
+function m6DragStartA(e,w,ti){m6DragWord=w;m6DragType='a';e.dataTransfer.setData('text',w);}
+function m6DragStartB1(e,w,ti){m6DragWord=w;m6DragType='b1';e.dataTransfer.setData('text',w);}
+function m6DragStartB2(e,w,ti){m6DragWord=w;m6DragType='b2';e.dataTransfer.setData('text',w);}
+function m6DropA(e,ti){e.preventDefault();if(m6DragWord){m6AddA(m6DragWord,ti);m6DragWord=null;}}
+function m6DropB1(e,ti){e.preventDefault();if(m6DragWord){m6AddB1(m6DragWord,ti);m6DragWord=null;}}
+function m6DropB2(e,ti){e.preventDefault();if(m6DragWord){m6AddB2(m6DragWord,ti);m6DragWord=null;}}
+function m6ClickA(w,ti){m6AddA(w,ti);}
+function m6ClickB1(w,ti){m6AddB1(w,ti);}
+function m6ClickB2(w,ti){m6AddB2(w,ti);}
+
+function m6AddA(w,ti){
+  if(!state.m6dropped[ti+'a']) state.m6dropped[ti+'a']=[];
+  if(state.m6dropped[ti+'a'].includes(w)) return;
+  state.m6dropped[ti+'a'].push(w);
+  m6UpdateA(ti);
+}
+function m6AddB1(w,ti){
+  if(!state.m6dropped[ti+'b1']) state.m6dropped[ti+'b1']=[];
+  if(state.m6dropped[ti+'b1'].includes(w)) return;
+  state.m6dropped[ti+'b1'].push(w);
+  m6UpdateB(ti);
+}
+function m6AddB2(w,ti){
+  if(!state.m6dropped[ti+'b2']) state.m6dropped[ti+'b2']=[];
+  if(state.m6dropped[ti+'b2'].includes(w)) return;
+  state.m6dropped[ti+'b2'].push(w);
+  m6UpdateB(ti);
+}
+function m6RemoveA(ti,idx){ state.m6dropped[ti+'a'].splice(idx,1); m6UpdateA(ti); }
+function m6RemoveB1(ti,idx){ state.m6dropped[ti+'b1'].splice(idx,1); m6UpdateB(ti); }
+function m6RemoveB2(ti,idx){ state.m6dropped[ti+'b2'].splice(idx,1); m6UpdateB(ti); }
+function m6ResetA(ti){ state.m6dropped[ti+'a']=[]; m6UpdateA(ti); }
+function m6ResetB(ti){ state.m6dropped[ti+'b1']=[]; state.m6dropped[ti+'b2']=[]; m6UpdateB(ti); }
+
+function m6UpdateA(ti) {
+  const m6 = MISSION6_DATA[ti];
+  const dropped = state.m6dropped[ti+'a']||[];
+  const shuffled = state.m6pieces && state.m6pieces[ti+'a'] || [];
+  const zone = document.getElementById('m6zoneA-'+ti);
+  if(zone) zone.innerHTML = dropped.length===0
+    ? '<span style="font-size:.7rem;color:var(--text3);">여기에 조각을 끌어다 놓거나 클릭하세요</span>'
+    : dropped.map((w,i)=>'<div class="m2-chip" onclick="m6RemoveA('+ti+','+i+')">'+w+' <span style="font-size:.55rem;opacity:.5;">✕</span></div>').join('');
+  const pieces = document.querySelectorAll('#m6piecesA-'+ti+' .wh-card');
+  pieces.forEach((p,i)=>{
+    const w = shuffled[i];
+    const used = dropped.includes(w) && dropped.indexOf(w) >= 0;
+    // 중복 단어 처리: 드롭된 횟수만큼 소모
+    const dropCount = dropped.filter(d=>d===w).length;
+    const pieceCount = shuffled.slice(0,i+1).filter(s=>s===w).length;
+    const isUsed = pieceCount <= dropCount;
+    p.style.opacity = isUsed ? '0.3' : '1';
+    p.style.pointerEvents = isUsed ? 'none' : 'auto';
+  });
+  const btn = document.getElementById('m6checkA-'+ti);
+  if(btn){ const r=dropped.length===m6.teamA_correct.length; btn.style.opacity=r?'1':'0.4'; btn.style.pointerEvents=r?'auto':'none'; }
+}
+
+function m6UpdateB(ti) {
+  const m6 = MISSION6_DATA[ti];
+  const d1=state.m6dropped[ti+'b1']||[], d2=state.m6dropped[ti+'b2']||[];
+  const s1 = state.m6pieces && state.m6pieces[ti+'b1'] || [];
+  const s2 = state.m6pieces && state.m6pieces[ti+'b2'] || [];
+  const z1=document.getElementById('m6zoneB1-'+ti), z2=document.getElementById('m6zoneB2-'+ti);
+  if(z1) z1.innerHTML=d1.length===0?'<span style="font-size:.68rem;color:var(--text3);">여기에 조각을 끌어다 놓으세요</span>':d1.map((w,i)=>'<div class="m2-chip" onclick="m6RemoveB1('+ti+','+i+')">'+w+' <span style="font-size:.55rem;opacity:.5;">✕</span></div>').join('');
+  if(z2) z2.innerHTML=d2.length===0?'<span style="font-size:.68rem;color:var(--text3);">여기에 조각을 끌어다 놓으세요</span>':d2.map((w,i)=>'<div class="m2-chip" onclick="m6RemoveB2('+ti+','+i+')">'+w+' <span style="font-size:.55rem;opacity:.5;">✕</span></div>').join('');
+  const p1=document.querySelectorAll('#m6piecesB1-'+ti+' .wh-card');
+  const p2=document.querySelectorAll('#m6piecesB2-'+ti+' .wh-card');
+  p1.forEach((p,i)=>{
+    const w=s1[i];
+    const dc=d1.filter(d=>d===w).length;
+    const pc=s1.slice(0,i+1).filter(s=>s===w).length;
+    p.style.opacity=pc<=dc?'0.3':'1'; p.style.pointerEvents=pc<=dc?'none':'auto';
+  });
+  p2.forEach((p,i)=>{
+    const w=s2[i];
+    const dc=d2.filter(d=>d===w).length;
+    const pc=s2.slice(0,i+1).filter(s=>s===w).length;
+    p.style.opacity=pc<=dc?'0.3':'1'; p.style.pointerEvents=pc<=dc?'none':'auto';
+  });
+  const btn=document.getElementById('m6checkB-'+ti);
+  if(btn){ const r=d1.length===m6.teamB_correct1.length&&d2.length===m6.teamB_correct2.length; btn.style.opacity=r?'1':'0.4'; btn.style.pointerEvents=r?'auto':'none'; }
+}
+
+function m6CheckA(ti) {
+  const m6 = MISSION6_DATA[ti];
+  const dropped = state.m6dropped[ti+'a']||[];
+  const ok = m6.teamA_correct.every((w,i)=>dropped[i]===w);
+  const fb = document.getElementById('m6fbA-'+ti);
+  fb.classList.add('show');
+  if(ok){
+    fb.className='feedback-box show feedback-correct';
+    fb.innerHTML='✅ 정답! 이제 짝꿍 모둠과 함께 발화하세요!';
+    setTimeout(()=>{ state.missionStep['m6_'+ti]=2; renderMission6(ti+1); },1200);
+  } else {
+    fb.className='feedback-box show feedback-wrong';
+    fb.innerHTML='❌ 순서가 틀렸어요! 다시 시도해보세요.';
+    setTimeout(()=>fb.classList.remove('show'),2000);
+  }
+}
+
+function m6CheckB(ti) {
+  const m6 = MISSION6_DATA[ti];
+  const d1=state.m6dropped[ti+'b1']||[], d2=state.m6dropped[ti+'b2']||[];
+  const ok1=m6.teamB_correct1.every((w,i)=>d1[i]===w);
+  const ok2=m6.teamB_correct2.every((w,i)=>d2[i]===w);
+  const fb = document.getElementById('m6fbB-'+ti);
+  fb.classList.add('show');
+  if(ok1&&ok2){
+    fb.className='feedback-box show feedback-correct';
+    fb.innerHTML='✅ 두 문장 모두 정답! 이제 짝꿍 모둠과 함께 발화하세요!';
+    setTimeout(()=>{ state.missionStep['m6_'+ti]=2; renderMission6(ti+1); },1200);
+  } else {
+    fb.className='feedback-box show feedback-wrong';
+    fb.innerHTML='❌ '+(ok1?'문장 2':'문장 1')+' 순서가 틀렸어요! 다시 시도해보세요.';
+    setTimeout(()=>fb.classList.remove('show'),2000);
+  }
+}
+
+function m6Result(ti, success) {
+  const rawCoins6 = success ? 3 : 0;
+  const m6coins = applyCoins(ti, rawCoins6);
+  state.coins[ti] += m6coins;
+  state.m6result = state.m6result || {};
+  state.m6result[ti] = success;
+  state.missionStep['m6_'+ti] = 3;
+  fbSaveState();
+  renderMission6(ti+1);
+  renderSidebar(ti+1);
+  setTimeout(() => m6RenderResult(ti, success), 50);
+}
+
+function m6RenderResult(ti, success) {
+  const m6 = MISSION6_DATA[ti];
+  const rc = document.getElementById('m6result-'+ti);
+  if(!rc) return;
+  rc.innerHTML = `
+    <div class="result-box">
+      <span class="result-emoji">${success?'📡':'😢'}</span>
+      <div class="result-title">${success?'SIGNAL SENT!':'SIGNAL FAILED...'}</div>
+      <div class="result-coin ${success?'positive':'neutral'}">${success?'+3':'±0'} 🪙</div>
+      <div class="result-desc" style="font-family:'Noto Sans KR',sans-serif;">
+        ${success?'짝꿍 모둠과 완벽하게 협동해서 구조 신호를 보냈어요! 🎉':'아쉽게도 신호를 보내지 못했어요. 괜찮아요, 계속 나아가요!'}
+      </div>
+      <div style="background:var(--surface);border-radius:8px;padding:.85rem;margin:.75rem 0;text-align:left;">
+        <div style="font-size:.68rem;color:var(--text3);margin-bottom:.4rem;">완성 대화:</div>
+        <div style="font-size:.78rem;color:var(--accent2);font-family:'Space Mono',monospace;line-height:1.8;">
+          "${m6.teamA_full}"<br>"${m6.teamB_full}"
+        </div>
+      </div>
+      <div style="display:flex;gap:.75rem;justify-content:center;">
+        <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button>
+        <button class="btn btn-primary" id="m6next">최종 탈출 → 🚁</button>
+      </div>
+    </div>
+  `;
+  setTimeout(()=>{ const nb=document.getElementById('m6next'); if(nb) nb.onclick=()=>tryAdvanceMission(ti,8); },50);
+}
+
+// ══ MISSION 4: 동료 만나기 ══
+const MISSION4_NPC = [
+  { name:'Ignis', emoji:'🧔', buff:'앞으로 모든 미션에서 코인 +1 보너스!', buffId:'coin_bonus', color:'#ef4444' },
+  { name:'Aurora', emoji:'🧕', buff:'앞으로 모든 미션에서 코인 +1 보너스!', buffId:'coin_bonus', color:'#38bdf8' },
+  { name:'Kai', emoji:'🧑', buff:'앞으로 모든 미션에서 코인 +1 보너스!', buffId:'coin_bonus', color:'#22c55e' },
+  { name:'Sana', emoji:'👩', buff:'앞으로 모든 미션에서 코인 +1 보너스!', buffId:'coin_bonus', color:'#f59e0b' },
+  { name:'Coral', emoji:'🧜', buff:'앞으로 모든 미션에서 코인 +1 보너스!', buffId:'coin_bonus', color:'#6366f1' },
+  { name:'Rex', emoji:'🦖', buff:'앞으로 모든 미션에서 코인 +1 보너스!', buffId:'coin_bonus', color:'#a855f7' },
+];
+
+const MISSION4_QUESTIONS = [
+  { sentence: '"I know <strong>what to do</strong> next!"', correct: true,  reason: '올바른 의문사+to부정사 ✅' },
+  { sentence: '"I know <strong>why to go</strong> there!"', correct: false, reason: 'why는 to부정사와 함께 쓸 수 없어요 ❌' },
+  { sentence: '"Tell me <strong>how to find</strong> water!"', correct: true,  reason: '올바른 의문사+to부정사 ✅' },
+  { sentence: '"I\'ll show you <strong>what should we eat</strong>!"', correct: false, reason: '의문사+to부정사 형태가 아니에요 ❌' },
+  { sentence: '"I have no idea <strong>who to trust</strong>!"', correct: true,  reason: '올바른 의문사+to부정사 ✅' },
+  { sentence: '"Let me decide <strong>where should we go</strong>!"', correct: false, reason: '의문사+to부정사 형태가 아니에요 ❌' },
+];
+
+function renderMission4(teamNum) {
+  const isl = ISLANDS[teamNum-1];
+  const ti = teamNum-1;
+  const npc = MISSION4_NPC[ti];
+  if(!state.missionStep['m4_'+ti]) state.missionStep['m4_'+ti] = 1;
+  if(!state.m4answers) state.m4answers = {};
+  if(!state.m4answers[ti]) state.m4answers[ti] = {};
+  const step = state.missionStep['m4_'+ti];
+
+  const main = document.getElementById('missionMain');
+  main.innerHTML = `
+    <div class="mission-header">
+      <div class="mission-num">MISSION 04 / 07 · ⭐⭐ OX 판단</div>
+      <div class="mission-title">🤝 동료 만나기</div>
+    </div>
+    <div class="mission-situation">
+      Some strangers appeared on the island. But be careful —<br>
+      <strong>only the ones who speak correctly can be trusted!</strong>
+      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
+        낯선 사람들이 나타났다. 올바른 문장을 말하는 사람만 동료로 삼을 수 있다!<br>
+        각 문장이 올바른 의문사+to부정사인지 판단하세요.
+      </div>
+    </div>
+
+    <!-- STEP 1: OX 판단 -->
+    <div class="step ${step===1?'active':''}" id="m4step1-${ti}">
+      <div class="step-label">STEP 1 · 올바른 문장이면 ⭕, 틀린 문장이면 ❌</div>
+      <div id="m4questions-${ti}">
+        ${MISSION4_QUESTIONS.map((q,idx) => {
+          const answered = state.m4answers[ti][idx] !== undefined;
+          const isCorrect = answered && state.m4answers[ti][idx] === q.correct;
+          const isWrong = answered && state.m4answers[ti][idx] !== q.correct;
+          return `
+            <div class="m4-question ${answered?(isCorrect?'m4-correct':'m4-wrong'):''}" id="m4q-${ti}-${idx}">
+              <div class="m4-sentence">${q.sentence}</div>
+              ${answered
+                ? `<div class="m4-result">${isCorrect?'✅':'❌'} ${q.reason}</div>`
+                : `<div class="m4-btns">
+                    <button class="m4-ox-btn m4-o" onclick="m4Answer(${ti},${idx},true)">⭕ 맞다</button>
+                    <button class="m4-ox-btn m4-x" onclick="m4Answer(${ti},${idx},false)">❌ 틀리다</button>
+                  </div>`
+              }
+            </div>`;
+        }).join('')}
+      </div>
+      <div class="feedback-box" id="m4feedback-${ti}"></div>
+      <div style="margin-top:1rem;">
+        <button class="btn btn-primary" id="m4checkBtn-${ti}" onclick="m4Check(${ti})"
+          style="${Object.keys(state.m4answers[ti]).length===6?'':'opacity:.4;pointer-events:none;'}">
+          결과 확인 →
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2: NPC 획득 -->
+    <div class="step ${step===2?'active':''}" id="m4step2-${ti}">
+      <div id="m4result-${ti}"></div>
+    </div>
+  `;
+  // step 2면 저장된 결과 바로 렌더링
+  if(step === 2) {
+    const saved = state.m4result && state.m4result[ti];
+    if(saved) setTimeout(() => m4RenderResult(ti, saved.correct, saved.coins), 50);
+  }
+}
+
+function m4Answer(ti, idx, answer) {
+  if(!state.m4answers[ti]) state.m4answers[ti] = {};
+  state.m4answers[ti][idx] = answer;
+  const q = MISSION4_QUESTIONS[idx];
+  const isCorrect = answer === q.correct;
+
+  // 해당 문제 카드만 업데이트
+  const card = document.getElementById(`m4q-${ti}-${idx}`);
+  if(card) {
+    card.className = `m4-question ${isCorrect?'m4-correct':'m4-wrong'}`;
+    card.innerHTML = `
+      <div class="m4-sentence">${q.sentence}</div>
+      <div class="m4-result">${isCorrect?'✅':'❌'} ${q.reason}</div>
+    `;
+  }
+
+  // 6개 다 답하면 확인 버튼 활성화
+  const btn = document.getElementById(`m4checkBtn-${ti}`);
+  if(btn && Object.keys(state.m4answers[ti]).length === 6) {
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+  }
+}
+
+function m4Check(ti) {
+  const correct = Object.entries(state.m4answers[ti]).filter(([idx,ans]) =>
+    ans === MISSION4_QUESTIONS[idx].correct
+  ).length;
+  const total = 6;
+  const npc = MISSION4_NPC[ti];
+
+  const fb = document.getElementById(`m4feedback-${ti}`);
+  fb.classList.add('show');
+  if(correct >= 4) {
+    fb.className = 'feedback-box show feedback-correct';
+    fb.innerHTML = `✅ ${correct}/${total} 정답! 동료를 찾았어요! ${npc.emoji} <strong>${npc.name}</strong> 획득!`;
+    setTimeout(() => {
+      const rawCoins4 = correct === 6 ? 3 : 2;
+      const m4coins = applyCoins(ti, rawCoins4);
+      state.coins[ti] += m4coins;
+      if(!state.npc) state.npc = {};
+      state.npc[ti] = npc;
+      state.m4result = state.m4result || {};
+      state.m4result[ti] = { correct, coins: m4coins };
+      state.missionStep['m4_'+ti] = 2;
+      fbSaveState();
+      renderMission4(ti+1);
+      renderSidebar(ti+1);
+      setTimeout(() => m4RenderResult(ti, correct, m4coins), 50);
+    }, 1200);
+  } else {
+    // 실패도 바로 결과 화면으로
+    state.m4result = state.m4result || {};
+    state.m4result[ti] = { correct, coins: 0 };
+    state.missionStep['m4_'+ti] = 2;
+    renderMission4(ti+1);
+    renderSidebar(ti+1);
+    setTimeout(() => m4RenderResult(ti, correct, 0), 50);
+  }
+}
+
+function m4RenderResult(ti, correct, coins) {
+  const npc = MISSION4_NPC[ti];
+  const rc = document.getElementById(`m4result-${ti}`);
+  if(!rc) return;
+  const failed = correct < 4;
+  rc.innerHTML = `
+    <div class="result-box">
+      <span class="result-emoji">${failed ? '😢' : npc.emoji}</span>
+      <div class="result-title">${failed ? 'NO ALLY...' : 'NEW ALLY FOUND!'}</div>
+      ${!failed ? `<div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.1em;color:${npc.color};margin:.5rem 0;">${npc.name}</div>` : ''}
+      <div class="result-coin ${coins>0?'positive':'neutral'}">${coins>0?'+'+coins:'±0'} 🪙</div>
+      ${!failed ? `
+      <div style="background:rgba(255,255,255,.04);border:1px solid ${npc.color}33;border-radius:8px;padding:1rem;margin:1rem 0;text-align:left;">
+        <div style="font-size:.7rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;">💪 NPC 버프 효과</div>
+        <div style="font-size:.9rem;color:${npc.color};font-family:'Noto Sans KR',sans-serif;">${npc.buff}</div>
+
+      </div>` : `
+      <div class="result-desc">동료를 얻지 못했어요. 다음 미션에서 더 조심하세요!</div>`}
+      <div style="font-size:.75rem;color:var(--text2);margin-bottom:1.25rem;font-family:'Noto Sans KR',sans-serif;">
+        ${correct}/${MISSION4_QUESTIONS.length}개 정답
+        ${correct===6?'완벽해요! 🎉':correct>=4?'잘했어요! 👍':'조금 아쉬워요 😅'}
+      </div>
+      <div style="display:flex;gap:.75rem;justify-content:center;">
+        <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button>
+        <button class="btn btn-primary" id="m4next">달 기지 이벤트 → 🌑</button>
+      </div>
+    </div>
+  `;
+  setTimeout(() => {
+    const nb = document.getElementById('m4next');
+    if(nb) nb.onclick = () => tryAdvanceMission(ti, 5);
+  }, 50);
+}
+
+
+// ══ MISSION 7: 최종 탈출 ══
+const MISSION7_DATA = [
+  { island:'volcano', key:'where to land', keyKr:'착륙 장소', warning:'용암 때문에', hint:'where to land safely away from lava' },
+  { island:'arctic',  key:'who/what to avoid', keyKr:'피해야 할 것', warning:'북극곰 때문에', hint:'what to avoid (polar bears!)' },
+  { island:'jungle',  key:'how to reach', keyKr:'접근 방법', warning:'나무가 빽빽해서', hint:'how to reach us through the trees' },
+  { island:'desert',  key:'which way to come', keyKr:'올 방향', warning:'모래폭풍 때문에', hint:'which way to come to avoid the storm' },
+  { island:'ocean',   key:'how to land', keyKr:'착륙 방법', warning:'파도가 높아서', hint:'how to land safely on the water' },
+  { island:'dino',    key:'who/what to avoid', keyKr:'피해야 할 것', warning:'공룡 때문에', hint:'what to avoid (T-Rex and meteors!)' },
+];
+
+function renderMission7(teamNum) {
+  const ti = teamNum - 1;
+  const isl = ISLANDS[ti];
+  const m7 = MISSION7_DATA[ti];
+  if(!state.missionStep['m7_'+ti]) state.missionStep['m7_'+ti] = 1;
+  const step = state.missionStep['m7_'+ti];
+
+  const main = document.getElementById('missionMain');
+  main.innerHTML = `
+    <div class="mission-header">
+      <div class="mission-num">MISSION 07 / 07 · ⭐⭐⭐⭐ 자유 작문 + 발화</div>
+      <div class="mission-title">🚁 최종 탈출</div>
+    </div>
+    <div class="mission-situation">
+      A rescue helicopter has spotted your signal!<br>
+      <strong>Write a rescue guide for the pilot and tell them how to reach you safely!</strong>
+      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
+        구조 헬기가 신호를 발견했다! 조종사에게 안전하게 오는 방법을 안내문으로 써서 전달하라!<br>
+        영어로 작성하면 더 높은 점수를 받을 수 있어요.
+      </div>
+    </div>
+
+    <!-- STEP 1: 작문 -->
+    <div class="step ${step===1?'active':''}" id="m7step1-${ti}">
+
+      <!-- 채점 조건 -->
+      <div style="background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:8px;padding:1rem;margin-bottom:1rem;">
+        <div style="font-size:.72rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">📋 채점 조건</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem;font-size:.75rem;font-family:'Noto Sans KR',sans-serif;">
+          <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:6px;padding:.5rem .75rem;">
+            <div style="color:var(--danger);font-weight:700;margin-bottom:.2rem;">⚠️ 필수</div>
+            <div style="color:var(--text2);">${m7.warning} <strong>${m7.keyKr}</strong> 안내 포함</div>
+            <div style="color:var(--text3);font-size:.68rem;margin-top:.2rem;">힌트: ${m7.hint}</div>
+          </div>
+          <div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:6px;padding:.5rem .75rem;">
+            <div style="color:var(--success);font-weight:700;margin-bottom:.2rem;">✅ 필수</div>
+            <div style="color:var(--text2);">의문사+to부정사 <strong>3개 이상</strong></div>
+            <div style="color:var(--text3);font-size:.68rem;margin-top:.2rem;">what/where/how/who/when to-v</div>
+          </div>
+          <div style="background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:6px;padding:.5rem .75rem;">
+            <div style="color:var(--accent2);font-weight:700;margin-bottom:.2rem;">⭐ 보너스</div>
+            <div style="color:var(--text2);">영어로 작성 <strong>+2코인</strong></div>
+            <div style="color:var(--text3);font-size:.68rem;margin-top:.2rem;">모르는 단어는 한글/사전 OK!</div>
+          </div>
+          <div style="background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:6px;padding:.5rem .75rem;">
+            <div style="color:var(--accent2);font-weight:700;margin-bottom:.2rem;">⭐ 보너스</div>
+            <div style="color:var(--text2);"><strong>it is important to</strong> 포함 +1</div>
+          </div>
+          <div style="background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:6px;padding:.5rem .75rem;grid-column:span 2;">
+            <div style="color:var(--accent2);font-weight:700;margin-bottom:.2rem;">⭐ 보너스</div>
+            <div style="color:var(--text2);"><strong>make sure to</strong> 또는 <strong>we made sure to</strong> 포함 +1</div>
+          </div>
+        </div>
+        <div style="margin-top:.75rem;padding:.6rem .75rem;background:rgba(255,255,255,.04);border-radius:6px;font-size:.72rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;line-height:1.7;">
+          💡 <strong>채점 기준:</strong> 의문사+to부정사 문법 오류 여부만 채점해요.<br>
+          모르는 단어는 한글로 쓰거나 사전을 찾아봐도 돼요!
+        </div>
+      </div>
+
+      <!-- 템플릿 -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-bottom:1rem;">
+        <div style="font-size:.68rem;color:var(--text3);margin-bottom:.6rem;letter-spacing:.1em;text-transform:uppercase;">📄 템플릿 (참고용 — 자유롭게 변형 가능)</div>
+        <div style="font-size:.77rem;color:var(--text2);line-height:2.1;font-family:'Space Mono',monospace;">
+          "Dear rescue team,<br>
+          We are stranded on ${isl.name}.<br>
+          <span style="color:var(--accent2);">It is important to</span> _______________.<br>
+          Please <span style="color:var(--accent2);">make sure to</span> _______________.<br>
+          We <span style="color:var(--accent2);">made sure to</span> _______________, but we need help.<br>
+          We don't know _______________, so please guide us.<br>
+          <span style="color:var(--accent);">(의문사+to부정사)</span> was the most important thing for our survival.<br>
+          We will signal you by _______________.<br>
+          Thank you, Survivors"
+        </div>
+      </div>
+
+      <!-- 발화 안내 -->
+      <div style="background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.15);border-radius:8px;padding:.75rem 1rem;margin-bottom:.75rem;font-size:.78rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
+        📢 <strong>발표 방법:</strong> 작성 완료 후 <strong>모둠원 전체가 함께</strong> 안내문을 발표하세요!<br>
+        각자 한 문장씩 나눠서 읽어도 좋아요. 선생님 확인 후 제출!
+      </div>
+
+      <textarea id="m7text-${ti}"
+        placeholder="여기에 안내문을 작성하세요... (모르는 단어는 한글로 써도 OK!)"
+        style="width:100%;min-height:180px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;font-family:'Noto Sans KR',sans-serif;font-size:.85rem;color:var(--text);resize:vertical;outline:none;line-height:1.7;"
+        onfocus="this.style.borderColor='var(--accent)'"
+        onblur="this.style.borderColor='var(--border)'"
+      >${state.m7text && state.m7text[ti] ? state.m7text[ti] : ''}</textarea>
+
+  <div style="display:flex;gap:.75rem;align-items:center;margin-top:.75rem;">
+    <div style="flex:1;font-size:.7rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">모둠 전체 발표 완료 후 제출하세요!</div>
+    <button class="btn btn-primary" onclick="m7Submit(${ti})">제출 →</button>
+  </div>
+</div>
+
+<!-- STEP 2: 채점 -->
+<div class="step ${step===2?'active':''}" id="m7step2-${ti}">
+  <div id="m7scoring-${ti}"></div>
+</div>
+
+<!-- STEP 3: 결과 -->
+<div class="step ${step===3?'active':''}" id="m7result-${ti}">
+  <div id="m7resultContent-${ti}"></div>
+</div>
+
+`;
+
+if(step===2) setTimeout(()=>m7RenderScoring(ti), 50);
+if(step===3 && state.m7result && state.m7result[ti]) setTimeout(()=>m7RenderFinalResult(ti, state.m7result[ti]), 50);
+
+// textarea 저장
+setTimeout(()=>{
+const ta = document.getElementById('m7text-'+ti);
+if(ta) ta.oninput = () => {
+state.m7text = state.m7text || {};
+state.m7text[ti] = ta.value;
+};
+}, 100);
+}
+
+function m7Submit(ti) {
+const ta = document.getElementById('m7text-'+ti);
+const text = ta ? ta.value.trim() : '';
+if(!text) {
+ta.style.borderColor = 'var(--danger)';
+return;
+}
+state.m7text = state.m7text || {};
+state.m7text[ti] = text;
+state.missionStep['m7_'+ti] = 2;
+fbSaveState();
+renderMission7(ti+1);
+setTimeout(()=>m7RenderScoring(ti), 50);
+}
+
+function m7RenderScoring(ti) {
+const sc = document.getElementById('m7scoring-'+ti);
+if(!sc) return;
+const m7 = MISSION7_DATA[ti];
+const text = (state.m7text && state.m7text[ti]) || '';
+
+// 자동 체크
+const hasItImportant = /it is important to/i.test(text);
+const hasMakeSure = /(make sure to|made sure to)/i.test(text);
+const whPatterns = ['what to','where to','how to','who to','when to','which way to','how long to'];
+const lowerText = text.toLowerCase();
+// 각 패턴의 실제 등장 횟수 합산 (중복 위치 카운트)
+let whCount = 0;
+const usedPositions = new Set();
+whPatterns.forEach(w => {
+let pos = 0;
+while((pos = lowerText.indexOf(w, pos)) !== -1) {
+// 이미 카운트된 위치와 겹치지 않으면 카운트
+let overlap = false;
+for(let p of usedPositions) { if(Math.abs(p-pos)<6) { overlap=true; break; } }
+if(!overlap) { whCount++; usedPositions.add(pos); }
+pos += w.length;
+}
+});
+const isEnglish = /[a-zA-Z]/.test(text) && text.replace(/[^a-zA-Z\s]/g,'').length > text.replace(/[^가-힣\s]/g,'').length;
+
+sc.innerHTML = `<div style="margin-bottom:1.25rem;"> <div style="font-size:.72rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;">📝 작성한 안내문</div> <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;font-size:.82rem;color:var(--text);line-height:1.8;white-space:pre-wrap;font-family:'Noto Sans KR',sans-serif;">${text}</div> </div> <div style="font-size:.72rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;">✅ 자동 체크</div> <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1.25rem;"> ${m7CheckItem('it is important to 포함', hasItImportant)} ${m7CheckItem('make sure to / made sure to 포함', hasMakeSure)} ${m7CheckItem('의문사+to부정사 3개 이상', whCount>=3, whCount+'개 발견')} ${m7CheckItem('영어로 작성', isEnglish, isEnglish?'보너스 적용!':'한국어 → 보너스 없음')} </div> <div style="font-size:.72rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;">👩‍🏫 선생님 채점</div> <div style="background:var(--surface);border-radius:8px;padding:1rem;margin-bottom:1rem;font-family:'Noto Sans KR',sans-serif;font-size:.82rem;color:var(--text2);line-height:1.8;"> <strong style="color:${MISSION7_DATA[ti].island==='volcano'?ISLANDS[0].color:ISLANDS[ti].color};">필수 내용 (${MISSION7_DATA[ti].warning} ${MISSION7_DATA[ti].keyKr} 안내)</strong>가 포함됐나요?<br> 모둠 대표가 발화까지 완료했나요? </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:1rem;"> <button class="btn btn-primary" onclick="m7Score(${ti},'perfect')" style="background:var(--success);font-size:.8rem;padding:.6rem .5rem;">✅ 필수내용 포함<br>+ 발화 성공</button> <button class="btn btn-primary" onclick="m7Score(${ti},'partial')" style="background:var(--accent);font-size:.8rem;padding:.6rem .5rem;">⚡ 필수내용 포함<br>발화 미완성</button> <button class="btn btn-primary" onclick="m7Score(${ti},'miss')" style="background:var(--danger);font-size:.8rem;padding:.6rem .5rem;">❌ 필수내용<br>미포함</button> </div> <button class="btn-ghost" onclick="m7Edit(${ti})" style="width:100%;font-size:.72rem;">✏️ 다시 작성하기</button>`;
+}
+
+function m7CheckItem(label, passed, note) {
+return '<div style="background:var(--surface);border:1px solid '+(passed?'var(--success)':'var(--border)')+';border-radius:6px;padding:.5rem .75rem;">'
++'<div style="font-size:.65rem;color:'+(passed?'var(--success)':'var(--text3)')+';">'+(passed?'✅ ':'❌ ')+label+'</div>'
++(note?'<div style="font-size:.62rem;color:var(--text3);margin-top:.15rem;">'+note+'</div>':'')
++'</div>';
+}
+
+function m7Edit(ti) {
+state.missionStep['m7_'+ti] = 1;
+renderMission7(ti+1);
+}
+
+function m7Score(ti, grade) {
+const text = (state.m7text && state.m7text[ti]) || '';
+const isEnglish = /[a-zA-Z]/.test(text) && text.replace(/[^a-zA-Z\s]/g,'').length > text.replace(/[^가-힣\s]/g,'').length;
+const hasGrammarError = /[가-힣]/.test(text) && isEnglish;
+const whWords = ['what to','where to','how to','who to','when to','which way to','how long to'];
+const whCount = whWords.filter(w => text.toLowerCase().includes(w)).length;
+const hasItImportant = /it is important to/i.test(text);
+const hasMakeSure = /(make sure to|made sure to)/i.test(text);
+
+let coins = 0;
+let breakdown = [];
+
+if(grade==='perfect') {
+coins += 2; breakdown.push('필수 내용 포함 +2');
+coins += 1; breakdown.push('발화 성공 +1');
+} else if(grade==='partial') {
+coins += 2; breakdown.push('필수 내용 포함 +2');
+} else {
+breakdown.push('필수 내용 미포함 +0');
+}
+
+if(whCount>=3) { coins+=2; breakdown.push('의문사+to부정사 3개↑ +2'); }
+else if(whCount>=1) { coins+=1; breakdown.push('의문사+to부정사 '+whCount+'개 +1'); }
+
+if(hasItImportant) { coins+=1; breakdown.push('it is important to +1'); }
+if(hasMakeSure) { coins+=1; breakdown.push('make sure to +1'); }
+
+if(isEnglish && grade!=='miss') {
+coins+=2; breakdown.push('영어 문법 오류 없음 +2');
+} else if(!isEnglish) {
+breakdown.push('한국어 작성 +0');
+}
+
+state.coins[ti] += coins;
+state.m7result = state.m7result || {};
+state.m7result[ti] = { coins, breakdown, grade };
+state.missionStep['m7_'+ti] = 3;
+// 미션7 완료 기록
+state.completedMission = state.completedMission || [0,0,0,0,0,0];
+state.completedMission[ti] = Math.max(state.completedMission[ti] || 0, 8);
+state.teamMission[ti] = 8;
+checkGlobalGate();
+fbSaveState();
+renderMission7(ti+1);
+renderSidebar(ti+1);
+setTimeout(()=>m7RenderFinalResult(ti, { coins, breakdown, grade }), 50);
+}
+
+function m7RenderFinalResult(ti, result) {
+const rc = document.getElementById('m7resultContent-'+ti);
+if(!rc) return;
+const { coins, breakdown, grade } = result;
+const emoji = grade==='perfect'?'🎉':grade==='partial'?'😮':coins>0?'👍':'😢';
+const title = grade==='perfect'?'RESCUE COMPLETE!':grade==='partial'?'SIGNAL SENT!':coins>0?'TRIED HARD!':'KEEP GOING!';
+
+rc.innerHTML = `<div class="result-box"> <span class="result-emoji">${emoji}</span> <div class="result-title">${title}</div> <div class="result-coin positive">+${coins} 🪙</div> <div style="background:var(--surface);border-radius:8px;padding:1rem;margin:1rem 0;text-align:left;"> <div style="font-size:.68rem;color:var(--text3);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.1em;">📊 점수 내역</div> ${breakdown.map(b=>'<div style="font-size:.75rem;color:var(--text2);padding:.2rem 0;font-family:Noto Sans KR,sans-serif;">• '+b+'</div>').join('')} </div> <div style="background:var(--surface);border-radius:8px;padding:1rem;margin:.5rem 0;text-align:left;"> <div style="font-size:.68rem;color:var(--text3);margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.1em;">작성한 안내문</div> <div style="font-size:.78rem;color:var(--text2);line-height:1.8;white-space:pre-wrap;font-family:Noto Sans KR,sans-serif;">${(state.m7text&&state.m7text[ti])||''}</div> </div> <div style="display:flex;gap:.75rem;justify-content:center;margin-top:1.25rem;"> <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button> <button class="btn btn-primary" onclick="m7GoToFinalWaiting(${ti})">결과 화면으로 →</button> </div> </div>`;
+}
+
+function m7GoToFinalWaiting(ti) {
+  const allDone = (state.completedMission||[]).every(c => (c||0) >= 8);
+  if(allDone) { m7ShowFinal(); }
+  else { waitingForFinal = true; showM7WaitingFinal(); }
+}
+
+function showM7WaitingFinal() {
+  const main = document.getElementById('missionMain');
+  if(!main) return;
+  const cm = state.completedMission || [0,0,0,0,0,0];
+  const doneCount = cm.filter(c => (c||0) >= 8).length;
+  main.innerHTML = `
+    <div class="mission-header">
+      <div class="mission-num">🏆 최종 결과 대기 중</div>
+      <div class="mission-title">⏳ 다른 모둠 완료 대기...</div>
+    </div>
+    <div class="result-box">
+      <span class="result-emoji" style="animation:pulseGlow 1.5s ease-in-out infinite;">🏆</span>
+      <div class="result-title">WAITING FOR FINAL</div>
+      <div style="font-size:.82rem;color:var(--accent2);margin:.5rem 0 1rem;font-family:'Noto Sans KR',sans-serif;">
+        미션 완료! 다른 모둠이 완료할 때까지 기다려주세요.
+      </div>
+      <div style="background:var(--surface);border-radius:8px;padding:1rem;margin-bottom:1rem;">
+        <div style="font-size:.7rem;color:var(--text3);margin-bottom:.65rem;text-transform:uppercase;letter-spacing:.1em;">모둠 완료 현황</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;">
+          ${ISLANDS.map((isl,i)=>{
+            const done=(cm[i]||0)>=8;
+            return '<div style="background:var(--bg);border:1px solid '+(done?isl.color:'var(--border)')+';border-radius:6px;padding:.5rem;text-align:center;">'
+              +'<div style="font-size:1.1rem;">'+isl.emoji+'</div>'
+              +'<div style="font-size:.6rem;color:'+(done?isl.color:'var(--text3)')+';">'+(done?'✅ 완료':'⏳ 진행중')+'</div>'
+              +'</div>';
+          }).join('')}
+        </div>
+      </div>
+      <div style="font-size:.75rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;margin-bottom:.75rem;">${doneCount}/6 모둠 완료 — 모두 완료되면 자동으로 최종 결과가 나타나요!</div>
+      <button onclick="inAppRefresh()" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:.5rem 1.25rem;font-size:.78rem;color:var(--text2);cursor:pointer;font-family:'Space Mono',monospace;">🔄 현황 새로고침</button>
+    </div>`;
+}
+
+function m7ShowFinal() {
+const main = document.getElementById('missionMain');
+if(!main) return;
+
+// 모든 팀 미션 8 완료 체크 (completedMission 기준)
+const allDone = (state.completedMission||[]).every(c => (c||0) >= 8);
+if(!allDone) {
+waitingForFinal = true;
+showM7WaitingFinal();
+return;
+}
+
+const totalCoins = state.coins.reduce((a,b)=>a+b,0);
+const maxCoins = Math.max(...state.coins);
+const winners = state.coins.map((c,i) => c === maxCoins ? i : -1).filter(i => i >= 0);
+const isWinner = i => winners.includes(i);
+const winnerText = winners.map(i => `${i+1}모둠 ${ISLANDS[i].name}`).join(', ');
+
+main.innerHTML = `<div class="mission-header"> <div class="mission-num">🏆 GAME OVER</div> <div class="mission-title">최종 결과</div> </div> <div class="result-box"> <span class="result-emoji">🏆</span> <div class="result-title">SURVIVAL COMPLETE!</div> <div style="font-size:.8rem;color:var(--text2);margin:.5rem 0 1.5rem;font-family:'Noto Sans KR',sans-serif;">모든 모둠이 살아남았어요! 수고했어요!</div> <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.5rem;"> ${ISLANDS.map((isl,i)=>{ const coins = state.coins[i]; const won = isWinner(i); return '<div style="background:var(--surface);border:2px solid '+(won?isl.color:'var(--border)')+';border-radius:8px;padding:.85rem;text-align:center;">' +'<div style="font-size:1.5rem;">'+(won?'👑':isl.emoji)+'</div>' +'<div style="font-family:Bebas Neue,sans-serif;font-size:.9rem;letter-spacing:.08em;color:'+(won?isl.color:'var(--text2)')+';">'+(i+1)+'모둠</div>' +'<div style="font-size:.65rem;color:var(--text3);">'+isl.name+'</div>' +'<div style="font-family:Bebas Neue,sans-serif;font-size:1.8rem;color:'+(won?isl.color:'var(--text)')+';">'+coins+'</div>' +'<div style="font-size:.6rem;color:var(--text3);">🪙 COINS</div>' +'</div>'; }).join('')} </div> <div style="font-family:Bebas Neue,sans-serif;font-size:1.1rem;color:var(--accent2);margin-bottom:.25rem;">전체 획득 코인: ${totalCoins} 🪙</div> <div style="font-size:.78rem;color:var(--accent);font-family:'Noto Sans KR',sans-serif;margin-bottom:1.25rem;"> 🏆 ${winners.length > 1 ? '공동 ' : ''}우승: ${winnerText} (${maxCoins}코인) </div> <button class="btn btn-primary" onclick="showScreen('lobby')" style="width:100%;">← 로비로 돌아가기</button> </div>`;
+}
+
+// ══ FIREBASE SYNC ══
+let myRole = null;   // 'teacher' | 'volcano' | 'arctic' | …
+let myRoom = null;   // 5~8
+let connectedRoles = {};  // tracks who is currently connected
+let fbUnsubscribes = [];
+
+const ROLE_TO_TEAM = { volcano:1, arctic:2, jungle:3, desert:4, ocean:5, dino:6 };
+const TEAM_TO_ROLE = ['volcano','arctic','jungle','desert','ocean','dino'];
+
+// ── 로그인 UI ──
+function updateSelectionVisuals() {
+document.querySelectorAll('.room-btn').forEach(b => b.classList.remove('selected'));
+if(myRoom) { const b = document.getElementById('roomBtn-'+myRoom); if(b) b.classList.add('selected'); }
+document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
+if(myRole) { const b = document.getElementById('roleBtn-'+myRole); if(b) b.classList.add('selected'); }
+}
+
+function selectRoom(n) {
+myRoom = n;
+updateSelectionVisuals();
+updateLoginBtn();
+}
+
+function selectRole(role) {
+myRole = role;
+updateSelectionVisuals();
+updateLoginBtn();
+}
+
+function updateLoginBtn() {
+const btn = document.getElementById('loginBtn');
+const status = document.getElementById('loginStatus');
+if(myRoom && myRole) {
+btn.style.opacity='1'; btn.style.pointerEvents='auto';
+status.textContent = myRoom+'반 · '+(myRole==='teacher'?'👩‍🏫 교사':'학생 ('+myRole+' 섬)');
+status.style.color = 'var(--accent2)';
+} else {
+btn.style.opacity='0.4'; btn.style.pointerEvents='none';
+status.textContent = '방 번호와 역할을 모두 선택하세요';
+status.style.color = 'var(--text3)';
+}
+}
+
+async function doLogin() {
+if(!myRoom || !myRole) return;
+const status = document.getElementById('loginStatus');
+status.textContent = '🔄 연결 중…';
+
+// Firebase 준비 대기 (최대 3초)
+if(!window.firebaseReady) {
+await Promise.race([
+new Promise(r => window.addEventListener('firebaseReady', r, {once:true})),
+new Promise(r => setTimeout(r, 3000))
+]);
+}
+
+const proceed = () => {
+status.textContent = '✅ 접속 완료!';
+setTimeout(() => {
+if(myRole === 'teacher') {
+renderLobby();
+showTeacherDashboard();
+} else {
+const teamNum = ROLE_TO_TEAM[myRole];
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+document.getElementById('screen-mission').classList.add('active');
+hideHUD();
+initMission(teamNum, state.teamMission[teamNum-1] || 1);
+}
+}, 500);
+};
+
+// Firebase 사용 가능하면 동기화, 아니면 로컬로 진행
+if(window.firebaseReady && window.firebaseDB) {
+try {
+const db = window.firebaseDB;
+const roomRef = window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom);
+const snap = await window.firebaseGet(roomRef);
+if(!snap.exists()) {
+await window.firebaseSet(roomRef, {
+state: JSON.parse(JSON.stringify(state)),
+connectedRoles: {},
+createdAt: Date.now()
+});
+} else {
+const remoteState = snap.val().state;
+if(remoteState) { Object.assign(state, remoteState); sanitizeState(); }
+}
+await window.firebaseUpdate(
+window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom+'/connectedRoles'),
+{[myRole]: true}
+);
+fbSubscribe();
+status.textContent = '✅ Firebase 연결 완료!';
+} catch(e) {
+console.warn('Firebase error, proceeding offline:', e);
+status.textContent = '⚠️ 오프라인 모드로 진행';
+}
+} else {
+status.textContent = '⚠️ 오프라인 모드로 진행';
+}
+
+proceed();
+}
+
+// ── 실시간 리스너 ──
+function fbSubscribe() {
+const db = window.firebaseDB;
+// state 변경 감지
+const unsub = window.firebaseOnValue(
+window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom+'/state'),
+(snap) => {
+if(!snap.exists()) return;
+const remote = snap.val();
+// 내가 직접 업데이트한 게 아닌 경우만 적용
+if(remote._lastUpdatedBy && remote._lastUpdatedBy !== myRole) {
+const prev = JSON.stringify(state.coins) + JSON.stringify(state.teamMission) + JSON.stringify(state.moonScores) + (state.globalMission||1) + JSON.stringify(state.completedMission);
+const savedTeam = state.currentTeam;
+const savedMission = state.currentMission;
+// 팀별 상호작용 객체는 shallow copy 보존 (Object.assign이 통째로 덮어씌우는 걸 방지)
+const nestedKeys = ['m6dropped','m6pieces','m4answers','m3match','m2dropped','m2pieces','missionStep'];
+const savedNested = {};
+for(const k of nestedKeys) savedNested[k] = state[k] ? {...state[k]} : {};
+Object.assign(state, remote);
+sanitizeState();
+// remote의 다른 팀 데이터 + 내 최신 로컬 데이터를 병합
+for(const k of nestedKeys) state[k] = Object.assign({}, remote[k]||{}, savedNested[k]);
+state.currentTeam = savedTeam;
+state.currentMission = savedMission;
+const curr = JSON.stringify(state.coins) + JSON.stringify(state.teamMission) + JSON.stringify(state.moonScores) + (state.globalMission||1) + JSON.stringify(state.completedMission);
+if(prev !== curr) {
+refreshCurrentScreen();
+}
+}
+}
+);
+fbUnsubscribes.push(unsub);
+
+// 접속자 변경 감지 (교사용)
+if(myRole === 'teacher') {
+const rolesUnsub = window.firebaseOnValue(
+  window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom+'/connectedRoles'),
+  (snap) => {
+    connectedRoles = snap.exists() ? snap.val() : {};
+    updateTeacherDashboard();
+    updateTeacherMonitor();
+  }
+);
+fbUnsubscribes.push(rolesUnsub);
+}
+
+// 교사 명령 감지 (학생용)
+if(myRole !== 'teacher') {
+const cmdUnsub = window.firebaseOnValue(
+window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom+'/teacherCmd'),
+(snap) => {
+if(!snap.exists()) return;
+const cmd = snap.val();
+if(!cmd || cmd.processed) return;
+if(cmd.target === myRole || cmd.target === 'all') {
+handleTeacherCmd(cmd);
+}
+}
+);
+fbUnsubscribes.push(cmdUnsub);
+}
+}
+
+// ── state를 Firebase에 저장 ──
+async function fbSaveState() {
+if(!myRoom || !window.firebaseReady) return;
+const db = window.firebaseDB;
+const saveData = JSON.parse(JSON.stringify(state));
+saveData._lastUpdatedBy = myRole;
+saveData._updatedAt = Date.now();
+try {
+await window.firebaseUpdate(window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom), { state: saveData });
+} catch(e) { console.warn('Firebase save failed:', e); }
+}
+
+// ── 현재 화면 새로고침 ──
+function refreshCurrentScreen() {
+sanitizeState();
+const ti = state.currentTeam;
+renderSidebar(ti+1);
+renderTeamSelector(ti+1);
+updateMissionProgress();
+if(myRole === 'teacher') { renderLobby(); updateTeacherDashboard(); updateTeacherMonitor(); }
+checkGlobalGate();
+if(waitingForFinal) {
+  if((state.completedMission||[]).every(c => (c||0) >= 8)) {
+    waitingForFinal = false;
+    m7ShowFinal();
+  } else {
+    showM7WaitingFinal();
+  }
+} else if(waitingForMission && canAdvance(waitingForMission.toMission)) {
+  const { ti: wti, toMission } = waitingForMission;
+  waitingForMission = null;
+  initMission(wti+1, toMission);
+} else if(waitingForMission) {
+  showWaitingForTeams(waitingForMission.ti, waitingForMission.toMission);
+}
+}
+
+// ── 교사 명령 처리 ──
+function handleTeacherCmd(cmd) {
+if(cmd.type === 'gotoMission') {
+initMission(ROLE_TO_TEAM[myRole], cmd.missionId);
+} else if(cmd.type === 'skipMission') {
+const teamNum = ROLE_TO_TEAM[myRole];
+const ti = teamNum - 1;
+clearMissionProgress(ti, cmd.missionId);
+state.teamMission[ti] = cmd.missionId;
+waitingForMission = null;
+initMission(teamNum, cmd.missionId);
+} else if(cmd.type === 'forceAllMission') {
+const teamNum = ROLE_TO_TEAM[myRole];
+clearMissionProgress(teamNum - 1, cmd.missionId);
+for(let i=0;i<6;i++) state.teamMission[i] = cmd.missionId;
+state.globalMission = cmd.missionId;
+state.completedMission = Array(6).fill(cmd.missionId - 1);
+state.missionStep = {};
+state.m7text = {};
+state.m7result = {};
+waitingForMission = null;
+initMission(teamNum, cmd.missionId);
+} else if(cmd.type === 'resetRoom') {
+location.reload();
+}
+}
+
+// ── 교사 대시보드 ──
+const MISSION_NAMES = {1:'위치파악',2:'거주지',3:'식량',4:'동료',5:'달기지',6:'위기',7:'신호',8:'탈출'};
+const STEP_LABELS = ['','도전 전','진행중','결과 확인'];
+
+function getMissionStepInfo(ti) {
+const m = state.teamMission[ti] || 1;
+// Mission 1 uses numeric key (ti), others use 'mN_ti' format
+const stepKeyMap = {1: ti, 2:'m2_'+ti, 3:'m3_'+ti, 4:'m4_'+ti, 6:'m5_'+ti, 7:'m6_'+ti, 8:'m7_'+ti};
+const key = stepKeyMap[m];
+if(key === undefined) return { mission: MISSION_NAMES[m]||'?', step:0, label:'진행중' };
+const step = (state.missionStep[key]) || 1;
+return { mission: MISSION_NAMES[m]||'?', step, label: STEP_LABELS[step]||'' };
+}
+
+function showTeacherDashboard() {
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+document.getElementById('screen-teacher').classList.add('active');
+const bb = document.getElementById('teacherBackBtn');
+if(bb) bb.style.display = 'none';
+const sel = document.getElementById('tdForceSelect');
+if(sel && !sel.options.length) {
+[1,2,3,4,5,6,7,8].forEach(m => { const o=document.createElement('option'); o.value=m; o.textContent='미션 '+m+' ('+MISSION_NAMES[m]+')'; sel.appendChild(o); });
+}
+const lbl = document.getElementById('tdRoomLabel');
+if(lbl) lbl.textContent = myRoom+'반';
+updateTeacherDashboard();
+}
+
+function updateTeacherDashboard() {
+const grid = document.getElementById('tdGrid');
+if(!grid) return;
+grid.innerHTML = ISLANDS.map((isl,i) => {
+const info = getMissionStepInfo(i);
+const coins = state.coins[i];
+const completed = (state.completedMission||[])[i]||0;
+const mission = state.teamMission[i]||1;
+const isDone = completed >= mission;
+const fullyDone = completed >= 8;
+const waiting = isDone && !fullyDone;
+const statusColor = fullyDone ? 'var(--success)' : waiting ? 'var(--accent)' : 'var(--accent2)';
+const statusText = fullyDone ? '✅ 완료' : waiting ? '⏸️ 대기중' : '⏳ 진행중';
+const role = TEAM_TO_ROLE[i];
+const isConnected = !!(connectedRoles && connectedRoles[role]);
+const connBadge = isConnected
+  ? '<span style="background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.45);border-radius:10px;padding:.15rem .5rem;font-size:.65rem;color:#22c55e;white-space:nowrap;">🟢 접속중</span>'
+  : '<span style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.15rem .5rem;font-size:.65rem;color:var(--text3);white-space:nowrap;">⚫ 미접속</span>';
+
+// ── 진행률 계산 (전체 8미션 × 3스텝 = 24단위) ──
+const totalUnits = 8 * 3;
+const doneUnits = completed * 3;
+const stepUnits = info.step ? (info.step - 1) : 0;
+const pct = Math.round((doneUnits + stepUnits) / totalUnits * 100);
+// 완료 구간(초록), 현재 미션 진행 구간(주황) 너비
+const greenW = (completed / 8 * 100).toFixed(1);
+const orangeW = info.step ? ((info.step - 1) / 3 / 8 * 100).toFixed(1) : '0';
+
+// ── 8개 미션 진행 도트 ──
+const pips = Array.from({length:8}, (_,m) => {
+  const mn = m+1;
+  const pipColor = mn <= completed ? '#22c55e'
+    : mn === mission ? isl.color
+    : 'rgba(255,255,255,.12)';
+  const glow = mn === mission ? `box-shadow:0 0 5px ${isl.color};` : '';
+  return `<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${pipColor};${glow}flex-shrink:0;"></span>`;
+}).join('');
+
+const stepLabel = info.step
+  ? `<span style="font-size:.58rem;color:var(--text3);margin-left:.3rem;">STEP ${info.step}/3 · ${info.label}</span>`
+  : '';
+
+return `
+<div style="background:var(--surface);border:2px solid ${fullyDone?isl.color:(isConnected?'rgba(34,197,94,.3)':'var(--border)')};border-radius:8px;padding:.85rem;display:flex;flex-direction:column;gap:.45rem;">
+
+  <!-- 헤더 줄 1: 섬 이름 + 접속 배지 -->
+  <div style="display:flex;align-items:center;gap:.4rem;">
+    <span style="font-size:1.4rem;">${isl.emoji}</span>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:.88rem;color:${isl.color};">${i+1}모둠 · ${isl.name}</div>
+    <div style="margin-left:auto;">${connBadge}</div>
+  </div>
+  <!-- 헤더 줄 2: 코인 + 상태 -->
+  <div style="display:flex;align-items:center;gap:.5rem;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--accent);">${coins} 🪙</div>
+    <div style="font-size:.62rem;color:${statusColor};font-weight:bold;margin-left:auto;">${statusText}</div>
+  </div>
+
+  <!-- 현재 미션 + 스텝 텍스트 -->
+  <div style="font-size:.68rem;color:var(--text2);">
+    미션 ${mission} · <span style="color:${isl.color};font-weight:bold;">${info.mission}</span>${stepLabel}
+  </div>
+
+  <!-- 8개 미션 도트 + 진행률 % -->
+  <div style="display:flex;align-items:center;gap:.5rem;">
+    <div style="display:flex;gap:3px;align-items:center;">${pips}</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:.85rem;color:var(--text2);margin-left:auto;">${pct}%</div>
+  </div>
+
+  <!-- 진행률 바 (초록=완료, 주황=현재 스텝) -->
+  <div style="position:relative;height:7px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;">
+    <div style="position:absolute;left:0;top:0;height:100%;width:${greenW}%;background:#22c55e;border-radius:4px 0 0 4px;"></div>
+    <div style="position:absolute;left:${greenW}%;top:0;height:100%;width:${orangeW}%;background:${isl.color};"></div>
+    ${[1,2,3,4,5,6,7].map(m=>`<div style="position:absolute;left:${m/8*100}%;top:0;height:100%;width:1px;background:rgba(0,0,0,.35);"></div>`).join('')}
+  </div>
+  <div style="display:flex;justify-content:space-between;font-size:.5rem;color:var(--text3);">
+    ${['위치','거주','식량','동료','달','위기','신호','탈출'].map((n,m)=>`<span>${n}</span>`).join('')}
+  </div>
+
+  <!-- 버튼: 화면 보기 + 스킵 -->
+  <div style="display:flex;gap:.35rem;margin-top:.1rem;">
+    <button onclick="tdViewTeam(${i})"
+      style="flex:1;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);border-radius:4px;padding:.3rem;font-size:.65rem;color:var(--accent2);cursor:pointer;">📺 화면 보기</button>
+    <select id="tdSkipSel-${i}" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem;font-size:.65rem;color:var(--text);">
+      ${[1,2,3,4,5,6,7,8].map(m=>`<option value="${m}"${state.teamMission[i]===m?' selected':''}>미션${m}</option>`).join('')}
+    </select>
+    <button onclick="tdSkipTeam(${i})"
+      style="background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.25);border-radius:4px;padding:.3rem .5rem;font-size:.65rem;color:var(--accent);cursor:pointer;">⏭ 스킵</button>
+  </div>
+
+</div>`;
+}).join('');
+}
+
+function tdViewTeam(i) {
+showScreen('mission');
+initMission(i+1, state.teamMission[i]||1);
+// Show persistent back-to-dashboard button in the HUD area
+ensureTeacherBackBtn();
+}
+
+function ensureTeacherBackBtn() {
+if(myRole !== 'teacher') return;
+if(document.getElementById('teacherBackBtn')) return;
+const btn = document.createElement('button');
+btn.id = 'teacherBackBtn';
+btn.textContent = '📊 대시보드';
+btn.style.cssText = 'position:fixed;top:.5rem;left:50%;transform:translateX(-50%);z-index:300;background:var(--accent);color:#fff;border:none;border-radius:20px;padding:.35rem 1rem;font-size:.72rem;cursor:pointer;font-family:"Space Mono",monospace;box-shadow:0 2px 8px rgba(249,115,22,.4);';
+btn.onclick = showTeacherDashboard;
+document.body.appendChild(btn);
+}
+
+function tdForceAll() {
+const sel = document.getElementById('tdForceSelect');
+if(!sel) return;
+const missionId = parseInt(sel.value);
+if(!confirm(`모든 모둠을 미션 ${missionId}(${MISSION_NAMES[missionId]})로 강제 이동할까요?`)) return;
+teacherForceAll(missionId);
+setTimeout(()=>updateTeacherDashboard(), 300);
+}
+
+async function tdSkipTeam(i) {
+const sel = document.getElementById('tdSkipSel-'+i);
+if(!sel) return;
+const missionId = parseInt(sel.value);
+const role = TEAM_TO_ROLE[i];
+if(missionId <= (state.teamMission[i] || 1)) applyRollback(i, missionId);
+state.teamMission[i] = missionId;
+state.completedMission = state.completedMission || [0,0,0,0,0,0];
+state.completedMission[i] = Math.max(state.completedMission[i]||0, missionId-1);
+state.globalMission = Math.max(state.globalMission||1, missionId);
+await fbSaveState();
+if(window.firebaseReady) {
+  await window.firebaseSet(
+    window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom+'/teacherCmd'),
+    { type:'skipMission', missionId, target:role, ts:Date.now(), processed:false }
+  );
+}
+updateTeacherDashboard();
+updateTeacherMonitor();
+}
+
+// ── 교사 제어 패널 ──
+function showTeacherPanel() {
+if(myRole !== 'teacher') return;
+const existing = document.getElementById('teacherPanel');
+if(existing) { existing.style.display = existing.style.display==='none'?'block':'none'; if(existing.style.display!=='none') updateTeacherMonitor(); return; }
+
+const div = document.createElement('div');
+div.id = 'teacherPanel';
+div.style.cssText = 'position:fixed;bottom:1rem;right:1rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;z-index:200;width:380px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.5);';
+div.innerHTML = `
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.1em;color:var(--accent);">👩‍🏫 교사 제어 패널</div>
+    <button onclick="document.getElementById('teacherPanel').style.display='none'" style="background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:1rem;line-height:1;">✕</button>
+  </div>
+
+  <div style="font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem;">📊 실시간 모둠 현황</div>
+  <div id="teacherMonitor" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem;margin-bottom:.75rem;"></div>
+
+  <div style="font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem;">🚀 전체 모둠 강제 이동</div>
+  <div style="display:flex;gap:.4rem;margin-bottom:.75rem;align-items:center;">
+    <select id="forceAllSelect" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.35rem;font-size:.72rem;color:var(--text);">
+      ${[1,2,3,4,5,6,7,8].map(m=>`<option value="${m}">미션 ${m}</option>`).join('')}
+    </select>
+    <button onclick="teacherForceAll(parseInt(document.getElementById('forceAllSelect').value))"
+      style="background:var(--accent);border:none;border-radius:4px;padding:.35rem .85rem;font-size:.72rem;color:#fff;cursor:pointer;white-space:nowrap;">
+      전체 이동 →
+    </button>
+  </div>
+
+  <div style="font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem;">팀별 미션 스킵</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.35rem;margin-bottom:.35rem;">
+    ${TEAM_TO_ROLE.map((role,i)=>`
+    <select id="skipSelect-${i}" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem;font-size:.7rem;color:var(--text);">
+      ${[1,2,3,4,5,6,7,8].map(m=>`<option value="${m}" ${state.teamMission[i]===m?'selected':''}>미션${m}</option>`).join('')}
+    </select>`).join('')}
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.35rem;margin-bottom:.75rem;">
+    ${TEAM_TO_ROLE.map((role,i)=>`
+    <button onclick="teacherSkip(${i})"
+      style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.68rem;color:var(--text2);cursor:pointer;">
+      ${ISLANDS[i].emoji} ${i+1}모둠 스킵
+    </button>`).join('')}
+  </div>
+
+  <div style="display:flex;gap:.4rem;">
+    <button onclick="teacherSyncNow()" style="flex:1;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);border-radius:4px;padding:.4rem;font-size:.7rem;color:var(--accent2);cursor:pointer;">🔄 동기화</button>
+    <button onclick="teacherResetRoom()" style="flex:1;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:4px;padding:.4rem;font-size:.7rem;color:var(--danger);cursor:pointer;">🗑️ 방 초기화</button>
+  </div>`;
+document.body.appendChild(div);
+updateTeacherMonitor();
+}
+
+function updateTeacherMonitor() {
+const panel = document.getElementById('teacherMonitor');
+if(!panel) return;
+const MN = {0:'시작전',1:'위치파악',2:'거주지',3:'식량',4:'동료',5:'달기지',6:'위기',7:'신호',8:'탈출'};
+panel.innerHTML = ISLANDS.map((isl, i) => {
+  const mission = state.teamMission[i] || 1;
+  const completed = (state.completedMission || [])[i] || 0;
+  const coins = state.coins[i];
+  const isDone = completed >= mission;
+  const fullyDone = completed >= 8;
+  const isWaiting = isDone && !fullyDone;
+  return `
+    <div style="background:var(--bg);border:2px solid ${fullyDone?isl.color:'rgba(255,255,255,.08)'};border-radius:6px;padding:.5rem;text-align:center;">
+      <div style="font-size:1.1rem;">${isl.emoji}</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:.78rem;color:${isl.color};">${i+1}모둠</div>
+      <div style="font-size:.58rem;color:var(--text3);margin:.1rem 0;">${MN[mission]||'?'}</div>
+      <div style="font-size:.65rem;color:var(--accent);">🪙 ${coins}</div>
+      <div style="font-size:.58rem;color:${fullyDone?'var(--success)':isWaiting?'var(--accent)':'var(--accent2)'};margin-top:.1rem;">
+        ${fullyDone?'✅ 완료':isWaiting?'⏸️ 대기':'⏳ 진행중'}
+      </div>
+    </div>`;
+}).join('');
+}
+
+async function teacherForceAll(missionId) {
+if(!missionId || missionId < 1 || missionId > 8) return;
+for(let i=0;i<6;i++) {
+  if(missionId <= (state.teamMission[i] || 1)) applyRollback(i, missionId);
+  state.teamMission[i] = missionId;
+}
+state.globalMission = missionId;
+state.completedMission = Array(6).fill(missionId - 1);
+state.missionStep = {};
+state.m7text = {};
+state.m7result = {};
+await fbSaveState();
+if(window.firebaseReady) {
+  await window.firebaseSet(
+    window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom+'/teacherCmd'),
+    { type:'forceAllMission', missionId, target:'all', ts:Date.now(), processed:false }
+  );
+}
+renderLobby();
+updateTeacherMonitor();
+updateTeacherDashboard();
+}
+
+async function teacherSkip(ti) {
+const sel = document.getElementById('skipSelect-'+ti);
+if(!sel) return;
+const missionId = parseInt(sel.value);
+const role = TEAM_TO_ROLE[ti];
+if(missionId <= (state.teamMission[ti] || 1)) applyRollback(ti, missionId);
+state.teamMission[ti] = missionId;
+// 스킵된 팀의 완료 기록 & 글로벌 게이트 조정
+state.completedMission = state.completedMission || [0,0,0,0,0,0];
+state.completedMission[ti] = Math.max(state.completedMission[ti] || 0, missionId - 1);
+state.globalMission = Math.max(state.globalMission || 1, missionId);
+await fbSaveState();
+// 해당 팀에게 명령 전송
+if(window.firebaseReady) {
+await window.firebaseSet(
+window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom+'/teacherCmd'),
+{ type:'skipMission', target:role, missionId, ts:Date.now(), processed:false }
+);
+}
+renderLobby();
+updateTeacherMonitor();
+alert(ISLANDS[ti].name + ' → 미션'+missionId+'로 스킵!');
+}
+
+async function teacherSyncNow() {
+await fbSaveState();
+alert('동기화 완료!');
+}
+
+async function teacherResetRoom() {
+if(!confirm('방 데이터를 초기화할까요? 모든 진행 상황이 사라져요.')) return;
+if(window.firebaseReady) {
+  // 학생 탭에 먼저 리로드 명령 전송 후 방 삭제
+  await window.firebaseSet(
+    window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom+'/teacherCmd'),
+    { type:'resetRoom', target:'all', ts:Date.now(), processed:false }
+  );
+  await new Promise(r => setTimeout(r, 1200));
+  await window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom));
+}
+location.reload();
+}
+
+// ── 미션 7 응답 리뷰 오버레이 ──
+function showM7Review() {
+  let ov = document.getElementById('m7ReviewOverlay');
+  if(ov) { ov.remove(); }
+  ov = document.createElement('div');
+  ov.id = 'm7ReviewOverlay';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.85);display:flex;flex-direction:column;overflow:hidden;';
+
+  const GRADE_LABEL = { perfect:'✅ 필수내용+발화', partial:'⚡ 필수내용만', miss:'❌ 미포함' };
+  const GRADE_COLOR = { perfect:'#22c55e', partial:'var(--accent)', miss:'var(--danger)' };
+
+  const cards = ISLANDS.map((isl, i) => {
+    const ti = i;
+    const m7d = MISSION7_DATA[ti];
+    const text = (state.m7text && state.m7text[ti]) || '';
+    const result = (state.m7result && state.m7result[ti]) || null;
+    const grade = result ? result.grade : null;
+    const coins = result ? result.coins : null;
+    const breakdown = result ? (result.breakdown || []) : [];
+
+    const gradeHtml = grade
+      ? `<span style="background:${GRADE_COLOR[grade]}22;border:1px solid ${GRADE_COLOR[grade]}66;border-radius:10px;padding:.15rem .6rem;font-size:.68rem;color:${GRADE_COLOR[grade]};white-space:nowrap;">${GRADE_LABEL[grade]||grade}</span>`
+      : '<span style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.15rem .6rem;font-size:.68rem;color:var(--text3);">미채점</span>';
+
+    const coinsHtml = coins != null
+      ? `<span style="font-size:.68rem;color:#fbbf24;">🪙 ${coins}코인</span>`
+      : '';
+
+    const textHtml = text
+      ? `<div style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;padding:.75rem;font-size:.78rem;color:var(--text);line-height:1.8;white-space:pre-wrap;font-family:'Noto Sans KR',sans-serif;max-height:160px;overflow-y:auto;">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`
+      : '<div style="background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.1);border-radius:6px;padding:.75rem;font-size:.78rem;color:var(--text3);text-align:center;">미제출</div>';
+
+    const breakdownHtml = breakdown.length
+      ? `<div style="font-size:.65rem;color:var(--text3);margin-top:.4rem;line-height:1.6;">${breakdown.map(b=>String(b).replace(/</g,'&lt;').replace(/>/g,'&gt;')).join(' · ')}</div>`
+      : '';
+
+    return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.85rem;display:flex;flex-direction:column;gap:.5rem;">
+      <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;">
+        <span style="font-size:1rem;">${isl.emoji}</span>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:.05em;color:${isl.color};">${isl.name}</span>
+        ${gradeHtml}
+        ${coinsHtml}
+      </div>
+      <div style="font-size:.65rem;color:var(--text3);">필수: <span style="color:var(--text2);">${m7d.keyKr}</span> (${m7d.warning})</div>
+      ${textHtml}
+      ${breakdownHtml}
+    </div>`;
+  }).join('');
+
+  ov.innerHTML = `
+    <div style="display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.1em;color:#a855f7;">📝 미션 8 · 탈출 안내문 (모둠별 응답)</div>
+      <div style="flex:1;font-size:.68rem;color:var(--text3);">실시간 반영 — 채점 후 결과 포함</div>
+      <button onclick="document.getElementById('m7ReviewOverlay').remove()" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);border-radius:4px;padding:.3rem .8rem;font-size:.72rem;color:var(--danger);cursor:pointer;">✕ 닫기</button>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:1rem;">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;">${cards}</div>
+    </div>`;
+
+  document.body.appendChild(ov);
+}
+
+// ── 학생 역할일 때 다른 팀 제어 비활성화
+function isMyTeam(teamNum) {
+if(myRole === 'teacher') return true;
+if(!myRole) return true;
+return ROLE_TO_TEAM[myRole] === teamNum;
+}
+
+function showTeacherBtn() {
+if(myRole !== 'teacher') return;
+if(document.getElementById('teacherFloatBtn')) return;
+const btn = document.createElement('button');
+btn.id = 'teacherFloatBtn';
+btn.textContent = '👩‍🏫';
+btn.title = '교사 제어 패널';
+btn.style.cssText = 'position:fixed;bottom:1rem;left:1rem;z-index:200;background:var(--accent);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 12px rgba(249,115,22,.4);';
+btn.onclick = showTeacherPanel;
+document.body.appendChild(btn);
+}
+
+// ══ INIT ══
+// URL에 ?teacher=sos2024 있으면 교사 로그인 버튼 표시
+(function() {
+const params = new URLSearchParams(window.location.search);
+if(params.get('teacher') === 'sos2024') {
+const box = document.getElementById('teacherLoginBox');
+if(box) box.style.display = 'block';
+}
+})();
+renderFloatBg();
+document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+document.getElementById('screen-login').classList.add('active');
+
+// ── BGM (YouTube IFrame API) ──
+const BGM_VIDEO_ID = 'EUer-Tto1ZA';
+let ytPlayer = null;
+let bgmMuted = true;  // starts muted for autoplay policy
+
+function onYouTubeIframeAPIReady() {
+  ytPlayer = new YT.Player('ytPlayerEl', {
+    videoId: BGM_VIDEO_ID,
+    playerVars: {
+      autoplay: 1,
+      loop: 1,
+      playlist: BGM_VIDEO_ID,
+      controls: 0,
+      disablekb: 1,
+      fs: 0,
+      rel: 0,
+      modestbranding: 1,
+      mute: 1,
+    },
+    events: {
+      onReady(e) {
+        e.target.mute();
+        e.target.setVolume(40);
+        e.target.playVideo();
+      }
+    }
+  });
+}
+
+function bgmToggle() {
+  if(!ytPlayer || typeof ytPlayer.isMuted !== 'function') return;
+  const btn = document.getElementById('bgmBtn');
+  if(bgmMuted) {
+    ytPlayer.unMute();
+    ytPlayer.setVolume(40);
+    bgmMuted = false;
+    if(btn) { btn.textContent = '🔊'; btn.title = '배경음악 끄기'; }
+  } else {
+    ytPlayer.mute();
+    bgmMuted = true;
+    if(btn) { btn.textContent = '🔇'; btn.title = '배경음악 켜기'; }
+  }
+}
+
+// BGM 버튼 + 숨겨진 플레이어 생성
+(function() {
+  // 숨겨진 플레이어 컨테이너 (1×1px — 음성만 사용)
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'position:fixed;bottom:0;right:0;width:1px;height:1px;overflow:hidden;pointer-events:none;z-index:1;';
+  wrap.innerHTML = '<div id="ytPlayerEl"></div>';
+  document.body.appendChild(wrap);
+
+  // 토글 버튼
+  const btn = document.createElement('button');
+  btn.id = 'bgmBtn';
+  btn.textContent = '🔇';
+  btn.title = '배경음악 켜기';
+  btn.style.cssText = 'position:fixed;bottom:1rem;right:1rem;z-index:260;background:rgba(10,14,26,.85);color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:50%;width:40px;height:40px;font-size:1.1rem;cursor:pointer;backdrop-filter:blur(6px);transition:border-color .2s;';
+  btn.onmouseenter = () => btn.style.borderColor = 'rgba(249,115,22,.7)';
+  btn.onmouseleave = () => btn.style.borderColor = 'rgba(255,255,255,.18)';
+  btn.onclick = bgmToggle;
+  document.body.appendChild(btn);
+})();
+</script>
+
+</body>
+</html>
