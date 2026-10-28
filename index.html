@@ -200,6 +200,16 @@ text-align:left;
 .ts-btn:hover { border-color:var(--text3); color:var(--text); }
 .ts-btn.active { border-color:var(--btn-color,var(--accent)); color:var(--btn-color,var(--accent)); background:rgba(255,255,255,.03); }
 
+/* 단계별 힌트 */
+.hint-box { margin:.75rem 0 1rem; display:flex; flex-direction:column; gap:.4rem; align-items:flex-start; }
+.hint-btn { background:rgba(250,204,21,.1); border:1px solid rgba(250,204,21,.4); color:#facc15; border-radius:6px; padding:.45rem .9rem; font-size:.78rem; font-family:'Noto Sans KR',sans-serif; cursor:pointer; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+.hint-btn:hover { background:rgba(250,204,21,.18); }
+.hint-count { font-family:'Space Mono',monospace; font-size:.68rem; opacity:.75; margin-left:.25rem; }
+.hint-item { display:flex; gap:.55rem; align-items:flex-start; width:100%; box-sizing:border-box; background:rgba(250,204,21,.06); border-left:3px solid #facc15; border-radius:4px; padding:.5rem .75rem; font-size:.8rem; line-height:1.65; color:var(--text2); font-family:'Noto Sans KR',sans-serif; }
+.hint-item strong { color:var(--text); }
+.hint-num { flex-shrink:0; width:1.25rem; height:1.25rem; border-radius:50%; background:#facc15; color:#111; font-size:.68rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-top:.1rem; }
+.hint-done { font-size:.7rem; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
+
 /* 교사 대시보드: 휴대폰에서는 상단 버튼을 줄바꿈하고 모둠 카드를 1~2열로 */
 @media(max-width:768px) {
 .td-topbar { flex-wrap:wrap; }
@@ -653,6 +663,7 @@ window.GRAMMAR_SETS['wh-to'] = {
   // ── MISSION 1 · 위치 파악: 빈칸에 들어갈 카드 고르기 ──
   m1: {
     typeLabel: '의문사 카드 선택',
+    hints: ["빈칸 뒤 <strong>to go</strong>를 보세요. '___ to go' = '~로 가야 할지'예요.", "지금 모르는 것은 <strong>장소(방향)</strong>예요. 장소를 묻는 의문사는 무엇일까요?", "정답은 <strong>W</strong>로 시작하고 다섯 글자예요."],
     stepLabel: '올바른 의문사를 선택하세요',
     promptBefore: '"I don\'t know ',
     promptAfter: ' to go. Help me!"',
@@ -671,6 +682,7 @@ window.GRAMMAR_SETS['wh-to'] = {
   // ── MISSION 2 · 거주지 짓기: 문장 조각 배열 ──
   m2: {
     typeLabel: '문장 조각 배열',
+    hints: ["<strong>tell us</strong> 다음에 '무엇을' 알려 달라는지가 와요.", "<strong>의문사 + to + 동사원형</strong>은 한 덩어리예요: how → to → build", "첫 세 조각: <strong>tell → us → how</strong>"],
     promptKr: '어떻게 쉼터를 지어야 할지 물어보세요! (how to build)',
     answer: ['tell', 'us', 'how', 'to', 'build', 'a shelter'],
     wrongHint: '"tell us ___ to ___ a shelter" 형태예요.',
@@ -679,6 +691,7 @@ window.GRAMMAR_SETS['wh-to'] = {
   // ── MISSION 3 · 식량 구하기: 왼쪽 카드와 오른쪽 카드 짝짓기 ──
   m3: {
     typeLabel: '의문사-동사 매칭',
+    hints: ["오른쪽 동사구를 먼저 읽고, '무엇을 / 어디서 / 어떻게' 중 무엇이 자연스러운지 생각해요.", "<strong>찾다(find)</strong>는 장소와, <strong>요리하다(cook)</strong>는 방법과 어울려요.", "<strong>WHAT → to eat</strong>부터 연결해 보세요."],
     stepLabel: '의문사와 동사를 올바르게 매칭하세요 (3개 모두)',
     promptBefore: '"We have no idea ',
     promptAfter: '. Help me!"',
@@ -709,6 +722,7 @@ window.GRAMMAR_SETS['wh-to'] = {
   // ── MISSION 4 · 동료 만나기: 문장 OX 판단 ──
   m4: {
     typeLabel: 'OX 판단',
+    hints: ["올바른 형태는 <strong>의문사 + to + 동사원형</strong>이에요.", "<strong>why</strong>는 to부정사와 함께 쓰지 않아요.", "'what <strong>should we</strong> eat'처럼 의문사 뒤에 주어·조동사가 오면 to부정사 형태가 아니에요."],
     instructionKr: '각 문장이 올바른 의문사+to부정사인지 판단하세요.',
     passCount: 4,
     items: [
@@ -730,6 +744,7 @@ window.GRAMMAR_SETS['wh-to'] = {
     // trap: true인 표현은 틀린 표현 (입력하면 HP 감소, 바닥에 떨어져도 괜찮음)
     trapPrefixes: ['why'],
     trapMessage: '⚠️ WHY 입력! HP -1',
+    hints: ["<strong>의문사 + to + 동사원형</strong> 형태만 입력하세요 (예: where to go).", "<strong>WHY</strong>로 시작하는 운석은 무시하세요! 바닥에 떨어져도 HP가 줄지 않아요."],
     phrases: [
       { text: 'what to do', trap: false },
       { text: 'where to go', trap: false },
@@ -756,6 +771,7 @@ window.GRAMMAR_SETS['wh-to'] = {
   // ── MISSION 5 · 위기 대응: 7초 암기 후 릴레이 발화 (섬별 문장) ──
   m5: {
     typeLabel: '7초 암기 후 릴레이 발화',
+    hints: ["문장을 두 덩어리로 나눠서 모둠원끼리 나눠 외워요.", "핵심 표현 <strong>make sure to + 의문사 + to + 동사</strong>를 먼저 기억하세요."],
     keyPrefix: 'make sure to + ',
     memoExampleA: 'The lava is flowing! Make sure to decide',
     memoExampleB: 'where to run before it is too late!',
@@ -789,6 +805,8 @@ window.GRAMMAR_SETS['wh-to'] = {
         teamB_pieces2: ['Make', 'sure', 'to decide', 'where', 'to aim', 'it', '!'],
         teamB_correct2: ['Make', 'sure', 'to decide', 'where', 'to aim', 'it', '!'],
         teamB_full: 'It is important to stand in an open area. Make sure to decide where to aim it!',
+        hintsA: ["질문은 <strong>Do you know ...?</strong>로 시작해요.", "<strong>how to use</strong>는 한 조각이에요. know 바로 뒤에 와요.", "마지막은 <strong>it → ?</strong> 순서예요."],
+        hintsB: ["문장 1은 <strong>It is important to ...</strong>, 문장 2는 <strong>Make sure to ...</strong>로 시작해요.", "문장 2: decide 뒤에 <strong>where → to aim</strong>이 와요.", "문장 1 첫 네 조각: <strong>It → is → important → to stand</strong>"],
       },
       {
         item: '야자나무 횃불 🔦', itemEn: 'a palm tree torch',
@@ -801,6 +819,8 @@ window.GRAMMAR_SETS['wh-to'] = {
         teamB_pieces2: ['Make', 'sure', 'to decide', 'when', 'to light', 'it', '!'],
         teamB_correct2: ['Make', 'sure', 'to decide', 'when', 'to light', 'it', '!'],
         teamB_full: 'It is important to find the tallest rock. Make sure to decide when to light it!',
+        hintsA: ["질문은 <strong>Do you know ...?</strong>로 시작해요.", "<strong>where to place</strong>는 한 조각이에요. know 바로 뒤에 와요.", "마지막은 <strong>it → ?</strong> 순서예요."],
+        hintsB: ["문장 1은 <strong>It is important to ...</strong>, 문장 2는 <strong>Make sure to ...</strong>로 시작해요.", "문장 2: decide 뒤에 <strong>when → to light</strong>가 와요.", "문장 1 첫 네 조각: <strong>It → is → important → to find</strong>"],
       },
       {
         item: '조개껍데기 나팔 🐚', itemEn: 'a shell horn',
@@ -813,6 +833,8 @@ window.GRAMMAR_SETS['wh-to'] = {
         teamB_pieces2: ['Make', 'sure', 'to decide', 'how long', 'to blow', 'it', '!'],
         teamB_correct2: ['Make', 'sure', 'to decide', 'how long', 'to blow', 'it', '!'],
         teamB_full: 'It is important to take a deep breath before you blow. Make sure to decide how long to blow it!',
+        hintsA: ["질문은 <strong>Do you know ...?</strong>로 시작해요.", "<strong>how to use</strong>는 한 조각이에요. know 바로 뒤에 와요.", "마지막은 <strong>it → ?</strong> 순서예요."],
+        hintsB: ["문장 1은 <strong>It is important to ...</strong>, 문장 2는 <strong>Make sure to ...</strong>로 시작해요.", "문장 2: decide 뒤에 <strong>how long → to blow</strong>가 와요.", "문장 1 첫 네 조각: <strong>It → is → important → to take</strong>"],
       },
     ],
   },
@@ -820,6 +842,7 @@ window.GRAMMAR_SETS['wh-to'] = {
   // ── MISSION 7 · 최종 탈출: 자유 작문 + 자동 체크 ──
   m7: {
     typeLabel: '자유 작문 + 발화',
+    hints: ["템플릿의 빈칸부터 채워 보세요. 한 문장에 <strong>의문사 + to부정사</strong> 하나씩!", "필수 안내 내용은 위 카드의 <strong>힌트 표현</strong>을 그대로 써도 돼요.", "예: <em>We don't know where to go. Please tell us how to land.</em>"],
     // 섬별 필수 안내 내용
     islands: [
       { island: 'volcano', key: 'where to land', keyKr: '착륙 장소', warning: '용암 때문에', hint: 'where to land safely away from lava' },
@@ -863,6 +886,7 @@ window.GRAMMAR_SETS['participle'] = {
 
   m1: {
     typeLabel: '분사 카드 선택',
+    hints: ["빈칸 앞의 <strong>a path(길)</strong>를 뒤에서 꾸미는 말이 필요해요.", "길이 언덕으로 <strong>'이어지는'</strong> 거예요. 능동(~하는)일까요, 수동(~된)일까요?", "능동이면 <strong>-ing</strong> 형태예요."],
     stepLabel: '빈칸에 알맞은 형태를 선택하세요',
     promptBefore: '"I see a path ',
     promptAfter: ' to the hill. Where does it go?"',
@@ -880,6 +904,7 @@ window.GRAMMAR_SETS['participle'] = {
 
   m2: {
     typeLabel: '문장 조각 배열',
+    hints: ["<strong>show us</strong> 다음에 '무엇을' 보여 달라는지가 와요.", "쉼터는 나뭇잎으로 <strong>'만들어진'</strong> 것 → 과거분사 <strong>made</strong>", "첫 세 조각: <strong>show → us → a shelter</strong>"],
     promptKr: '나뭇잎으로 만든 쉼터를 보여 달라고 하세요! (a shelter made of ~)',
     answer: ['show', 'us', 'a shelter', 'made', 'of', 'leaves'],
     wrongHint: '"show us a shelter ___ of leaves" 형태예요. 쉼터는 "만들어진" 것!',
@@ -887,6 +912,7 @@ window.GRAMMAR_SETS['participle'] = {
 
   m3: {
     typeLabel: '명사-분사구 매칭',
+    hints: ["분사구를 읽고, 그 행동을 '하는' 것(또는 '당하는' 것)이 무엇인지 생각해요.", "헤엄치는 것(swimming)은? 나무에 매달린 것(hanging)은?", "<strong>FISH → swimming near the shore</strong>부터 연결해 보세요."],
     stepLabel: '명사와 그 명사를 꾸미는 분사구를 연결하세요 (3개 모두)',
     promptBefore: '"We need ',
     promptAfter: '. Help me!"',
@@ -915,6 +941,7 @@ window.GRAMMAR_SETS['participle'] = {
 
   m4: {
     typeLabel: 'OX 판단',
+    hints: ["명사가 <strong>'~하는'</strong> 것이면 -ing, <strong>'~된'</strong> 것이면 과거분사(p.p.)예요.", "편지는 '쓰인' 것, 사람들은 '사는' 것이에요.", "'The girl <strong>wears</strong> a red hat <strong>is</strong>…'처럼 동사가 두 개면 틀린 문장이에요."],
     instructionKr: '각 문장에서 명사를 꾸미는 분사가 올바른지 판단하세요.',
     passCount: 4,
     items: [
@@ -934,6 +961,7 @@ window.GRAMMAR_SETS['participle'] = {
     examples: '예: a girl singing / a letter written / a bird flying / a house built (띄어쓰기 포함해서 입력)',
     trapPrefixes: [],
     trapMessage: '⚠️ 동사원형은 명사를 꾸밀 수 없어요! HP -1',
+    hints: ["<strong>명사 + 분사</strong> 형태만 입력하세요 (예: a girl singing).", "'a boy run'처럼 <strong>동사원형</strong>이 붙은 운석은 무시하세요!"],
     phrases: [
       { text: 'a girl singing', trap: false },
       { text: 'a letter written', trap: false },
@@ -959,6 +987,7 @@ window.GRAMMAR_SETS['participle'] = {
 
   m5: {
     typeLabel: '7초 암기 후 릴레이 발화',
+    hints: ["문장을 두 덩어리로 나눠서 모둠원끼리 나눠 외워요.", "각 문장에서 <strong>명사 + 분사구</strong>를 먼저 기억하세요."],
     keyPrefix: '',
     memoExampleA: 'Look at the lava flowing toward us!',
     memoExampleB: 'Run to the rock standing on the hill!',
@@ -990,6 +1019,8 @@ window.GRAMMAR_SETS['participle'] = {
         teamB_pieces2: ['Point', 'the light', 'reflected', 'by', 'it', 'at', 'the plane', '!'],
         teamB_correct2: ['Point', 'the light', 'reflected', 'by', 'it', 'at', 'the plane', '!'],
         teamB_full: 'Yes, it is a tool loved by sailors. Point the light reflected by it at the plane!',
+        hintsA: ["질문은 <strong>Is this ...?</strong>로 시작해요.", "거울은 신호에 <strong>'사용되는'</strong> 것 → a mirror used", "마지막은 <strong>for → signals → ?</strong> 순서예요."],
+        hintsB: ["두 문장 모두 <strong>명사 + 과거분사</strong> 표현이 있어요.", "문장 1: 선원들에게 '사랑받는' 도구 → <strong>a tool loved by sailors</strong>", "문장 2 첫 세 조각: <strong>Point → the light → reflected</strong>"],
       },
       {
         item: '야자나무 횃불 🔦', itemEn: 'a palm tree torch',
@@ -1002,6 +1033,8 @@ window.GRAMMAR_SETS['participle'] = {
         teamB_pieces2: ['People', 'flying', 'above', 'us', 'will', 'see', 'the fire', '!'],
         teamB_correct2: ['People', 'flying', 'above', 'us', 'will', 'see', 'the fire', '!'],
         teamB_full: 'Light it on the rock standing near the beach. People flying above us will see the fire!',
+        hintsA: ["질문은 <strong>Do you know ...?</strong>로 시작해요.", "바람으로부터 <strong>'숨겨진'</strong> 장소 → a place hidden", "마지막은 <strong>from → the wind → ?</strong> 순서예요."],
+        hintsB: ["문장 1은 <strong>Light it on ...</strong>, 문장 2는 <strong>People ...</strong>로 시작해요.", "바위가 '서 있는'(standing), 사람들이 '날고 있는'(flying) 것 → <strong>-ing</strong>", "문장 2 첫 세 조각: <strong>People → flying → above</strong>"],
       },
       {
         item: '조개껍데기 나팔 🐚', itemEn: 'a shell horn',
@@ -1014,12 +1047,15 @@ window.GRAMMAR_SETS['participle'] = {
         teamB_pieces2: ['The sailors', 'looking', 'for', 'us', 'will', 'come', '!'],
         teamB_correct2: ['The sailors', 'looking', 'for', 'us', 'will', 'come', '!'],
         teamB_full: 'Blow it toward the boat sailing near us. The sailors looking for us will come!',
+        hintsA: ["질문은 <strong>Can you hear ...?</strong>로 시작해요.", "소리가 <strong>'나오는'</strong> 것 → the sound coming", "마지막은 <strong>from → it → ?</strong> 순서예요."],
+        hintsB: ["문장 1은 <strong>Blow it toward ...</strong>, 문장 2는 <strong>The sailors ...</strong>로 시작해요.", "배가 '항해하는'(sailing), 선원들이 '찾고 있는'(looking for) 것 → <strong>-ing</strong>", "문장 2 첫 세 조각: <strong>The sailors → looking → for</strong>"],
       },
     ],
   },
 
   m7: {
     typeLabel: '자유 작문 + 발화',
+    hints: ["템플릿 빈칸을 <strong>명사 + 분사구</strong>로 채워 보세요.", "필수 안내 내용은 위 카드의 <strong>힌트 표현</strong>을 그대로 써도 돼요.", "예: <em>We are the survivors waiting for you. Land on the beach covered with sand.</em>"],
     islands: [
       { island: 'volcano', key: 'the field located far from the lava', keyKr: '착륙 장소', warning: '용암 때문에', hint: 'the field located far from the lava' },
       { island: 'arctic', key: 'the bear hiding behind the ice', keyKr: '피해야 할 것', warning: '북극곰 때문에', hint: 'the polar bear hiding behind the ice' },
@@ -1081,6 +1117,11 @@ function validateGrammarSet(s) {
     }
     if(!isArr(s.m7.islands, 6)) return '미션7: 섬 6개 안내가 필요해요';
     if(!isArr(s.m7.target.patterns) || !isArr(s.m7.bonus, 2)) return '미션7: 목표 표현 / 보너스 2개 확인';
+    const hintLists = ['m1','m2','m3','m4','moon','m5','m7'].map(k => s[k].hints)
+      .concat(...s.m6.pairs.map(p => [p.hintsA, p.hintsB]));
+    for(const h of hintLists) {
+      if(h != null && !(Array.isArray(h) && h.length <= 3 && h.every(isStr))) return '힌트는 1~3개의 문장 목록이어야 해요';
+    }
   } catch(e) {
     return '빠진 항목이 있어요 (' + e.message + ')';
   }
@@ -1107,12 +1148,61 @@ function applyGrammarSet(set) {
 
 // 문법이 바뀌면 이전 문법으로 섞어 둔 조각·답안은 버린다 (진행 단계와 코인은 유지)
 function clearGrammarCaches() {
-  ['m2pieces','m2dropped','m3match','m4answers','m6pieces','m6dropped'].forEach(k => { delete state[k]; });
+  ['m2pieces','m2dropped','m3match','m4answers','m6pieces','m6dropped','hints'].forEach(k => { delete state[k]; });
 }
 
 // 인라인 onclick 안에 문자열을 안전하게 넣기 (따옴표·어포스트로피가 있어도 깨지지 않게)
 function jsArg(s) {
   return JSON.stringify(String(s)).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+}
+
+// ══ 단계별 힌트 ══
+// 💡 버튼을 누를 때마다 다음 힌트가 하나씩 열린다 (코인 차감 없음).
+// 힌트 내용은 문법 세트의 각 미션 hints (미션6은 짝꿍 세트의 hintsA / hintsB).
+// 연 개수는 state.hints[모둠][미션키]에 저장돼 화면이 다시 그려져도 유지되고 교사도 볼 수 있다.
+const HINT_MISSION_ID = { m1:1, m2:2, m3:3, m4:4, moon:5, m5:6, m6:7, m7:8 };
+function hintsFor(key, ti) {
+  if(key === 'm6') {
+    const p = MISSION6_DATA[ti] || {};
+    return (getPairRole(ti) === 'A' ? p.hintsA : p.hintsB) || [];
+  }
+  return (G[key] && G[key].hints) || [];
+}
+function hintCount(key, ti) {
+  return ((state.hints || {})[ti] || {})[key] || 0;
+}
+function hintBoxInner(key, ti) {
+  const hints = hintsFor(key, ti);
+  const n = Math.min(hintCount(key, ti), hints.length);
+  const list = hints.slice(0, n).map((h, i) =>
+    '<div class="hint-item"><span class="hint-num">'+(i+1)+'</span><span>'+h+'</span></div>').join('');
+  const more = n < hints.length
+    ? '<button class="hint-btn" onclick="revealHint('+jsArg(key)+','+ti+')">💡 '+(n===0?'힌트 보기':'다음 힌트')+' <span class="hint-count">'+n+'/'+hints.length+'</span></button>'
+    : '<div class="hint-done">💡 힌트를 모두 열었어요 ('+n+'/'+hints.length+')</div>';
+  return list + more;
+}
+function hintBoxHTML(key, ti) {
+  if(!hintsFor(key, ti).length) return '';
+  return '<div class="hint-box" id="hint-'+key+'-'+ti+'">'+hintBoxInner(key, ti)+'</div>';
+}
+function revealHint(key, ti) {
+  state.hints = state.hints || {};
+  state.hints[ti] = state.hints[ti] || {};
+  state.hints[ti][key] = Math.min(hintCount(key, ti) + 1, hintsFor(key, ti).length);
+  const el = document.getElementById('hint-'+key+'-'+ti);
+  if(el) el.innerHTML = hintBoxInner(key, ti);
+  fbSaveState();
+}
+// 동기화 병합: 다른 모둠 힌트 기록은 서버 값, 내 모둠 기록은 내 기기 값을 쓴다 (교사는 전부 서버 값)
+function mergeRemoteHints(remoteHints, localHints) {
+  const merged = Object.assign({}, remoteHints || {});
+  const myTeam = (typeof myRole !== 'undefined' && myRole && ROLE_TO_TEAM[myRole]) ? ROLE_TO_TEAM[myRole] - 1 : null;
+  if(myTeam != null && localHints && localHints[myTeam]) merged[myTeam] = localHints[myTeam];
+  return merged;
+}
+function totalHintsUsed(ti) {
+  const h = (state.hints || {})[ti] || {};
+  return Object.values(h).reduce((a, b) => a + (b || 0), 0);
 }
 
 // ══ DATA ══
@@ -1301,6 +1391,9 @@ function clearMissionProgress(ti, missionId) {
   }
   if(missionId <= 7) { if(state.m6dropped) delete state.m6dropped[ti]; if(state.m6pieces) delete state.m6pieces[ti]; }
   if(missionId <= 8) { if(state.m7text) delete state.m7text[ti]; if(state.m7result) delete state.m7result[ti]; }
+  if(state.hints && state.hints[ti]) {
+    for(const k of Object.keys(state.hints[ti])) { if(HINT_MISSION_ID[k] >= missionId) delete state.hints[ti][k]; }
+  }
   const stepKeys = [[1,String(ti)],[2,'m2_'+ti],[3,'m3_'+ti],[4,'m4_'+ti],[6,'m5_'+ti],[7,'m6_'+ti],[8,'m7_'+ti]];
   if(state.missionStep) {
     for(const [mid, key] of stepKeys) { if(mid >= missionId) delete state.missionStep[key]; }
@@ -1378,9 +1471,11 @@ async function inAppRefresh() {
     const nestedKeys = ['m6dropped','m6pieces','m4answers','m3match','m2dropped','m2pieces','missionStep'];
     const savedNested = {};
     for(const k of nestedKeys) savedNested[k] = state[k] ? {...state[k]} : {};
+    const savedHints = state.hints;
     Object.assign(state, remote);
     sanitizeState();
     for(const k of nestedKeys) state[k] = Object.assign({}, remote[k]||{}, savedNested[k]);
+    state.hints = mergeRemoteHints(remote.hints, savedHints);
     state.currentTeam = savedTeam;
     state.currentMission = savedMission;
     refreshCurrentScreen();
@@ -1605,6 +1700,7 @@ function renderMission3(teamNum) {
       </div>
 
       <div id="m3matchFeedback-${ti}" class="feedback-box"></div>
+      ${hintBoxHTML('m3', ti)}
       <div style="display:flex;gap:.75rem;align-items:center;margin-top:.75rem;">
         <button class="btn-ghost" onclick="m3ResetMatch(${ti})">↺ 초기화</button>
         <button class="btn btn-primary" id="m3check-${ti}" onclick="m3CheckMatch(${ti})"
@@ -1811,6 +1907,7 @@ function renderMission2(teamNum) {
           style="${state.m2dropped[ti].length===M2_CORRECT.length?'':'opacity:.4;pointer-events:none;'}">확인 →</button>
       </div>
       <div class="feedback-box" id="m2fb-${ti}"></div>
+      ${hintBoxHTML('m2', ti)}
     </div>
 
     <!-- STEP 2 -->
@@ -2026,6 +2123,7 @@ function renderMission1(teamNum) {
         `).join('')}
       </div>
       <div class="feedback-box" id="feedback1-${ti}"></div>
+      ${hintBoxHTML('m1', ti)}
     </div>
 
     <!-- STEP 2: 선택지 -->
@@ -2208,6 +2306,7 @@ function renderMoonEvent(teamNum) {
     <div style="font-size:.7rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
       ${G.moon.examples}
     </div>
+    ${hintBoxHTML('moon', ti)}
   `;
   document.getElementById('moonInput').addEventListener('keydown', (e) => {
     if(e.key === 'Enter') moonSubmit(ti);
@@ -2743,6 +2842,7 @@ function renderMission5(teamNum) {
         <div style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.1em;color:var(--text3);">??? ??? ??? ??? ???</div>
         <div style="font-size:.72rem;color:var(--accent);margin-top:.75rem;font-family:'Space Mono',monospace;">힌트: ${G.m5.keyPrefix}${m5.key}</div>
       </div>
+      ${hintBoxHTML('m5', ti)}
       <div style="font-size:.8rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:1rem;background:var(--surface);border-radius:8px;padding:.85rem;">
         📢 <strong>발화 방법:</strong> 모둠원이 릴레이로 문장을 이어서 완성하세요!<br>
         완성되면 선생님께 확인 받은 후 결과 버튼을 눌러주세요.
@@ -2996,6 +3096,7 @@ function m6renderTeamA(ti, m6) {
       <button class="btn btn-primary" id="m6checkA-${ti}" onclick="m6CheckA(${ti})" style="opacity:.4;pointer-events:none;">확인 →</button>
     </div>
     <div class="feedback-box" id="m6fbA-${ti}"></div>
+    ${hintBoxHTML('m6', ti)}
   `;
 }
 
@@ -3055,6 +3156,7 @@ function m6renderTeamB(ti, m6) {
       <button class="btn btn-primary" id="m6checkB-${ti}" onclick="m6CheckB(${ti})" style="opacity:.4;pointer-events:none;">확인 →</button>
     </div>
     <div class="feedback-box" id="m6fbB-${ti}"></div>
+    ${hintBoxHTML('m6', ti)}
   `;
 }
 
@@ -3277,6 +3379,7 @@ function renderMission4(teamNum) {
         }).join('')}
       </div>
       <div class="feedback-box" id="m4feedback-${ti}"></div>
+      ${hintBoxHTML('m4', ti)}
       <div style="margin-top:1rem;">
         <button class="btn btn-primary" id="m4checkBtn-${ti}" onclick="m4Check(${ti})"
           style="${Object.keys(state.m4answers[ti]).length===M4_TOTAL?'':'opacity:.4;pointer-events:none;'}">
@@ -3490,6 +3593,8 @@ function renderMission7(teamNum) {
         📢 <strong>발표 방법:</strong> 작성 완료 후 <strong>모둠원 전체가 함께</strong> 안내문을 발표하세요!<br>
         각자 한 문장씩 나눠서 읽어도 좋아요. 선생님 확인 후 제출!
       </div>
+
+      ${hintBoxHTML('m7', ti)}
 
       <textarea id="m7text-${ti}"
         placeholder="여기에 안내문을 작성하세요... (모르는 단어는 한글로 써도 OK!)"
@@ -3814,10 +3919,12 @@ const savedMission = state.currentMission;
 const nestedKeys = ['m6dropped','m6pieces','m4answers','m3match','m2dropped','m2pieces','missionStep'];
 const savedNested = {};
 for(const k of nestedKeys) savedNested[k] = state[k] ? {...state[k]} : {};
+const savedHints = state.hints;
 Object.assign(state, remote);
 sanitizeState();
 // remote의 다른 팀 데이터 + 내 최신 로컬 데이터를 병합
 for(const k of nestedKeys) state[k] = Object.assign({}, remote[k]||{}, savedNested[k]);
+state.hints = mergeRemoteHints(remote.hints, savedHints);
 state.currentTeam = savedTeam;
 state.currentMission = savedMission;
 const curr = JSON.stringify(state.coins) + JSON.stringify(state.teamMission) + JSON.stringify(state.moonScores) + (state.globalMission||1) + JSON.stringify(state.completedMission);
@@ -4083,6 +4190,7 @@ return `
   <!-- 헤더 줄 2: 코인 + 상태 -->
   <div style="display:flex;align-items:center;gap:.5rem;">
     <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--accent);">${coins} 🪙</div>
+    <div title="연 힌트 수" style="font-size:.68rem;color:#facc15;">💡 ${totalHintsUsed(i)}</div>
     <div style="font-size:.62rem;color:${statusColor};font-weight:bold;margin-left:auto;">${statusText}</div>
   </div>
 
