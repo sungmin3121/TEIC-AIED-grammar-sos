@@ -1269,10 +1269,23 @@ function m7AiInner(ti) {
   const err = m7AiError[ti] ? '<div class="ai-error">⚠️ '+escHTML(m7AiError[ti])+'</div>' : '';
   return btn + note + err + (info.last ? m7AiFeedbackHTML(info.last) : '');
 }
+// AI가 '잘 쓴 표현'에 고칠 문장을 섞어 넣는 경우를 거른다:
+// 목표 표현 패턴이 들어 있고, '고쳐 보기'의 원래 문장과 겹치지 않는 것만 남긴다.
+function m7GoodTargets(fb) {
+  const low = x => String(x || '').toLowerCase().trim();
+  const pats = (G.m7.target.patterns || []).map(low);
+  const wrong = (fb.fixes || []).map(f => low(f.original)).filter(Boolean);
+  return (fb.targetFound || []).filter(t => {
+    const x = low(t);
+    if(!x || !pats.some(p => x.includes(p))) return false;
+    return !wrong.some(w => x === w || x.includes(w)); // 고칠 문장 자체(또는 그걸 품은 표현)만 뺀다
+  });
+}
 function m7AiFeedbackHTML(fb) {
   const sec = (icon, title, body) => body ? '<div class="ai-sec"><div class="ai-sec-title">'+icon+' '+title+'</div>'+body+'</div>' : '';
-  const found = (fb.targetFound || []).length
-    ? '<div class="ai-chips">'+fb.targetFound.map(t => '<span class="ai-chip">'+escHTML(t)+'</span>').join('')+'</div>' : '';
+  const good = m7GoodTargets(fb);
+  const found = good.length
+    ? '<div class="ai-chips">'+good.map(t => '<span class="ai-chip">'+escHTML(t)+'</span>').join('')+'</div>' : '';
   const fixes = (fb.fixes || []).map(f =>
     '<div class="ai-fix"><div><span class="ai-old">'+escHTML(f.original)+'</span> → <span class="ai-new">'+escHTML(f.better)+'</span></div>'
     + (f.why ? '<div class="ai-why">'+escHTML(f.why)+'</div>' : '') + '</div>').join('');
