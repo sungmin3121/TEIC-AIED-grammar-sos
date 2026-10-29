@@ -7,6 +7,7 @@
  * ── 스크립트 속성 (프로젝트 설정 → 스크립트 속성) ──
  *   GEMINI_API_KEY   (필수) Google AI Studio에서 받은 키
  *   GEMINI_MODEL     (선택) 기본값 gemini-3.8-flash
+ *   GEMINI_FALLBACK_MODEL (선택) 기본 모델이 계속 바쁠 때 대신 쓸 모델
  *   AI_PROVIDER      (선택) gemini(기본) 또는 openai
  *   OPENAI_API_KEY / OPENAI_MODEL  (openai로 바꿀 때만)
  *   DAILY_LIMIT      (선택) 하루 최대 요청 수, 기본 300
@@ -131,16 +132,37 @@ function parseJsonText_(text) {
   }
 }
 
+// Google이 '사용량이 많다'(503/429/500)고 하면 잠깐 기다렸다 다시 시도하고,
+// 그래도 안 되면 스크립트 속성 GEMINI_FALLBACK_MODEL(있을 때)로 바꿔 한 번 더 시도한다.
+var BUSY_CODES = [429, 500, 503];
+var RETRY_WAITS_MS = [1500, 3500];
+
 function callGemini_(system, user) {
-  var key = getKey_('GEMINI_API_KEY');
-  var model = (PropertiesService.getScriptProperties().getProperty('GEMINI_MODEL') || DEFAULT_GEMINI_MODEL).trim();
-  var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent';
+  var props = PropertiesService.getScriptProperties();
+  var models = [(props.getProperty('GEMINI_MODEL') || DEFAULT_GEMINI_MODEL).trim()];
+  var fallback = (props.getProperty('GEMINI_FALLBACK_MODEL') || '').trim();
+  if (fallback && fallback !== models[0]) models.push(fallback);
   var payload = JSON.stringify({
     systemInstruction: { parts: [{ text: system }] },
     contents: [{ role: 'user', parts: [{ text: user }] }],
     generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 4096 }
   });
-  // 키는 헤더로 보낸다. 새 형식(AQ.) 키가 헤더로 거절되면 주소 뒤 ?key= 방식으로 한 번 더 시도한다.
+  var res;
+  for (var m = 0; m < models.length; m++) {
+    for (var attempt = 0; attempt <= RETRY_WAITS_MS.length; attempt++) {
+      res = geminiFetch_(models[m], payload);
+      if (BUSY_CODES.indexOf(res.getResponseCode()) < 0) break;
+      if (attempt < RETRY_WAITS_MS.length) Utilities.sleep(RETRY_WAITS_MS[attempt]);
+    }
+    if (BUSY_CODES.indexOf(res.getResponseCode()) < 0) break; // 바쁘지 않으면(성공이든 다른 오류든) 다음 모델로 넘어가지 않음
+  }
+  return readGemini_(res);
+}
+
+// 키는 헤더로 보낸다. 새 형식(AQ.) 키가 헤더로 거절되면 주소 뒤 ?key= 방식으로 한 번 더 시도한다.
+function geminiFetch_(model, payload) {
+  var key = getKey_('GEMINI_API_KEY');
+  var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent';
   var res = UrlFetchApp.fetch(url, {
     method: 'post', contentType: 'application/json', muteHttpExceptions: true,
     headers: { 'x-goog-api-key': key }, payload: payload
@@ -151,8 +173,13 @@ function callGemini_(system, user) {
     });
     if (retry.getResponseCode() === 200) res = retry;
   }
+  return res;
+}
+
+function readGemini_(res) {
   var code = res.getResponseCode();
   var data = JSON.parse(res.getContentText() || '{}');
+  if (BUSY_CODES.indexOf(code) >= 0) throw new Error('지금 AI가 바빠요. 잠시 후 다시 눌러 주세요. (Gemini ' + code + ')');
   if (code !== 200) {
     var msg = (data.error && data.error.message) || ('HTTP ' + code);
     throw new Error('Gemini ' + code + ': ' + msg);
