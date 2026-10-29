@@ -10,8 +10,8 @@
  *   GEMINI_FALLBACK_MODEL (선택) 기본 모델이 계속 바쁠 때 대신 쓸 모델
  *   AI_PROVIDER      (선택) gemini(기본) 또는 openai
  *   OPENAI_API_KEY / OPENAI_MODEL  (openai로 바꿀 때만)
- *   DAILY_LIMIT      (선택) 하루 최대 요청 수, 기본 300
- *   MINUTE_LIMIT     (선택) 1분 최대 요청 수, 기본 30
+ *   DAILY_LIMIT      (선택) 하루 최대 요청 수, 기본 150 (6모둠×2회×4개 반 ≈ 48)
+ *   MINUTE_LIMIT     (선택) 1분 최대 요청 수, 기본 10 (무료 등급 한도 보호)
  *
  * ── 처음 설정할 때 편집기에서 한 번씩 실행해 볼 함수 ──
  *   testFeedback()   예시 작문으로 피드백이 오는지 확인 (실행 로그에 결과가 나옴)
@@ -222,8 +222,8 @@ function callOpenAI_(system, user) {
 
 function checkRateLimit_() {
   var props = PropertiesService.getScriptProperties();
-  var minuteLimit = Number(props.getProperty('MINUTE_LIMIT')) || 30;
-  var dailyLimit = Number(props.getProperty('DAILY_LIMIT')) || 300;
+  var minuteLimit = Number(props.getProperty('MINUTE_LIMIT')) || 10;
+  var dailyLimit = Number(props.getProperty('DAILY_LIMIT')) || 150;
   var lock = LockService.getScriptLock();
   lock.waitLock(5000);
   try {
