@@ -134,17 +134,23 @@ function parseJsonText_(text) {
 function callGemini_(system, user) {
   var key = getKey_('GEMINI_API_KEY');
   var model = (PropertiesService.getScriptProperties().getProperty('GEMINI_MODEL') || DEFAULT_GEMINI_MODEL).trim();
-  var res = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent', {
-    method: 'post',
-    contentType: 'application/json',
-    headers: { 'x-goog-api-key': key },
-    muteHttpExceptions: true,
-    payload: JSON.stringify({
-      systemInstruction: { parts: [{ text: system }] },
-      contents: [{ role: 'user', parts: [{ text: user }] }],
-      generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 4096 }
-    })
+  var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent';
+  var payload = JSON.stringify({
+    systemInstruction: { parts: [{ text: system }] },
+    contents: [{ role: 'user', parts: [{ text: user }] }],
+    generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 4096 }
   });
+  // 키는 헤더로 보낸다. 새 형식(AQ.) 키가 헤더로 거절되면 주소 뒤 ?key= 방식으로 한 번 더 시도한다.
+  var res = UrlFetchApp.fetch(url, {
+    method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+    headers: { 'x-goog-api-key': key }, payload: payload
+  });
+  if (res.getResponseCode() === 401 || res.getResponseCode() === 400) {
+    var retry = UrlFetchApp.fetch(url + '?key=' + encodeURIComponent(key), {
+      method: 'post', contentType: 'application/json', muteHttpExceptions: true, payload: payload
+    });
+    if (retry.getResponseCode() === 200) res = retry;
+  }
   var code = res.getResponseCode();
   var data = JSON.parse(res.getContentText() || '{}');
   if (code !== 200) {
@@ -234,9 +240,13 @@ function listModels() {
     Logger.log(data.data.map(function (m) { return m.id; }).sort().join('\n'));
     return;
   }
+  var gkey = getKey_('GEMINI_API_KEY');
   var gres = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=200', {
-    headers: { 'x-goog-api-key': getKey_('GEMINI_API_KEY') }, muteHttpExceptions: true
+    headers: { 'x-goog-api-key': gkey }, muteHttpExceptions: true
   });
+  if (gres.getResponseCode() !== 200) {
+    gres = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=200&key=' + encodeURIComponent(gkey), { muteHttpExceptions: true });
+  }
   var gdata = JSON.parse(gres.getContentText());
   if (!gdata.models) { Logger.log(gres.getContentText()); return; }
   Logger.log(gdata.models
