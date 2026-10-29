@@ -1222,7 +1222,7 @@ function mergeRemoteHints(remoteHints, localHints) {
 // ══ AI 서버 (Google Apps Script 웹 앱) ══
 // Apps Script를 배포한 뒤 받은 웹 앱 주소(/exec로 끝남)를 넣는다. 비어 있으면 AI 버튼은 '준비 중'으로 보인다.
 // API 키는 여기가 아니라 Apps Script의 스크립트 속성에만 있다.
-const AI_ENDPOINT = '';
+const AI_ENDPOINT = 'https://script.google.com/macros/s/AKfycby8SWOtoajYyeS8lnW_dfsirlq1Px0zNK17ed-VhTl_qqkUCNcMAVR8FVRhmxV8pp7InQ/exec';
 const AI_FEEDBACK_LIMIT = 2; // 미션 7에서 모둠당 AI 피드백 횟수
 
 // Apps Script 웹 앱 호출. text/plain으로 보내야 브라우저 사전 요청(CORS) 없이 바로 간다.
