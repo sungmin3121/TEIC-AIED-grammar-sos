@@ -6,8 +6,8 @@
  *
  * ── 스크립트 속성 (프로젝트 설정 → 스크립트 속성) ──
  *   GEMINI_API_KEY   (필수) Google AI Studio에서 받은 키
- *   GEMINI_MODEL     (선택) 기본값 gemini-3.8-flash
- *   GEMINI_FALLBACK_MODEL (선택) 기본 모델이 계속 바쁠 때 대신 쓸 모델
+ *   GEMINI_MODEL     (선택) 기본값 gemini-3.5-flash-lite (빠르고 가벼운 모델)
+ *   GEMINI_FALLBACK_MODEL (선택) 기본 모델이 계속 바쁠 때 대신 쓸 모델 (예: gemini-3.1-flash-lite)
  *   AI_PROVIDER      (선택) gemini(기본) 또는 openai
  *   OPENAI_API_KEY / OPENAI_MODEL  (openai로 바꿀 때만)
  *   DAILY_LIMIT      (선택) 하루 최대 요청 수, 기본 150 (6모둠×2회×4개 반 ≈ 48)
@@ -18,7 +18,7 @@
  *   listModels()     이 키로 쓸 수 있는 모델 이름 목록
  */
 
-var DEFAULT_GEMINI_MODEL = 'gemini-3.8-flash';
+var DEFAULT_GEMINI_MODEL = 'gemini-3.5-flash-lite';
 var DEFAULT_OPENAI_MODEL = 'gpt-4.1-mini';
 var MAX_TEXT_LENGTH = 1500;
 
