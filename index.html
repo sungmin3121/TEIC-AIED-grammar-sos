@@ -210,6 +210,24 @@ text-align:left;
 .hint-num { flex-shrink:0; width:1.25rem; height:1.25rem; border-radius:50%; background:#facc15; color:#111; font-size:.68rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-top:.1rem; }
 .hint-done { font-size:.7rem; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
 
+/* AI 작문 피드백 */
+.ai-box { margin-top:.85rem; display:flex; flex-direction:column; gap:.45rem; align-items:flex-start; }
+.ai-btn { background:rgba(168,85,247,.12); border:1px solid rgba(168,85,247,.45); color:#c084fc; border-radius:6px; padding:.5rem 1rem; font-size:.8rem; font-family:'Noto Sans KR',sans-serif; cursor:pointer; display:inline-flex; align-items:center; gap:.4rem; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+.ai-btn:disabled { opacity:.55; cursor:default; }
+.ai-note { font-size:.68rem; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
+.ai-error { font-size:.75rem; color:var(--danger); font-family:'Noto Sans KR',sans-serif; }
+.ai-spin { width:.8rem; height:.8rem; border:2px solid rgba(192,132,252,.35); border-top-color:#c084fc; border-radius:50%; display:inline-block; animation:aiSpin .8s linear infinite; }
+@keyframes aiSpin { to { transform:rotate(360deg); } }
+.ai-panel { width:100%; box-sizing:border-box; background:rgba(168,85,247,.06); border:1px solid rgba(168,85,247,.25); border-radius:8px; padding:.85rem 1rem; display:flex; flex-direction:column; gap:.7rem; font-family:'Noto Sans KR',sans-serif; }
+.ai-sec-title { font-size:.7rem; color:#c084fc; letter-spacing:.05em; margin-bottom:.3rem; }
+.ai-text { font-size:.8rem; color:var(--text2); line-height:1.65; }
+.ai-chips { display:flex; flex-wrap:wrap; gap:.35rem; }
+.ai-chip { background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.35); color:#4ade80; border-radius:12px; padding:.15rem .6rem; font-size:.75rem; font-family:'Space Mono',monospace; }
+.ai-fix { background:rgba(255,255,255,.03); border-radius:6px; padding:.5rem .65rem; margin-bottom:.35rem; font-size:.8rem; line-height:1.6; }
+.ai-old { color:#f87171; text-decoration:line-through; text-decoration-color:rgba(248,113,113,.6); font-family:'Space Mono',monospace; }
+.ai-new { color:#4ade80; font-family:'Space Mono',monospace; }
+.ai-why { font-size:.72rem; color:var(--text3); margin-top:.15rem; }
+
 /* 교사 대시보드: 휴대폰에서는 상단 버튼을 줄바꿈하고 모둠 카드를 1~2열로 */
 @media(max-width:768px) {
 .td-topbar { flex-wrap:wrap; }
@@ -1193,13 +1211,112 @@ function revealHint(key, ti) {
   if(el) el.innerHTML = hintBoxInner(key, ti);
   fbSaveState();
 }
-// 동기화 병합: 다른 모둠 힌트 기록은 서버 값, 내 모둠 기록은 내 기기 값을 쓴다 (교사는 전부 서버 값)
+// 동기화 병합: 다른 모둠 기록은 서버 값, 내 모둠 기록은 내 기기 값을 쓴다 (교사는 전부 서버 값)
+// 힌트(hints)와 AI 피드백(m7ai)에 쓴다.
 function mergeRemoteHints(remoteHints, localHints) {
   const merged = Object.assign({}, remoteHints || {});
   const myTeam = (typeof myRole !== 'undefined' && myRole && ROLE_TO_TEAM[myRole]) ? ROLE_TO_TEAM[myRole] - 1 : null;
   if(myTeam != null && localHints && localHints[myTeam]) merged[myTeam] = localHints[myTeam];
   return merged;
 }
+// ══ AI 서버 (Google Apps Script 웹 앱) ══
+// Apps Script를 배포한 뒤 받은 웹 앱 주소(/exec로 끝남)를 넣는다. 비어 있으면 AI 버튼은 '준비 중'으로 보인다.
+// API 키는 여기가 아니라 Apps Script의 스크립트 속성에만 있다.
+const AI_ENDPOINT = '';
+const AI_FEEDBACK_LIMIT = 2; // 미션 7에서 모둠당 AI 피드백 횟수
+
+// Apps Script 웹 앱 호출. text/plain으로 보내야 브라우저 사전 요청(CORS) 없이 바로 간다.
+async function callAI(payload, timeoutMs) {
+  if(!AI_ENDPOINT) throw new Error('AI 연결이 아직 준비되지 않았어요.');
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs || 30000);
+  try {
+    const res = await fetch(AI_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+      signal: ctrl.signal,
+    });
+    const data = await res.json();
+    if(!data || !data.ok) throw new Error((data && data.error) || 'AI 응답 오류');
+    return data;
+  } catch(e) {
+    if(e.name === 'AbortError') throw new Error('AI 응답이 너무 오래 걸려요. 다시 눌러 주세요.');
+    if(e instanceof TypeError) throw new Error('AI 서버에 연결하지 못했어요. 인터넷을 확인해 주세요.');
+    throw e;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function escHTML(s) {
+  return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── 미션 7 · AI 작문 피드백 ──
+const m7AiBusy = {}; // 모둠별 요청 중 표시 (기기 안에서만)
+const m7AiError = {};
+function m7AiInfo(ti) { return ((state.m7ai || {})[ti]) || { count: 0 }; }
+function m7AiInner(ti) {
+  const info = m7AiInfo(ti);
+  const left = Math.max(0, AI_FEEDBACK_LIMIT - (info.count || 0));
+  let btn;
+  if(!AI_ENDPOINT) btn = '<button class="ai-btn" disabled>🤖 AI 피드백 (연결 준비 중)</button>';
+  else if(m7AiBusy[ti]) btn = '<button class="ai-btn" disabled><span class="ai-spin"></span> AI가 안내문을 읽는 중…</button>';
+  else if(left <= 0) btn = '<button class="ai-btn" disabled>🤖 AI 피드백을 모두 사용했어요</button>';
+  else btn = '<button class="ai-btn" onclick="m7RequestAI('+ti+')">🤖 AI 피드백 받기 <span class="hint-count">남은 '+left+'회</span></button>';
+  const note = '<div class="ai-note">제출 전에 AI가 문법을 봐 줘요. 고칠 점을 보고 직접 다시 써 보세요!</div>';
+  const err = m7AiError[ti] ? '<div class="ai-error">⚠️ '+escHTML(m7AiError[ti])+'</div>' : '';
+  return btn + note + err + (info.last ? m7AiFeedbackHTML(info.last) : '');
+}
+function m7AiFeedbackHTML(fb) {
+  const sec = (icon, title, body) => body ? '<div class="ai-sec"><div class="ai-sec-title">'+icon+' '+title+'</div>'+body+'</div>' : '';
+  const found = (fb.targetFound || []).length
+    ? '<div class="ai-chips">'+fb.targetFound.map(t => '<span class="ai-chip">'+escHTML(t)+'</span>').join('')+'</div>' : '';
+  const fixes = (fb.fixes || []).map(f =>
+    '<div class="ai-fix"><div><span class="ai-old">'+escHTML(f.original)+'</span> → <span class="ai-new">'+escHTML(f.better)+'</span></div>'
+    + (f.why ? '<div class="ai-why">'+escHTML(f.why)+'</div>' : '') + '</div>').join('');
+  const rc = fb.requiredContent || {};
+  const req = rc.comment ? '<div class="ai-text">'+(rc.included ? '✅ ' : '⚠️ ')+escHTML(rc.comment)+'</div>' : '';
+  return '<div class="ai-panel">'
+    + sec('👍', '잘한 점', fb.praise ? '<div class="ai-text">'+escHTML(fb.praise)+'</div>' : '')
+    + sec('✅', '잘 쓴 '+escHTML(G.m7.target.label), found)
+    + sec('✏️', '고쳐 보기', fixes)
+    + sec('📌', '필수 내용', req)
+    + sec('👉', '다음에 할 일', fb.nextStep ? '<div class="ai-text">'+escHTML(fb.nextStep)+'</div>' : '')
+    + '</div>';
+}
+function m7AiRefresh(ti) {
+  const box = document.getElementById('m7ai-'+ti);
+  if(box) box.innerHTML = m7AiInner(ti);
+}
+async function m7RequestAI(ti) {
+  const ta = document.getElementById('m7text-'+ti);
+  const text = ta ? ta.value.trim() : '';
+  m7AiError[ti] = '';
+  if(!text) { m7AiError[ti] = '먼저 안내문을 써 주세요.'; m7AiRefresh(ti); return; }
+  if(m7AiBusy[ti] || (m7AiInfo(ti).count || 0) >= AI_FEEDBACK_LIMIT) return;
+  state.m7text = state.m7text || {}; state.m7text[ti] = ta.value;
+  m7AiBusy[ti] = true; m7AiRefresh(ti);
+  const isl = MISSION7_DATA[ti] || {};
+  try {
+    const data = await callAI({
+      action: 'feedback',
+      text,
+      grammar: { title: G.title, titleEn: G.titleEn, targetLabel: G.m7.target.label, patterns: G.m7.target.patterns },
+      task: { island: isl.island, keyKr: isl.keyKr, warning: isl.warning, hint: isl.hint },
+    });
+    state.m7ai = state.m7ai || {};
+    state.m7ai[ti] = { count: (m7AiInfo(ti).count || 0) + 1, last: data.feedback, at: Date.now() };
+    fbSaveState();
+  } catch(e) {
+    m7AiError[ti] = e.message || String(e); // 실패한 요청은 횟수에 넣지 않는다
+  } finally {
+    m7AiBusy[ti] = false;
+    m7AiRefresh(ti);
+  }
+}
+
 function totalHintsUsed(ti) {
   const h = (state.hints || {})[ti] || {};
   return Object.values(h).reduce((a, b) => a + (b || 0), 0);
@@ -1390,7 +1507,7 @@ function clearMissionProgress(ti, missionId) {
     if(!Object.keys(state.moonScores).length) { state.moonAllDone = false; delete state.moonCleared; }
   }
   if(missionId <= 7) { if(state.m6dropped) delete state.m6dropped[ti]; if(state.m6pieces) delete state.m6pieces[ti]; }
-  if(missionId <= 8) { if(state.m7text) delete state.m7text[ti]; if(state.m7result) delete state.m7result[ti]; }
+  if(missionId <= 8) { if(state.m7text) delete state.m7text[ti]; if(state.m7result) delete state.m7result[ti]; if(state.m7ai) delete state.m7ai[ti]; }
   if(state.hints && state.hints[ti]) {
     for(const k of Object.keys(state.hints[ti])) { if(HINT_MISSION_ID[k] >= missionId) delete state.hints[ti][k]; }
   }
@@ -1471,11 +1588,12 @@ async function inAppRefresh() {
     const nestedKeys = ['m6dropped','m6pieces','m4answers','m3match','m2dropped','m2pieces','missionStep'];
     const savedNested = {};
     for(const k of nestedKeys) savedNested[k] = state[k] ? {...state[k]} : {};
-    const savedHints = state.hints;
+    const savedHints = state.hints, savedAi = state.m7ai;
     Object.assign(state, remote);
     sanitizeState();
     for(const k of nestedKeys) state[k] = Object.assign({}, remote[k]||{}, savedNested[k]);
     state.hints = mergeRemoteHints(remote.hints, savedHints);
+    state.m7ai = mergeRemoteHints(remote.m7ai, savedAi);
     state.currentTeam = savedTeam;
     state.currentMission = savedMission;
     refreshCurrentScreen();
@@ -3602,7 +3720,9 @@ function renderMission7(teamNum) {
         style="width:100%;min-height:180px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;font-family:'Noto Sans KR',sans-serif;font-size:.85rem;color:var(--text);resize:vertical;outline:none;line-height:1.7;"
         onfocus="this.style.borderColor='var(--accent)'"
         onblur="this.style.borderColor='var(--border)'"
-      >${state.m7text && state.m7text[ti] ? state.m7text[ti] : ''}</textarea>
+      >${state.m7text && state.m7text[ti] ? escHTML(state.m7text[ti]) : ''}</textarea>
+
+      <div class="ai-box" id="m7ai-${ti}">${m7AiInner(ti)}</div>
 
   <div style="display:flex;gap:.75rem;align-items:center;margin-top:.75rem;">
     <div style="flex:1;font-size:.7rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">모둠 전체 발표 완료 후 제출하세요!</div>
@@ -3920,12 +4040,13 @@ const savedMission = state.currentMission;
 const nestedKeys = ['m6dropped','m6pieces','m4answers','m3match','m2dropped','m2pieces','missionStep'];
 const savedNested = {};
 for(const k of nestedKeys) savedNested[k] = state[k] ? {...state[k]} : {};
-const savedHints = state.hints;
+const savedHints = state.hints, savedAi = state.m7ai;
 Object.assign(state, remote);
 sanitizeState();
 // remote의 다른 팀 데이터 + 내 최신 로컬 데이터를 병합
 for(const k of nestedKeys) state[k] = Object.assign({}, remote[k]||{}, savedNested[k]);
 state.hints = mergeRemoteHints(remote.hints, savedHints);
+state.m7ai = mergeRemoteHints(remote.m7ai, savedAi);
 state.currentTeam = savedTeam;
 state.currentMission = savedMission;
 const curr = JSON.stringify(state.coins) + JSON.stringify(state.teamMission) + JSON.stringify(state.moonScores) + (state.globalMission||1) + JSON.stringify(state.completedMission);
@@ -4048,6 +4169,7 @@ state.globalMission = cmd.missionId;
 state.completedMission = Array(6).fill(cmd.missionId - 1);
 state.missionStep = {};
 state.m7text = {};
+state.m7ai = {};
 state.m7result = {};
 waitingForMission = null;
 waitingForFinal = false;
@@ -4366,6 +4488,7 @@ state.globalMission = missionId;
 state.completedMission = Array(6).fill(missionId - 1);
 state.missionStep = {};
 state.m7text = {};
+state.m7ai = {};
 state.m7result = {};
 await fbSaveState();
 if(window.firebaseReady) {
@@ -4466,7 +4589,7 @@ function showM7Review() {
         ${gradeHtml}
         ${coinsHtml}
       </div>
-      <div style="font-size:.65rem;color:var(--text3);">필수: <span style="color:var(--text2);">${m7d.keyKr}</span> (${m7d.warning})</div>
+      <div style="font-size:.65rem;color:var(--text3);">필수: <span style="color:var(--text2);">${m7d.keyKr}</span> (${m7d.warning})${(state.m7ai && state.m7ai[ti] && state.m7ai[ti].count) ? ' · 🤖 AI 피드백 '+state.m7ai[ti].count+'회' : ''}</div>
       ${textHtml}
       ${breakdownHtml}
     </div>`;
