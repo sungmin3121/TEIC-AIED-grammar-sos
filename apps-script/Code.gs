@@ -1,12 +1,14 @@
 /**
  * Grammar SOS — AI 서버 (Google Apps Script)
  *
- * 게임(index.html)이 이 웹 앱 주소로 요청을 보내면, 여기서 OpenAI API를 불러
+ * 게임(index.html)이 이 웹 앱 주소로 요청을 보내면, 여기서 AI(기본: Google Gemini)를 불러
  * 결과를 돌려준다. API 키는 이 코드에 쓰지 않고 '스크립트 속성'에만 저장한다.
  *
  * ── 스크립트 속성 (프로젝트 설정 → 스크립트 속성) ──
- *   OPENAI_API_KEY   (필수) OpenAI API 키
- *   OPENAI_MODEL     (선택) 기본값 gpt-4.1-mini
+ *   GEMINI_API_KEY   (필수) Google AI Studio에서 받은 키
+ *   GEMINI_MODEL     (선택) 기본값 gemini-2.5-flash
+ *   AI_PROVIDER      (선택) gemini(기본) 또는 openai
+ *   OPENAI_API_KEY / OPENAI_MODEL  (openai로 바꿀 때만)
  *   DAILY_LIMIT      (선택) 하루 최대 요청 수, 기본 300
  *   MINUTE_LIMIT     (선택) 1분 최대 요청 수, 기본 30
  *
@@ -15,7 +17,8 @@
  *   listModels()     이 키로 쓸 수 있는 모델 이름 목록
  */
 
-var DEFAULT_MODEL = 'gpt-4.1-mini';
+var DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash';
+var DEFAULT_OPENAI_MODEL = 'gpt-4.1-mini';
 var MAX_TEXT_LENGTH = 1500;
 
 // ═══════════════ 웹 앱 입구 ═══════════════
@@ -79,7 +82,7 @@ function writingFeedback_(body) {
     '{"praise": string, "targetFound": [string], "fixes": [{"original": string, "better": string, "why": string}], "requiredContent": {"included": boolean, "comment": string}, "nextStep": string}'
   ].join('\n');
 
-  var result = callOpenAI_(system, 'Student rescue guide:\n"""\n' + text + '\n"""');
+  var result = callAI_(system,'Student rescue guide:\n"""\n' + text + '\n"""');
   var fb = cleanFeedback_(result);
   return { ok: true, feedback: fb };
 }
@@ -102,13 +105,62 @@ function cleanFeedback_(r) {
   };
 }
 
-// ═══════════════ OpenAI 호출 ═══════════════
+// ═══════════════ AI 호출 ═══════════════
+// system: 지시문, user: 학생 글. JSON 객체를 돌려준다.
+
+function callAI_(system, user) {
+  var provider = (PropertiesService.getScriptProperties().getProperty('AI_PROVIDER') || 'gemini').trim().toLowerCase();
+  return provider === 'openai' ? callOpenAI_(system, user) : callGemini_(system, user);
+}
+
+// 붙여넣을 때 섞인 공백·따옴표·줄바꿈을 걷어낸다
+function getKey_(name) {
+  var v = PropertiesService.getScriptProperties().getProperty(name);
+  v = String(v || '').replace(/\s+/g, '').replace(/^["']+|["']+$/g, '');
+  if (!v) throw new Error(name + '가 스크립트 속성에 없어요.');
+  return v;
+}
+
+// AI가 ```json ... ``` 같은 포장을 붙여도 JSON만 꺼낸다
+function parseJsonText_(text) {
+  var t = String(text || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+  try { return JSON.parse(t); } catch (e) {
+    var a = t.indexOf('{'), b = t.lastIndexOf('}');
+    if (a >= 0 && b > a) return JSON.parse(t.slice(a, b + 1));
+    throw new Error('AI 응답을 읽지 못했어요.');
+  }
+}
+
+function callGemini_(system, user) {
+  var key = getKey_('GEMINI_API_KEY');
+  var model = (PropertiesService.getScriptProperties().getProperty('GEMINI_MODEL') || DEFAULT_GEMINI_MODEL).trim();
+  var res = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent', {
+    method: 'post',
+    contentType: 'application/json',
+    headers: { 'x-goog-api-key': key },
+    muteHttpExceptions: true,
+    payload: JSON.stringify({
+      systemInstruction: { parts: [{ text: system }] },
+      contents: [{ role: 'user', parts: [{ text: user }] }],
+      generationConfig: { responseMimeType: 'application/json', maxOutputTokens: 4096 }
+    })
+  });
+  var code = res.getResponseCode();
+  var data = JSON.parse(res.getContentText() || '{}');
+  if (code !== 200) {
+    var msg = (data.error && data.error.message) || ('HTTP ' + code);
+    throw new Error('Gemini ' + code + ': ' + msg);
+  }
+  var cand = data.candidates && data.candidates[0];
+  var parts = (cand && cand.content && cand.content.parts) || [];
+  var text = parts.map(function (p) { return p.text || ''; }).join('');
+  if (!text) throw new Error('Gemini 응답이 비어 있어요' + (cand && cand.finishReason ? ' (' + cand.finishReason + ')' : '') + '.');
+  return parseJsonText_(text);
+}
 
 function callOpenAI_(system, user) {
-  var props = PropertiesService.getScriptProperties();
-  var key = props.getProperty('OPENAI_API_KEY');
-  if (!key) throw new Error('OPENAI_API_KEY가 스크립트 속성에 없어요.');
-  var model = props.getProperty('OPENAI_MODEL') || DEFAULT_MODEL;
+  var key = getKey_('OPENAI_API_KEY');
+  var model = (PropertiesService.getScriptProperties().getProperty('OPENAI_MODEL') || DEFAULT_OPENAI_MODEL).trim();
   var res = UrlFetchApp.fetch('https://api.openai.com/v1/chat/completions', {
     method: 'post',
     contentType: 'application/json',
@@ -129,7 +181,7 @@ function callOpenAI_(system, user) {
   }
   var content = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
   if (!content) throw new Error('OpenAI 응답이 비어 있어요.');
-  return JSON.parse(content);
+  return parseJsonText_(content);
 }
 
 // ═══════════════ 사용량 제한 (키 비용 보호) ═══════════════
@@ -172,11 +224,22 @@ function testFeedback() {
 }
 
 function listModels() {
-  var key = PropertiesService.getScriptProperties().getProperty('OPENAI_API_KEY');
-  var res = UrlFetchApp.fetch('https://api.openai.com/v1/models', {
-    headers: { Authorization: 'Bearer ' + key }, muteHttpExceptions: true
+  var provider = (PropertiesService.getScriptProperties().getProperty('AI_PROVIDER') || 'gemini').trim().toLowerCase();
+  if (provider === 'openai') {
+    var res = UrlFetchApp.fetch('https://api.openai.com/v1/models', {
+      headers: { Authorization: 'Bearer ' + getKey_('OPENAI_API_KEY') }, muteHttpExceptions: true
+    });
+    var data = JSON.parse(res.getContentText());
+    if (!data.data) { Logger.log(res.getContentText()); return; }
+    Logger.log(data.data.map(function (m) { return m.id; }).sort().join('\n'));
+    return;
+  }
+  var gres = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models?pageSize=200', {
+    headers: { 'x-goog-api-key': getKey_('GEMINI_API_KEY') }, muteHttpExceptions: true
   });
-  var data = JSON.parse(res.getContentText());
-  if (!data.data) { Logger.log(res.getContentText()); return; }
-  Logger.log(data.data.map(function (m) { return m.id; }).sort().join('\n'));
+  var gdata = JSON.parse(gres.getContentText());
+  if (!gdata.models) { Logger.log(gres.getContentText()); return; }
+  Logger.log(gdata.models
+    .filter(function (m) { return (m.supportedGenerationMethods || []).indexOf('generateContent') >= 0; })
+    .map(function (m) { return m.name.replace('models/', ''); }).join('\n'));
 }
