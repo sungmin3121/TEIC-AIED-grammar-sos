@@ -210,6 +210,39 @@ text-align:left;
 .hint-num { flex-shrink:0; width:1.25rem; height:1.25rem; border-radius:50%; background:#facc15; color:#111; font-size:.68rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-top:.1rem; }
 .hint-done { font-size:.7rem; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
 
+/* 응답 기록 (교사) */
+.log-head { display:flex; align-items:center; flex-wrap:wrap; gap:.5rem; padding:.75rem 1rem; background:var(--surface); border-bottom:1px solid var(--border); flex-shrink:0; }
+.log-title { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:.08em; color:#facc15; flex:1; white-space:nowrap; }
+.log-count { font-family:'Space Mono',monospace; font-size:.7rem; color:var(--text3); letter-spacing:0; margin-left:.35rem; }
+.log-select { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:.3rem .5rem; font-size:.72rem; color:var(--text); }
+.log-btn { background:rgba(250,204,21,.1); border:1px solid rgba(250,204,21,.35); border-radius:4px; padding:.3rem .75rem; font-size:.72rem; color:#facc15; cursor:pointer; white-space:nowrap; }
+.log-close { background:rgba(239,68,68,.12); border-color:rgba(239,68,68,.25); color:var(--danger); }
+.log-body { flex:1; overflow-y:auto; padding:1rem; -webkit-overflow-scrolling:touch; font-family:'Noto Sans KR',sans-serif; }
+.log-sec { font-size:.8rem; font-weight:700; color:var(--text); margin:1.1rem 0 .55rem; }
+.log-sec:first-child { margin-top:0; }
+.log-sub { font-size:.68rem; font-weight:400; color:var(--text3); margin-left:.35rem; }
+.log-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:.6rem; }
+.log-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.7rem .8rem; display:flex; flex-direction:column; gap:.35rem; min-width:0; }
+.log-card-top { display:flex; justify-content:space-between; gap:.5rem; align-items:baseline; flex-wrap:wrap; }
+.log-mission { font-size:.72rem; color:var(--accent2); font-weight:700; }
+.log-rate { font-size:.68rem; color:var(--danger); }
+.log-item { font-size:.78rem; color:var(--text); line-height:1.5; }
+.log-wrongs { display:flex; flex-wrap:wrap; gap:.3rem; }
+.log-wrong { background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.25); border-radius:10px; padding:.1rem .5rem; font-size:.72rem; color:#fca5a5; font-family:'Space Mono',monospace; }
+.log-wrong b { color:var(--text); font-weight:700; }
+.log-draft { border-left:3px solid rgba(168,85,247,.5); padding:.25rem 0 .25rem .6rem; }
+.log-draft-head { font-size:.66rem; color:#c084fc; }
+.log-draft-text { font-size:.78rem; color:var(--text2); line-height:1.6; white-space:pre-wrap; word-break:break-word; }
+.log-table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:8px; -webkit-overflow-scrolling:touch; }
+.log-table { width:100%; border-collapse:collapse; font-size:.72rem; color:var(--text2); min-width:640px; }
+.log-table th { text-align:left; background:var(--surface); color:var(--text3); font-weight:600; padding:.45rem .55rem; border-bottom:1px solid var(--border); white-space:nowrap; }
+.log-table td { padding:.4rem .55rem; border-bottom:1px solid rgba(255,255,255,.05); vertical-align:top; white-space:nowrap; }
+.log-table td.log-wrap { white-space:normal; word-break:break-word; max-width:280px; }
+.log-ans { font-family:'Space Mono',monospace; color:var(--text); }
+.log-note { font-family:'Noto Sans KR',sans-serif; font-size:.64rem; color:var(--text3); margin-top:.1rem; }
+.log-empty { font-size:.75rem; color:var(--text3); padding:.5rem 0; }
+.log-foot { font-size:.68rem; color:var(--text3); margin-top:1rem; line-height:1.6; }
+
 /* AI 작문 피드백 */
 .ai-box { margin-top:.85rem; display:flex; flex-direction:column; gap:.45rem; align-items:flex-start; }
 .ai-btn { background:rgba(168,85,247,.12); border:1px solid rgba(168,85,247,.45); color:#c084fc; border-radius:6px; padding:.5rem 1rem; font-size:.8rem; font-family:'Noto Sans KR',sans-serif; cursor:pointer; display:inline-flex; align-items:center; gap:.4rem; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
@@ -572,6 +605,7 @@ window.dispatchEvent(new Event('firebaseReady'));
     <!-- 전체 강제 이동 -->
     <select id="tdForceSelect" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.72rem;color:var(--text);"></select>
     <button onclick="tdForceAll()" style="background:var(--accent);border:none;border-radius:4px;padding:.3rem .8rem;font-size:.72rem;color:#fff;cursor:pointer;white-space:nowrap;">전체 이동 →</button>
+    <button onclick="showLogOverlay()" style="background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.35);border-radius:4px;padding:.3rem .7rem;font-size:.72rem;color:#facc15;cursor:pointer;white-space:nowrap;">📋 응답 기록 <span id="tdLogCount">0</span></button>
     <button onclick="showM7Review()" style="background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);border-radius:4px;padding:.3rem .7rem;font-size:.72rem;color:#a855f7;cursor:pointer;">📝 미션8 응답</button>
     <button onclick="teacherSyncNow()" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);border-radius:4px;padding:.3rem .7rem;font-size:.72rem;color:var(--accent2);cursor:pointer;">🔄 동기화</button>
     <button onclick="teacherResetRoom()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:4px;padding:.3rem .7rem;font-size:.72rem;color:var(--danger);cursor:pointer;">🗑️ 초기화</button>
@@ -1310,6 +1344,7 @@ async function m7RequestAI(ti) {
   if(!text) { m7AiError[ti] = '먼저 안내문을 써 주세요.'; m7AiRefresh(ti); return; }
   if(m7AiBusy[ti] || (m7AiInfo(ti).count || 0) >= AI_FEEDBACK_LIMIT) return;
   state.m7text = state.m7text || {}; state.m7text[ti] = ta.value;
+  logResponse(ti, 8, 'AI 피드백 요청 전 작문', text, null, 'AI 피드백 ' + ((m7AiInfo(ti).count || 0) + 1) + '회차');
   m7AiBusy[ti] = true; m7AiRefresh(ti);
   const isl = MISSION7_DATA[ti] || {};
   try {
@@ -1328,6 +1363,39 @@ async function m7RequestAI(ti) {
     m7AiBusy[ti] = false;
     m7AiRefresh(ti);
   }
+}
+
+// ══ 응답 기록 ══
+// 학생이 시도할 때마다 한 줄씩 쌓는다 (덮어쓰지 않음, 오답 포함). 모둠 단위만, 이름 없음.
+// 저장 위치: Firebase grammar-sos/rooms/room(반)/log/(기록 키)
+// 교사 화면의 📋 응답 기록에서 모아 보고, CSV로 내려받을 수 있다. 방 초기화 때 함께 지워진다.
+let roomLog = {};      // 키 → 기록 (교사는 반 전체, 학생 기기는 자기가 남긴 것)
+let logSeq = 0;
+let fbOnline = false;  // Firebase에 실제로 연결됐는지 (오프라인 모드 판단)
+const LOG_MISSION_LABEL = {1:'미션 1 위치 파악', 2:'미션 2 거주지', 3:'미션 3 식량', 4:'미션 4 동료', 5:'달 기지', 6:'미션 5 위기 대응', 7:'미션 6 신호', 8:'미션 7 탈출'};
+function stripTags(x) { return String(x == null ? '' : x).replace(/<[^>]+>/g, ''); }
+// ok: true(정답) / false(오답) / null(정오 판단 없음: 작문 등)
+function logResponse(ti, m, item, answer, ok, note) {
+  try {
+    const hk = Object.keys(HINT_MISSION_ID).find(k => HINT_MISSION_ID[k] === m);
+    const e = {
+      t: Date.now(), team: ti, m,
+      item: stripTags(item).slice(0, 200),
+      answer: String(answer == null ? '' : answer).slice(0, 2000),
+      ok: ok === true ? true : ok === false ? false : null,
+      hint: hk ? hintCount(hk, ti) : 0,
+      set: (G && G.id) || '',
+      by: (typeof myRole !== 'undefined' && myRole) || '',
+    };
+    if(note) e.note = String(note).slice(0, 100);
+    const key = e.t.toString(36) + '-' + (e.by || 'x') + '-' + (++logSeq);
+    roomLog[key] = e;
+    if(fbOnline && myRoom && window.firebaseSet) {
+      window.firebaseSet(window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom+'/log/'+key), e)
+        .catch(err => console.warn('log save failed', err));
+    }
+    if(document.getElementById('logOverlay')) renderLogOverlay();
+  } catch(err) { console.warn('logResponse error', err); }
 }
 
 function totalHintsUsed(ti) {
@@ -1549,6 +1617,8 @@ function computeGlobalMission() {
 
 function canAdvance(toMission) {
   if(myRole === 'teacher') return true;
+  // 오프라인 모드: 다른 모둠 진행을 알 수 없으니 이 기기 혼자 끝까지 진행
+  if(myRoom && !fbOnline) return true;
   return toMission <= computeGlobalMission();
 }
 
@@ -1894,6 +1964,7 @@ function m3SelectVerb(ti, verbText, correctWh) {
     return;
   }
   const isCorrect = m3SelectedWh === correctWh;
+  logResponse(ti, 3, '짝짓기: ' + verbText, m3SelectedWh + ' + ' + verbText, isCorrect);
   const fb = document.getElementById(`m3matchFeedback-${ti}`);
   if(isCorrect){
     state.m3match[ti][m3SelectedWh] = verbText;
@@ -2120,6 +2191,7 @@ function m2UpdateUI(ti){
 
 function m2Check(ti){
   const ok = M2_CORRECT.every((w,i)=>state.m2dropped[ti][i]===w);
+  logResponse(ti, 2, '조각 배열: ' + G.m2.promptKr, (state.m2dropped[ti]||[]).join(' '), ok);
   const fb = document.getElementById(`m2fb-${ti}`);
   fb.classList.add('show');
   if(ok){
@@ -2290,6 +2362,7 @@ function selectWh(ti, pick) {
   // pick: 카드 번호(0부터) 또는 카드 단어
   const word = typeof pick === 'number' ? G.m1.options[pick].word : pick;
   const correct = G.m1.answer;
+  logResponse(ti, 1, G.m1.promptBefore + '___' + G.m1.promptAfter, word, word === correct);
   const cards = document.querySelectorAll(`#whCards-${ti} .wh-card`);
   const blank = document.getElementById(`blank-${ti}`);
   const fb = document.getElementById(`feedback1-${ti}`);
@@ -2533,6 +2606,7 @@ function moonSubmit(ti) {
 
   // 함정 표현 체크
   if(moonIsTrapInput(val)) {
+    logResponse(ti, 5, '운석 입력', val, false, '함정 표현');
     moonDamage(ti, G.moon.trapMessage);
     input.classList.add('miss');
     setTimeout(() => input.classList.remove('miss'), 500);
@@ -2542,6 +2616,7 @@ function moonSubmit(ti) {
 
   // 운석 매칭
   const match = moonState.meteors.find(m => !m.destroyed && m.text.toLowerCase() === val);
+  logResponse(ti, 5, '운석 입력', val, !!match, match ? '' : '떨어지는 표현과 다름');
   if(match) {
     match.destroyed = true;
     match.el.classList.add('destroyed');
@@ -3024,6 +3099,7 @@ function m5StartTimer(ti) {
 }
 
 function m5Result(ti, success) {
+  logResponse(ti, 6, '암기 발화: ' + ((MISSION5_DATA[ti]||{}).sentence || ''), success ? '발화 성공' : '발화 실패', !!success);
   const m5 = MISSION5_DATA[ti];
   const rawCoins5 = success ? 3 : -1;
   const m5coins = applyCoins(ti, rawCoins5);
@@ -3381,6 +3457,7 @@ function m6CheckA(ti) {
   const m6 = MISSION6_DATA[ti];
   const dropped = state.m6dropped[ti+'a']||[];
   const ok = m6.teamA_correct.every((w,i)=>dropped[i]===w);
+  logResponse(ti, 7, '질문 배열: ' + m6.teamA_given, dropped.join(' '), ok);
   const fb = document.getElementById('m6fbA-'+ti);
   fb.classList.add('show');
   if(ok){
@@ -3399,6 +3476,8 @@ function m6CheckB(ti) {
   const d1=state.m6dropped[ti+'b1']||[], d2=state.m6dropped[ti+'b2']||[];
   const ok1=m6.teamB_correct1.every((w,i)=>d1[i]===w);
   const ok2=m6.teamB_correct2.every((w,i)=>d2[i]===w);
+  logResponse(ti, 7, '답변 배열: ' + m6.teamA_given, d1.join(' ') + ' / ' + d2.join(' '), ok1 && ok2,
+    ok1 && ok2 ? '' : (ok1 ? '문장 2 틀림' : ok2 ? '문장 1 틀림' : '두 문장 모두 틀림'));
   const fb = document.getElementById('m6fbB-'+ti);
   fb.classList.add('show');
   if(ok1&&ok2){
@@ -3413,6 +3492,7 @@ function m6CheckB(ti) {
 }
 
 function m6Result(ti, success) {
+  logResponse(ti, 7, '짝꿍 모둠과 대화 발화', success ? '발화 성공' : '발화 실패', !!success);
   const rawCoins6 = success ? 3 : 0;
   const m6coins = applyCoins(ti, rawCoins6);
   state.coins[ti] += m6coins;
@@ -3537,6 +3617,7 @@ function m4Answer(ti, idx, answer) {
   state.m4answers[ti][idx] = answer;
   const q = MISSION4_QUESTIONS[idx];
   const isCorrect = answer === q.correct;
+  logResponse(ti, 4, 'OX: ' + q.sentence, answer ? 'O (맞다)' : 'X (틀리다)', isCorrect);
 
   // 해당 문제 카드만 업데이트
   const card = document.getElementById(`m4q-${ti}-${idx}`);
@@ -3777,6 +3858,7 @@ return;
 }
 state.m7text = state.m7text || {};
 state.m7text[ti] = text;
+logResponse(ti, 8, '제출한 작문', text, null, (m7AiInfo(ti).count || 0) ? 'AI 피드백 ' + m7AiInfo(ti).count + '회 받은 뒤 제출' : 'AI 피드백 없이 제출');
 state.missionStep['m7_'+ti] = 2;
 fbSaveState();
 renderMission7(ti+1);
@@ -3812,6 +3894,7 @@ renderMission7(ti+1);
 
 function m7Score(ti, grade) {
 const text = (state.m7text && state.m7text[ti]) || '';
+logResponse(ti, 8, '교사 채점', {perfect:'필수 내용 포함 + 발화 성공', partial:'필수 내용 포함, 발화 미완성', miss:'필수 내용 미포함'}[grade] || grade, grade !== 'miss');
 const isEnglish = /[a-zA-Z]/.test(text) && text.replace(/[^a-zA-Z\s]/g,'').length > text.replace(/[^가-힣\s]/g,'').length;
 const hasGrammarError = /[가-힣]/.test(text) && isEnglish;
 const whCount = m7CountTargetOccurrences(text);
@@ -4023,6 +4106,7 @@ window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom+'/connectedRoles'),
 {[myRole]: true}
 );
 fbSubscribe();
+fbOnline = true;
 status.textContent = '✅ Firebase 연결 완료!';
 } catch(e) {
 console.warn('Firebase error, proceeding offline:', e);
@@ -4092,6 +4176,24 @@ const grammarUnsub = window.firebaseOnValue(
   }
 );
 fbUnsubscribes.push(grammarUnsub);
+
+// 응답 기록 (교사만 반 전체를 받는다)
+if(myRole === 'teacher') {
+  let logRenderTimer = null;
+  const logUnsub = window.firebaseOnValue(
+    window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom+'/log'),
+    (snap) => {
+      roomLog = snap.exists() ? (snap.val() || {}) : {};
+      clearTimeout(logRenderTimer);
+      logRenderTimer = setTimeout(() => {
+        if(document.getElementById('logOverlay')) renderLogOverlay();
+        const b = document.getElementById('tdLogCount');
+        if(b) b.textContent = Object.keys(roomLog).length;
+      }, 300);
+    }
+  );
+  fbUnsubscribes.push(logUnsub);
+}
 
 // 접속자 변경 감지 (교사용)
 if(myRole === 'teacher') {
@@ -4546,7 +4648,8 @@ alert('동기화 완료!');
 }
 
 async function teacherResetRoom() {
-if(!confirm('방 데이터를 초기화할까요? 모든 진행 상황이 사라져요.')) return;
+if(Object.keys(roomLog || {}).length && confirm('초기화하면 응답 기록도 모두 사라져요.\n먼저 응답 기록을 CSV로 내려받을까요?')) downloadLogCSV();
+if(!confirm('방 데이터를 초기화할까요? 모든 진행 상황과 응답 기록이 사라져요.')) return;
 if(window.firebaseReady) {
   // 학생 탭에 먼저 리로드 명령 전송 후 방 삭제
   await window.firebaseSet(
@@ -4557,6 +4660,120 @@ if(window.firebaseReady) {
   await window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom));
 }
 location.reload();
+}
+
+// ── 📋 응답 기록 보기 (교사) ──
+let logFilterTeam = 'all', logFilterM = 'all';
+function logTeamLabel(i) { const isl = ISLANDS[i] || {}; return (isl.emoji || '') + ' ' + (Number(i) + 1) + '모둠'; }
+function logTime(t, withDate) {
+  const d = new Date(t), z = n => String(n).padStart(2, '0');
+  const hms = z(d.getHours()) + ':' + z(d.getMinutes()) + ':' + z(d.getSeconds());
+  return withDate ? d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()) + ' ' + hms : hms;
+}
+function logEntries() {
+  return Object.values(roomLog || {}).filter(e => e && typeof e.t === 'number').sort((a, b) => a.t - b.t);
+}
+function logFiltered() {
+  return logEntries().filter(e =>
+    (logFilterTeam === 'all' || String(e.team) === logFilterTeam) &&
+    (logFilterM === 'all' || String(e.m) === logFilterM));
+}
+function showLogOverlay() {
+  let ov = document.getElementById('logOverlay');
+  if(ov) ov.remove();
+  ov = document.createElement('div');
+  ov.id = 'logOverlay';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;';
+  document.body.appendChild(ov);
+  renderLogOverlay();
+}
+function setLogFilter(kind, v) {
+  if(kind === 'team') logFilterTeam = v; else logFilterM = v;
+  renderLogOverlay();
+}
+function renderLogOverlay() {
+  const ov = document.getElementById('logOverlay');
+  if(!ov) return;
+  const keepScroll = (ov.querySelector('.log-body') || {}).scrollTop || 0;
+  const all = logEntries(), list = logFiltered();
+  const sel = (kind, cur, opts) => '<select onchange="setLogFilter(\'' + kind + '\', this.value)" class="log-select">'
+    + opts.map(([v, l]) => '<option value="' + v + '"' + (String(cur) === String(v) ? ' selected' : '') + '>' + l + '</option>').join('') + '</select>';
+  const teamOpts = [['all', '모든 모둠']].concat(ISLANDS.map((_, i) => [String(i), logTeamLabel(i)]));
+  const mOpts = [['all', '모든 미션']].concat(Object.keys(LOG_MISSION_LABEL).map(k => [k, LOG_MISSION_LABEL[k]]));
+
+  // A. 자주 틀린 문항 (정오가 있는 기록만)
+  const groups = {};
+  list.filter(e => e.ok === true || e.ok === false).forEach(e => {
+    const k = e.m + '|' + e.item;
+    const g = groups[k] || (groups[k] = { m: e.m, item: e.item, tries: 0, wrong: 0, teams: new Set(), answers: {} });
+    g.tries++;
+    if(e.ok === false) {
+      g.wrong++; g.teams.add(e.team);
+      const a = g.answers[e.answer] || (g.answers[e.answer] = { n: 0, teams: new Set() });
+      a.n++; a.teams.add(e.team);
+    }
+  });
+  const hard = Object.values(groups).filter(g => g.wrong > 0).sort((a, b) => b.wrong - a.wrong || b.teams.size - a.teams.size).slice(0, 10);
+  const hardHtml = hard.length ? hard.map(g => {
+    const answers = Object.entries(g.answers).sort((a, b) => b[1].n - a[1].n).slice(0, 4).map(([ans, a]) =>
+      '<span class="log-wrong">' + escHTML(ans) + ' <b>×' + a.n + '</b> ' + [...a.teams].map(t => (ISLANDS[t] || {}).emoji || '').join('') + '</span>').join('');
+    return '<div class="log-card"><div class="log-card-top"><span class="log-mission">' + escHTML(LOG_MISSION_LABEL[g.m] || '') + '</span>'
+      + '<span class="log-rate">오답 ' + g.wrong + ' / 시도 ' + g.tries + ' · ' + g.teams.size + '개 모둠</span></div>'
+      + '<div class="log-item">' + escHTML(g.item) + '</div><div class="log-wrongs">' + answers + '</div></div>';
+  }).join('') : '<div class="log-empty">아직 틀린 시도가 없어요.</div>';
+
+  // B. 미션 7 작문 변화 (AI 피드백 전 → 제출)
+  const writing = {};
+  list.filter(e => e.m === 8 && e.ok === null).forEach(e => { (writing[e.team] = writing[e.team] || []).push(e); });
+  const writingHtml = Object.keys(writing).length ? Object.keys(writing).sort().map(t =>
+    '<div class="log-card"><div class="log-card-top"><span class="log-mission">' + logTeamLabel(t) + '</span></div>'
+    + writing[t].map(e => '<div class="log-draft"><div class="log-draft-head">' + escHTML(e.item) + (e.note ? ' · ' + escHTML(e.note) : '') + ' · ' + logTime(e.t) + '</div>'
+      + '<div class="log-draft-text">' + escHTML(e.answer) + '</div></div>').join('') + '</div>').join('')
+    : '<div class="log-empty">아직 미션 7 작문 기록이 없어요.</div>';
+
+  // C. 전체 시도 기록 (최근 순)
+  const rows = list.slice().reverse().slice(0, 400).map(e =>
+    '<tr><td>' + logTime(e.t) + '</td><td>' + logTeamLabel(e.team) + '</td><td>' + escHTML(LOG_MISSION_LABEL[e.m] || '') + '</td>'
+    + '<td class="log-wrap">' + escHTML(e.item) + '</td><td class="log-wrap log-ans">' + escHTML(e.answer) + (e.note ? '<div class="log-note">' + escHTML(e.note) + '</div>' : '') + '</td>'
+    + '<td>' + (e.ok === true ? '✅' : e.ok === false ? '❌' : '—') + '</td><td>' + (e.hint ? '💡' + e.hint : '') + '</td></tr>').join('');
+  const tableHtml = rows
+    ? '<div class="log-table-wrap"><table class="log-table"><thead><tr><th>시각</th><th>모둠</th><th>미션</th><th>문항</th><th>학생 답</th><th>결과</th><th>힌트</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+    : '<div class="log-empty">기록이 없어요.</div>';
+
+  ov.innerHTML =
+    '<div class="log-head"><div class="log-title">📋 응답 기록 · ' + (myRoom || '') + '반 <span class="log-count">' + list.length + (list.length !== all.length ? ' / ' + all.length : '') + '건</span></div>'
+    + sel('team', logFilterTeam, teamOpts) + sel('m', logFilterM, mOpts)
+    + '<button class="log-btn" onclick="downloadLogCSV()">⬇ CSV 내려받기</button>'
+    + '<button class="log-btn log-close" onclick="document.getElementById(\'logOverlay\').remove()">✕ 닫기</button></div>'
+    + '<div class="log-body">'
+    + '<div class="log-sec">자주 틀린 문항</div><div class="log-grid">' + hardHtml + '</div>'
+    + '<div class="log-sec">미션 7 작문 변화 <span class="log-sub">AI 피드백 받기 전 → 제출</span></div><div class="log-grid">' + writingHtml + '</div>'
+    + '<div class="log-sec">전체 시도 기록 <span class="log-sub">최근 순' + (list.length > 400 ? ', 최근 400건' : '') + '</span></div>' + tableHtml
+    + '<div class="log-foot">학생 이름 없이 모둠 단위로만 기록돼요. 🗑️ 초기화하면 이 기록도 지워지니 필요하면 먼저 CSV로 내려받으세요.</div>'
+    + '</div>';
+  const body = ov.querySelector('.log-body');
+  if(body) body.scrollTop = keepScroll;
+}
+function downloadLogCSV() {
+  const esc = v => {
+    let x = String(v == null ? '' : v);
+    if(/^[=+\-@]/.test(x)) x = "'" + x; // 엑셀 수식으로 실행되지 않게
+    return '"' + x.replace(/"/g, '""') + '"';
+  };
+  const head = ['시각', '반', '모둠', '미션', '문법 세트', '문항', '학생 답', '결과', '비고', '연 힌트 수', '기록한 기기'];
+  const lines = logEntries().map(e => [
+    logTime(e.t, true), myRoom || '', (Number(e.team) + 1) + '모둠 ' + ((ISLANDS[e.team] || {}).name || ''),
+    LOG_MISSION_LABEL[e.m] || e.m, e.set || '', e.item, e.answer,
+    e.ok === true ? '정답' : e.ok === false ? '오답' : '', e.note || '', e.hint || 0, e.by || '',
+  ].map(esc).join(','));
+  const csv = '﻿' + [head.map(esc).join(',')].concat(lines).join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  const d = new Date(), z = n => String(n).padStart(2, '0');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'grammar-sos_class' + (myRoom || '') + '_' + d.getFullYear() + z(d.getMonth() + 1) + z(d.getDate()) + '_' + z(d.getHours()) + z(d.getMinutes()) + '.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
 
 // ── 미션 7 응답 리뷰 오버레이 ──
