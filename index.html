@@ -34,55 +34,55 @@ radial-gradient(ellipse at 80% 80%,rgba(56,189,248,.08) 0%,transparent 50%),var(
 .float-bg span { position:absolute; font-size:clamp(36px,7vw,72px); opacity:.06; animation:floatUp linear infinite; }
 @keyframes floatUp { 0%{transform:translateY(110vh) rotate(0deg)} 100%{transform:translateY(-20vh) rotate(360deg)} }
 .main-content { text-align:center; z-index:1; padding:2rem; }
-.sos-badge { display:inline-block; background:var(--danger); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:.3em; padding:.3rem 1.2rem; border-radius:2px; margin-bottom:1.5rem; animation:badgePulse 2s ease-in-out infinite; }
+.sos-badge { display:inline-block; background:var(--danger); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:1.06rem; letter-spacing:.3em; padding:.3rem 1.2rem; border-radius:2px; margin-bottom:1.5rem; animation:badgePulse 2s ease-in-out infinite; }
 @keyframes badgePulse { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)} 50%{box-shadow:0 0 0 8px rgba(239,68,68,0)} }
 .main-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem,10vw,7rem); line-height:.9; letter-spacing:.05em; margin-bottom:.5rem; }
 .title-sos { color:var(--text); }
 .title-secure { color:var(--accent); text-shadow:0 0 40px rgba(249,115,22,.5); animation:glitch 4s infinite; }
 .title-our { color:var(--accent2); }
 @keyframes glitch { 0%,90%,100%{text-shadow:0 0 40px rgba(249,115,22,.5)} 92%{text-shadow:-3px 0 var(--danger),3px 0 var(--accent2)} 94%{text-shadow:3px 0 var(--danger),-3px 0 var(--accent2)} 96%{text-shadow:0 0 40px rgba(249,115,22,.5)} }
-.main-sub { font-size:.75rem; color:var(--text2); letter-spacing:.2em; margin:1rem 0 .4rem; text-transform:uppercase; }
-.main-desc { font-size:.8rem; color:var(--text3); margin-bottom:2.5rem; font-family:'Noto Sans KR',sans-serif; line-height:1.8; }
+.main-sub { font-size:.88rem; color:var(--text2); letter-spacing:.2em; margin:1rem 0 .4rem; text-transform:uppercase; }
+.main-desc { font-size:.92rem; color:var(--text3); margin-bottom:2.5rem; font-family:'Noto Sans KR',sans-serif; line-height:1.8; }
 .stat-row { display:flex; gap:2rem; justify-content:center; margin-top:2.5rem; padding-top:2rem; border-top:1px solid var(--border); }
 .stat-num { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:var(--accent2); }
-.stat-label { font-size:.62rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; }
+.stat-label { font-size:.72rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; }
 
 /* ── BUTTONS ── */
 .btn { border:none; border-radius:4px; cursor:pointer; transition:all .2s; font-family:'Bebas Neue',sans-serif; }
 .btn-primary { background:var(--accent); color:#fff; font-size:1.3rem; letter-spacing:.15em; padding:.85rem 2.5rem; }
 .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(249,115,22,.4); }
 .btn-primary:active { transform:translateY(0); }
-.btn-secondary { background:transparent; color:var(--text2); border:1px solid var(--border); font-family:'Space Mono',monospace; font-size:.72rem; letter-spacing:.08em; padding:.55rem 1.4rem; border-radius:4px; cursor:pointer; transition:all .2s; margin-top:.75rem; }
+.btn-secondary { background:transparent; color:var(--text2); border:1px solid var(--border); font-family:'Space Mono',monospace; font-size:.84rem; letter-spacing:.08em; padding:.55rem 1.4rem; border-radius:4px; cursor:pointer; transition:all .2s; margin-top:.75rem; }
 .btn-secondary:hover { border-color:var(--text3); color:var(--text); }
-.btn-ghost { background:transparent; color:var(--text3); border:1px solid var(--border); font-family:'Space Mono',monospace; font-size:.68rem; padding:.4rem .8rem; border-radius:4px; cursor:pointer; transition:all .2s; }
+.btn-ghost { background:transparent; color:var(--text3); border:1px solid var(--border); font-family:'Space Mono',monospace; font-size:.8rem; padding:.4rem .8rem; border-radius:4px; cursor:pointer; transition:all .2s; }
 .btn-ghost:hover { color:var(--text); border-color:var(--text3); }
 
 /* ── LOBBY ── */
 #screen-lobby { background:var(--bg); padding:1.5rem; }
 .lobby-header { text-align:center; margin-bottom:1.5rem; }
 .lobby-title { font-family:'Bebas Neue',sans-serif; font-size:2.8rem; letter-spacing:.1em; color:var(--accent); }
-.lobby-sub { font-size:.7rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; margin-top:.2rem; }
+.lobby-sub { font-size:.82rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; margin-top:.2rem; }
 .team-cards-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.85rem; margin-bottom:1.5rem; }
 .team-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.9rem 1rem; display:flex; align-items:center; gap:.75rem; cursor:pointer; transition:all .2s; }
 .team-card:hover { border-color:var(--card-color,var(--accent)); transform:translateY(-2px); }
 .team-card.active-team { border-color:var(--card-color,var(--accent)); box-shadow:0 0 0 2px var(--card-color,var(--accent)); }
 .tc-emoji { font-size:1.8rem; }
 .tc-info { flex:1; }
-.tc-name { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:.08em; }
-.tc-island { font-size:.62rem; letter-spacing:.05em; text-transform:uppercase; }
+.tc-name { font-family:'Bebas Neue',sans-serif; font-size:1.06rem; letter-spacing:.08em; }
+.tc-island { font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; }
 .tc-coins { text-align:right; }
 .tc-coin-num { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--accent); }
-.tc-coin-label { font-size:.55rem; color:var(--text3); letter-spacing:.05em; }
+.tc-coin-label { font-size:.65rem; color:var(--text3); letter-spacing:.05em; }
 .mission-progress { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1rem 1.1rem; margin-bottom:1.25rem; }
-.mp-title { font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:.1em; color:var(--text2); margin-bottom:.75rem; }
+.mp-title { font-family:'Bebas Neue',sans-serif; font-size:1.06rem; letter-spacing:.1em; color:var(--text2); margin-bottom:.75rem; }
 .mp-items { display:grid; grid-template-columns:repeat(8,1fr); gap:.4rem; }
 .mp-item { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:.45rem .25rem; text-align:center; opacity:.4; transition:all .3s; }
 .mp-item.current { opacity:1; border-color:var(--accent); box-shadow:0 0 12px rgba(249,115,22,.25); }
 .mp-item.done { opacity:.7; border-color:var(--success); }
 .mp-emoji { font-size:1.1rem; display:block; margin-bottom:.12rem; }
-.mp-name { font-size:.52rem; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
+.mp-name { font-size:.62rem; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
 .bottom-bar { display:flex; gap:.75rem; align-items:center; justify-content:flex-end; padding-top:1rem; border-top:1px solid var(--border); }
-.bottom-bar-left { flex:1; font-size:.72rem; color:var(--text3); }
+.bottom-bar-left { flex:1; font-size:.84rem; color:var(--text3); }
 
 /* ── MISSION SCREEN ── */
 #screen-mission { background:var(--bg); }
@@ -91,25 +91,25 @@ radial-gradient(ellipse at 80% 80%,rgba(56,189,248,.08) 0%,transparent 50%),var(
 .sidebar-island { text-align:center; padding:1rem; border-radius:8px; border:1px solid var(--border); }
 .sidebar-island-emoji { font-size:3rem; display:block; margin-bottom:.5rem; }
 .sidebar-island-name { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:.08em; }
-.sidebar-island-crisis { font-size:.65rem; color:var(--text3); margin-top:.2rem; text-transform:uppercase; }
+.sidebar-island-crisis { font-size:.76rem; color:var(--text3); margin-top:.2rem; text-transform:uppercase; }
 .sidebar-coins { background:var(--bg); border-radius:8px; padding:.85rem; text-align:center; border:1px solid var(--border); }
-.sidebar-coin-label { font-size:.62rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.25rem; }
+.sidebar-coin-label { font-size:.72rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.25rem; }
 .sidebar-coin-num { font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:var(--accent); }
 .sidebar-items { background:var(--bg); border-radius:8px; padding:.85rem; border:1px solid var(--border); }
-.sidebar-items-label { font-size:.62rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.5rem; }
+.sidebar-items-label { font-size:.72rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.5rem; }
 .items-list { display:flex; flex-wrap:wrap; gap:.4rem; }
-.item-chip { background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:.25rem .6rem; font-size:.7rem; color:var(--text2); }
+.item-chip { background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:.25rem .6rem; font-size:.82rem; color:var(--text2); }
 .sidebar-mission-list { flex:1; }
-.sml-title { font-size:.62rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.5rem; }
-.sml-item { display:flex; align-items:center; gap:.5rem; padding:.35rem .5rem; border-radius:4px; font-size:.72rem; color:var(--text3); margin-bottom:.25rem; transition:all .2s; }
+.sml-title { font-size:.72rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.5rem; }
+.sml-item { display:flex; align-items:center; gap:.5rem; padding:.35rem .5rem; border-radius:4px; font-size:.84rem; color:var(--text3); margin-bottom:.25rem; transition:all .2s; }
 .sml-item.current { background:rgba(249,115,22,.1); color:var(--accent); border:1px solid rgba(249,115,22,.2); }
 .sml-item.done { color:var(--success); }
-.sml-emoji { font-size:.9rem; }
+.sml-emoji { font-size:1rem; }
 
 /* MISSION MAIN */
 .mission-main { padding:2rem; overflow-y:auto; display:flex; flex-direction:column; }
 .mission-header { margin-bottom:1.5rem; }
-.mission-num { font-size:.7rem; color:var(--text3); letter-spacing:.2em; text-transform:uppercase; margin-bottom:.3rem; }
+.mission-num { font-size:.82rem; color:var(--text3); letter-spacing:.2em; text-transform:uppercase; margin-bottom:.3rem; }
 .mission-title { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; letter-spacing:.08em; color:var(--text); }
 .mission-situation {
 background:var(--surface);
@@ -118,7 +118,7 @@ border-left:3px solid var(--accent);
 border-radius:0 8px 8px 0;
 padding:1rem 1.25rem;
 margin-bottom:1.75rem;
-font-size:.82rem;
+font-size:.94rem;
 line-height:1.7;
 color:var(--text2);
 font-family:'Noto Sans KR',sans-serif;
@@ -132,9 +132,9 @@ font-family:'Noto Sans KR',sans-serif;
 @keyframes pulseGlow { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.15)} }
 
 /* STEP 1: 의문사 선택 */
-.step-label { font-size:.7rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; margin-bottom:1rem; }
+.step-label { font-size:.82rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; margin-bottom:1rem; }
 .wh-prompt { font-size:1.1rem; color:var(--text2); margin-bottom:1.5rem; font-family:'Noto Sans KR',sans-serif; line-height:1.8; }
-.wh-prompt .blank { display:inline-block; background:rgba(249,115,22,.15); border:1px dashed var(--accent); border-radius:4px; padding:.1rem .8rem; min-width:80px; text-align:center; color:var(--accent); font-family:'Space Mono',monospace; font-size:.9rem; vertical-align:middle; }
+.wh-prompt .blank { display:inline-block; background:rgba(249,115,22,.15); border:1px dashed var(--accent); border-radius:4px; padding:.1rem .8rem; min-width:80px; text-align:center; color:var(--accent); font-family:'Space Mono',monospace; font-size:1rem; vertical-align:middle; }
 .wh-cards { display:flex; gap:.85rem; flex-wrap:wrap; margin-bottom:1.5rem; }
 .wh-card {
 background:var(--surface);
@@ -152,14 +152,14 @@ min-width:100px;
 .wh-card.correct { border-color:var(--success); background:rgba(34,197,94,.1); }
 @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
 .wh-word { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:.1em; }
-.wh-kr { font-size:.65rem; color:var(--text3); margin-top:.2rem; font-family:'Noto Sans KR',sans-serif; }
-.feedback-box { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1rem 1.25rem; margin-top:1rem; font-size:.82rem; line-height:1.7; display:none; }
+.wh-kr { font-size:.76rem; color:var(--text3); margin-top:.2rem; font-family:'Noto Sans KR',sans-serif; }
+.feedback-box { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1rem 1.25rem; margin-top:1rem; font-size:.94rem; line-height:1.7; display:none; }
 .feedback-box.show { display:block; animation:fadeIn .3s ease; }
 .feedback-correct { border-color:var(--success); color:var(--success); }
 .feedback-wrong { border-color:var(--danger); color:var(--danger); }
 
 /* STEP 2: 선택지 */
-.choice-label { font-size:.7rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; margin-bottom:.75rem; }
+.choice-label { font-size:.82rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; margin-bottom:.75rem; }
 .choices { display:flex; flex-direction:column; gap:.75rem; margin-bottom:1.5rem; }
 .choice-btn {
 background:var(--surface);
@@ -178,8 +178,8 @@ text-align:left;
 .choice-letter { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--text3); min-width:28px; }
 .choice-btn:hover .choice-letter, .choice-btn.chosen .choice-letter { color:var(--accent2); }
 .choice-text { flex:1; }
-.choice-main { font-size:.9rem; color:var(--text); font-family:'Noto Sans KR',sans-serif; }
-.choice-sub { font-size:.72rem; color:var(--text3); margin-top:.2rem; font-family:'Space Mono',monospace; }
+.choice-main { font-size:1rem; color:var(--text); font-family:'Noto Sans KR',sans-serif; }
+.choice-sub { font-size:.84rem; color:var(--text3); margin-top:.2rem; font-family:'Space Mono',monospace; }
 
 /* STEP 3: 결과 */
 .result-box { text-align:center; padding:2rem; }
@@ -190,81 +190,86 @@ text-align:left;
 .result-coin.positive { color:var(--success); }
 .result-coin.negative { color:var(--danger); }
 .result-coin.neutral { color:var(--text2); }
-.result-desc { font-size:.82rem; color:var(--text2); line-height:1.7; font-family:'Noto Sans KR',sans-serif; margin-bottom:1.5rem; }
-.result-item { display:inline-block; background:rgba(249,115,22,.1); border:1px solid rgba(249,115,22,.3); border-radius:6px; padding:.4rem 1rem; font-size:.8rem; color:var(--accent); margin-bottom:1.5rem; }
+.result-desc { font-size:.94rem; color:var(--text2); line-height:1.7; font-family:'Noto Sans KR',sans-serif; margin-bottom:1.5rem; }
+.result-item { display:inline-block; background:rgba(249,115,22,.1); border:1px solid rgba(249,115,22,.3); border-radius:6px; padding:.4rem 1rem; font-size:.92rem; color:var(--accent); margin-bottom:1.5rem; }
 
 /* TEAM SELECTOR */
 .team-selector { background:var(--surface); border-bottom:1px solid var(--border); padding:.75rem 1.5rem; display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; position:sticky; top:0; z-index:50; }
-.ts-label { font-size:.65rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; }
-.ts-btn { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:.3rem .7rem; font-size:.72rem; font-family:'Space Mono',monospace; color:var(--text3); cursor:pointer; transition:all .2s; }
+.ts-label { font-size:.76rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; }
+.ts-btn { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:.3rem .7rem; font-size:.84rem; font-family:'Space Mono',monospace; color:var(--text3); cursor:pointer; transition:all .2s; }
 .ts-btn:hover { border-color:var(--text3); color:var(--text); }
 .ts-btn.active { border-color:var(--btn-color,var(--accent)); color:var(--btn-color,var(--accent)); background:rgba(255,255,255,.03); }
 
 /* 단계별 힌트 */
 .hint-box { margin:.75rem 0 1rem; display:flex; flex-direction:column; gap:.4rem; align-items:flex-start; }
-.hint-btn { background:rgba(250,204,21,.1); border:1px solid rgba(250,204,21,.4); color:#facc15; border-radius:6px; padding:.45rem .9rem; font-size:.78rem; font-family:'Noto Sans KR',sans-serif; cursor:pointer; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+.hint-btn { background:rgba(250,204,21,.1); border:1px solid rgba(250,204,21,.4); color:#facc15; border-radius:6px; padding:.45rem .9rem; font-size:.9rem; font-family:'Noto Sans KR',sans-serif; cursor:pointer; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
 .hint-btn:hover { background:rgba(250,204,21,.18); }
-.hint-count { font-family:'Space Mono',monospace; font-size:.68rem; opacity:.75; margin-left:.25rem; }
-.hint-item { display:flex; gap:.55rem; align-items:flex-start; width:100%; box-sizing:border-box; background:rgba(250,204,21,.06); border-left:3px solid #facc15; border-radius:4px; padding:.5rem .75rem; font-size:.8rem; line-height:1.65; color:var(--text2); font-family:'Noto Sans KR',sans-serif; }
+.hint-count { font-family:'Space Mono',monospace; font-size:.8rem; opacity:.75; margin-left:.25rem; }
+.hint-item { display:flex; gap:.55rem; align-items:flex-start; width:100%; box-sizing:border-box; background:rgba(250,204,21,.06); border-left:3px solid #facc15; border-radius:4px; padding:.5rem .75rem; font-size:.92rem; line-height:1.65; color:var(--text2); font-family:'Noto Sans KR',sans-serif; }
 .hint-item strong { color:var(--text); }
-.hint-num { flex-shrink:0; width:1.25rem; height:1.25rem; border-radius:50%; background:#facc15; color:#111; font-size:.68rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-top:.1rem; }
-.hint-done { font-size:.7rem; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
+.hint-num { flex-shrink:0; width:1.25rem; height:1.25rem; border-radius:50%; background:#facc15; color:#111; font-size:.8rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-top:.1rem; }
+.hint-done { font-size:.82rem; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
 
 /* 응답 기록 (교사) */
 .log-head { display:flex; align-items:center; flex-wrap:wrap; gap:.5rem; padding:.75rem 1rem; background:var(--surface); border-bottom:1px solid var(--border); flex-shrink:0; }
 .log-title { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:.08em; color:#facc15; flex:1; white-space:nowrap; }
-.log-count { font-family:'Space Mono',monospace; font-size:.7rem; color:var(--text3); letter-spacing:0; margin-left:.35rem; }
-.log-select { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:.3rem .5rem; font-size:.72rem; color:var(--text); }
-.log-btn { background:rgba(250,204,21,.1); border:1px solid rgba(250,204,21,.35); border-radius:4px; padding:.3rem .75rem; font-size:.72rem; color:#facc15; cursor:pointer; white-space:nowrap; }
+.log-count { font-family:'Space Mono',monospace; font-size:.82rem; color:var(--text3); letter-spacing:0; margin-left:.35rem; }
+.log-select { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:.3rem .5rem; font-size:.84rem; color:var(--text); }
+.log-btn { background:rgba(250,204,21,.1); border:1px solid rgba(250,204,21,.35); border-radius:4px; padding:.3rem .75rem; font-size:.84rem; color:#facc15; cursor:pointer; white-space:nowrap; }
 .log-close { background:rgba(239,68,68,.12); border-color:rgba(239,68,68,.25); color:var(--danger); }
 .log-body { flex:1; overflow-y:auto; padding:1rem; -webkit-overflow-scrolling:touch; font-family:'Noto Sans KR',sans-serif; }
-.log-sec { font-size:.8rem; font-weight:700; color:var(--text); margin:1.1rem 0 .55rem; }
+.log-sec { font-size:.92rem; font-weight:700; color:var(--text); margin:1.1rem 0 .55rem; }
 .log-sec:first-child { margin-top:0; }
-.log-sub { font-size:.68rem; font-weight:400; color:var(--text3); margin-left:.35rem; }
+.log-sub { font-size:.8rem; font-weight:400; color:var(--text3); margin-left:.35rem; }
 .log-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:.6rem; }
 .log-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.7rem .8rem; display:flex; flex-direction:column; gap:.35rem; min-width:0; }
 .log-card-top { display:flex; justify-content:space-between; gap:.5rem; align-items:baseline; flex-wrap:wrap; }
-.log-mission { font-size:.72rem; color:var(--accent2); font-weight:700; }
-.log-rate { font-size:.68rem; color:var(--danger); }
-.log-item { font-size:.78rem; color:var(--text); line-height:1.5; }
+.log-mission { font-size:.84rem; color:var(--accent2); font-weight:700; }
+.log-rate { font-size:.8rem; color:var(--danger); }
+.log-item { font-size:.9rem; color:var(--text); line-height:1.5; }
 .log-wrongs { display:flex; flex-wrap:wrap; gap:.3rem; }
-.log-wrong { background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.25); border-radius:10px; padding:.1rem .5rem; font-size:.72rem; color:#fca5a5; font-family:'Space Mono',monospace; }
+.log-wrong { background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.25); border-radius:10px; padding:.1rem .5rem; font-size:.84rem; color:#fca5a5; font-family:'Space Mono',monospace; }
 .log-wrong b { color:var(--text); font-weight:700; }
 .log-draft { border-left:3px solid rgba(168,85,247,.5); padding:.25rem 0 .25rem .6rem; }
-.log-draft-head { font-size:.66rem; color:#c084fc; }
-.log-draft-text { font-size:.78rem; color:var(--text2); line-height:1.6; white-space:pre-wrap; word-break:break-word; }
+.log-draft-head { font-size:.76rem; color:#c084fc; }
+.log-draft-text { font-size:.9rem; color:var(--text2); line-height:1.6; white-space:pre-wrap; word-break:break-word; }
 .log-table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:8px; -webkit-overflow-scrolling:touch; }
-.log-table { width:100%; border-collapse:collapse; font-size:.72rem; color:var(--text2); min-width:640px; }
+.log-table { width:100%; border-collapse:collapse; font-size:.84rem; color:var(--text2); min-width:640px; }
 .log-table th { text-align:left; background:var(--surface); color:var(--text3); font-weight:600; padding:.45rem .55rem; border-bottom:1px solid var(--border); white-space:nowrap; }
 .log-table td { padding:.4rem .55rem; border-bottom:1px solid rgba(255,255,255,.05); vertical-align:top; white-space:nowrap; }
 .log-table td.log-wrap { white-space:normal; word-break:break-word; max-width:280px; }
 .log-ans { font-family:'Space Mono',monospace; color:var(--text); }
-.log-note { font-family:'Noto Sans KR',sans-serif; font-size:.64rem; color:var(--text3); margin-top:.1rem; }
-.log-empty { font-size:.75rem; color:var(--text3); padding:.5rem 0; }
-.log-foot { font-size:.68rem; color:var(--text3); margin-top:1rem; line-height:1.6; }
+.log-note { font-family:'Noto Sans KR',sans-serif; font-size:.74rem; color:var(--text3); margin-top:.1rem; }
+.log-empty { font-size:.88rem; color:var(--text3); padding:.5rem 0; }
+.log-foot { font-size:.8rem; color:var(--text3); margin-top:1rem; line-height:1.6; }
 
 /* AI 작문 피드백 */
 .ai-box { margin-top:.85rem; display:flex; flex-direction:column; gap:.45rem; align-items:flex-start; }
-.ai-btn { background:rgba(168,85,247,.12); border:1px solid rgba(168,85,247,.45); color:#c084fc; border-radius:6px; padding:.5rem 1rem; font-size:.8rem; font-family:'Noto Sans KR',sans-serif; cursor:pointer; display:inline-flex; align-items:center; gap:.4rem; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+.ai-btn { background:rgba(168,85,247,.12); border:1px solid rgba(168,85,247,.45); color:#c084fc; border-radius:6px; padding:.5rem 1rem; font-size:.92rem; font-family:'Noto Sans KR',sans-serif; cursor:pointer; display:inline-flex; align-items:center; gap:.4rem; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
 .ai-btn:disabled { opacity:.55; cursor:default; }
-.ai-note { font-size:.68rem; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
-.ai-error { font-size:.75rem; color:var(--danger); font-family:'Noto Sans KR',sans-serif; }
+.ai-note { font-size:.8rem; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
+.ai-error { font-size:.88rem; color:var(--danger); font-family:'Noto Sans KR',sans-serif; }
 .ai-spin { width:.8rem; height:.8rem; border:2px solid rgba(192,132,252,.35); border-top-color:#c084fc; border-radius:50%; display:inline-block; animation:aiSpin .8s linear infinite; }
 @keyframes aiSpin { to { transform:rotate(360deg); } }
 .ai-panel { width:100%; box-sizing:border-box; background:rgba(168,85,247,.06); border:1px solid rgba(168,85,247,.25); border-radius:8px; padding:.85rem 1rem; display:flex; flex-direction:column; gap:.7rem; font-family:'Noto Sans KR',sans-serif; }
-.ai-sec-title { font-size:.7rem; color:#c084fc; letter-spacing:.05em; margin-bottom:.3rem; }
-.ai-text { font-size:.8rem; color:var(--text2); line-height:1.65; }
+.ai-sec-title { font-size:.82rem; color:#c084fc; letter-spacing:.05em; margin-bottom:.3rem; }
+.ai-text { font-size:.92rem; color:var(--text2); line-height:1.65; }
 .ai-chips { display:flex; flex-wrap:wrap; gap:.35rem; }
-.ai-chip { background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.35); color:#4ade80; border-radius:12px; padding:.15rem .6rem; font-size:.75rem; font-family:'Space Mono',monospace; }
-.ai-fix { background:rgba(255,255,255,.03); border-radius:6px; padding:.5rem .65rem; margin-bottom:.35rem; font-size:.8rem; line-height:1.6; }
+.ai-chip { background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.35); color:#4ade80; border-radius:12px; padding:.15rem .6rem; font-size:.88rem; font-family:'Space Mono',monospace; }
+.ai-fix { background:rgba(255,255,255,.03); border-radius:6px; padding:.5rem .65rem; margin-bottom:.35rem; font-size:.92rem; line-height:1.6; }
 .ai-old { color:#f87171; text-decoration:line-through; text-decoration-color:rgba(248,113,113,.6); font-family:'Space Mono',monospace; }
 .ai-new { color:#4ade80; font-family:'Space Mono',monospace; }
-.ai-why { font-size:.72rem; color:var(--text3); margin-top:.15rem; }
+.ai-why { font-size:.84rem; color:var(--text3); margin-top:.15rem; }
 
-/* 교사 대시보드: 휴대폰에서는 상단 버튼을 줄바꿈하고 모둠 카드를 1~2열로 */
-@media(max-width:768px) {
+/* 교사 대시보드: 버튼 글자는 한 줄로, 자리가 모자라면 버튼째 다음 줄로 */
 .td-topbar { flex-wrap:wrap; }
-.td-topbar button, .td-topbar select { white-space:nowrap; }
+.td-topbar button, .td-topbar select, .td-grid button { white-space:nowrap; }
+.ts-label { white-space:nowrap; }
+.hud-island, .hud-coin, .hud-items { white-space:nowrap; }
+/* 좁은 휴대폰: 섬 이름은 왼쪽 위에 이미 있으니 상단 칩에서는 숨긴다 */
+@media(max-width:480px) { .hud-island { display:none; } }
+/* 휴대폰에서는 모둠 카드를 1~2열로 */
+@media(max-width:768px) {
 .td-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
 }
 @media(max-width:520px) {
@@ -282,7 +287,7 @@ border:1px solid rgba(249,115,22,.3);
 border-radius:6px;
 padding:.4rem .8rem;
 font-family:'Space Mono',monospace;
-font-size:.85rem;
+font-size:.96rem;
 color:var(--accent);
 cursor:pointer;
 transition:all .15s;
@@ -315,7 +320,7 @@ border: 1px solid var(--border);
 border-radius: 6px;
 padding: .6rem .4rem;
 font-family: 'Noto Sans KR', sans-serif;
-font-size: .72rem;
+font-size: .84rem;
 color: var(--text3);
 cursor: pointer;
 transition: all .2s;
@@ -367,7 +372,7 @@ border: 1px solid rgba(56,189,248,.3);
 border-radius: 6px;
 padding: .3rem .7rem;
 font-family: 'Space Mono', monospace;
-font-size: .8rem;
+font-size: .92rem;
 color: var(--accent2);
 white-space: nowrap;
 cursor: default;
@@ -389,7 +394,7 @@ border: 1px solid var(--border);
 border-radius: 6px;
 padding: .6rem 1rem;
 font-family: 'Space Mono', monospace;
-font-size: .85rem;
+font-size: .96rem;
 color: var(--text);
 outline: none;
 transition: border-color .2s;
@@ -401,7 +406,7 @@ transition: border-color .2s;
 display: flex;
 gap: 1rem;
 align-items: center;
-font-size: .78rem;
+font-size: .9rem;
 color: var(--text3);
 margin-bottom: .5rem;
 }
@@ -420,12 +425,12 @@ transition: all .25s;
 }
 .m4-question.m4-correct { border-color: var(--success); background: rgba(34,197,94,.06); }
 .m4-question.m4-wrong { border-color: var(--danger); background: rgba(239,68,68,.06); }
-.m4-sentence { font-size: .9rem; color: var(--text); margin-bottom: .6rem; line-height: 1.6; }
-.m4-result { font-size: .78rem; color: var(--text2); font-family: 'Noto Sans KR', sans-serif; }
+.m4-sentence { font-size: 1rem; color: var(--text); margin-bottom: .6rem; line-height: 1.6; }
+.m4-result { font-size: .9rem; color: var(--text2); font-family: 'Noto Sans KR', sans-serif; }
 .m4-btns { display: flex; gap: .5rem; }
 .m4-ox-btn {
 border: none; border-radius: 6px; padding: .4rem 1.2rem;
-font-family: 'Space Mono', monospace; font-size: .8rem;
+font-family: 'Space Mono', monospace; font-size: .92rem;
 cursor: pointer; transition: all .2s;
 }
 .m4-o { background: rgba(34,197,94,.15); color: var(--success); border: 1px solid rgba(34,197,94,.3); }
@@ -456,7 +461,7 @@ background: rgba(10,14,26,.85);
 border: 1px solid rgba(255,255,255,.08);
 border-radius: 6px;
 padding: .35rem .75rem;
-font-size: .8rem;
+font-size: .92rem;
 color: var(--text2);
 backdrop-filter: blur(8px);
 display: flex;
@@ -469,7 +474,7 @@ background: rgba(10,14,26,.85);
 border: 1px solid rgba(255,255,255,.08);
 border-radius: 6px;
 padding: .35rem .75rem;
-font-size: .75rem;
+font-size: .88rem;
 color: var(--text3);
 backdrop-filter: blur(8px);
 font-family: 'Space Mono', monospace;
@@ -517,11 +522,11 @@ window.dispatchEvent(new Event('firebaseReady'));
   <div style="text-align:center;z-index:1;padding:2rem;max-width:480px;width:100%;">
     <div class="sos-badge">🆘 SOS: SECURE OUR SURVIVAL</div>
     <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--accent);letter-spacing:.05em;margin-bottom:.25rem;">접속하기</div>
-    <div style="font-size:.75rem;color:var(--text3);margin-bottom:2rem;font-family:'Noto Sans KR',sans-serif;">방 번호와 섬을 선택하세요</div>
+    <div style="font-size:.88rem;color:var(--text3);margin-bottom:2rem;font-family:'Noto Sans KR',sans-serif;">방 번호와 섬을 선택하세요</div>
 
 <!-- 방 번호 -->
 <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem;text-align:left;">
-  <div style="font-size:.68rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">🏫 방 번호 (반 구분용)</div>
+  <div style="font-size:.8rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">🏫 방 번호 (반 구분용)</div>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;">
     <button onclick="selectRoom(5)" id="roomBtn-5" class="room-btn">5반</button>
     <button onclick="selectRoom(6)" id="roomBtn-6" class="room-btn">6반</button>
@@ -532,7 +537,7 @@ window.dispatchEvent(new Event('firebaseReady'));
 
 <!-- 섬 선택 (학생용) -->
 <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem;text-align:left;">
-  <div style="font-size:.68rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">🏝️ 내 섬 선택</div>
+  <div style="font-size:.8rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">🏝️ 내 섬 선택</div>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;">
     <button onclick="selectRole('volcano')" id="roleBtn-volcano" class="role-btn">
       <div style="font-size:1.2rem;">🌋</div><div>화산 섬</div>
@@ -557,13 +562,13 @@ window.dispatchEvent(new Event('firebaseReady'));
 
 <!-- 교사 접속 (URL에 ?teacher=sos2024 있을 때만 표시) -->
 <div id="teacherLoginBox" style="display:none;background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:8px;padding:1rem;margin-bottom:1rem;text-align:left;">
-  <div style="font-size:.68rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">👩‍🏫 교사 접속</div>
-  <button onclick="selectRole('teacher')" id="roleBtn-teacher" class="role-btn" style="width:100%;padding:.75rem;font-size:.9rem;">
+  <div style="font-size:.8rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">👩‍🏫 교사 접속</div>
+  <button onclick="selectRole('teacher')" id="roleBtn-teacher" class="role-btn" style="width:100%;padding:.75rem;font-size:1rem;">
     👩‍🏫 교사로 접속
   </button>
 </div>
 
-<div id="loginStatus" style="font-size:.75rem;color:var(--text3);margin-bottom:1rem;font-family:'Noto Sans KR',sans-serif;min-height:1.2rem;"></div>
+<div id="loginStatus" style="font-size:.88rem;color:var(--text3);margin-bottom:1rem;font-family:'Noto Sans KR',sans-serif;min-height:1.2rem;"></div>
 <button id="loginBtn" onclick="doLogin()"
   style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:.9rem;
   font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.1em;cursor:pointer;opacity:.4;pointer-events:none;transition:all .2s;">
@@ -601,21 +606,21 @@ window.dispatchEvent(new Event('firebaseReady'));
   <!-- 상단 바 -->
   <div class="td-topbar" style="display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;">
     <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.1em;color:var(--accent);white-space:nowrap;">👩‍🏫 교사 대시보드</div>
-    <div id="tdRoomLabel" style="font-size:.7rem;color:var(--text3);flex:1;white-space:nowrap;"></div>
+    <div id="tdRoomLabel" style="font-size:.82rem;color:var(--text3);flex:1;white-space:nowrap;"></div>
     <!-- 전체 강제 이동 -->
-    <select id="tdForceSelect" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.72rem;color:var(--text);"></select>
-    <button onclick="tdForceAll()" style="background:var(--accent);border:none;border-radius:4px;padding:.3rem .8rem;font-size:.72rem;color:#fff;cursor:pointer;white-space:nowrap;">전체 이동 →</button>
-    <button onclick="showLogOverlay()" style="background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.35);border-radius:4px;padding:.3rem .7rem;font-size:.72rem;color:#facc15;cursor:pointer;white-space:nowrap;">📋 응답 기록 <span id="tdLogCount">0</span></button>
-    <button onclick="showM7Review()" style="background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);border-radius:4px;padding:.3rem .7rem;font-size:.72rem;color:#a855f7;cursor:pointer;">📝 미션8 응답</button>
-    <button onclick="teacherSyncNow()" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);border-radius:4px;padding:.3rem .7rem;font-size:.72rem;color:var(--accent2);cursor:pointer;">🔄 동기화</button>
-    <button onclick="teacherResetRoom()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:4px;padding:.3rem .7rem;font-size:.72rem;color:var(--danger);cursor:pointer;">🗑️ 초기화</button>
+    <select id="tdForceSelect" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.84rem;color:var(--text);"></select>
+    <button onclick="tdForceAll()" style="background:var(--accent);border:none;border-radius:4px;padding:.3rem .8rem;font-size:.84rem;color:#fff;cursor:pointer;white-space:nowrap;">전체 이동 →</button>
+    <button onclick="showLogOverlay()" style="background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.35);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:#facc15;cursor:pointer;white-space:nowrap;">📋 응답 기록 <span id="tdLogCount">0</span></button>
+    <button onclick="showM7Review()" style="background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:#a855f7;cursor:pointer;">📝 미션8 응답</button>
+    <button onclick="teacherSyncNow()" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:var(--accent2);cursor:pointer;">🔄 동기화</button>
+    <button onclick="teacherResetRoom()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:var(--danger);cursor:pointer;">🗑️ 초기화</button>
   </div>
   <!-- 문법 세트 선택 -->
   <div style="display:flex;align-items:center;flex-wrap:wrap;gap:.6rem;padding:.6rem 1rem;background:rgba(56,189,248,.05);border-bottom:1px solid var(--border);flex-shrink:0;">
-    <div style="font-size:.75rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;white-space:nowrap;">📚 문법 세트</div>
-    <select id="tdGrammarSelect" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.75rem;color:var(--text);max-width:100%;"></select>
-    <button onclick="tdApplyGrammar()" style="background:var(--accent2);border:none;border-radius:4px;padding:.3rem .8rem;font-size:.72rem;color:#0b1120;font-weight:700;cursor:pointer;white-space:nowrap;">이 문법으로 진행 →</button>
-    <div id="tdGrammarCurrent" style="font-size:.7rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;"></div>
+    <div style="font-size:.88rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;white-space:nowrap;">📚 문법 세트</div>
+    <select id="tdGrammarSelect" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.88rem;color:var(--text);max-width:100%;"></select>
+    <button onclick="tdApplyGrammar()" style="background:var(--accent2);border:none;border-radius:4px;padding:.3rem .8rem;font-size:.84rem;color:#0b1120;font-weight:700;cursor:pointer;white-space:nowrap;">이 문법으로 진행 →</button>
+    <div id="tdGrammarCurrent" style="font-size:.82rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;"></div>
   </div>
   <!-- 모둠 카드 그리드 -->
   <div style="flex:1;overflow-y:auto;padding:1rem;">
@@ -679,7 +684,7 @@ window.dispatchEvent(new Event('firebaseReady'));
       </div>
       <div class="sidebar-items">
         <div class="sidebar-items-label">🎒 ITEMS</div>
-        <div class="items-list" id="sideItems"><span style="font-size:.7rem;color:var(--text3)">없음</span></div>
+        <div class="items-list" id="sideItems"><span style="font-size:.82rem;color:var(--text3)">없음</span></div>
       </div>
       <div class="sidebar-mission-list">
         <div class="sml-title">MISSIONS</div>
@@ -1248,7 +1253,8 @@ function revealHint(key, ti) {
 // 동기화 병합: 다른 모둠 기록은 서버 값, 내 모둠 기록은 내 기기 값을 쓴다 (교사는 전부 서버 값)
 // 힌트(hints)와 AI 피드백(m7ai)에 쓴다.
 function mergeRemoteHints(remoteHints, localHints) {
-  const merged = Object.assign({}, remoteHints || {});
+  const merged = {};
+  Object.entries(remoteHints || {}).forEach(([k, v]) => { if(v != null) merged[k] = v; });  // 배열로 와도 빈 칸 제거
   const myTeam = (typeof myRole !== 'undefined' && myRole && ROLE_TO_TEAM[myRole]) ? ROLE_TO_TEAM[myRole] - 1 : null;
   if(myTeam != null && localHints && localHints[myTeam]) merged[myTeam] = localHints[myTeam];
   return merged;
@@ -1475,16 +1481,40 @@ const state = {
 };
 
 // Firebase는 빈 배열 []을 null로 변환하므로 읽어온 뒤 복원
+// Firebase는 빈 배열을 지우고, 번호 키가 듬성듬성한 배열을 '객체'로 돌려줄 때가 있다
+// (예: 6모둠만 아이템이 있으면 items가 {"5":[...]}로 옴). 그래서 모양을 다시 맞춘다.
+function toTeamArray(v, fill) {
+  const out = [];
+  for(let i=0;i<6;i++) {
+    const x = v == null ? undefined : (Array.isArray(v) ? v[i] : v[i] !== undefined ? v[i] : v[String(i)]);
+    out.push(x == null ? (typeof fill === 'function' ? fill() : fill) : x);
+  }
+  return out;
+}
+const TEAM_KEYED_FIELDS = ['m1result','m2result','m3result','m4result','m5result','m6result','m7result','moonResult','moonScores',
+  'm7text','m7ai','hints','npc','luckyActive','m2dropped','m2pieces','m3match','m4answers','missionChoice','m6dropped','m6pieces','coinSnapshot','itemSnapshot'];
+// 모둠 ti의 몫인 하위 키들 (이 키들만 그 모둠 기기가 저장한다)
+function ownedSubkeys(field, ti) {
+  if(field === 'missionStep') return [String(ti), 'm2_'+ti, 'm3_'+ti, 'm4_'+ti, 'm5_'+ti, 'm6_'+ti, 'm7_'+ti];
+  if(field === 'm6dropped' || field === 'm6pieces') return [String(ti), ti+'a', ti+'b1', ti+'b2'];
+  if(field === 'coinSnapshot' || field === 'itemSnapshot') return [1,2,3,4,5,6,7,8].map(n => ti+'_'+n);
+  return [String(ti)];
+}
 function sanitizeState() {
-  if(!Array.isArray(state.items)) state.items = [[],[],[],[],[],[]];
-  else for(let i=0;i<6;i++) { if(!Array.isArray(state.items[i])) state.items[i] = []; }
-  if(!Array.isArray(state.coins)) state.coins = [0,0,0,0,0,0];
-  else for(let i=0;i<6;i++) { if(state.coins[i]==null) state.coins[i] = 0; }
-  if(!Array.isArray(state.teamMission)) state.teamMission = [1,1,1,1,1,1];
-  else for(let i=0;i<6;i++) { if(state.teamMission[i]==null) state.teamMission[i] = 1; }
-  if(!Array.isArray(state.completedMission)) state.completedMission = [0,0,0,0,0,0];
-  else for(let i=0;i<6;i++) { if(state.completedMission[i]==null) state.completedMission[i] = 0; }
-  if(!state.missionStep || typeof state.missionStep !== 'object' || Array.isArray(state.missionStep)) state.missionStep = {};
+  state.items = toTeamArray(state.items, () => []).map(x => Array.isArray(x) ? x : (x && typeof x === 'object' ? Object.values(x) : []));
+  state.coins = toTeamArray(state.coins, 0);
+  state.teamMission = toTeamArray(state.teamMission, 1);
+  state.completedMission = toTeamArray(state.completedMission, 0);
+  // missionStep은 "0", "m2_0" 같은 키를 쓰는 객체 (번호 키만 있으면 Firebase가 배열로 줄 수 있음)
+  if(Array.isArray(state.missionStep)) state.missionStep = Object.assign({}, state.missionStep);
+  if(!state.missionStep || typeof state.missionStep !== 'object') state.missionStep = {};
+  Object.keys(state.missionStep).forEach(k => { if(state.missionStep[k] == null) delete state.missionStep[k]; });
+  // 모둠 번호(0~5)를 키로 쓰는 객체들도 Firebase가 배열(빈 칸 null)로 줄 수 있다 → 객체로 되돌림
+  // (안 그러면 Object.keys(moonScores).length 같은 '끝낸 모둠 수' 계산이 빈 칸까지 세어 버림)
+  TEAM_KEYED_FIELDS.forEach(f => {
+    const v = state[f];
+    if(Array.isArray(v)) { const o = {}; v.forEach((x, i) => { if(x != null) o[i] = x; }); state[f] = o; }
+  });
 }
 
 // ══ SCREEN ══
@@ -1640,24 +1670,39 @@ function showWaitingForTeams(ti, toMission) {
     <div class="result-box">
       <span class="result-emoji" style="animation:pulseGlow 1.5s ease-in-out infinite;">⏳</span>
       <div class="result-title">WAITING FOR OTHERS</div>
-      <div style="font-size:.82rem;color:var(--accent2);margin:.5rem 0 1rem;font-family:'Noto Sans KR',sans-serif;">
+      <div style="font-size:.94rem;color:var(--accent2);margin:.5rem 0 1rem;font-family:'Noto Sans KR',sans-serif;">
         ${MN[toMission-1]||'이전 미션'} 완료! 다른 모둠이 완료할 때까지 기다려주세요.
       </div>
       <div style="background:var(--surface);border-radius:8px;padding:1rem;margin-bottom:1rem;">
-        <div style="font-size:.7rem;color:var(--text3);margin-bottom:.65rem;text-transform:uppercase;letter-spacing:.1em;">모둠 완료 현황</div>
+        <div style="font-size:.82rem;color:var(--text3);margin-bottom:.65rem;text-transform:uppercase;letter-spacing:.1em;">모둠 완료 현황</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;">
           ${ISLANDS.map((isl,i)=>{
             const ok=(state.completedMission||[])[i]>=toMission-1;
             return '<div style="background:var(--bg);border:1px solid '+(ok?isl.color:'var(--border)')+';border-radius:6px;padding:.5rem;text-align:center;">'
               +'<div style="font-size:1.1rem;">'+isl.emoji+'</div>'
-              +'<div style="font-size:.6rem;color:'+(ok?isl.color:'var(--text3)')+';">'+(ok?'✅ 완료':'⏳ 진행중')+'</div>'
+              +'<div style="font-size:.7rem;color:'+(ok?isl.color:'var(--text3)')+';">'+(ok?'✅ 완료':'⏳ 진행중')+'</div>'
               +'</div>';
           }).join('')}
         </div>
       </div>
-      <div style="font-size:.75rem;color:var(--text3);font-family:\'Noto Sans KR\',sans-serif;margin-bottom:.75rem;">${done}/6 모둠 완료 — 모두 완료되면 자동으로 다음 미션이 시작돼요!</div>
-      <button onclick="inAppRefresh()" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:.5rem 1.25rem;font-size:.78rem;color:var(--text2);cursor:pointer;font-family:'Space Mono',monospace;">🔄 현황 새로고침</button>
+      <div style="font-size:.88rem;color:var(--text3);font-family:\'Noto Sans KR\',sans-serif;margin-bottom:.75rem;">${done}/6 모둠 완료 — 모두 완료되면 자동으로 다음 미션이 시작돼요!</div>
+      <button onclick="inAppRefresh()" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:.5rem 1.25rem;font-size:.9rem;color:var(--text2);cursor:pointer;font-family:'Space Mono',monospace;">🔄 현황 새로고침</button>
     </div>`;
+}
+
+// 원격 state를 받은 뒤: 다른 모둠 것은 Firebase 값 그대로, 내 모둠 몫만 이 기기의 최신 값으로
+function mergeNestedKeys(nestedKeys, savedNested) {
+  const myTi = ROLE_TO_TEAM[myRole] ? ROLE_TO_TEAM[myRole] - 1 : null;
+  for(const k of nestedKeys) {
+    const merged = Object.assign({}, state[k] || {});   // sanitizeState가 정리한 원격 값
+    if(myTi != null) {
+      for(const sk of ownedSubkeys(k, myTi)) {
+        if(savedNested[k][sk] !== undefined) merged[sk] = savedNested[k][sk];
+        else delete merged[sk];
+      }
+    }
+    state[k] = merged;
+  }
 }
 
 async function inAppRefresh() {
@@ -1674,7 +1719,7 @@ async function inAppRefresh() {
     const savedHints = state.hints, savedAi = state.m7ai;
     Object.assign(state, remote);
     sanitizeState();
-    for(const k of nestedKeys) state[k] = Object.assign({}, remote[k]||{}, savedNested[k]);
+    mergeNestedKeys(nestedKeys, savedNested);
     state.hints = mergeRemoteHints(remote.hints, savedHints);
     state.m7ai = mergeRemoteHints(remote.m7ai, savedAi);
     state.currentTeam = savedTeam;
@@ -1858,7 +1903,7 @@ function renderMission3(teamNum) {
       You built your shelter, but now you're starving.<br>
       <strong>The only thing you have is your AI chatbot device.</strong><br>
       Ask your AI for help!
-      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">거처는 만들었지만 배가 너무 고프다. AI 기기 하나만 있다. AI에게 도움을 요청하라!</div>
+      <div style="font-size:.88rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">거처는 만들었지만 배가 너무 고프다. AI 기기 하나만 있다. AI에게 도움을 요청하라!</div>
     </div>
 
     <!-- STEP 1: 매칭 -->
@@ -1866,7 +1911,7 @@ function renderMission3(teamNum) {
       <div class="step-label">STEP 1 · ${G.m3.stepLabel}</div>
       <div class="wh-prompt" style="margin-bottom:1.25rem;">
         💬 <em>${G.m3.promptBefore}<span style="color:var(--accent);">___</span>${G.m3.promptAfter}</em><br>
-        <span style="font-size:.72rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">${G.m3.promptKr}</span>
+        <span style="font-size:.84rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">${G.m3.promptKr}</span>
       </div>
 
       <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:start;margin-bottom:1.5rem;">
@@ -1878,7 +1923,7 @@ function renderMission3(teamNum) {
               onclick="m3SelectWh(${ti},${jsArg(w.word)},${jsArg(w.color)})" id="m3wh-${ti}-${wi}">
               <div class="wh-word" style="color:${w.color}">${w.word.toUpperCase()}</div>
               <div class="wh-kr">${w.kr}${G.m3.leftSuffix}</div>
-              ${state.m3match[ti][w.word]?'<div style="font-size:.65rem;color:'+w.color+';margin-top:.25rem;">→ '+state.m3match[ti][w.word]+'</div>':''}
+              ${state.m3match[ti][w.word]?'<div style="font-size:.76rem;color:'+w.color+';margin-top:.25rem;">→ '+state.m3match[ti][w.word]+'</div>':''}
             </div>
           `).join('')}
         </div>
@@ -1894,7 +1939,7 @@ function renderMission3(teamNum) {
             const matchedStyle = matched ? 'opacity:.35;pointer-events:none;' : '';
             return '<div class="wh-card" style="min-width:unset;margin-bottom:.5rem;'+matchedStyle+'"'
               +' onclick="m3SelectVerb('+ti+','+jsArg(v.text)+','+jsArg(v.correct)+')">  '
-              +'<div style="font-family:monospace;font-size:.85rem;">'+v.text+'</div>'
+              +'<div style="font-family:monospace;font-size:.96rem;">'+v.text+'</div>'
               +'</div>';
           }).join('')}
         </div>
@@ -1922,8 +1967,8 @@ function renderMission3(teamNum) {
           return '<div style="background:var(--surface);border:1px solid '+(isDangerous?'rgba(239,68,68,.4)':'var(--border)')+';border-radius:8px;padding:1rem;cursor:pointer;transition:all .2s;"'
             +' onclick="m3Pick('+ti+','+idx+')" class="m3-food-card" id="m3food-'+ti+'-'+idx+'">'
             +'<div style="font-size:1.8rem;text-align:center;margin-bottom:.5rem;">'+f.name.split(' ')[0]+(isDangerous?' ☠️':'')+'</div>'
-            +'<div style="font-family:Bebas Neue,sans-serif;font-size:1rem;letter-spacing:.05em;margin-bottom:.75rem;text-align:center;">'+String.fromCharCode(65+idx)+'. '+f.name+'</div>'
-            +'<div style="font-size:.7rem;color:var(--text3);line-height:1.7;border-top:1px solid var(--border);padding-top:.6rem;">'
+            +'<div style="font-family:Bebas Neue,sans-serif;font-size:1.06rem;letter-spacing:.05em;margin-bottom:.75rem;text-align:center;">'+String.fromCharCode(65+idx)+'. '+f.name+'</div>'
+            +'<div style="font-size:.82rem;color:var(--text3);line-height:1.7;border-top:1px solid var(--border);padding-top:.6rem;">'
             +[f.what, f.where, f.how].map((val,k)=>{
               const lb = G.m3.foodLabels[k];
               return '<span style="color:'+lb.color+';">'+lb.word+'</span>'+lb.rest+val;
@@ -2038,7 +2083,7 @@ function m3Pick(ti, idx){
         <div class="result-box">
           <span class="result-emoji">${base.emoji}</span>
           <div class="result-title">${base.title}</div>
-          <div style="font-size:.85rem;color:var(--accent2);margin:.25rem 0 .75rem;font-family:monospace;">${islandDesc}</div>
+          <div style="font-size:.96rem;color:var(--accent2);margin:.25rem 0 .75rem;font-family:monospace;">${islandDesc}</div>
           <div class="result-coin ${coinClass}">${coins>0?'+'+coins:coins} 🪙</div>
               ${roll===5?'<div class="result-item">'+ITEMS['lucky'].emoji+' '+ITEMS['lucky'].name+' 획득!</div>':''}
           <div class="result-desc">${base.desc}</div>
@@ -2076,21 +2121,21 @@ function renderMission2(teamNum) {
       It's getting dark and the temperature is dropping fast.<br>
       <strong>You need to build a shelter before nightfall.</strong><br>
       Ask your AI for help!
-      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">날이 어두워지고 기온이 떨어지고 있다. 밤이 오기 전에 거처를 만들어야 한다. AI에게 도움을 요청하라!</div>
+      <div style="font-size:.88rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">날이 어두워지고 기온이 떨어지고 있다. 밤이 오기 전에 거처를 만들어야 한다. AI에게 도움을 요청하라!</div>
     </div>
 
     <!-- STEP 1 -->
     <div class="step ${step===1?'active':''}" id="m2step1-${ti}">
       <div class="step-label">STEP 1 · 조각을 올바른 순서로 배열하세요</div>
       <div class="wh-prompt" style="margin-bottom:.75rem;">
-        💬 <span style="color:var(--text3);font-size:.8rem;">"${M2_CORRECT.map(()=>'___').join(' ')}"</span><br>
-        <span style="font-size:.72rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">${G.m2.promptKr}</span>
+        💬 <span style="color:var(--text3);font-size:.92rem;">"${M2_CORRECT.map(()=>'___').join(' ')}"</span><br>
+        <span style="font-size:.84rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">${G.m2.promptKr}</span>
       </div>
       <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:1rem;min-height:56px;margin-bottom:1rem;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;"
         id="m2zone-${ti}" ondragover="event.preventDefault()" ondrop="m2Drop(event,${ti})">
         ${state.m2dropped[ti].length===0
-          ? `<span style="font-size:.72rem;color:var(--text3);">여기에 조각을 끌어다 놓거나 클릭하세요 →</span>`
-          : state.m2dropped[ti].map((w,i)=>`<div class="m2-chip" onclick="m2Remove(${ti},${i})">${w} <span style="font-size:.6rem;opacity:.5;">✕</span></div>`).join('')
+          ? `<span style="font-size:.84rem;color:var(--text3);">여기에 조각을 끌어다 놓거나 클릭하세요 →</span>`
+          : state.m2dropped[ti].map((w,i)=>`<div class="m2-chip" onclick="m2Remove(${ti},${i})">${w} <span style="font-size:.7rem;opacity:.5;">✕</span></div>`).join('')
         }
       </div>
       <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem;" id="m2pieces-${ti}">
@@ -2099,7 +2144,7 @@ function renderMission2(teamNum) {
             draggable="true" ondragstart="m2DragStart(event,${jsArg(p)},${ti})"
             onclick="m2Click(${jsArg(p)},${ti})" id="m2p-${ti}-${i}"
             ${state.m2dropped[ti].includes(p)?'style="min-width:unset;padding:.55rem .9rem;cursor:grab;opacity:.3;pointer-events:none;"':''}>
-            <div style="font-family:monospace;font-size:.85rem;">${p}</div>
+            <div style="font-family:monospace;font-size:.96rem;">${p}</div>
           </div>
         `).join('')}
       </div>
@@ -2168,9 +2213,9 @@ function m2UpdateUI(ti){
   const zone = document.getElementById('m2zone-'+ti);
   if(zone){
     if(state.m2dropped[ti].length===0){
-      zone.innerHTML='<span style="font-size:.72rem;color:var(--text3);">여기에 조각을 끌어다 놓거나 클릭하세요 →</span>';
+      zone.innerHTML='<span style="font-size:.84rem;color:var(--text3);">여기에 조각을 끌어다 놓거나 클릭하세요 →</span>';
     } else {
-      zone.innerHTML=state.m2dropped[ti].map((w,i)=>'<div class="m2-chip" onclick="m2Remove('+ti+','+i+')">'+w+' <span style="font-size:.6rem;opacity:.5;">✕</span></div>').join('');
+      zone.innerHTML=state.m2dropped[ti].map((w,i)=>'<div class="m2-chip" onclick="m2Remove('+ti+','+i+')">'+w+' <span style="font-size:.7rem;opacity:.5;">✕</span></div>').join('');
     }
   }
   const pieces = document.querySelectorAll('#m2pieces-'+ti+' .wh-card');
@@ -2196,11 +2241,11 @@ function m2Check(ti){
   fb.classList.add('show');
   if(ok){
     fb.className='feedback-box show feedback-correct';
-    fb.innerHTML=`✅ 정답! <strong>"${M2_CORRECT.join(' ')}"</strong><br><span style="font-size:.78rem;color:var(--text2)">이제 AI가 선택지를 알려줬어요. 가장 안전한 거처를 고르세요!</span>`;
+    fb.innerHTML=`✅ 정답! <strong>"${M2_CORRECT.join(' ')}"</strong><br><span style="font-size:.9rem;color:var(--text2)">이제 AI가 선택지를 알려줬어요. 가장 안전한 거처를 고르세요!</span>`;
     setTimeout(()=>{state.missionStep['m2_'+ti]=2;renderMission2(ti+1);},1500);
   } else {
     fb.className='feedback-box show feedback-wrong';
-    fb.innerHTML=`❌ 순서가 틀렸어요!<br><span style="font-size:.78rem;color:var(--text2)">힌트: ${G.m2.wrongHint}</span>`;
+    fb.innerHTML=`❌ 순서가 틀렸어요!<br><span style="font-size:.9rem;color:var(--text2)">힌트: ${G.m2.wrongHint}</span>`;
     setTimeout(()=>{fb.classList.remove('show');},2000);
   }
 }
@@ -2250,7 +2295,7 @@ function renderTeamSelector(activeTeam) {
   if(myRole !== 'teacher') {
     // 학생은 자기 섬만 표시, 전환 불가
     const isl = ISLANDS[activeTeam-1];
-    c.innerHTML = `<span class="ts-label" style="color:${isl.color};font-size:.85rem;">${isl.emoji} ${isl.name}</span>`;
+    c.innerHTML = `<span class="ts-label" style="color:${isl.color};font-size:.96rem;">${isl.emoji} ${isl.name}</span>`;
     return;
   }
   c.innerHTML = '<span class="ts-label">모둠 선택:</span>';
@@ -2275,7 +2320,7 @@ function renderSidebar(teamNum) {
   const itemsEl = document.getElementById('sideItems');
   const myItems = state.items[teamNum-1] || [];
   if(myItems.length===0) {
-    itemsEl.innerHTML = '<span style="font-size:.7rem;color:var(--text3)">없음</span>';
+    itemsEl.innerHTML = '<span style="font-size:.82rem;color:var(--text3)">없음</span>';
   } else {
     itemsEl.innerHTML = myItems.map(k=>`<span class="item-chip">${ITEMS[k].emoji} ${ITEMS[k].name}</span>`).join('');
   }
@@ -2307,7 +2352,7 @@ function renderMission1(teamNum) {
       You just woke up on a strange island. You have no idea where you are.<br>
       <strong>The only thing you have in your pocket is your AI chatbot device.</strong><br>
       Ask your AI for help!
-      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">낯선 섬에서 눈을 떴다. 어디인지 전혀 모른다. 주머니에는 AI 기기 하나뿐. AI에게 도움을 요청하라!</div>
+      <div style="font-size:.88rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">낯선 섬에서 눈을 떴다. 어디인지 전혀 모른다. 주머니에는 AI 기기 하나뿐. AI에게 도움을 요청하라!</div>
     </div>
 
     <!-- STEP 1: 의문사 선택 -->
@@ -2315,7 +2360,7 @@ function renderMission1(teamNum) {
       <div class="step-label">STEP 1 · ${G.m1.stepLabel}</div>
       <div class="wh-prompt">
         💬 ${G.m1.promptBefore}<span class="blank" id="blank-${ti}">___</span>${G.m1.promptAfter}<br>
-        <span style="font-size:.72rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">${G.m1.promptKr}</span>
+        <span style="font-size:.84rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">${G.m1.promptKr}</span>
       </div>
       <div class="wh-cards" id="whCards-${ti}">
         ${G.m1.options.map((o,oi)=>`
@@ -2378,11 +2423,11 @@ function selectWh(ti, pick) {
   fb.classList.add('show');
   if(word===correct) {
     fb.className='feedback-box show feedback-correct';
-    fb.innerHTML=`✅ 정답! ${G.m1.correctFeedback}<br><span style="font-size:.78rem;color:var(--text2)">이제 AI가 방향을 알려줬어요. 어디로 갈지 선택하세요!</span>`;
+    fb.innerHTML=`✅ 정답! ${G.m1.correctFeedback}<br><span style="font-size:.9rem;color:var(--text2)">이제 AI가 방향을 알려줬어요. 어디로 갈지 선택하세요!</span>`;
     setTimeout(()=>{ state.missionStep[ti]=2; renderMission1(ti+1); },1500);
   } else {
     fb.className='feedback-box show feedback-wrong';
-    fb.innerHTML=`❌ <strong>${word.toUpperCase()}</strong>는 이 상황에 맞지 않아요.<br><span style="font-size:.78rem;color:var(--text2)">${G.m1.wrongHint}</span>`;
+    fb.innerHTML=`❌ <strong>${word.toUpperCase()}</strong>는 이 상황에 맞지 않아요.<br><span style="font-size:.9rem;color:var(--text2)">${G.m1.wrongHint}</span>`;
     setTimeout(()=>{ fb.classList.remove('show'); cards.forEach(c=>c.classList.remove('wrong')); }, 1500);
   }
 }
@@ -2488,7 +2533,7 @@ function renderMoonEvent(teamNum) {
     </div>
     <div class="mission-situation">
       ${G.moon.introEn}
-      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
+      <div style="font-size:.88rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
         ${G.moon.introKr}
       </div>
     </div>
@@ -2507,7 +2552,7 @@ function renderMoonEvent(teamNum) {
       <input class="moon-input" id="moonInput" placeholder="${G.moon.placeholder}" autocomplete="off" spellcheck="false"/>
       <button class="btn btn-primary" id="moonStartBtn" onclick="moonStart(${ti})" style="white-space:nowrap;">▶ 시작!</button>
     </div>
-    <div style="font-size:.7rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
+    <div style="font-size:.82rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
       ${G.moon.examples}
     </div>
     ${hintBoxHTML('moon', ti)}
@@ -2712,11 +2757,11 @@ function moonResultHTML(ti, result) {
       <div style="display:flex;gap:1.5rem;justify-content:center;margin:.75rem 0;flex-wrap:wrap;">
         <div style="text-align:center;">
           <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--accent2);">${score}</div>
-          <div style="font-size:.65rem;color:var(--text3);text-transform:uppercase;">격파</div>
+          <div style="font-size:.76rem;color:var(--text3);text-transform:uppercase;">격파</div>
         </div>
         <div style="text-align:center;">
           <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:${hp>2?'var(--success)':'var(--danger)'};">${hp}/5</div>
-          <div style="font-size:.65rem;color:var(--text3);text-transform:uppercase;">HP 잔여</div>
+          <div style="font-size:.76rem;color:var(--text3);text-transform:uppercase;">HP 잔여</div>
         </div>
       </div>
       <div class="result-coin ${cc}">${coins>=0?'+'+coins:coins} 🪙</div>
@@ -2748,20 +2793,20 @@ function moonBufferingHTML(ti, score) {
     <div class="result-box">
       <span class="result-emoji" style="animation:pulseGlow 1.5s infinite;">🛸</span>
       <div class="result-title">CALCULATING...</div>
-      <div style="font-size:.85rem;color:var(--accent2);margin:.5rem 0;font-family:'Bebas Neue',sans-serif;">${score}개 격파</div>
+      <div style="font-size:.96rem;color:var(--accent2);margin:.5rem 0;font-family:'Bebas Neue',sans-serif;">${score}개 격파</div>
       <div style="background:var(--surface);border-radius:8px;padding:1rem;margin:1rem 0;">
-        <div style="font-size:.72rem;color:var(--text3);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.1em;">모둠 참여 현황</div>
+        <div style="font-size:.84rem;color:var(--text3);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.1em;">모둠 참여 현황</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;">
           ${ISLANDS.map((isl,i)=>{
             const done = state.moonScores && state.moonScores[i] !== undefined;
             return '<div style="background:var(--bg);border:1px solid '+(done?isl.color:'var(--border)')+';border-radius:6px;padding:.4rem;text-align:center;">'
-              +'<div style="font-size:1rem;">'+isl.emoji+'</div>'
-              +'<div style="font-size:.6rem;color:'+(done?isl.color:'var(--text3)')+';">'+(done?state.moonScores[i]+'개':'대기중')+'</div>'
+              +'<div style="font-size:1.06rem;">'+isl.emoji+'</div>'
+              +'<div style="font-size:.7rem;color:'+(done?isl.color:'var(--text3)')+';">'+(done?state.moonScores[i]+'개':'대기중')+'</div>'
               +'</div>';
           }).join('')}
         </div>
       </div>
-      <div style="font-size:.75rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">
+      <div style="font-size:.88rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">
         ${completed}/6 모둠 완료 — 모두 완료되면 결과가 자동으로 표시돼요!
       </div>
     </div>
@@ -2782,6 +2827,7 @@ function moonPollResult(ti) {
       // state만 업데이트 (화면은 건드리지 않음)
       if(!state.moonBonusGiven) {
         state.moonBonusGiven = true;
+        moonBonusUnsaved = true;
         const scores = state.moonScores || {};
         const total = Object.values(scores).reduce((a,b)=>a+b,0);
         const target = Math.floor(12 * 6 / 2);
@@ -2822,6 +2868,7 @@ function moonApplyFinalResult(ti) {
 
   if(!state.moonBonusGiven) {
     state.moonBonusGiven = true;
+    moonBonusUnsaved = true;
     if(cleared) { for(let i=0;i<6;i++) state.coins[i]+=3; }
     else { for(let i=0;i<6;i++) state.coins[i]-=3; }
     renderSidebar(ti+1);
@@ -2847,7 +2894,7 @@ function moonFinalHTML(ti, total, target, cleared) {
       <span class="result-emoji">${cleared?'🎉':'😢'}</span>
       <div class="result-title">${cleared?'MISSION CLEARED!':'NOT ENOUGH...'}</div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--accent2);margin:.5rem 0;">${total} / ${target}</div>
-      <div style="font-size:.72rem;color:var(--text3);margin-bottom:1rem;">전체 격파 수 (목표: ${target}개 이상)</div>
+      <div style="font-size:.84rem;color:var(--text3);margin-bottom:1rem;">전체 격파 수 (목표: ${target}개 이상)</div>
       <div class="result-coin ${cleared?'positive':'negative'}">${cleared?'+3':'-3'} 🪙 전체 지급</div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:1rem 0;">
         ${ISLANDS.map((isl,i)=>{
@@ -2855,11 +2902,11 @@ function moonFinalHTML(ti, total, target, cleared) {
           return '<div style="background:var(--surface);border:1px solid '+isl.color+'55;border-radius:6px;padding:.5rem;text-align:center;">'
             +'<div>'+isl.emoji+'</div>'
             +'<div style="font-family:Bebas Neue,sans-serif;font-size:1.3rem;color:'+isl.color+';">'+(s||0)+'</div>'
-            +'<div style="font-size:.6rem;color:var(--text3);">격파</div>'
+            +'<div style="font-size:.7rem;color:var(--text3);">격파</div>'
             +'</div>';
         }).join('')}
       </div>
-      <div style="font-size:.78rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:1rem;">
+      <div style="font-size:.9rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:1rem;">
         ${cleared?'🎉 운석을 절반 이상 막았어요! 모든 모둠 코인 +3!':'😢 운석을 절반도 못 막았어요. 모든 모둠 코인 -3...'}
       </div>
       <div style="display:flex;gap:.75rem;justify-content:center;">
@@ -2888,19 +2935,19 @@ function moonShowSummary(ti) {
       <span class="result-emoji">${cleared ? '🎉' : completed < 6 ? '⏳' : '😢'}</span>
       <div class="result-title">${cleared ? 'MISSION CLEARED!' : completed < 6 ? 'WAITING...' : 'NOT ENOUGH...'}</div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--accent2);margin:.5rem 0;">${total} / ${target}</div>
-      <div style="font-size:.75rem;color:var(--text3);margin-bottom:1.25rem;">전체 격파 수 (목표: ${target}개)</div>
+      <div style="font-size:.88rem;color:var(--text3);margin-bottom:1.25rem;">전체 격파 수 (목표: ${target}개)</div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1.25rem;">
         ${ISLANDS.map((isl,i) => {
           const s = scores[i];
           return '<div style="background:var(--surface);border:1px solid '+(s!==undefined?isl.color+'55':'var(--border)')+';border-radius:6px;padding:.5rem;text-align:center;">'
             +'<div style="font-size:1.2rem;">'+isl.emoji+'</div>'
-            +'<div style="font-size:.65rem;color:var(--text3);margin:.2rem 0;">'+isl.name+'</div>'
+            +'<div style="font-size:.76rem;color:var(--text3);margin:.2rem 0;">'+isl.name+'</div>'
             +'<div style="font-family:Bebas Neue,sans-serif;font-size:1.4rem;color:'+(s!==undefined?isl.color:'var(--text3)')+';">'+(s!==undefined?s:'?')+'</div>'
             +'</div>';
         }).join('')}
       </div>
       ${cleared ? '<div class="result-coin positive">전체 보너스 +1 🪙 지급!</div>' : ''}
-      <div style="font-size:.78rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin:.75rem 0;">
+      <div style="font-size:.9rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin:.75rem 0;">
         ${completed < 6 ? '아직 '+completed+'/6 모둠만 완료했어요. 나머지 모둠도 플레이해주세요!' : cleared ? '🎉 목표 달성! 모든 모둠 코인 +3!' : '😢 목표 미달... 모든 모둠 코인 -3!'}
       </div>
       ${cleared && completed===6 ? '<div id="moonBonusApplied"></div>' : ''}
@@ -2956,7 +3003,7 @@ function m3RestoreResult(ti) {
     <div class="result-box">
       <span class="result-emoji">${base.emoji}</span>
       <div class="result-title">${base.title}</div>
-      <div style="font-size:.85rem;color:var(--accent2);margin:.25rem 0 .75rem;font-family:monospace;">${islandDesc}</div>
+      <div style="font-size:.96rem;color:var(--accent2);margin:.25rem 0 .75rem;font-family:monospace;">${islandDesc}</div>
       <div class="result-coin ${coinClass}">${coins>0?'+'+coins:coins} 🪙</div>
       ${saved.roll===5?'<div class="result-item">'+ITEMS['lucky'].emoji+' '+ITEMS['lucky'].name+' 획득!</div>':''}
       <div class="result-desc">${base.desc}</div>
@@ -2997,7 +3044,7 @@ function renderMission5(teamNum) {
     <div class="mission-situation">
       Danger! A sudden crisis is hitting your island.<br>
       <strong>You have 7 seconds to memorize the sentence, then say it out loud!</strong>
-      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
+      <div style="font-size:.88rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
         위기 상황이다! 7초 안에 문장을 외우고, 화면이 가려지면 모둠원 릴레이로 발화하세요!
       </div>
     </div>
@@ -3005,12 +3052,12 @@ function renderMission5(teamNum) {
     <!-- STEP 1: 문장 암기 -->
     <div class="step ${step===1?'active':''}" id="m5step1-${ti}">
       <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:1rem;margin-bottom:1rem;text-align:center;">
-        <div style="font-size:.75rem;color:var(--danger);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.5rem;">⚠️ ${m5.crisis} 위기 발생!</div>
+        <div style="font-size:.88rem;color:var(--danger);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.5rem;">⚠️ ${m5.crisis} 위기 발생!</div>
         <div style="font-size:1.8rem;">${m5.emoji}</div>
       </div>
 
       <div class="step-label">STEP 1 · 7초 안에 문장을 외우세요!</div>
-      <div style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);border-radius:8px;padding:.85rem 1rem;margin-bottom:1rem;font-size:.8rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
+      <div style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);border-radius:8px;padding:.85rem 1rem;margin-bottom:1rem;font-size:.92rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
         📢 <strong>외우는 방법:</strong><br>
         문장을 모둠원끼리 나눠서 각자 한 부분씩 외우세요!<br>
         예: 1번 사람 → <em>"${G.m5.memoExampleA}"</em><br>
@@ -3019,11 +3066,11 @@ function renderMission5(teamNum) {
       </div>
 
       <div id="m5sentenceBox-${ti}" style="background:var(--surface);border:1px solid var(--accent);border-radius:8px;padding:1.25rem;margin-bottom:1rem;position:relative;">
-        <div style="font-size:.95rem;color:var(--text);line-height:1.8;font-family:'Space Mono',monospace;">"${m5.sentence}"</div>
-        <div style="font-size:.78rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">${m5.kr}</div>
+        <div style="font-size:1.04rem;color:var(--text);line-height:1.8;font-family:'Space Mono',monospace;">"${m5.sentence}"</div>
+        <div style="font-size:.9rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">${m5.kr}</div>
         <div style="margin-top:.75rem;padding:.4rem .75rem;background:rgba(249,115,22,.1);border-radius:4px;display:inline-block;">
-          <span style="font-size:.68rem;color:var(--text3);">핵심 표현: </span>
-          <span style="font-size:.8rem;color:var(--accent);font-family:'Space Mono',monospace;font-weight:700;">${G.m5.keyPrefix}${m5.key}</span>
+          <span style="font-size:.8rem;color:var(--text3);">핵심 표현: </span>
+          <span style="font-size:.92rem;color:var(--accent);font-family:'Space Mono',monospace;font-weight:700;">${G.m5.keyPrefix}${m5.key}</span>
         </div>
       </div>
 
@@ -3031,7 +3078,7 @@ function renderMission5(teamNum) {
 
       <div style="text-align:center;margin-bottom:1rem;">
         <div id="m5timer-${ti}" style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--accent2);">7</div>
-        <div style="font-size:.7rem;color:var(--text3);">seconds remaining</div>
+        <div style="font-size:.82rem;color:var(--text3);">seconds remaining</div>
       </div>
 
       <button class="btn btn-primary" id="m5startBtn-${ti}" onclick="m5StartTimer(${ti})" style="width:100%;">
@@ -3043,14 +3090,14 @@ function renderMission5(teamNum) {
     <div class="step ${step===2?'active':''}" id="m5step2-${ti}">
       <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:1rem;margin-bottom:1rem;text-align:center;">
         <div style="font-size:2rem;">${m5.emoji}</div>
-        <div style="font-size:.85rem;color:var(--danger);margin-top:.25rem;font-family:'Noto Sans KR',sans-serif;">⚠️ ${m5.crisis}가 나타났다! 지금 말해라!</div>
+        <div style="font-size:.96rem;color:var(--danger);margin-top:.25rem;font-family:'Noto Sans KR',sans-serif;">⚠️ ${m5.crisis}가 나타났다! 지금 말해라!</div>
       </div>
       <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:1.5rem;text-align:center;margin-bottom:1rem;">
-        <div style="font-size:.8rem;color:var(--text3);margin-bottom:.5rem;font-family:'Noto Sans KR',sans-serif;">문장이 가려졌어요! 기억나는 대로 발화하세요</div>
+        <div style="font-size:.92rem;color:var(--text3);margin-bottom:.5rem;font-family:'Noto Sans KR',sans-serif;">문장이 가려졌어요! 기억나는 대로 발화하세요</div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.1em;color:var(--text3);">??? ??? ??? ??? ???</div>
-        <div style="font-size:.72rem;color:var(--accent);margin-top:.75rem;font-family:'Space Mono',monospace;">힌트: ${G.m5.keyPrefix}${m5.key}</div>
+        <div style="font-size:.84rem;color:var(--accent);margin-top:.75rem;font-family:'Space Mono',monospace;">힌트: ${G.m5.keyPrefix}${m5.key}</div>
       </div>
-      <div style="font-size:.8rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:1rem;background:var(--surface);border-radius:8px;padding:.85rem;">
+      <div style="font-size:.92rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:1rem;background:var(--surface);border-radius:8px;padding:.85rem;">
         📢 <strong>발화 방법:</strong> 모둠원이 릴레이로 문장을 이어서 완성하세요!<br>
         완성되면 선생님께 확인 받은 후 결과 버튼을 눌러주세요.
       </div>
@@ -3133,11 +3180,11 @@ function m5RenderResult(ti, success) {
       <div class="result-desc" style="font-family:'Noto Sans KR',sans-serif;">
         ${success
           ? G.m5.successText
-          : '이번엔 실패했어요. 하지만 다음엔 더 잘할 수 있어요!<br><span style="font-size:.75rem;color:var(--danger);">' + m5.penalty + '</span>'}
+          : '이번엔 실패했어요. 하지만 다음엔 더 잘할 수 있어요!<br><span style="font-size:.88rem;color:var(--danger);">' + m5.penalty + '</span>'}
       </div>
       <div style="background:var(--surface);border-radius:8px;padding:.85rem;margin:.75rem 0;text-align:left;">
-        <div style="font-size:.68rem;color:var(--text3);margin-bottom:.35rem;">정답 문장:</div>
-        <div style="font-size:.8rem;color:var(--accent2);font-family:'Space Mono',monospace;line-height:1.6;">"${m5.sentence}"</div>
+        <div style="font-size:.8rem;color:var(--text3);margin-bottom:.35rem;">정답 문장:</div>
+        <div style="font-size:.92rem;color:var(--accent2);font-family:'Space Mono',monospace;line-height:1.6;">"${m5.sentence}"</div>
       </div>
       <div style="display:flex;gap:.75rem;justify-content:center;">
         <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button>
@@ -3213,7 +3260,7 @@ function renderMission6(teamNum) {
     <div class="mission-situation">
       To send a rescue signal, you need to work with another team!<br>
       <strong>${isl.emoji} ${isl.name} + ${partnerIsl.emoji} ${partnerIsl.name} → 함께 협동!</strong>
-      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
+      <div style="font-size:.88rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
         구조 신호를 보내려면 짝꿍 모둠과 협동해야 해요!<br>
         ${role==='A'
           ? isl.emoji+' '+isl.name+' (우리 모둠): 아이템 소개 + 질문하기'
@@ -3229,7 +3276,7 @@ function renderMission6(teamNum) {
     <!-- STEP 2: 발화 -->
     <div class="step ${step===2?'active':''}" id="m6step2-${ti}">
       <div style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);border-radius:8px;padding:1rem;margin-bottom:1rem;">
-        <div style="font-size:.78rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
+        <div style="font-size:.9rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
           📢 <strong>발화 방법:</strong><br>
           짝꿍 모둠과 함께 완성된 대화를 주고받으세요!<br>
           ${role==='A'
@@ -3238,13 +3285,13 @@ function renderMission6(teamNum) {
         </div>
       </div>
       <div style="background:var(--surface);border-radius:8px;padding:1rem;margin-bottom:1rem;">
-        <div style="font-size:.68rem;color:var(--text3);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.1em;">완성 대화:</div>
-        <div style="font-size:.82rem;color:var(--accent2);font-family:'Space Mono',monospace;line-height:2;">
+        <div style="font-size:.8rem;color:var(--text3);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.1em;">완성 대화:</div>
+        <div style="font-size:.94rem;color:var(--accent2);font-family:'Space Mono',monospace;line-height:2;">
           <span style="color:${ISLANDS[MISSION6_PAIRS[ti].teamA].color};">${ISLANDS[MISSION6_PAIRS[ti].teamA].emoji}</span> "${m6.teamA_full}"<br>
           <span style="color:${ISLANDS[MISSION6_PAIRS[ti].teamB].color};">${ISLANDS[MISSION6_PAIRS[ti].teamB].emoji}</span> "${m6.teamB_full}"
         </div>
       </div>
-      <div style="font-size:.78rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;background:var(--surface);border-radius:8px;padding:.85rem;margin-bottom:1rem;">
+      <div style="font-size:.9rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;background:var(--surface);border-radius:8px;padding:.85rem;margin-bottom:1rem;">
         발화 완료 후 선생님 확인 받고 버튼을 눌러주세요!
       </div>
       <div style="display:flex;gap:.75rem;">
@@ -3276,17 +3323,17 @@ function m6renderTeamA(ti, m6) {
   return `
     <div class="step-label">STEP 1 · 조각을 올바른 순서로 배열하세요</div>
     <div style="background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:8px;padding:.75rem;margin-bottom:1rem;">
-      <span style="font-size:.7rem;color:var(--accent);">주어진 문장: </span>
-      <span style="font-family:'Space Mono',monospace;font-size:.82rem;color:var(--text);">"${m6.teamA_given}"</span>
+      <span style="font-size:.82rem;color:var(--accent);">주어진 문장: </span>
+      <span style="font-family:'Space Mono',monospace;font-size:.94rem;color:var(--text);">"${m6.teamA_given}"</span>
     </div>
-    <div style="font-size:.78rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:.75rem;">
+    <div style="font-size:.9rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:.75rem;">
       👆 위 문장 뒤에 이어질 질문을 조각을 배열해서 완성하세요!
     </div>
     <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:.85rem;min-height:52px;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;margin-bottom:.75rem;"
       id="m6zoneA-${ti}" ondragover="event.preventDefault()" ondrop="m6DropA(event,${ti})">
       ${dropped.length===0
-        ? '<span style="font-size:.7rem;color:var(--text3);">여기에 조각을 끌어다 놓거나 클릭하세요</span>'
-        : dropped.map((w,i)=>`<div class="m2-chip" onclick="m6RemoveA(${ti},${i})">${w} <span style="font-size:.55rem;opacity:.5;">✕</span></div>`).join('')}
+        ? '<span style="font-size:.82rem;color:var(--text3);">여기에 조각을 끌어다 놓거나 클릭하세요</span>'
+        : dropped.map((w,i)=>`<div class="m2-chip" onclick="m6RemoveA(${ti},${i})">${w} <span style="font-size:.65rem;opacity:.5;">✕</span></div>`).join('')}
     </div>
     <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;" id="m6piecesA-${ti}">
       ${shuffled.map((p,i)=>{
@@ -3295,7 +3342,7 @@ function m6renderTeamA(ti, m6) {
         const used=pc<=dc;
         return '<div class="wh-card" style="min-width:unset;padding:.45rem .75rem;cursor:grab;'+(used?'opacity:.3;pointer-events:none;':'')+'"'
           +' draggable="true" ondragstart="m6DragStartA(event,' +jsArg(p)+ ','+ti+')" onclick="m6ClickA(' +jsArg(p)+ ','+ti+')">'
-          +'<div style="font-family:Space Mono,monospace;font-size:.82rem;">'+p+'</div>'
+          +'<div style="font-family:Space Mono,monospace;font-size:.94rem;">'+p+'</div>'
           +'</div>';
       }).join('')}
     </div>
@@ -3317,16 +3364,16 @@ function m6renderTeamB(ti, m6) {
 
   return `
     <div class="step-label">STEP 1 · 두 문장의 조각을 각각 배열하세요</div>
-    <div style="font-size:.75rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:.75rem;background:var(--surface);border-radius:6px;padding:.65rem;">
+    <div style="font-size:.88rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:.75rem;background:var(--surface);border-radius:6px;padding:.65rem;">
       ${G.m6.teamBHint}
     </div>
 
-    <div style="font-size:.7rem;color:var(--accent2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">${G.m6.teamBLabel1}</div>
+    <div style="font-size:.82rem;color:var(--accent2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">${G.m6.teamBLabel1}</div>
     <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:.75rem;min-height:48px;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;margin-bottom:.5rem;"
       id="m6zoneB1-${ti}" ondragover="event.preventDefault()" ondrop="m6DropB1(event,${ti})">
       ${dropped1.length===0
-        ? '<span style="font-size:.68rem;color:var(--text3);">여기에 조각을 끌어다 놓으세요</span>'
-        : dropped1.map((w,i)=>`<div class="m2-chip" onclick="m6RemoveB1(${ti},${i})">${w} <span style="font-size:.55rem;opacity:.5;">✕</span></div>`).join('')}
+        ? '<span style="font-size:.8rem;color:var(--text3);">여기에 조각을 끌어다 놓으세요</span>'
+        : dropped1.map((w,i)=>`<div class="m2-chip" onclick="m6RemoveB1(${ti},${i})">${w} <span style="font-size:.65rem;opacity:.5;">✕</span></div>`).join('')}
     </div>
     <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;" id="m6piecesB1-${ti}">
       ${state.m6pieces[ti+'b1'].map((p,i)=>{
@@ -3335,17 +3382,17 @@ function m6renderTeamB(ti, m6) {
         const used=pc<=dc;
         return '<div class="wh-card" style="min-width:unset;padding:.45rem .75rem;cursor:grab;'+(used?'opacity:.3;pointer-events:none;':'')+'"'
           +' draggable="true" ondragstart="m6DragStartB1(event,' +jsArg(p)+ ','+ti+')" onclick="m6ClickB1(' +jsArg(p)+ ','+ti+')">'
-          +'<div style="font-family:Space Mono,monospace;font-size:.82rem;">'+p+'</div>'
+          +'<div style="font-family:Space Mono,monospace;font-size:.94rem;">'+p+'</div>'
           +'</div>';
       }).join('')}
     </div>
 
-    <div style="font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">${G.m6.teamBLabel2}</div>
+    <div style="font-size:.82rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">${G.m6.teamBLabel2}</div>
     <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:.75rem;min-height:48px;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;margin-bottom:.5rem;"
       id="m6zoneB2-${ti}" ondragover="event.preventDefault()" ondrop="m6DropB2(event,${ti})">
       ${dropped2.length===0
-        ? '<span style="font-size:.68rem;color:var(--text3);">여기에 조각을 끌어다 놓으세요</span>'
-        : dropped2.map((w,i)=>`<div class="m2-chip" onclick="m6RemoveB2(${ti},${i})">${w} <span style="font-size:.55rem;opacity:.5;">✕</span></div>`).join('')}
+        ? '<span style="font-size:.8rem;color:var(--text3);">여기에 조각을 끌어다 놓으세요</span>'
+        : dropped2.map((w,i)=>`<div class="m2-chip" onclick="m6RemoveB2(${ti},${i})">${w} <span style="font-size:.65rem;opacity:.5;">✕</span></div>`).join('')}
     </div>
     <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;" id="m6piecesB2-${ti}">
       ${state.m6pieces[ti+'b2'].map((p,i)=>{
@@ -3354,7 +3401,7 @@ function m6renderTeamB(ti, m6) {
         const used=pc<=dc;
         return '<div class="wh-card" style="min-width:unset;padding:.45rem .75rem;cursor:grab;'+(used?'opacity:.3;pointer-events:none;':'')+'"'
           +' draggable="true" ondragstart="m6DragStartB2(event,' +jsArg(p)+ ','+ti+')" onclick="m6ClickB2(' +jsArg(p)+ ','+ti+')">'
-          +'<div style="font-family:Space Mono,monospace;font-size:.82rem;">'+p+'</div>'
+          +'<div style="font-family:Space Mono,monospace;font-size:.94rem;">'+p+'</div>'
           +'</div>';
       }).join('')}
     </div>
@@ -3410,8 +3457,8 @@ function m6UpdateA(ti) {
   const shuffled = state.m6pieces && state.m6pieces[ti+'a'] || [];
   const zone = document.getElementById('m6zoneA-'+ti);
   if(zone) zone.innerHTML = dropped.length===0
-    ? '<span style="font-size:.7rem;color:var(--text3);">여기에 조각을 끌어다 놓거나 클릭하세요</span>'
-    : dropped.map((w,i)=>'<div class="m2-chip" onclick="m6RemoveA('+ti+','+i+')">'+w+' <span style="font-size:.55rem;opacity:.5;">✕</span></div>').join('');
+    ? '<span style="font-size:.82rem;color:var(--text3);">여기에 조각을 끌어다 놓거나 클릭하세요</span>'
+    : dropped.map((w,i)=>'<div class="m2-chip" onclick="m6RemoveA('+ti+','+i+')">'+w+' <span style="font-size:.65rem;opacity:.5;">✕</span></div>').join('');
   const pieces = document.querySelectorAll('#m6piecesA-'+ti+' .wh-card');
   pieces.forEach((p,i)=>{
     const w = shuffled[i];
@@ -3433,8 +3480,8 @@ function m6UpdateB(ti) {
   const s1 = state.m6pieces && state.m6pieces[ti+'b1'] || [];
   const s2 = state.m6pieces && state.m6pieces[ti+'b2'] || [];
   const z1=document.getElementById('m6zoneB1-'+ti), z2=document.getElementById('m6zoneB2-'+ti);
-  if(z1) z1.innerHTML=d1.length===0?'<span style="font-size:.68rem;color:var(--text3);">여기에 조각을 끌어다 놓으세요</span>':d1.map((w,i)=>'<div class="m2-chip" onclick="m6RemoveB1('+ti+','+i+')">'+w+' <span style="font-size:.55rem;opacity:.5;">✕</span></div>').join('');
-  if(z2) z2.innerHTML=d2.length===0?'<span style="font-size:.68rem;color:var(--text3);">여기에 조각을 끌어다 놓으세요</span>':d2.map((w,i)=>'<div class="m2-chip" onclick="m6RemoveB2('+ti+','+i+')">'+w+' <span style="font-size:.55rem;opacity:.5;">✕</span></div>').join('');
+  if(z1) z1.innerHTML=d1.length===0?'<span style="font-size:.8rem;color:var(--text3);">여기에 조각을 끌어다 놓으세요</span>':d1.map((w,i)=>'<div class="m2-chip" onclick="m6RemoveB1('+ti+','+i+')">'+w+' <span style="font-size:.65rem;opacity:.5;">✕</span></div>').join('');
+  if(z2) z2.innerHTML=d2.length===0?'<span style="font-size:.8rem;color:var(--text3);">여기에 조각을 끌어다 놓으세요</span>':d2.map((w,i)=>'<div class="m2-chip" onclick="m6RemoveB2('+ti+','+i+')">'+w+' <span style="font-size:.65rem;opacity:.5;">✕</span></div>').join('');
   const p1=document.querySelectorAll('#m6piecesB1-'+ti+' .wh-card');
   const p2=document.querySelectorAll('#m6piecesB2-'+ti+' .wh-card');
   p1.forEach((p,i)=>{
@@ -3518,8 +3565,8 @@ function m6RenderResult(ti, success) {
         ${success?'짝꿍 모둠과 완벽하게 협동해서 구조 신호를 보냈어요! 🎉':'아쉽게도 신호를 보내지 못했어요. 괜찮아요, 계속 나아가요!'}
       </div>
       <div style="background:var(--surface);border-radius:8px;padding:.85rem;margin:.75rem 0;text-align:left;">
-        <div style="font-size:.68rem;color:var(--text3);margin-bottom:.4rem;">완성 대화:</div>
-        <div style="font-size:.78rem;color:var(--accent2);font-family:'Space Mono',monospace;line-height:1.8;">
+        <div style="font-size:.8rem;color:var(--text3);margin-bottom:.4rem;">완성 대화:</div>
+        <div style="font-size:.9rem;color:var(--accent2);font-family:'Space Mono',monospace;line-height:1.8;">
           "${m6.teamA_full}"<br>"${m6.teamB_full}"
         </div>
       </div>
@@ -3563,7 +3610,7 @@ function renderMission4(teamNum) {
     <div class="mission-situation">
       Some strangers appeared on the island. But be careful —<br>
       <strong>only the ones who speak correctly can be trusted!</strong>
-      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
+      <div style="font-size:.88rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
         낯선 사람들이 나타났다. 올바른 문장을 말하는 사람만 동료로 삼을 수 있다!<br>
         ${G.m4.instructionKr}
       </div>
@@ -3687,12 +3734,12 @@ function m4RenderResult(ti, correct, coins) {
       <div class="result-coin ${coins>0?'positive':'neutral'}">${coins>0?'+'+coins:'±0'} 🪙</div>
       ${!failed ? `
       <div style="background:rgba(255,255,255,.04);border:1px solid ${npc.color}33;border-radius:8px;padding:1rem;margin:1rem 0;text-align:left;">
-        <div style="font-size:.7rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;">💪 NPC 버프 효과</div>
-        <div style="font-size:.9rem;color:${npc.color};font-family:'Noto Sans KR',sans-serif;">${npc.buff}</div>
+        <div style="font-size:.82rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;">💪 NPC 버프 효과</div>
+        <div style="font-size:1rem;color:${npc.color};font-family:'Noto Sans KR',sans-serif;">${npc.buff}</div>
 
       </div>` : `
       <div class="result-desc">동료를 얻지 못했어요. 다음 미션에서 더 조심하세요!</div>`}
-      <div style="font-size:.75rem;color:var(--text2);margin-bottom:1.25rem;font-family:'Noto Sans KR',sans-serif;">
+      <div style="font-size:.88rem;color:var(--text2);margin-bottom:1.25rem;font-family:'Noto Sans KR',sans-serif;">
         ${correct}/${MISSION4_QUESTIONS.length}개 정답
         ${correct===M4_TOTAL?'완벽해요! 🎉':correct>=G.m4.passCount?'잘했어요! 👍':'조금 아쉬워요 😅'}
       </div>
@@ -3751,7 +3798,7 @@ function renderMission7(teamNum) {
     <div class="mission-situation">
       A rescue helicopter has spotted your signal!<br>
       <strong>Write a rescue guide for the pilot and tell them how to reach you safely!</strong>
-      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
+      <div style="font-size:.88rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
         구조 헬기가 신호를 발견했다! 조종사에게 안전하게 오는 방법을 안내문으로 써서 전달하라!<br>
         영어로 작성하면 더 높은 점수를 받을 수 있어요.
       </div>
@@ -3762,22 +3809,22 @@ function renderMission7(teamNum) {
 
       <!-- 채점 조건 -->
       <div style="background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:8px;padding:1rem;margin-bottom:1rem;">
-        <div style="font-size:.72rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">📋 채점 조건</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem;font-size:.75rem;font-family:'Noto Sans KR',sans-serif;">
+        <div style="font-size:.84rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">📋 채점 조건</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem;font-size:.88rem;font-family:'Noto Sans KR',sans-serif;">
           <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:6px;padding:.5rem .75rem;">
             <div style="color:var(--danger);font-weight:700;margin-bottom:.2rem;">⚠️ 필수</div>
             <div style="color:var(--text2);">${m7.warning} <strong>${m7.keyKr}</strong> 안내 포함</div>
-            <div style="color:var(--text3);font-size:.68rem;margin-top:.2rem;">힌트: ${m7.hint}</div>
+            <div style="color:var(--text3);font-size:.8rem;margin-top:.2rem;">힌트: ${m7.hint}</div>
           </div>
           <div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);border-radius:6px;padding:.5rem .75rem;">
             <div style="color:var(--success);font-weight:700;margin-bottom:.2rem;">✅ 필수</div>
             <div style="color:var(--text2);">${G.m7.target.label} <strong>${G.m7.target.minCount}개 이상</strong></div>
-            <div style="color:var(--text3);font-size:.68rem;margin-top:.2rem;">${G.m7.target.hint}</div>
+            <div style="color:var(--text3);font-size:.8rem;margin-top:.2rem;">${G.m7.target.hint}</div>
           </div>
           <div style="background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:6px;padding:.5rem .75rem;">
             <div style="color:var(--accent2);font-weight:700;margin-bottom:.2rem;">⭐ 보너스</div>
             <div style="color:var(--text2);">영어로 작성 <strong>+2코인</strong></div>
-            <div style="color:var(--text3);font-size:.68rem;margin-top:.2rem;">모르는 단어는 한글/사전 OK!</div>
+            <div style="color:var(--text3);font-size:.8rem;margin-top:.2rem;">모르는 단어는 한글/사전 OK!</div>
           </div>
           <div style="background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:6px;padding:.5rem .75rem;">
             <div style="color:var(--accent2);font-weight:700;margin-bottom:.2rem;">⭐ 보너스</div>
@@ -3788,21 +3835,21 @@ function renderMission7(teamNum) {
             <div style="color:var(--text2);">${G.m7.bonus[1].cardHtml}</div>
           </div>
         </div>
-        <div style="margin-top:.75rem;padding:.6rem .75rem;background:rgba(255,255,255,.04);border-radius:6px;font-size:.72rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;line-height:1.7;">
+        <div style="margin-top:.75rem;padding:.6rem .75rem;background:rgba(255,255,255,.04);border-radius:6px;font-size:.84rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;line-height:1.7;">
           ${G.m7.gradingNote}
         </div>
       </div>
 
       <!-- 템플릿 -->
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-bottom:1rem;">
-        <div style="font-size:.68rem;color:var(--text3);margin-bottom:.6rem;letter-spacing:.1em;text-transform:uppercase;">📄 템플릿 (참고용 — 자유롭게 변형 가능)</div>
-        <div style="font-size:.77rem;color:var(--text2);line-height:2.1;font-family:'Space Mono',monospace;">
+        <div style="font-size:.8rem;color:var(--text3);margin-bottom:.6rem;letter-spacing:.1em;text-transform:uppercase;">📄 템플릿 (참고용 — 자유롭게 변형 가능)</div>
+        <div style="font-size:.9rem;color:var(--text2);line-height:2.1;font-family:'Space Mono',monospace;">
           ${G.m7.templateHtml.split('{island}').join(isl.name)}
         </div>
       </div>
 
       <!-- 발화 안내 -->
-      <div style="background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.15);border-radius:8px;padding:.75rem 1rem;margin-bottom:.75rem;font-size:.78rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
+      <div style="background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.15);border-radius:8px;padding:.75rem 1rem;margin-bottom:.75rem;font-size:.9rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
         📢 <strong>발표 방법:</strong> 작성 완료 후 <strong>모둠원 전체가 함께</strong> 안내문을 발표하세요!<br>
         각자 한 문장씩 나눠서 읽어도 좋아요. 선생님 확인 후 제출!
       </div>
@@ -3811,7 +3858,7 @@ function renderMission7(teamNum) {
 
       <textarea id="m7text-${ti}"
         placeholder="여기에 안내문을 작성하세요... (모르는 단어는 한글로 써도 OK!)"
-        style="width:100%;min-height:180px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;font-family:'Noto Sans KR',sans-serif;font-size:.85rem;color:var(--text);resize:vertical;outline:none;line-height:1.7;"
+        style="width:100%;min-height:180px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;font-family:'Noto Sans KR',sans-serif;font-size:.96rem;color:var(--text);resize:vertical;outline:none;line-height:1.7;"
         onfocus="this.style.borderColor='var(--accent)'"
         onblur="this.style.borderColor='var(--border)'"
       >${state.m7text && state.m7text[ti] ? escHTML(state.m7text[ti]) : ''}</textarea>
@@ -3819,7 +3866,7 @@ function renderMission7(teamNum) {
       <div class="ai-box" id="m7ai-${ti}">${m7AiInner(ti)}</div>
 
   <div style="display:flex;gap:.75rem;align-items:center;margin-top:.75rem;">
-    <div style="flex:1;font-size:.7rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">모둠 전체 발표 완료 후 제출하세요!</div>
+    <div style="flex:1;font-size:.82rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">모둠 전체 발표 완료 후 제출하세요!</div>
     <button class="btn btn-primary" onclick="m7Submit(${ti})">제출 →</button>
   </div>
 </div>
@@ -3877,13 +3924,13 @@ const hasMakeSure = m7HasAny(text, G.m7.bonus[1].patterns);
 const whCount = m7CountTargetOccurrences(text);
 const isEnglish = /[a-zA-Z]/.test(text) && text.replace(/[^a-zA-Z\s]/g,'').length > text.replace(/[^가-힣\s]/g,'').length;
 
-sc.innerHTML = `<div style="margin-bottom:1.25rem;"> <div style="font-size:.72rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;">📝 작성한 안내문</div> <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;font-size:.82rem;color:var(--text);line-height:1.8;white-space:pre-wrap;font-family:'Noto Sans KR',sans-serif;">${text}</div> </div> <div style="font-size:.72rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;">✅ 자동 체크</div> <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1.25rem;"> ${m7CheckItem(G.m7.bonus[0].checkLabel, hasItImportant)} ${m7CheckItem(G.m7.bonus[1].checkLabel, hasMakeSure)} ${m7CheckItem(G.m7.target.label+' '+G.m7.target.minCount+'개 이상', whCount>=G.m7.target.minCount, whCount+'개 발견')} ${m7CheckItem('영어로 작성', isEnglish, isEnglish?'보너스 적용!':'한국어 → 보너스 없음')} </div> <div style="font-size:.72rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;">👩‍🏫 선생님 채점</div> <div style="background:var(--surface);border-radius:8px;padding:1rem;margin-bottom:1rem;font-family:'Noto Sans KR',sans-serif;font-size:.82rem;color:var(--text2);line-height:1.8;"> <strong style="color:${MISSION7_DATA[ti].island==='volcano'?ISLANDS[0].color:ISLANDS[ti].color};">필수 내용 (${MISSION7_DATA[ti].warning} ${MISSION7_DATA[ti].keyKr} 안내)</strong>가 포함됐나요?<br> 모둠 대표가 발화까지 완료했나요? </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:1rem;"> <button class="btn btn-primary" onclick="m7Score(${ti},'perfect')" style="background:var(--success);font-size:.8rem;padding:.6rem .5rem;">✅ 필수내용 포함<br>+ 발화 성공</button> <button class="btn btn-primary" onclick="m7Score(${ti},'partial')" style="background:var(--accent);font-size:.8rem;padding:.6rem .5rem;">⚡ 필수내용 포함<br>발화 미완성</button> <button class="btn btn-primary" onclick="m7Score(${ti},'miss')" style="background:var(--danger);font-size:.8rem;padding:.6rem .5rem;">❌ 필수내용<br>미포함</button> </div> <button class="btn-ghost" onclick="m7Edit(${ti})" style="width:100%;font-size:.72rem;">✏️ 다시 작성하기</button>`;
+sc.innerHTML = `<div style="margin-bottom:1.25rem;"> <div style="font-size:.84rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;">📝 작성한 안내문</div> <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;font-size:.94rem;color:var(--text);line-height:1.8;white-space:pre-wrap;font-family:'Noto Sans KR',sans-serif;">${text}</div> </div> <div style="font-size:.84rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;">✅ 자동 체크</div> <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1.25rem;"> ${m7CheckItem(G.m7.bonus[0].checkLabel, hasItImportant)} ${m7CheckItem(G.m7.bonus[1].checkLabel, hasMakeSure)} ${m7CheckItem(G.m7.target.label+' '+G.m7.target.minCount+'개 이상', whCount>=G.m7.target.minCount, whCount+'개 발견')} ${m7CheckItem('영어로 작성', isEnglish, isEnglish?'보너스 적용!':'한국어 → 보너스 없음')} </div> <div style="font-size:.84rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;">👩‍🏫 선생님 채점</div> <div style="background:var(--surface);border-radius:8px;padding:1rem;margin-bottom:1rem;font-family:'Noto Sans KR',sans-serif;font-size:.94rem;color:var(--text2);line-height:1.8;"> <strong style="color:${MISSION7_DATA[ti].island==='volcano'?ISLANDS[0].color:ISLANDS[ti].color};">필수 내용 (${MISSION7_DATA[ti].warning} ${MISSION7_DATA[ti].keyKr} 안내)</strong>가 포함됐나요?<br> 모둠 대표가 발화까지 완료했나요? </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:1rem;"> <button class="btn btn-primary" onclick="m7Score(${ti},'perfect')" style="background:var(--success);font-size:.92rem;padding:.6rem .5rem;">✅ 필수내용 포함<br>+ 발화 성공</button> <button class="btn btn-primary" onclick="m7Score(${ti},'partial')" style="background:var(--accent);font-size:.92rem;padding:.6rem .5rem;">⚡ 필수내용 포함<br>발화 미완성</button> <button class="btn btn-primary" onclick="m7Score(${ti},'miss')" style="background:var(--danger);font-size:.92rem;padding:.6rem .5rem;">❌ 필수내용<br>미포함</button> </div> <button class="btn-ghost" onclick="m7Edit(${ti})" style="width:100%;font-size:.84rem;">✏️ 다시 작성하기</button>`;
 }
 
 function m7CheckItem(label, passed, note) {
 return '<div style="background:var(--surface);border:1px solid '+(passed?'var(--success)':'var(--border)')+';border-radius:6px;padding:.5rem .75rem;">'
-+'<div style="font-size:.65rem;color:'+(passed?'var(--success)':'var(--text3)')+';">'+(passed?'✅ ':'❌ ')+label+'</div>'
-+(note?'<div style="font-size:.62rem;color:var(--text3);margin-top:.15rem;">'+note+'</div>':'')
++'<div style="font-size:.76rem;color:'+(passed?'var(--success)':'var(--text3)')+';">'+(passed?'✅ ':'❌ ')+label+'</div>'
++(note?'<div style="font-size:.72rem;color:var(--text3);margin-top:.15rem;">'+note+'</div>':'')
 +'</div>';
 }
 
@@ -3948,7 +3995,7 @@ const { coins, breakdown, grade } = result;
 const emoji = grade==='perfect'?'🎉':grade==='partial'?'😮':coins>0?'👍':'😢';
 const title = grade==='perfect'?'RESCUE COMPLETE!':grade==='partial'?'SIGNAL SENT!':coins>0?'TRIED HARD!':'KEEP GOING!';
 
-rc.innerHTML = `<div class="result-box"> <span class="result-emoji">${emoji}</span> <div class="result-title">${title}</div> <div class="result-coin positive">+${coins} 🪙</div> <div style="background:var(--surface);border-radius:8px;padding:1rem;margin:1rem 0;text-align:left;"> <div style="font-size:.68rem;color:var(--text3);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.1em;">📊 점수 내역</div> ${breakdown.map(b=>'<div style="font-size:.75rem;color:var(--text2);padding:.2rem 0;font-family:Noto Sans KR,sans-serif;">• '+b+'</div>').join('')} </div> <div style="background:var(--surface);border-radius:8px;padding:1rem;margin:.5rem 0;text-align:left;"> <div style="font-size:.68rem;color:var(--text3);margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.1em;">작성한 안내문</div> <div style="font-size:.78rem;color:var(--text2);line-height:1.8;white-space:pre-wrap;font-family:Noto Sans KR,sans-serif;">${(state.m7text&&state.m7text[ti])||''}</div> </div> <div style="display:flex;gap:.75rem;justify-content:center;margin-top:1.25rem;"> <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button> <button class="btn btn-primary" onclick="m7GoToFinalWaiting(${ti})">결과 화면으로 →</button> </div> </div>`;
+rc.innerHTML = `<div class="result-box"> <span class="result-emoji">${emoji}</span> <div class="result-title">${title}</div> <div class="result-coin positive">+${coins} 🪙</div> <div style="background:var(--surface);border-radius:8px;padding:1rem;margin:1rem 0;text-align:left;"> <div style="font-size:.8rem;color:var(--text3);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.1em;">📊 점수 내역</div> ${breakdown.map(b=>'<div style="font-size:.88rem;color:var(--text2);padding:.2rem 0;font-family:Noto Sans KR,sans-serif;">• '+b+'</div>').join('')} </div> <div style="background:var(--surface);border-radius:8px;padding:1rem;margin:.5rem 0;text-align:left;"> <div style="font-size:.8rem;color:var(--text3);margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.1em;">작성한 안내문</div> <div style="font-size:.9rem;color:var(--text2);line-height:1.8;white-space:pre-wrap;font-family:Noto Sans KR,sans-serif;">${(state.m7text&&state.m7text[ti])||''}</div> </div> <div style="display:flex;gap:.75rem;justify-content:center;margin-top:1.25rem;"> <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button> <button class="btn btn-primary" onclick="m7GoToFinalWaiting(${ti})">결과 화면으로 →</button> </div> </div>`;
 }
 
 function m7GoToFinalWaiting(ti) {
@@ -3970,23 +4017,23 @@ function showM7WaitingFinal() {
     <div class="result-box">
       <span class="result-emoji" style="animation:pulseGlow 1.5s ease-in-out infinite;">🏆</span>
       <div class="result-title">WAITING FOR FINAL</div>
-      <div style="font-size:.82rem;color:var(--accent2);margin:.5rem 0 1rem;font-family:'Noto Sans KR',sans-serif;">
+      <div style="font-size:.94rem;color:var(--accent2);margin:.5rem 0 1rem;font-family:'Noto Sans KR',sans-serif;">
         미션 완료! 다른 모둠이 완료할 때까지 기다려주세요.
       </div>
       <div style="background:var(--surface);border-radius:8px;padding:1rem;margin-bottom:1rem;">
-        <div style="font-size:.7rem;color:var(--text3);margin-bottom:.65rem;text-transform:uppercase;letter-spacing:.1em;">모둠 완료 현황</div>
+        <div style="font-size:.82rem;color:var(--text3);margin-bottom:.65rem;text-transform:uppercase;letter-spacing:.1em;">모둠 완료 현황</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;">
           ${ISLANDS.map((isl,i)=>{
             const done=(cm[i]||0)>=8;
             return '<div style="background:var(--bg);border:1px solid '+(done?isl.color:'var(--border)')+';border-radius:6px;padding:.5rem;text-align:center;">'
               +'<div style="font-size:1.1rem;">'+isl.emoji+'</div>'
-              +'<div style="font-size:.6rem;color:'+(done?isl.color:'var(--text3)')+';">'+(done?'✅ 완료':'⏳ 진행중')+'</div>'
+              +'<div style="font-size:.7rem;color:'+(done?isl.color:'var(--text3)')+';">'+(done?'✅ 완료':'⏳ 진행중')+'</div>'
               +'</div>';
           }).join('')}
         </div>
       </div>
-      <div style="font-size:.75rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;margin-bottom:.75rem;">${doneCount}/6 모둠 완료 — 모두 완료되면 자동으로 최종 결과가 나타나요!</div>
-      <button onclick="inAppRefresh()" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:.5rem 1.25rem;font-size:.78rem;color:var(--text2);cursor:pointer;font-family:'Space Mono',monospace;">🔄 현황 새로고침</button>
+      <div style="font-size:.88rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;margin-bottom:.75rem;">${doneCount}/6 모둠 완료 — 모두 완료되면 자동으로 최종 결과가 나타나요!</div>
+      <button onclick="inAppRefresh()" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:.5rem 1.25rem;font-size:.9rem;color:var(--text2);cursor:pointer;font-family:'Space Mono',monospace;">🔄 현황 새로고침</button>
     </div>`;
 }
 
@@ -4008,7 +4055,7 @@ const winners = state.coins.map((c,i) => c === maxCoins ? i : -1).filter(i => i 
 const isWinner = i => winners.includes(i);
 const winnerText = winners.map(i => `${i+1}모둠 ${ISLANDS[i].name}`).join(', ');
 
-main.innerHTML = `<div class="mission-header"> <div class="mission-num">🏆 GAME OVER</div> <div class="mission-title">최종 결과</div> </div> <div class="result-box"> <span class="result-emoji">🏆</span> <div class="result-title">SURVIVAL COMPLETE!</div> <div style="font-size:.8rem;color:var(--text2);margin:.5rem 0 1.5rem;font-family:'Noto Sans KR',sans-serif;">모든 모둠이 살아남았어요! 수고했어요!</div> <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.5rem;"> ${ISLANDS.map((isl,i)=>{ const coins = state.coins[i]; const won = isWinner(i); return '<div style="background:var(--surface);border:2px solid '+(won?isl.color:'var(--border)')+';border-radius:8px;padding:.85rem;text-align:center;">' +'<div style="font-size:1.5rem;">'+(won?'👑':isl.emoji)+'</div>' +'<div style="font-family:Bebas Neue,sans-serif;font-size:.9rem;letter-spacing:.08em;color:'+(won?isl.color:'var(--text2)')+';">'+(i+1)+'모둠</div>' +'<div style="font-size:.65rem;color:var(--text3);">'+isl.name+'</div>' +'<div style="font-family:Bebas Neue,sans-serif;font-size:1.8rem;color:'+(won?isl.color:'var(--text)')+';">'+coins+'</div>' +'<div style="font-size:.6rem;color:var(--text3);">🪙 COINS</div>' +'</div>'; }).join('')} </div> <div style="font-family:Bebas Neue,sans-serif;font-size:1.1rem;color:var(--accent2);margin-bottom:.25rem;">전체 획득 코인: ${totalCoins} 🪙</div> <div style="font-size:.78rem;color:var(--accent);font-family:'Noto Sans KR',sans-serif;margin-bottom:1.25rem;"> 🏆 ${winners.length > 1 ? '공동 ' : ''}우승: ${winnerText} (${maxCoins}코인) </div> <button class="btn btn-primary" onclick="showScreen('lobby')" style="width:100%;">← 로비로 돌아가기</button> </div>`;
+main.innerHTML = `<div class="mission-header"> <div class="mission-num">🏆 GAME OVER</div> <div class="mission-title">최종 결과</div> </div> <div class="result-box"> <span class="result-emoji">🏆</span> <div class="result-title">SURVIVAL COMPLETE!</div> <div style="font-size:.92rem;color:var(--text2);margin:.5rem 0 1.5rem;font-family:'Noto Sans KR',sans-serif;">모든 모둠이 살아남았어요! 수고했어요!</div> <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.5rem;"> ${ISLANDS.map((isl,i)=>{ const coins = state.coins[i]; const won = isWinner(i); return '<div style="background:var(--surface);border:2px solid '+(won?isl.color:'var(--border)')+';border-radius:8px;padding:.85rem;text-align:center;">' +'<div style="font-size:1.5rem;">'+(won?'👑':isl.emoji)+'</div>' +'<div style="font-family:Bebas Neue,sans-serif;font-size:1rem;letter-spacing:.08em;color:'+(won?isl.color:'var(--text2)')+';">'+(i+1)+'모둠</div>' +'<div style="font-size:.76rem;color:var(--text3);">'+isl.name+'</div>' +'<div style="font-family:Bebas Neue,sans-serif;font-size:1.8rem;color:'+(won?isl.color:'var(--text)')+';">'+coins+'</div>' +'<div style="font-size:.7rem;color:var(--text3);">🪙 COINS</div>' +'</div>'; }).join('')} </div> <div style="font-family:Bebas Neue,sans-serif;font-size:1.1rem;color:var(--accent2);margin-bottom:.25rem;">전체 획득 코인: ${totalCoins} 🪙</div> <div style="font-size:.9rem;color:var(--accent);font-family:'Noto Sans KR',sans-serif;margin-bottom:1.25rem;"> 🏆 ${winners.length > 1 ? '공동 ' : ''}우승: ${winnerText} (${maxCoins}코인) </div> <button class="btn btn-primary" onclick="showScreen('lobby')" style="width:100%;">← 로비로 돌아가기</button> </div>`;
 }
 
 // ══ FIREBASE SYNC ══
@@ -4141,7 +4188,7 @@ const savedHints = state.hints, savedAi = state.m7ai;
 Object.assign(state, remote);
 sanitizeState();
 // remote의 다른 팀 데이터 + 내 최신 로컬 데이터를 병합
-for(const k of nestedKeys) state[k] = Object.assign({}, remote[k]||{}, savedNested[k]);
+mergeNestedKeys(nestedKeys, savedNested);
 state.hints = mergeRemoteHints(remote.hints, savedHints);
 state.m7ai = mergeRemoteHints(remote.m7ai, savedAi);
 state.currentTeam = savedTeam;
@@ -4226,14 +4273,48 @@ fbUnsubscribes.push(cmdUnsub);
 }
 
 // ── state를 Firebase에 저장 ──
+// 교사 기기는 전체 state를 저장하고, 학생 기기는 '자기 모둠 몫'만 저장한다.
+// (예전에는 학생 기기도 전체를 덮어써서, 화면이 조금 늦게 갱신된 기기가 저장하면
+//  다른 모둠이 방금 받은 아이템·코인이 사라지는 일이 있었다)
+let moonBonusUnsaved = false;  // 달 기지 보너스(모든 모둠 ±3코인)를 이 기기가 막 적용했는지
+const LOCAL_ONLY_KEYS = ['currentTeam', 'currentMission'];
+const TEAM_ARRAY_FIELDS = ['coins', 'items', 'teamMission', 'completedMission'];
+const MOON_FLAGS = ['moonAllDone', 'moonCleared', 'moonBonusGiven'];
+function buildTeamUpdate(ti) {
+  const st = JSON.parse(JSON.stringify(state));
+  const up = {};
+  const put = (path, v) => { up['state/' + path] = (v === undefined ? null : v); };
+  for(const f of TEAM_ARRAY_FIELDS) put(f + '/' + ti, (st[f] || [])[ti]);
+  if(moonBonusUnsaved) { delete up['state/coins/' + ti]; put('coins', st.coins); }
+  for(const f of TEAM_KEYED_FIELDS.concat(['missionStep'])) {
+    const obj = st[f] || {};
+    for(const k of ownedSubkeys(f, ti)) put(f + '/' + k, obj[k]);
+  }
+  for(const f of MOON_FLAGS) if(st[f]) put(f, st[f]);
+  put('globalMission', computeGlobalMission());
+  // 위 목록에 없는 새 필드는 통째로 (나중에 필드를 추가해도 저장이 빠지지 않게)
+  const known = new Set(LOCAL_ONLY_KEYS.concat(TEAM_ARRAY_FIELDS, TEAM_KEYED_FIELDS, MOON_FLAGS, ['missionStep', 'globalMission', '_lastUpdatedBy', '_updatedAt']));
+  for(const k of Object.keys(st)) if(!known.has(k)) put(k, st[k]);
+  put('_lastUpdatedBy', myRole);
+  put('_updatedAt', Date.now());
+  return up;
+}
 async function fbSaveState() {
 if(!myRoom || !window.firebaseReady) return;
 const db = window.firebaseDB;
-const saveData = JSON.parse(JSON.stringify(state));
-saveData._lastUpdatedBy = myRole;
-saveData._updatedAt = Date.now();
+const roomRef = window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom);
+const teamNum = ROLE_TO_TEAM[myRole];
 try {
-await window.firebaseUpdate(window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom), { state: saveData });
+  if(teamNum) {
+    const up = buildTeamUpdate(teamNum - 1);
+    moonBonusUnsaved = false;
+    await window.firebaseUpdate(roomRef, up);
+  } else {
+    const saveData = JSON.parse(JSON.stringify(state));
+    saveData._lastUpdatedBy = myRole;
+    saveData._updatedAt = Date.now();
+    await window.firebaseUpdate(roomRef, { state: saveData });
+  }
 } catch(e) { console.warn('Firebase save failed:', e); }
 }
 
@@ -4390,8 +4471,8 @@ const statusText = fullyDone ? '✅ 완료' : waiting ? '⏸️ 대기중' : '�
 const role = TEAM_TO_ROLE[i];
 const isConnected = !!(connectedRoles && connectedRoles[role]);
 const connBadge = isConnected
-  ? '<span style="background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.45);border-radius:10px;padding:.15rem .5rem;font-size:.65rem;color:#22c55e;white-space:nowrap;">🟢 접속중</span>'
-  : '<span style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.15rem .5rem;font-size:.65rem;color:var(--text3);white-space:nowrap;">⚫ 미접속</span>';
+  ? '<span style="background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.45);border-radius:10px;padding:.15rem .5rem;font-size:.76rem;color:#22c55e;white-space:nowrap;">🟢 접속중</span>'
+  : '<span style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.15rem .5rem;font-size:.76rem;color:var(--text3);white-space:nowrap;">⚫ 미접속</span>';
 
 // ── 진행률 계산 (전체 8미션 × 3스텝 = 24단위) ──
 const totalUnits = 8 * 3;
@@ -4413,7 +4494,7 @@ const pips = Array.from({length:8}, (_,m) => {
 }).join('');
 
 const stepLabel = info.step
-  ? `<span style="font-size:.58rem;color:var(--text3);margin-left:.3rem;">STEP ${info.step}/3 · ${info.label}</span>`
+  ? `<span style="font-size:.68rem;color:var(--text3);margin-left:.3rem;">STEP ${info.step}/3 · ${info.label}</span>`
   : '';
 
 return `
@@ -4422,25 +4503,25 @@ return `
   <!-- 헤더 줄 1: 섬 이름 + 접속 배지 -->
   <div style="display:flex;align-items:center;gap:.4rem;">
     <span style="font-size:1.4rem;">${isl.emoji}</span>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:.88rem;color:${isl.color};">${i+1}모둠 · ${isl.name}</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:.98rem;color:${isl.color};">${i+1}모둠 · ${isl.name}</div>
     <div style="margin-left:auto;">${connBadge}</div>
   </div>
   <!-- 헤더 줄 2: 코인 + 상태 -->
   <div style="display:flex;align-items:center;gap:.5rem;">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--accent);">${coins} 🪙</div>
-    <div title="연 힌트 수" style="font-size:.68rem;color:#facc15;">💡 ${totalHintsUsed(i)}</div>
-    <div style="font-size:.62rem;color:${statusColor};font-weight:bold;margin-left:auto;">${statusText}</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.06rem;color:var(--accent);">${coins} 🪙</div>
+    <div title="연 힌트 수" style="font-size:.8rem;color:#facc15;">💡 ${totalHintsUsed(i)}</div>
+    <div style="font-size:.72rem;color:${statusColor};font-weight:bold;margin-left:auto;">${statusText}</div>
   </div>
 
   <!-- 현재 미션 + 스텝 텍스트 -->
-  <div style="font-size:.68rem;color:var(--text2);">
+  <div style="font-size:.8rem;color:var(--text2);">
     미션 ${mission} · <span style="color:${isl.color};font-weight:bold;">${info.mission}</span>${stepLabel}
   </div>
 
   <!-- 8개 미션 도트 + 진행률 % -->
   <div style="display:flex;align-items:center;gap:.5rem;">
     <div style="display:flex;gap:3px;align-items:center;">${pips}</div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:.85rem;color:var(--text2);margin-left:auto;">${pct}%</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:.96rem;color:var(--text2);margin-left:auto;">${pct}%</div>
   </div>
 
   <!-- 진행률 바 (초록=완료, 주황=현재 스텝) -->
@@ -4449,19 +4530,19 @@ return `
     <div style="position:absolute;left:${greenW}%;top:0;height:100%;width:${orangeW}%;background:${isl.color};"></div>
     ${[1,2,3,4,5,6,7].map(m=>`<div style="position:absolute;left:${m/8*100}%;top:0;height:100%;width:1px;background:rgba(0,0,0,.35);"></div>`).join('')}
   </div>
-  <div style="display:flex;justify-content:space-between;font-size:.5rem;color:var(--text3);">
+  <div style="display:flex;justify-content:space-between;font-size:.6rem;color:var(--text3);">
     ${['위치','거주','식량','동료','달','위기','신호','탈출'].map((n,m)=>`<span>${n}</span>`).join('')}
   </div>
 
   <!-- 버튼: 화면 보기 + 스킵 -->
   <div style="display:flex;gap:.35rem;margin-top:.1rem;">
     <button onclick="tdViewTeam(${i})"
-      style="flex:1;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);border-radius:4px;padding:.3rem;font-size:.65rem;color:var(--accent2);cursor:pointer;">📺 화면 보기</button>
-    <select id="tdSkipSel-${i}" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem;font-size:.65rem;color:var(--text);">
+      style="flex:1;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);border-radius:4px;padding:.3rem;font-size:.76rem;color:var(--accent2);cursor:pointer;">📺 화면 보기</button>
+    <select id="tdSkipSel-${i}" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem;font-size:.76rem;color:var(--text);">
       ${[1,2,3,4,5,6,7,8].map(m=>`<option value="${m}"${state.teamMission[i]===m?' selected':''}>미션${m}</option>`).join('')}
     </select>
     <button onclick="tdSkipTeam(${i})"
-      style="background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.25);border-radius:4px;padding:.3rem .5rem;font-size:.65rem;color:var(--accent);cursor:pointer;">⏭ 스킵</button>
+      style="background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.25);border-radius:4px;padding:.3rem .5rem;font-size:.76rem;color:var(--accent);cursor:pointer;">⏭ 스킵</button>
   </div>
 
 </div>`;
@@ -4481,7 +4562,7 @@ if(document.getElementById('teacherBackBtn')) return;
 const btn = document.createElement('button');
 btn.id = 'teacherBackBtn';
 btn.textContent = '📊 대시보드';
-btn.style.cssText = 'position:fixed;top:.5rem;left:50%;transform:translateX(-50%);z-index:300;background:var(--accent);color:#fff;border:none;border-radius:20px;padding:.35rem 1rem;font-size:.72rem;cursor:pointer;font-family:"Space Mono",monospace;box-shadow:0 2px 8px rgba(249,115,22,.4);';
+btn.style.cssText = 'position:fixed;top:.5rem;left:50%;transform:translateX(-50%);z-index:300;background:var(--accent);color:#fff;border:none;border-radius:20px;padding:.35rem 1rem;font-size:.84rem;cursor:pointer;font-family:"Space Mono",monospace;box-shadow:0 2px 8px rgba(249,115,22,.4);';
 btn.onclick = showTeacherDashboard;
 document.body.appendChild(btn);
 }
@@ -4528,42 +4609,42 @@ div.id = 'teacherPanel';
 div.style.cssText = 'position:fixed;bottom:1rem;right:1rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;z-index:200;width:380px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.5);';
 div.innerHTML = `
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.1em;color:var(--accent);">👩‍🏫 교사 제어 패널</div>
-    <button onclick="document.getElementById('teacherPanel').style.display='none'" style="background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:1rem;line-height:1;">✕</button>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.06rem;letter-spacing:.1em;color:var(--accent);">👩‍🏫 교사 제어 패널</div>
+    <button onclick="document.getElementById('teacherPanel').style.display='none'" style="background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:1.06rem;line-height:1;">✕</button>
   </div>
 
-  <div style="font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem;">📊 실시간 모둠 현황</div>
+  <div style="font-size:.76rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem;">📊 실시간 모둠 현황</div>
   <div id="teacherMonitor" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem;margin-bottom:.75rem;"></div>
 
-  <div style="font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem;">🚀 전체 모둠 강제 이동</div>
+  <div style="font-size:.76rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem;">🚀 전체 모둠 강제 이동</div>
   <div style="display:flex;gap:.4rem;margin-bottom:.75rem;align-items:center;">
-    <select id="forceAllSelect" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.35rem;font-size:.72rem;color:var(--text);">
+    <select id="forceAllSelect" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.35rem;font-size:.84rem;color:var(--text);">
       ${[1,2,3,4,5,6,7,8].map(m=>`<option value="${m}">미션 ${m}</option>`).join('')}
     </select>
     <button onclick="teacherForceAll(parseInt(document.getElementById('forceAllSelect').value))"
-      style="background:var(--accent);border:none;border-radius:4px;padding:.35rem .85rem;font-size:.72rem;color:#fff;cursor:pointer;white-space:nowrap;">
+      style="background:var(--accent);border:none;border-radius:4px;padding:.35rem .85rem;font-size:.84rem;color:#fff;cursor:pointer;white-space:nowrap;">
       전체 이동 →
     </button>
   </div>
 
-  <div style="font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem;">팀별 미션 스킵</div>
+  <div style="font-size:.76rem;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.4rem;">팀별 미션 스킵</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:.35rem;margin-bottom:.35rem;">
     ${TEAM_TO_ROLE.map((role,i)=>`
-    <select id="skipSelect-${i}" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem;font-size:.7rem;color:var(--text);">
+    <select id="skipSelect-${i}" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem;font-size:.82rem;color:var(--text);">
       ${[1,2,3,4,5,6,7,8].map(m=>`<option value="${m}" ${state.teamMission[i]===m?'selected':''}>미션${m}</option>`).join('')}
     </select>`).join('')}
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:.35rem;margin-bottom:.75rem;">
     ${TEAM_TO_ROLE.map((role,i)=>`
     <button onclick="teacherSkip(${i})"
-      style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.68rem;color:var(--text2);cursor:pointer;">
+      style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.8rem;color:var(--text2);cursor:pointer;">
       ${ISLANDS[i].emoji} ${i+1}모둠 스킵
     </button>`).join('')}
   </div>
 
   <div style="display:flex;gap:.4rem;">
-    <button onclick="teacherSyncNow()" style="flex:1;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);border-radius:4px;padding:.4rem;font-size:.7rem;color:var(--accent2);cursor:pointer;">🔄 동기화</button>
-    <button onclick="teacherResetRoom()" style="flex:1;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:4px;padding:.4rem;font-size:.7rem;color:var(--danger);cursor:pointer;">🗑️ 방 초기화</button>
+    <button onclick="teacherSyncNow()" style="flex:1;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);border-radius:4px;padding:.4rem;font-size:.82rem;color:var(--accent2);cursor:pointer;">🔄 동기화</button>
+    <button onclick="teacherResetRoom()" style="flex:1;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:4px;padding:.4rem;font-size:.82rem;color:var(--danger);cursor:pointer;">🗑️ 방 초기화</button>
   </div>`;
 document.body.appendChild(div);
 updateTeacherMonitor();
@@ -4583,10 +4664,10 @@ panel.innerHTML = ISLANDS.map((isl, i) => {
   return `
     <div style="background:var(--bg);border:2px solid ${fullyDone?isl.color:'rgba(255,255,255,.08)'};border-radius:6px;padding:.5rem;text-align:center;">
       <div style="font-size:1.1rem;">${isl.emoji}</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:.78rem;color:${isl.color};">${i+1}모둠</div>
-      <div style="font-size:.58rem;color:var(--text3);margin:.1rem 0;">${MN[mission]||'?'}</div>
-      <div style="font-size:.65rem;color:var(--accent);">🪙 ${coins}</div>
-      <div style="font-size:.58rem;color:${fullyDone?'var(--success)':isWaiting?'var(--accent)':'var(--accent2)'};margin-top:.1rem;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:${isl.color};">${i+1}모둠</div>
+      <div style="font-size:.68rem;color:var(--text3);margin:.1rem 0;">${MN[mission]||'?'}</div>
+      <div style="font-size:.76rem;color:var(--accent);">🪙 ${coins}</div>
+      <div style="font-size:.68rem;color:${fullyDone?'var(--success)':isWaiting?'var(--accent)':'var(--accent2)'};margin-top:.1rem;">
         ${fullyDone?'✅ 완료':isWaiting?'⏸️ 대기':'⏳ 진행중'}
       </div>
     </div>`;
@@ -4797,29 +4878,29 @@ function showM7Review() {
     const breakdown = result ? (result.breakdown || []) : [];
 
     const gradeHtml = grade
-      ? `<span style="background:${GRADE_COLOR[grade]}22;border:1px solid ${GRADE_COLOR[grade]}66;border-radius:10px;padding:.15rem .6rem;font-size:.68rem;color:${GRADE_COLOR[grade]};white-space:nowrap;">${GRADE_LABEL[grade]||grade}</span>`
-      : '<span style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.15rem .6rem;font-size:.68rem;color:var(--text3);">미채점</span>';
+      ? `<span style="background:${GRADE_COLOR[grade]}22;border:1px solid ${GRADE_COLOR[grade]}66;border-radius:10px;padding:.15rem .6rem;font-size:.8rem;color:${GRADE_COLOR[grade]};white-space:nowrap;">${GRADE_LABEL[grade]||grade}</span>`
+      : '<span style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.15rem .6rem;font-size:.8rem;color:var(--text3);">미채점</span>';
 
     const coinsHtml = coins != null
-      ? `<span style="font-size:.68rem;color:#fbbf24;">🪙 ${coins}코인</span>`
+      ? `<span style="font-size:.8rem;color:#fbbf24;">🪙 ${coins}코인</span>`
       : '';
 
     const textHtml = text
-      ? `<div style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;padding:.75rem;font-size:.78rem;color:var(--text);line-height:1.8;white-space:pre-wrap;font-family:'Noto Sans KR',sans-serif;max-height:160px;overflow-y:auto;">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`
-      : '<div style="background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.1);border-radius:6px;padding:.75rem;font-size:.78rem;color:var(--text3);text-align:center;">미제출</div>';
+      ? `<div style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;padding:.75rem;font-size:.9rem;color:var(--text);line-height:1.8;white-space:pre-wrap;font-family:'Noto Sans KR',sans-serif;max-height:160px;overflow-y:auto;">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`
+      : '<div style="background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.1);border-radius:6px;padding:.75rem;font-size:.9rem;color:var(--text3);text-align:center;">미제출</div>';
 
     const breakdownHtml = breakdown.length
-      ? `<div style="font-size:.65rem;color:var(--text3);margin-top:.4rem;line-height:1.6;">${breakdown.map(b=>String(b).replace(/</g,'&lt;').replace(/>/g,'&gt;')).join(' · ')}</div>`
+      ? `<div style="font-size:.76rem;color:var(--text3);margin-top:.4rem;line-height:1.6;">${breakdown.map(b=>String(b).replace(/</g,'&lt;').replace(/>/g,'&gt;')).join(' · ')}</div>`
       : '';
 
     return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.85rem;display:flex;flex-direction:column;gap:.5rem;">
       <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;">
-        <span style="font-size:1rem;">${isl.emoji}</span>
-        <span style="font-family:'Bebas Neue',sans-serif;font-size:.95rem;letter-spacing:.05em;color:${isl.color};">${isl.name}</span>
+        <span style="font-size:1.06rem;">${isl.emoji}</span>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:1.04rem;letter-spacing:.05em;color:${isl.color};">${isl.name}</span>
         ${gradeHtml}
         ${coinsHtml}
       </div>
-      <div style="font-size:.65rem;color:var(--text3);">필수: <span style="color:var(--text2);">${m7d.keyKr}</span> (${m7d.warning})${(state.m7ai && state.m7ai[ti] && state.m7ai[ti].count) ? ' · 🤖 AI 피드백 '+state.m7ai[ti].count+'회' : ''}</div>
+      <div style="font-size:.76rem;color:var(--text3);">필수: <span style="color:var(--text2);">${m7d.keyKr}</span> (${m7d.warning})${(state.m7ai && state.m7ai[ti] && state.m7ai[ti].count) ? ' · 🤖 AI 피드백 '+state.m7ai[ti].count+'회' : ''}</div>
       ${textHtml}
       ${breakdownHtml}
     </div>`;
@@ -4828,8 +4909,8 @@ function showM7Review() {
   ov.innerHTML = `
     <div style="display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;">
       <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.1em;color:#a855f7;">📝 미션 8 · 탈출 안내문 (모둠별 응답)</div>
-      <div style="flex:1;font-size:.68rem;color:var(--text3);">실시간 반영 — 채점 후 결과 포함</div>
-      <button onclick="document.getElementById('m7ReviewOverlay').remove()" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);border-radius:4px;padding:.3rem .8rem;font-size:.72rem;color:var(--danger);cursor:pointer;">✕ 닫기</button>
+      <div style="flex:1;font-size:.8rem;color:var(--text3);">실시간 반영 — 채점 후 결과 포함</div>
+      <button onclick="document.getElementById('m7ReviewOverlay').remove()" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);border-radius:4px;padding:.3rem .8rem;font-size:.84rem;color:var(--danger);cursor:pointer;">✕ 닫기</button>
     </div>
     <div style="flex:1;overflow-y:auto;padding:1rem;">
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;">${cards}</div>
