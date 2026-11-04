@@ -555,7 +555,7 @@ window.dispatchEvent(new Event('firebaseReady'));
   </div>
 </div>
 
-<!-- 교사 접속 (URL에 ?teacher 가 있을 때만 표시, 교사 비밀번호 필요) -->
+<!-- 교사 접속 (URL에 ?teacher=sos2024 있을 때만 표시) -->
 <div id="teacherLoginBox" style="display:none;background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:8px;padding:1rem;margin-bottom:1rem;text-align:left;">
   <div style="font-size:.68rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">👩‍🏫 교사 접속</div>
   <button onclick="selectRole('teacher')" id="roleBtn-teacher" class="role-btn" style="width:100%;padding:.75rem;font-size:.9rem;">
@@ -563,14 +563,6 @@ window.dispatchEvent(new Event('firebaseReady'));
   </button>
 </div>
 
-<!-- 비밀번호 (학생: 입장 비밀번호, 교사: 교사 비밀번호) -->
-<div id="pwBox" style="margin-bottom:.75rem;text-align:left;">
-  <label for="loginPw" id="pwLabel" style="display:block;font-size:.68rem;color:var(--text3);letter-spacing:.08em;margin-bottom:.35rem;font-family:'Noto Sans KR',sans-serif;">🔒 입장 비밀번호</label>
-  <input id="loginPw" type="password" autocomplete="off" autocapitalize="off" spellcheck="false"
-    oninput="updateLoginBtn()" onkeydown="if(event.key==='Enter') doLogin()"
-    placeholder="선생님께 받은 비밀번호"
-    style="width:100%;box-sizing:border-box;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.7rem .8rem;font-size:1rem;color:var(--text);outline:none;">
-</div>
 <div id="loginStatus" style="font-size:.75rem;color:var(--text3);margin-bottom:1rem;font-family:'Noto Sans KR',sans-serif;min-height:1.2rem;"></div>
 <button id="loginBtn" onclick="doLogin()"
   style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:.9rem;
@@ -595,7 +587,7 @@ window.dispatchEvent(new Event('firebaseReady'));
     <div class="main-sub">의문사 + to부정사로 살아남아라</div>
     <div class="main-desc">AI 기기 하나만 들고 낯선 섬에 조난당했다.<br>올바른 영어로 질문해야만 살아남을 수 있다.</div>
     <button class="btn btn-primary" onclick="showScreen('lobby')">▶ START MISSION</button>
-    <div data-teacher-only><button class="btn-secondary" onclick="showScreen('mission');initMission(1,1)">바로 미션 1 시작 (테스트)</button></div>
+    <div><button class="btn-secondary" onclick="showScreen('mission');initMission(1,1)">바로 미션 1 시작 (테스트)</button></div>
     <div class="stat-row">
       <div class="stat"><div class="stat-num">6</div><div class="stat-label">Islands</div></div>
       <div class="stat"><div class="stat-num">7</div><div class="stat-label">Missions</div></div>
@@ -1276,11 +1268,10 @@ async function callAI(payload, timeoutMs) {
     const res = await fetch(AI_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(Object.assign({ key: ROOM_KEY }, payload)),
+      body: JSON.stringify(payload),
       signal: ctrl.signal,
     });
     const data = await res.json();
-    if(data && data.code === 'auth') clearAuth();
     if(!data || !data.ok) throw new Error((data && data.error) || 'AI 응답 오류');
     return data;
   } catch(e) {
@@ -1376,7 +1367,7 @@ async function m7RequestAI(ti) {
 
 // ══ 응답 기록 ══
 // 학생이 시도할 때마다 한 줄씩 쌓는다 (덮어쓰지 않음, 오답 포함). 모둠 단위만, 이름 없음.
-// 저장 위치: Firebase grammar-sos/s/(반 키)/rooms/room(반)/log/(기록 키)
+// 저장 위치: Firebase grammar-sos/rooms/room(반)/log/(기록 키)
 // 교사 화면의 📋 응답 기록에서 모아 보고, CSV로 내려받을 수 있다. 방 초기화 때 함께 지워진다.
 let roomLog = {};      // 키 → 기록 (교사는 반 전체, 학생 기기는 자기가 남긴 것)
 let logSeq = 0;
@@ -1400,7 +1391,7 @@ function logResponse(ti, m, item, answer, ok, note) {
     const key = e.t.toString(36) + '-' + (e.by || 'x') + '-' + (++logSeq);
     roomLog[key] = e;
     if(fbOnline && myRoom && window.firebaseSet) {
-      window.firebaseSet(window.firebaseRef(window.firebaseDB, roomBase()+'/log/'+key), e)
+      window.firebaseSet(window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom+'/log/'+key), e)
         .catch(err => console.warn('log save failed', err));
     }
     if(document.getElementById('logOverlay')) renderLogOverlay();
@@ -1672,7 +1663,7 @@ function showWaitingForTeams(ti, toMission) {
 async function inAppRefresh() {
   if(!window.firebaseReady || !window.firebaseDB) { location.reload(); return; }
   try {
-    const snap = await window.firebaseGet(window.firebaseRef(window.firebaseDB, roomBase()+'/state'));
+    const snap = await window.firebaseGet(window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom+'/state'));
     if(!snap.exists()) return;
     const remote = snap.val();
     const savedTeam = state.currentTeam;
@@ -4027,41 +4018,6 @@ let connectedRoles = {};  // tracks who is currently connected
 let fbUnsubscribes = [];
 
 const ROLE_TO_TEAM = { volcano:1, arctic:2, jungle:3, desert:4, ocean:5, dino:6 };
-
-// ── 접속 보호 ──
-// 비밀번호는 게임 코드(공개 저장소)에 없고 Apps Script에만 있다. 맞으면 서버가 '반 키'를 준다.
-// 반 데이터는 Firebase grammar-sos/s/(반 키)/ 아래에만 있어서, 키가 없으면 찾을 수도 쓸 수도 없다.
-// 이 탭에서 한 번 로그인하면 sessionStorage에 키를 기억한다 (탭을 닫으면 사라짐).
-let ROOM_KEY = '';
-const AUTH_STORE = 'gsos_auth_v1';
-function roomBase() { return 'grammar-sos/s/' + ROOM_KEY + '/rooms/room' + myRoom; }
-function loadAuth() {
-  try { const a = JSON.parse(sessionStorage.getItem(AUTH_STORE) || 'null'); return a && typeof a.key === 'string' && a.key.length >= 24 ? a : null; }
-  catch(e) { return null; }
-}
-function saveAuth(a) { try { sessionStorage.setItem(AUTH_STORE, JSON.stringify(a)); } catch(e) {} }
-function clearAuth() { try { sessionStorage.removeItem(AUTH_STORE); } catch(e) {} ROOM_KEY = ''; }
-// 이 역할로 들어갈 수 있는 저장된 키가 있는지 (교사는 교사 비밀번호로 받은 키만)
-function storedAuthFor(role) {
-  const a = loadAuth();
-  if(!a) return null;
-  return (role === 'teacher' && !a.teacher) ? null : a;
-}
-async function verifyPassword(role, password) {
-  if(!AI_ENDPOINT) throw new Error('서버 주소가 설정되지 않았어요.');
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 20000);
-  try {
-    const res = await fetch(AI_ENDPOINT, {
-      method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'login', role: role === 'teacher' ? 'teacher' : 'student', password }),
-      signal: ctrl.signal,
-    });
-    return await res.json();
-  } catch(e) {
-    throw new Error(e.name === 'AbortError' ? '서버 응답이 늦어요. 다시 눌러 주세요.' : '서버에 연결하지 못했어요. 인터넷을 확인해 주세요.');
-  } finally { clearTimeout(timer); }
-}
 const TEAM_TO_ROLE = ['volcano','arctic','jungle','desert','ocean','dino'];
 
 // ── 로그인 UI ──
@@ -4087,18 +4043,13 @@ updateLoginBtn();
 function updateLoginBtn() {
 const btn = document.getElementById('loginBtn');
 const status = document.getElementById('loginStatus');
-const pwBox = document.getElementById('pwBox'), pwLabel = document.getElementById('pwLabel'), pwInput = document.getElementById('loginPw');
-const remembered = myRole ? storedAuthFor(myRole) : loadAuth();
-if(pwBox) pwBox.style.display = remembered ? 'none' : 'block';
-if(pwLabel) pwLabel.textContent = myRole === 'teacher' ? '🔒 교사 비밀번호' : '🔒 입장 비밀번호';
-const hasPw = !!remembered || !!(pwInput && pwInput.value.trim());
-if(myRoom && myRole && hasPw) {
+if(myRoom && myRole) {
 btn.style.opacity='1'; btn.style.pointerEvents='auto';
 status.textContent = myRoom+'반 · '+(myRole==='teacher'?'👩‍🏫 교사':'학생 ('+myRole+' 섬)');
 status.style.color = 'var(--accent2)';
 } else {
 btn.style.opacity='0.4'; btn.style.pointerEvents='none';
-status.textContent = (myRoom && myRole) ? '비밀번호를 입력하세요' : '방 번호와 역할을 모두 선택하세요';
+status.textContent = '방 번호와 역할을 모두 선택하세요';
 status.style.color = 'var(--text3)';
 }
 }
@@ -4106,27 +4057,7 @@ status.style.color = 'var(--text3)';
 async function doLogin() {
 if(!myRoom || !myRole) return;
 const status = document.getElementById('loginStatus');
-// 비밀번호 확인 → 반 키 받기
-let auth = storedAuthFor(myRole);
-if(!auth) {
-  const pwInput = document.getElementById('loginPw');
-  const pw = pwInput ? pwInput.value.trim() : '';
-  if(!pw) { status.textContent = '비밀번호를 입력하세요'; status.style.color = 'var(--danger)'; return; }
-  status.textContent = '🔄 비밀번호 확인 중…'; status.style.color = 'var(--accent2)';
-  let r;
-  try { r = await verifyPassword(myRole, pw); }
-  catch(e) { status.textContent = '⚠️ ' + e.message; status.style.color = 'var(--danger)'; return; }
-  if(!r || !r.ok || !r.key) {
-    status.textContent = '❌ ' + ((r && r.error) || '비밀번호가 맞지 않아요.'); status.style.color = 'var(--danger)';
-    if(pwInput) { pwInput.value = ''; pwInput.focus(); }
-    return;
-  }
-  auth = { key: r.key, teacher: !!r.teacher };
-  saveAuth(auth);
-  if(pwInput) pwInput.value = '';
-}
-ROOM_KEY = auth.key;
-status.textContent = '🔄 연결 중…'; status.style.color = 'var(--accent2)';
+status.textContent = '🔄 연결 중…';
 
 // Firebase 준비 대기 (최대 3초)
 if(!window.firebaseReady) {
@@ -4156,7 +4087,7 @@ initMission(teamNum, state.teamMission[teamNum-1] || 1);
 if(window.firebaseReady && window.firebaseDB) {
 try {
 const db = window.firebaseDB;
-const roomRef = window.firebaseRef(db, roomBase());
+const roomRef = window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom);
 const snap = await window.firebaseGet(roomRef);
 if(!snap.exists()) {
 await window.firebaseSet(roomRef, {
@@ -4171,7 +4102,7 @@ if(remoteState) { Object.assign(state, remoteState); sanitizeState(); }
 if(snap.val().grammarSet) receiveRoomGrammarSet(snap.val().grammarSet);
 }
 await window.firebaseUpdate(
-window.firebaseRef(db, roomBase()+'/connectedRoles'),
+window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom+'/connectedRoles'),
 {[myRole]: true}
 );
 fbSubscribe();
@@ -4193,7 +4124,7 @@ function fbSubscribe() {
 const db = window.firebaseDB;
 // state 변경 감지
 const unsub = window.firebaseOnValue(
-window.firebaseRef(db, roomBase()+'/state'),
+window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom+'/state'),
 (snap) => {
 if(!snap.exists()) return;
 const remote = snap.val();
@@ -4226,7 +4157,7 @@ fbUnsubscribes.push(unsub);
 
 // 문법 세트 변경 감지 (교사가 바꾸면 모든 기기에 바로 반영)
 const grammarUnsub = window.firebaseOnValue(
-  window.firebaseRef(db, roomBase()+'/grammarSet'),
+  window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom+'/grammarSet'),
   (snap) => {
     const changed = receiveRoomGrammarSet(snap.exists() ? snap.val() : null);
     if(!changed) return;
@@ -4250,7 +4181,7 @@ fbUnsubscribes.push(grammarUnsub);
 if(myRole === 'teacher') {
   let logRenderTimer = null;
   const logUnsub = window.firebaseOnValue(
-    window.firebaseRef(db, roomBase()+'/log'),
+    window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom+'/log'),
     (snap) => {
       roomLog = snap.exists() ? (snap.val() || {}) : {};
       clearTimeout(logRenderTimer);
@@ -4267,7 +4198,7 @@ if(myRole === 'teacher') {
 // 접속자 변경 감지 (교사용)
 if(myRole === 'teacher') {
 const rolesUnsub = window.firebaseOnValue(
-  window.firebaseRef(db, roomBase()+'/connectedRoles'),
+  window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom+'/connectedRoles'),
   (snap) => {
     connectedRoles = snap.exists() ? snap.val() : {};
     updateTeacherDashboard();
@@ -4280,7 +4211,7 @@ fbUnsubscribes.push(rolesUnsub);
 // 교사 명령 감지 (학생용)
 if(myRole !== 'teacher') {
 const cmdUnsub = window.firebaseOnValue(
-window.firebaseRef(db, roomBase()+'/teacherCmd'),
+window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom+'/teacherCmd'),
 (snap) => {
 if(!snap.exists()) return;
 const cmd = snap.val();
@@ -4302,7 +4233,7 @@ const saveData = JSON.parse(JSON.stringify(state));
 saveData._lastUpdatedBy = myRole;
 saveData._updatedAt = Date.now();
 try {
-await window.firebaseUpdate(window.firebaseRef(db, roomBase()), { state: saveData });
+await window.firebaseUpdate(window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom), { state: saveData });
 } catch(e) { console.warn('Firebase save failed:', e); }
 }
 
@@ -4428,7 +4359,7 @@ async function tdApplyGrammar() {
   applyGrammarSet(toSave);
   renderGrammarSelector();
   if(window.firebaseReady && myRoom) {
-    await window.firebaseSet(window.firebaseRef(window.firebaseDB, roomBase()+'/grammarSet'), toSave);
+    await window.firebaseSet(window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom+'/grammarSet'), toSave);
     await fbSaveState();
   }
 }
@@ -4578,7 +4509,7 @@ checkGlobalGate(); // 이 모둠만 이동, 전체 잠금은 가장 느린 모�
 await fbSaveState();
 if(window.firebaseReady) {
   await window.firebaseSet(
-    window.firebaseRef(window.firebaseDB, roomBase()+'/teacherCmd'),
+    window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom+'/teacherCmd'),
     { type:'skipMission', missionId, target:role, ts:Date.now(), processed:false }
   );
 }
@@ -4677,7 +4608,7 @@ state.m7result = {};
 await fbSaveState();
 if(window.firebaseReady) {
   await window.firebaseSet(
-    window.firebaseRef(window.firebaseDB, roomBase()+'/teacherCmd'),
+    window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom+'/teacherCmd'),
     { type:'forceAllMission', missionId, target:'all', ts:Date.now(), processed:false }
   );
 }
@@ -4702,7 +4633,7 @@ await fbSaveState();
 // 해당 팀에게 명령 전송
 if(window.firebaseReady) {
 await window.firebaseSet(
-window.firebaseRef(window.firebaseDB, roomBase()+'/teacherCmd'),
+window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom+'/teacherCmd'),
 { type:'skipMission', target:role, missionId, ts:Date.now(), processed:false }
 );
 }
@@ -4722,11 +4653,11 @@ if(!confirm('방 데이터를 초기화할까요? 모든 진행 상황과 응답
 if(window.firebaseReady) {
   // 학생 탭에 먼저 리로드 명령 전송 후 방 삭제
   await window.firebaseSet(
-    window.firebaseRef(window.firebaseDB, roomBase()+'/teacherCmd'),
+    window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom+'/teacherCmd'),
     { type:'resetRoom', target:'all', ts:Date.now(), processed:false }
   );
   await new Promise(r => setTimeout(r, 1200));
-  await window.firebaseRemove(window.firebaseRef(window.firebaseDB, roomBase()));
+  await window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom));
 }
 location.reload();
 }
@@ -4930,14 +4861,10 @@ document.body.appendChild(btn);
 // URL에 ?teacher=sos2024 있으면 교사 로그인 버튼 표시
 (function() {
 const params = new URLSearchParams(window.location.search);
-if(params.has('teacher')) {
+if(params.get('teacher') === 'sos2024') {
 const box = document.getElementById('teacherLoginBox');
 if(box) box.style.display = 'block';
-} else {
-// 로그인 없이 바로 미션을 여는 테스트 버튼은 교사 링크에서만 보인다
-document.querySelectorAll('[data-teacher-only]').forEach(el => { el.style.display = 'none'; });
 }
-updateLoginBtn();
 })();
 renderFloatBg();
 document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));

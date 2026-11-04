@@ -12,14 +12,6 @@
  *   OPENAI_API_KEY / OPENAI_MODEL  (openai로 바꿀 때만)
  *   DAILY_LIMIT      (선택) 하루 최대 요청 수, 기본 150 (6모둠×2회×4개 반 ≈ 48)
  *   MINUTE_LIMIT     (선택) 1분 최대 요청 수, 기본 10 (무료 등급 한도 보호)
- *   STUDENT_PASSWORD (필수) 학생 입장 비밀번호
- *   TEACHER_PASSWORD (필수) 교사 비밀번호 (학생 비밀번호와 다르게)
- *   ROOM_SECRET      (자동) 첫 로그인 때 자동으로 만들어짐. 지우면 새 키가 생기고 이전 반 데이터는 열 수 없게 됨
- *
- * ── 접속 보호 ──
- *   비밀번호가 맞으면 ROOM_SECRET(긴 무작위 키)을 돌려준다. 게임 데이터는 Firebase의
- *   grammar-sos/s/(키)/ 아래에만 저장되므로, 비밀번호를 모르면 데이터 위치를 알 수 없다.
- *   AI 피드백 요청도 이 키가 있어야 받는다 (링크만 아는 사람이 AI 사용량을 쓰지 못하게).
  *
  * ── 처음 설정할 때 편집기에서 한 번씩 실행해 볼 함수 ──
  *   testFeedback()   예시 작문으로 피드백이 오는지 확인 (실행 로그에 결과가 나옴)
@@ -40,13 +32,9 @@ function doPost(e) {
   try {
     var body = JSON.parse((e && e.postData && e.postData.contents) || '{}');
     if (body.action === 'ping') return json_({ ok: true });
-    if (body.action === 'login') return json_(login_(body));
-    if (body.action === 'feedback') {
-      if (!validKey_(body.key)) return json_({ ok: false, code: 'auth', error: '접속 정보가 맞지 않아요. 게임에 다시 로그인해 주세요.' });
-      var limit = checkRateLimit_();
-      if (limit) return json_({ ok: false, error: limit });
-      return json_(writingFeedback_(body));
-    }
+    var limit = checkRateLimit_();
+    if (limit) return json_({ ok: false, error: limit });
+    if (body.action === 'feedback') return json_(writingFeedback_(body));
     return json_({ ok: false, error: '알 수 없는 요청이에요.' });
   } catch (err) {
     console.error(err);
@@ -56,51 +44,6 @@ function doPost(e) {
 
 function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
-}
-
-// ═══════════════ 접속 보호 (비밀번호 → 반 키) ═══════════════
-
-var MAX_LOGIN_FAILS_PER_MIN = 20;
-
-// 반 데이터 위치를 정하는 비밀 키. 없으면 만든다 (create=true일 때만).
-function getRoomSecret_(create) {
-  var props = PropertiesService.getScriptProperties();
-  var s = props.getProperty('ROOM_SECRET');
-  if (s || !create) return s || '';
-  var lock = LockService.getScriptLock();
-  lock.waitLock(5000);
-  try {
-    s = props.getProperty('ROOM_SECRET');
-    if (!s) {
-      s = Utilities.getUuid().replace(/-/g, '') + Utilities.getUuid().replace(/-/g, '');
-      props.setProperty('ROOM_SECRET', s);
-    }
-    return s;
-  } finally {
-    lock.releaseLock();
-  }
-}
-
-function validKey_(key) {
-  var s = getRoomSecret_(false);
-  return !!s && typeof key === 'string' && key === s;
-}
-
-// body = { role: 'student' | 'teacher', password }
-function login_(body) {
-  var props = PropertiesService.getScriptProperties();
-  var cache = CacheService.getScriptCache();
-  var failKey = 'loginfail_' + Math.floor(Date.now() / 60000);
-  var fails = Number(cache.get(failKey) || 0);
-  if (fails >= MAX_LOGIN_FAILS_PER_MIN) return { ok: false, error: '비밀번호를 너무 많이 틀렸어요. 1분 뒤에 다시 해 주세요.' };
-  var teacher = body.role === 'teacher';
-  var expected = String(props.getProperty(teacher ? 'TEACHER_PASSWORD' : 'STUDENT_PASSWORD') || '').trim();
-  if (!expected) return { ok: false, error: (teacher ? '교사' : '학생') + ' 비밀번호가 아직 설정되지 않았어요. 선생님께 알려 주세요.' };
-  if (String(body.password || '').trim() !== expected) {
-    cache.put(failKey, String(fails + 1), 120);
-    return { ok: false, error: '비밀번호가 맞지 않아요.' };
-  }
-  return { ok: true, key: getRoomSecret_(true), teacher: teacher };
 }
 
 // ═══════════════ 미션 7 자유 작문 피드백 ═══════════════
