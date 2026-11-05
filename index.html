@@ -252,6 +252,7 @@ text-align:left;
 .ai-spin { width:.8rem; height:.8rem; border:2px solid rgba(192,132,252,.35); border-top-color:#c084fc; border-radius:50%; display:inline-block; animation:aiSpin .8s linear infinite; }
 @keyframes aiSpin { to { transform:rotate(360deg); } }
 .ai-panel { width:100%; box-sizing:border-box; background:rgba(168,85,247,.06); border:1px solid rgba(168,85,247,.25); border-radius:8px; padding:.85rem 1rem; display:flex; flex-direction:column; gap:.7rem; font-family:'Noto Sans KR',sans-serif; }
+.ai-chip.ai-spell { background:rgba(251,191,36,.10); border-color:rgba(251,191,36,.35); color:var(--text2); }
 .ai-sec-title { font-size:.82rem; color:#c084fc; letter-spacing:.05em; margin-bottom:.3rem; }
 .ai-text { font-size:.92rem; color:var(--text2); line-height:1.65; }
 .ai-chips { display:flex; flex-wrap:wrap; gap:.35rem; }
@@ -1329,12 +1330,19 @@ function m7AiFeedbackHTML(fb) {
   const fixes = (fb.fixes || []).map(f =>
     '<div class="ai-fix"><div><span class="ai-old">'+escHTML(f.original)+'</span> → <span class="ai-new">'+escHTML(f.better)+'</span></div>'
     + (f.why ? '<div class="ai-why">'+escHTML(f.why)+'</div>' : '') + '</div>').join('');
+  // 철자: 목표 문법과 별개라 점수·지적 3개와 섞지 않고 따로 짧게 보여 준다 (예전 피드백에는 없음)
+  const low = x => String(x || '').toLowerCase().trim();
+  const spell = (fb.spelling || []).filter(x => x && x.wrong && x.right && low(x.wrong) !== low(x.right));
+  const spelling = spell.length
+    ? '<div class="ai-chips">'+spell.map(x => '<span class="ai-chip ai-spell"><span class="ai-old">'+escHTML(x.wrong)+'</span> → '+escHTML(x.right)+'</span>').join('')+'</div>'
+      + '<div class="ai-why">문법과 상관없이 철자만 다시 확인해 보세요.</div>' : '';
   const rc = fb.requiredContent || {};
   const req = rc.comment ? '<div class="ai-text">'+(rc.included ? '✅ ' : '⚠️ ')+escHTML(rc.comment)+'</div>' : '';
   return '<div class="ai-panel">'
     + sec('👍', '잘한 점', fb.praise ? '<div class="ai-text">'+escHTML(fb.praise)+'</div>' : '')
     + sec('✅', '잘 쓴 '+escHTML(G.m7.target.label), found)
     + sec('✏️', '고쳐 보기', fixes)
+    + sec('🔤', '철자 확인', spelling)
     + sec('📌', '필수 내용', req)
     + sec('👉', '다음에 할 일', fb.nextStep ? '<div class="ai-text">'+escHTML(fb.nextStep)+'</div>' : '')
     + '</div>';

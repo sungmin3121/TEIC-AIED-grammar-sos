@@ -75,7 +75,8 @@ function writingFeedback_(body) {
     '- Never just say something is wrong: always show the corrected form. If a sentence is wrong in a closely related way (e.g. word order of an embedded question such as "what should we eat" -> "what we should eat" = "what to eat"), show the correct order and link it to the target grammar.',
     '- In "why", first name what is actually wrong in the ORIGINAL (the rule it breaks), then how the fix follows the rule. Do not justify a fix only as "shorter", "cooler" or "more natural".',
     '- In "better", when the original is a grammatically wrong form, give the corrected form of the student\'s own sentence first, and the target-grammar version after "=" if there is one.',
-    '- Ignore spelling and punctuation slips unless they change the meaning.',
+    '- Keep spelling slips OUT of "fixes" (fixes are for grammar and meaning). Put misspelled English words in "spelling" instead: each item is one word as the student wrote it and its correct spelling, at most 5, in the order they appear.',
+    '- "spelling" is only for clearly misspelled English words (e.g. "becuase" -> "because", "togehter" -> "together"). Do NOT list Korean words, capitalization, punctuation, spacing, word choice, or grammar (e.g. "go" -> "goes" is grammar, not spelling). If unsure, leave it out. Use [] if there are none.',
     '- List the target-grammar expressions the student used correctly, exactly as written. Never list anything that also appears in "fixes".',
     '- Praise one specific thing the student actually wrote. Never praise or mention content that is not in the text.',
     '- Give one concrete next step the team can do in under a minute.',
@@ -86,7 +87,7 @@ function writingFeedback_(body) {
     '',
     '',
     'Reply with JSON only, exactly this shape:',
-    '{"praise": string, "targetFound": [string], "fixes": [{"original": string, "better": string, "why": string}], "requiredContent": {"included": boolean, "comment": string}, "nextStep": string}'
+    '{"praise": string, "targetFound": [string], "fixes": [{"original": string, "better": string, "why": string}], "spelling": [{"wrong": string, "right": string}], "requiredContent": {"included": boolean, "comment": string}, "nextStep": string}'
   ].join('\n');
 
   var result = callAI_(system,'Student rescue guide:\n"""\n' + text + '\n"""');
@@ -104,6 +105,12 @@ function cleanFeedback_(r) {
     targetFound: (Array.isArray(r.targetFound) ? r.targetFound : []).slice(0, 10).map(function (x) { return str(x, 80); }),
     fixes: fixes.map(function (f) { f = f || {}; return { original: str(f.original, 160), better: str(f.better, 160), why: str(f.why) }; })
       .filter(function (f) { return f.original || f.better; }),
+    // 철자만 따로: 같은 단어(대소문자만 다른 것)나 한글은 버린다
+    spelling: (Array.isArray(r.spelling) ? r.spelling : []).slice(0, 5)
+      .map(function (x) { x = x || {}; return { wrong: str(x.wrong, 40).trim(), right: str(x.right, 40).trim() }; })
+      .filter(function (x) {
+        return x.wrong && x.right && x.wrong.toLowerCase() !== x.right.toLowerCase() && !/[\u3131-\uD79D]/.test(x.wrong + x.right);
+      }),
     requiredContent: {
       included: !!(r.requiredContent && r.requiredContent.included),
       comment: str(r.requiredContent && r.requiredContent.comment)
@@ -254,7 +261,7 @@ function checkRateLimit_() {
 function testFeedback() {
   var out = writingFeedback_({
     text: "Dear rescue team, We are stranded on 화산 섬. It is important to come fast. " +
-          "We don't know where to go. Please tell us what should we do. Make sure to land on the big rock.",
+          "We don't know where to go. Please tell us what should we do. Make sure to land on the big rock becuase the groud is hot.",
     grammar: { title: '의문사 + to부정사', titleEn: 'Wh-word + to-infinitive', targetLabel: '의문사+to부정사',
                patterns: ['what to', 'where to', 'how to', 'who to', 'when to'] },
     task: { island: 'volcano', keyKr: '착륙 장소', warning: '용암 때문에', hint: 'where to land safely away from lava' }
