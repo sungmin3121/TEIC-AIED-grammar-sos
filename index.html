@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOS: Secure Our Survival</title>
+<title>Grammar SOS</title>
 <script src="https://www.youtube.com/iframe_api"></script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -34,6 +34,23 @@ radial-gradient(ellipse at 80% 80%,rgba(56,189,248,.08) 0%,transparent 50%),var(
 .float-bg span { position:absolute; font-size:clamp(36px,7vw,72px); opacity:.06; animation:floatUp linear infinite; }
 @keyframes floatUp { 0%{transform:translateY(110vh) rotate(0deg)} 100%{transform:translateY(-20vh) rotate(360deg)} }
 .main-content { text-align:center; z-index:1; padding:2rem; }
+.intro { margin:-.25rem 0 1.5rem; font-family:'Noto Sans KR',sans-serif; }
+.intro-title { font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:clamp(2.4rem,11vw,3rem); line-height:1; letter-spacing:.05em; color:var(--accent); margin:0 0 .6rem; white-space:nowrap; }
+.intro-lead { font-size:.95rem; line-height:1.6; word-break:keep-all; color:var(--text2); margin:0 0 .9rem; text-wrap:balance; }
+.intro-lead strong { color:var(--text); font-weight:700; }
+.intro-chips { display:flex; flex-wrap:wrap; justify-content:center; gap:.4rem; margin-bottom:.9rem; }
+.intro-chips span { font-size:.8rem; color:var(--text2); background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:.25rem .7rem; }
+.intro-how { text-align:left; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.7rem 1rem; }
+.intro-how summary { cursor:pointer; font-size:.88rem; color:var(--accent2); list-style:none; }
+.intro-how summary::-webkit-details-marker { display:none; }
+.intro-how summary::before { content:'▸ '; }
+.intro-how[open] summary::before { content:'▾ '; }
+.intro-how ol { word-break:keep-all; margin:.6rem 0 0; padding-left:1.2rem; font-size:.86rem; line-height:1.65; color:var(--text2); }
+.intro-how li + li { margin-top:.35rem; }
+.intro-how b { color:var(--text); }
+@media (max-width:420px) { .sos-badge { letter-spacing:.15em; padding:.3rem .8rem; } }
+.intro-step { font-size:.85rem; color:var(--text3); margin-bottom:.75rem; font-family:'Noto Sans KR',sans-serif; }
+.intro-foot { word-break:keep-all; margin-top:1.25rem; font-size:.75rem; line-height:1.5; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
 .sos-badge { display:inline-block; background:var(--danger); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:1.06rem; letter-spacing:.3em; padding:.3rem 1.2rem; border-radius:2px; margin-bottom:1.5rem; animation:badgePulse 2s ease-in-out infinite; }
 @keyframes badgePulse { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)} 50%{box-shadow:0 0 0 8px rgba(239,68,68,0)} }
 .main-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem,10vw,7rem); line-height:.9; letter-spacing:.05em; margin-bottom:.5rem; }
@@ -522,8 +539,28 @@ window.dispatchEvent(new Event('firebaseReady'));
   background:radial-gradient(ellipse at 50% 0%,rgba(249,115,22,.15) 0%,transparent 60%),var(--bg);">
   <div style="text-align:center;z-index:1;padding:2rem;max-width:480px;width:100%;">
     <div class="sos-badge">🆘 SOS: SECURE OUR SURVIVAL</div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--accent);letter-spacing:.05em;margin-bottom:.25rem;">접속하기</div>
-    <div style="font-size:.88rem;color:var(--text3);margin-bottom:2rem;font-family:'Noto Sans KR',sans-serif;">방 번호와 섬을 선택하세요</div>
+
+<!-- 앱 소개 (처음 보는 사람용) -->
+<div class="intro">
+  <h1 class="intro-title">Grammar SOS</h1>
+  <p class="intro-lead">무인도에 갇힌 모둠이 <strong>목표 문법</strong>으로 살아남아 탈출하는<br>반 전체 실시간 영어 문법 게임</p>
+  <div class="intro-chips">
+    <span>👥 모둠당 기기 1대</span>
+    <span>🧭 미션 7개 · 약 25분</span>
+    <span>🔒 로그인·이름 없음</span>
+  </div>
+  <details class="intro-how">
+    <summary>어떻게 진행되나요?</summary>
+    <ol>
+      <li><b>선생님</b>이 목표 문법을 고르고 반(방)을 열어요.</li>
+      <li><b>모둠</b>은 섬을 하나 골라 접속해요. 고르기 → 배열 → 판단 → 말하기 순서로 미션을 풀며 문법을 점점 직접 써 봐요. 막히면 벌점 없는 3단계 힌트가 있어요.</li>
+      <li>마지막 미션에서는 <b>구조 요청문을 직접 써요.</b> AI가 문법 피드백을 주면 모둠이 스스로 고치고, 채점은 선생님이 해요.</li>
+      <li>선생님 화면에서 모둠별 진행, 자주 틀린 표현, 작문의 고치기 전과 후를 볼 수 있어요.</li>
+    </ol>
+  </details>
+</div>
+
+    <div class="intro-step">접속하기 · 방 번호와 섬을 고르세요</div>
 
 <!-- 방 번호 -->
 <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem;text-align:left;">
@@ -575,6 +612,7 @@ window.dispatchEvent(new Event('firebaseReady'));
   font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.1em;cursor:pointer;opacity:.4;pointer-events:none;transition:all .2s;">
   ▶ 접속하기
 </button>
+<div class="intro-foot">Grammar SOS · 2026 SNU TEIC AIED Challenge 출품작 · 학생 이름과 개인정보는 저장하지 않아요</div>
 
   </div>
 </div>
