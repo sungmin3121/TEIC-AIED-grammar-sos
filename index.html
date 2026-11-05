@@ -235,7 +235,7 @@ text-align:left;
 .choice-sub { font-size:.84rem; color:var(--text3); margin-top:.2rem; font-family:'Space Mono',monospace; }
 
 /* STEP 3: 결과 */
-.result-box { text-align:center; padding:2rem; }
+.result-box { text-align:center; padding:2rem 1.5rem; background:linear-gradient(180deg, var(--surface) 0%, rgba(22,41,58,.6) 100%); border:1px solid var(--border); border-radius:16px; max-width:640px; margin:0 auto; position:relative; }
 .result-emoji { font-size:4rem; display:block; margin-bottom:1rem; animation:popIn .4s cubic-bezier(.34,1.56,.64,1); }
 @keyframes popIn { from{transform:scale(0)} to{transform:scale(1)} }
 .result-title { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:2rem; letter-spacing:.1em; margin-bottom:.5rem; }
@@ -678,6 +678,78 @@ font-family: 'Space Mono', monospace;
 .map-ov-body .world-map { max-height:calc(100vh - 9rem); }
 .map-ov-body .wm-legend { font-size:1rem; }
 
+/* 결과 화면 (2차) */
+.result-title { font-family:var(--kr-display) !important; font-weight:400; font-size:1.9rem; letter-spacing:.02em !important; color:var(--text); }
+.result-emoji { filter:drop-shadow(0 6px 18px rgba(255,122,26,.25)); }
+.result-coin { display:inline-block; font-size:2.4rem; padding:.15rem 1.1rem; border-radius:999px; border:2px dashed currentColor; transform:rotate(-3deg); background:rgba(13,26,36,.5); }
+.result-desc { max-width:46ch; margin-left:auto; margin-right:auto; }
+.result-box > div[style*="background:var(--surface)"] { background:rgba(13,26,36,.55) !important; border:1px solid var(--border); }
+.result-box [style*="text-transform:uppercase"] { text-transform:none !important; letter-spacing:0 !important; font-size:.84rem !important; color:var(--text2) !important; }
+.result-box .btn-primary { font-size:1.15rem; padding:.75rem 1.8rem; border-radius:8px; }
+.result-box .btn-ghost { font-family:'Noto Sans KR',sans-serif; font-size:.86rem; }
+
+/* 교사 모둠 카드 (2차) */
+.tc2 { background:var(--surface); border:1px solid var(--border); border-left:4px solid var(--isl); border-radius:12px; padding:.85rem .95rem; display:flex; flex-direction:column; gap:.6rem; }
+.tc2.fin { border-color:rgba(52,211,153,.45); border-left-color:var(--success); background:linear-gradient(180deg, rgba(52,211,153,.07), var(--surface)); }
+.tc2-head { display:flex; align-items:center; gap:.5rem; }
+.tc2-isl { width:44px; height:30px; flex:0 0 auto; overflow:visible; }
+.tc2-isl path { fill:color-mix(in srgb, var(--isl) 28%, #2a3a3a); stroke:var(--sand); stroke-opacity:.45; }
+.tc2-isl text { font-size:15px; }
+.tc2-name { font-family:var(--kr-display); font-size:1.15rem; color:var(--text); }
+.tc2-name span { font-family:'Noto Sans KR',sans-serif; font-size:.82rem; color:var(--isl); margin-left:.2rem; }
+.tc2-conn { margin-left:auto; font-size:.76rem; color:var(--text3); display:inline-flex; align-items:center; gap:.3rem; white-space:nowrap; }
+.tc2-conn i { width:.5rem; height:.5rem; border-radius:50%; background:rgba(233,216,166,.25); display:inline-block; }
+.tc2.on .tc2-conn { color:var(--success); } .tc2.on .tc2-conn i { background:var(--success); box-shadow:0 0 6px var(--success); }
+.tc2-now { display:flex; align-items:flex-end; justify-content:space-between; gap:.5rem; }
+.tc2-mission { font-size:1rem; font-weight:700; color:var(--text); }
+.tc2-step { font-size:.8rem; color:var(--text2); margin-top:.1rem; }
+.tc2-pct { font-family:'Bebas Neue',sans-serif; font-size:2rem; line-height:1; color:var(--text2); }
+.tc2-pct small { font-size:1rem; margin-left:.1rem; }
+.route-strip.tc2-route { display:flex; margin:0; }
+.tc2-route .rs-dot { width:1.45rem; height:1.45rem; font-size:.72rem; }
+.tc2-route .rs-cur { width:1.75rem; height:1.75rem; }
+.tc2-stats { display:flex; flex-wrap:wrap; gap:.3rem .9rem; font-size:.82rem; color:var(--text2); }
+.tc2-stats b { color:var(--text); }
+.tc2-btns { display:flex; gap:.35rem; }
+.tc2-btns button, .tc2-btns select { border-radius:6px; padding:.35rem .5rem; font-size:.8rem; font-family:'Noto Sans KR',sans-serif; cursor:pointer; }
+.tc2-view { flex:1; background:rgba(79,209,197,.1); border:1px solid rgba(79,209,197,.3); color:var(--accent2); }
+.tc2-btns select { flex:1; background:var(--bg); border:1px solid var(--border); color:var(--text); }
+.log-draft.log-ai { border-left:3px solid #a855f7; background:rgba(168,85,247,.06); }
+.log-draft.log-ai .log-draft-text { white-space:pre-wrap; font-family:'Noto Sans KR',sans-serif; font-size:.86rem; color:var(--text2); }
+.m7r-ai summary { cursor:pointer; font-size:.8rem; color:#c4b5fd; }
+.m7r-ai .ai-panel { margin-top:.4rem; }
+/* 수업 정리 (프로젝터) */
+.wrap-overlay { position:fixed; inset:0; z-index:535; background:var(--bg); display:flex; flex-direction:column; overflow-y:auto; padding:1.25rem 2rem 1.5rem; }
+.wu-head { display:flex; align-items:center; gap:1.25rem; flex-wrap:wrap; border-bottom:1px solid var(--border); padding-bottom:.9rem; }
+.wu-head h2 { font-family:var(--kr-display); font-weight:400; font-size:2.2rem; margin:.1rem 0 0; color:var(--text); }
+.wu-kicker { font-size:.95rem; color:var(--accent2); }
+.wu-stats { display:flex; gap:1.25rem; flex-wrap:wrap; margin-left:auto; font-size:1.05rem; color:var(--text2); }
+.wu-stats b { color:var(--text); font-size:1.3rem; }
+.wu-body { display:grid; grid-template-columns:1fr 1.2fr; gap:2rem; padding:1.25rem 0; flex:1; }
+@media (max-width:900px) { .wu-body { grid-template-columns:1fr; } }
+.wu-sec h3 { font-family:var(--kr-display); font-weight:400; font-size:1.45rem; color:var(--sand); margin:0 0 .8rem; }
+.wu-sec h3.wu-sub { margin-top:1.4rem; font-size:1.2rem; }
+.wu-err { display:flex; gap:.9rem; align-items:flex-start; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:.9rem 1rem; margin-bottom:.7rem; }
+.wu-err-n { flex:0 0 auto; width:2rem; height:2rem; border-radius:50%; background:var(--accent); color:#1b0e04; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.05rem; }
+.wu-err-item { font-size:1.05rem; color:var(--text2); line-height:1.5; }
+.wu-err-fix { font-size:1.35rem; margin-top:.35rem; line-height:1.5; }
+.wu-x { color:#fca5a5; text-decoration:line-through; text-decoration-thickness:2px; }
+.wu-o { color:var(--success); font-weight:700; }
+.wu-arrow { color:var(--text3); }
+.wu-err-meta { font-size:.88rem; color:var(--text3); margin-top:.25rem; }
+.wu-quote { margin:0 0 .9rem; background:var(--surface); border-left:4px solid var(--accent2); border-radius:0 12px 12px 0; padding:1rem 1.2rem; font-size:1.35rem; line-height:1.7; color:var(--text); }
+.wu-quote mark { background:rgba(255,122,26,.22); color:#ffd2ad; border-radius:4px; padding:0 .15rem; }
+.wu-chips { display:flex; flex-wrap:wrap; gap:.5rem; }
+.wu-chip { background:rgba(79,209,197,.1); border:1px solid rgba(79,209,197,.35); border-radius:999px; padding:.3rem .9rem; font-size:1.1rem; color:var(--text); font-family:'Space Mono',monospace; }
+.wu-chip small { color:var(--accent2); font-family:'Noto Sans KR',sans-serif; }
+.wu-empty { color:var(--text3); font-size:1rem; padding:.4rem 0; }
+.wu-picker { border-top:1px solid var(--border); padding-top:.75rem; }
+.wu-picker summary { cursor:pointer; color:var(--text2); font-size:.92rem; }
+.wu-picks { display:flex; flex-direction:column; gap:.4rem; margin-top:.6rem; }
+.wu-pick { text-align:left; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.5rem .75rem; color:var(--text2); font-size:.9rem; cursor:pointer; font-family:'Noto Sans KR',sans-serif; }
+.wu-pick.on { border-color:#facc15; color:var(--text); }
+.tc2-skip { background:rgba(255,122,26,.1); border:1px solid rgba(255,122,26,.3); color:var(--accent); }
+
 /* 미션 무대 (2차): 섬 장면 머리, 단계표, AI 기기 말풍선 */
 .mission-header.has-scene { position:relative; overflow:hidden; border-radius:14px; padding:1.1rem 1.25rem 1rem; margin-bottom:1.1rem;
   background:linear-gradient(180deg, #13283a 0%, #183447 62%, #12304a 100%); border:1px solid var(--border); }
@@ -891,7 +963,8 @@ window.dispatchEvent(new Event('firebaseReady'));
     <select id="tdForceSelect" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.84rem;color:var(--text);"></select>
     <button onclick="tdForceAll()" style="background:var(--accent);border:none;border-radius:4px;padding:.3rem .8rem;font-size:.84rem;color:#fff;cursor:pointer;white-space:nowrap;">전체 이동 →</button>
     <button onclick="showLogOverlay()" style="background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.35);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:#facc15;cursor:pointer;white-space:nowrap;">📋 응답 기록 <span id="tdLogCount">0</span></button>
-    <button onclick="showM7Review()" style="background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:#a855f7;cursor:pointer;">📝 미션8 응답</button>
+    <button onclick="showM7Review()" style="background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:#a855f7;cursor:pointer;">📝 미션 7 작문</button>
+    <button onclick="showWrapUp()" style="background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.35);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:var(--success);cursor:pointer;white-space:nowrap;">🎬 수업 정리</button>
     <button onclick="teacherSyncNow()" style="background:rgba(79,209,197,.12);border:1px solid rgba(79,209,197,.3);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:var(--accent2);cursor:pointer;">🔄 동기화</button>
     <button onclick="teacherResetRoom()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:var(--danger);cursor:pointer;">🗑️ 초기화</button>
   </div>
@@ -903,6 +976,9 @@ window.dispatchEvent(new Event('firebaseReady'));
     <button id="tdLibEdit" onclick="tdEditLibrarySet()" class="td-lib-btn" style="display:none;">✏️ 고치기</button>
     <button id="tdLibDel" onclick="tdDeleteLibrarySet()" class="td-lib-btn td-lib-del" style="display:none;">🗑️ 지우기</button>
     <button onclick="genOpen()" class="td-gen-btn">✨ 새 문법 세트 만들기</button>
+    <label class="td-group" title="달 기지 운석이 천천히 떨어지고, 미션 5 암기 시간이 7초 → 11초가 돼요">
+      <input type="checkbox" id="tdExtraTime" onchange="tdSetExtraTime(this.checked)"> ⏱️ 시간 넉넉하게
+    </label>
     <label class="td-group">👥 모둠 인원
       <select id="tdGroupSize" onchange="tdSetGroupSize(+this.value)"><option value="3">3명</option><option value="4" selected>4명</option><option value="5">5명</option><option value="6">6명</option></select>
     </label>
@@ -1617,6 +1693,23 @@ function m7GoodTargets(fb) {
     return !wrong.some(w => x === w || x.includes(w)); // 고칠 문장 자체(또는 그걸 품은 표현)만 뺀다
   });
 }
+// 교사용: AI 피드백을 글로 정리 (응답 기록·CSV). 고친 형태는 학생에게 보였는지 함께 적는다
+function m7AiFeedbackText(fb, round) {
+  fb = fb || {};
+  const reveal = round >= AI_FEEDBACK_LIMIT;
+  const L = [];
+  if(fb.praise) L.push('👍 ' + stripTags(fb.praise));
+  (fb.fixes || []).forEach(f => {
+    L.push('✏️ ' + stripTags(f.original) + (f.why ? ' — ' + stripTags(f.why) : ''));
+    if(f.ask) L.push('   💭 ' + stripTags(f.ask));
+    if(f.better) L.push('   → ' + stripTags(f.better) + (reveal ? '' : ' (학생에게는 아직 안 보임)'));
+  });
+  (fb.spelling || []).forEach(x => L.push('🔤 ' + x.wrong + ' → ' + x.right));
+  if(fb.requiredContent && fb.requiredContent.comment) L.push('📋 ' + stripTags(fb.requiredContent.comment));
+  if(fb.nextStep) L.push('👉 ' + stripTags(fb.nextStep));
+  return L.join('\n');
+}
+
 // 고친 형태를 아직 보여 주지 않는 회차에, 설명 글에 고친 표현이 섞여 들어가면 빈칸으로 가린다
 function m7HideAnswer(text, fixes) {
   let out = String(text || '');
@@ -1685,6 +1778,7 @@ async function m7RequestAI(ti) {
     });
     state.m7ai = state.m7ai || {};
     state.m7ai[ti] = { count: (m7AiInfo(ti).count || 0) + 1, last: data.feedback, at: Date.now() };
+    logResponse(ti, 8, 'AI 피드백', m7AiFeedbackText(data.feedback, state.m7ai[ti].count), null, state.m7ai[ti].count + '회차 · 학생이 본 내용');
     fbSaveState();
   } catch(e) {
     m7AiError[ti] = e.message || String(e); // 실패한 요청은 횟수에 넣지 않는다
@@ -1701,6 +1795,8 @@ async function m7RequestAI(ti) {
 let roomLog = {};      // 키 → 기록 (교사는 반 전체, 학생 기기는 자기가 남긴 것)
 let logSeq = 0;
 let fbOnline = false;  // Firebase에 실제로 연결됐는지 (오프라인 모드 판단)
+// 화면에 보이는 미션 이름 (내부 번호 1~8 → 미션 1~4, 달 기지, 미션 5~7)
+function missionShort(m) { return m === 5 ? '달 기지' : '미션 ' + (m > 5 ? m - 1 : m); }
 const LOG_MISSION_LABEL = {1:'미션 1 위치 파악', 2:'미션 2 거주지', 3:'미션 3 식량', 4:'미션 4 동료', 5:'달 기지', 6:'미션 5 위기 대응', 7:'미션 6 신호', 8:'미션 7 탈출'};
 function stripTags(x) { return String(x == null ? '' : x).replace(/<[^>]+>/g, ''); }
 // ok: true(정답) / false(오답) / null(정오 판단 없음: 작문 등)
@@ -2657,6 +2753,74 @@ function renderSidebar(teamNum) {
   sml.innerHTML = routeMapSVG(teamNum-1);
 }
 
+
+// ══ 수업 정리 (프로젝터) ══
+// 수업 끝에 반 전체와 함께 보는 화면. 모둠 이름은 보이지 않는다.
+// ① 여러 모둠이 틀린 표현과 맞는 형태 ② 교사가 고른 잘 쓴 구조 요청문 (목표 표현 강조) ③ 오늘 많이 쓴 목표 표현
+let wrapStars = {};
+function wrapHighlight(text) {
+  let html = escHTML(text);
+  const pats = ((G.m7 && G.m7.target && G.m7.target.patterns) || []).filter(p => p && p.length >= 3).sort((a, b) => b.length - a.length);
+  pats.forEach(p => {
+    const re = new RegExp('(' + escHTML(p).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    html = html.replace(re, (m) => '\u0001' + m + '\u0002');
+  });
+  return html.replace(/\u0001/g, '<mark>').replace(/\u0002/g, '</mark>');
+}
+function wrapData() {
+  const list = logEntries();
+  const hard = logHardItems(list).slice(0, 3).map(g => {
+    const top = Object.entries(g.answers).sort((a, b) => b[1].n - a[1].n)[0];
+    const right = list.find(e => e.m === g.m && e.item === g.item && e.ok === true);
+    return { m: g.m, item: g.item, wrong: top ? top[0] : '', right: right ? right.answer : '', teams: g.teams.size };
+  });
+  const writings = ISLANDS.map((_, i) => ({ i, text: (state.m7text && state.m7text[i]) || '' })).filter(x => x.text.trim());
+  const pats = ((G.m7 && G.m7.target && G.m7.target.patterns) || []);
+  const counts = {};
+  writings.forEach(w => { const low = w.text.toLowerCase(); pats.forEach(p => { if(p && low.includes(p)) counts[p] = (counts[p] || 0) + 1; }); });
+  const used = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 6);
+  const escaped = ISLANDS.filter((_, i) => ((state.completedMission || [])[i] || 0) >= 8).length;
+  const revised = Object.keys(state.m7ai || {}).filter(i => (state.m7ai[i] || {}).count && (state.m7text || {})[i]).length;
+  return { hard, writings, used, escaped, revised };
+}
+function showWrapUp() {
+  let ov = document.getElementById('wrapOverlay');
+  if(ov) ov.remove();
+  ov = document.createElement('div');
+  ov.id = 'wrapOverlay';
+  ov.className = 'wrap-overlay';
+  document.body.appendChild(ov);
+  renderWrapUp();
+}
+function wrapToggleStar(i) { wrapStars[i] = !wrapStars[i]; renderWrapUp(); }
+function renderWrapUp() {
+  const ov = document.getElementById('wrapOverlay');
+  if(!ov) return;
+  const d = wrapData();
+  const starred = d.writings.filter(w => wrapStars[w.i]);
+  const shown = starred.length ? starred : [];
+  const hardHtml = d.hard.length ? d.hard.map((h, k) =>
+    '<div class="wu-err"><div class="wu-err-n">' + (k + 1) + '</div><div><div class="wu-err-item">' + escHTML(h.item) + '</div>'
+    + '<div class="wu-err-fix"><span class="wu-x">' + escHTML(h.wrong) + '</span>'
+    + (h.right ? ' <span class="wu-arrow">→</span> <span class="wu-o">' + escHTML(h.right) + '</span>' : '') + '</div>'
+    + '<div class="wu-err-meta">' + escHTML(missionShort(h.m)) + ' · ' + h.teams + '개 모둠이 헷갈렸어요</div></div></div>').join('')
+    : '<div class="wu-empty">여러 모둠이 함께 틀린 표현이 아직 없어요.</div>';
+  const writingHtml = shown.length
+    ? shown.map(w => '<blockquote class="wu-quote">' + wrapHighlight(w.text) + '</blockquote>').join('')
+    : '<div class="wu-empty">아래 작문 목록에서 ⭐를 눌러 함께 볼 글을 고르세요. 모둠 이름은 화면에 나오지 않아요.</div>';
+  const usedHtml = d.used.length ? d.used.map(([p, n]) => '<span class="wu-chip">' + escHTML(p) + ' <small>×' + n + '</small></span>').join('') : '<span class="wu-empty">아직 작문이 없어요.</span>';
+  const pick = d.writings.length ? d.writings.map(w =>
+    '<button class="wu-pick' + (wrapStars[w.i] ? ' on' : '') + '" onclick="wrapToggleStar(' + w.i + ')">' + (wrapStars[w.i] ? '⭐' : '☆') + ' '
+    + ISLANDS[w.i].emoji + ' ' + escHTML(w.text.slice(0, 70)) + (w.text.length > 70 ? '…' : '') + '</button>').join('')
+    : '<div class="wu-empty">제출된 작문이 없어요.</div>';
+  ov.innerHTML = '<div class="wu-head"><div><span class="wu-kicker">오늘의 정리</span><h2>' + escHTML(stripTags(G.title)) + '</h2></div>'
+    + '<div class="wu-stats"><span>🚁 탈출 <b>' + d.escaped + '</b>/6 모둠</span><span>✍️ AI 피드백 뒤 고쳐 쓴 모둠 <b>' + d.revised + '</b></span></div>'
+    + '<button class="log-btn log-close" onclick="document.getElementById(\'wrapOverlay\').remove()">✕ 닫기</button></div>'
+    + '<div class="wu-body"><section class="wu-sec"><h3>다시 짚을 표현</h3>' + hardHtml + '</section>'
+    + '<section class="wu-sec"><h3>잘 쓴 구조 요청문</h3>' + writingHtml + '<h3 class="wu-sub">오늘 많이 쓴 목표 표현</h3><div class="wu-chips">' + usedHtml + '</div></section></div>'
+    + '<details class="wu-picker"' + (shown.length ? '' : ' open') + '><summary>교사용: 띄울 작문 고르기 (' + starred.length + '개 선택)</summary><div class="wu-picks">' + pick + '</div></details>';
+}
+
 // ══ 탐험 지도 ══
 // 학생: 우리 섬의 탐험 경로(미션 8곳)를 사이드바에 세로 지도로, 좁은 화면에서는 미션 띠 안에 가로 점으로.
 // 교사·로비: 여섯 섬을 한 장의 해도(바다 지도)에 놓고 모둠 말이 지금 미션 위치에 서 있다. 섬을 누르면 그 모둠 화면.
@@ -3157,7 +3321,7 @@ function moonStart(ti) {
     moonSpawnMeteor(ti);
     moonState.spawnCount++;
     document.getElementById('moonLeft').textContent = moonState.meteors.filter(m => !m.destroyed).length;
-  }, 1200);
+  }, 1200 * timeFactor());
 }
 
 function moonSpawnMeteor(ti) {
@@ -3186,7 +3350,7 @@ function moonSpawnMeteor(ti) {
 
   // 떨어지는 애니메이션
   const screenH = screen.offsetHeight || 400;
-  const duration = 13000 + Math.random() * 5000;
+  const duration = (13000 + Math.random() * 5000) * timeFactor();
   const start = Date.now();
 
   function fall() {
@@ -3604,14 +3768,14 @@ function renderMission5(teamNum) {
   const main = document.getElementById('missionMain');
   main.innerHTML = `
     <div class="mission-header">
-      <div class="mission-num">MISSION 05 / 07 · ⭐⭐⭐ ${G.m5.typeLabel}</div>
+      <div class="mission-num">MISSION 05 / 07 · ⭐⭐⭐ ${String(G.m5.typeLabel).replace('7초', m5Seconds() + '초')}</div>
       <div class="mission-title">⚡ 위기 대응</div>
     </div>
     <div class="mission-situation">
       Danger! A sudden crisis is hitting your island.<br>
-      <strong>You have 7 seconds to memorize the sentence, then say it out loud!</strong>
+      <strong>You have ${m5Seconds()} seconds to memorize the sentence, then say it out loud!</strong>
       <div style="font-size:.88rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
-        위기 상황이다! 7초 안에 문장을 외우고, 화면이 가려지면 모둠원 릴레이로 발화하세요!
+        위기 상황이다! ${m5Seconds()}초 안에 문장을 외우고, 화면이 가려지면 모둠원 릴레이로 발화하세요!
       </div>
     </div>
 
@@ -3622,13 +3786,13 @@ function renderMission5(teamNum) {
         <div style="font-size:1.8rem;">${m5.emoji}</div>
       </div>
 
-      <div class="step-label">STEP 1 · 7초 안에 문장을 외우세요!</div>
+      <div class="step-label">STEP 1 · ${m5Seconds()}초 안에 문장을 외우세요!</div>
       <div style="background:rgba(79,209,197,.08);border:1px solid rgba(79,209,197,.25);border-radius:8px;padding:.85rem 1rem;margin-bottom:1rem;font-size:.92rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
         📢 <strong>외우는 방법:</strong><br>
         문장을 모둠원끼리 나눠서 각자 한 부분씩 외우세요!<br>
         예: 1번 사람 → <em>"${G.m5.memoExampleA}"</em><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2번 사람 → <em>"${G.m5.memoExampleB}"</em><br>
-        7초 후 화면이 가려지면 모둠원 모두 함께 이어서 발화하세요!
+        ${m5Seconds()}초 후 화면이 가려지면 모둠원 모두 함께 이어서 발화하세요!
       </div>
 
       <div id="m5sentenceBox-${ti}" style="background:var(--surface);border:1px solid var(--accent);border-radius:8px;padding:1.25rem;margin-bottom:1rem;position:relative;">
@@ -3643,7 +3807,7 @@ function renderMission5(teamNum) {
       ${hintBoxHTML('m5', ti)}
 
       <div style="text-align:center;margin-bottom:1rem;">
-        <div id="m5timer-${ti}" style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:3rem;color:var(--accent2);">7</div>
+        <div id="m5timer-${ti}" style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:3rem;color:var(--accent2);">${m5Seconds()}</div>
         <div style="font-size:.82rem;color:var(--text3);">seconds remaining</div>
       </div>
 
@@ -3685,11 +3849,20 @@ function renderMission5(teamNum) {
   }
 }
 
+// 시간 넉넉하게 (교사가 켬): 속도 기반 활동(달 기지 운석, 미션 5 암기)을 1.5배로 늘린다 (UDL)
+function timeFactor() { return state.extraTime ? 1.5 : 1; }
+function m5Seconds() { return Math.round(7 * timeFactor()); }
+function tdSetExtraTime(on) {
+  state.extraTime = !!on;
+  fbSaveState();
+  updateTeacherDashboard();
+}
+
 function m5StartTimer(ti) {
   const btn = document.getElementById(`m5startBtn-${ti}`);
   if(btn) btn.disabled = true;
   const timerEl = document.getElementById(`m5timer-${ti}`);
-  let count = 7;
+  let count = m5Seconds();
 
   const interval = setInterval(() => {
     count--;
@@ -4985,7 +5158,7 @@ const bb = document.getElementById('teacherBackBtn');
 if(bb) bb.style.display = 'none';
 const sel = document.getElementById('tdForceSelect');
 if(sel && !sel.options.length) {
-[1,2,3,4,5,6,7,8].forEach(m => { const o=document.createElement('option'); o.value=m; o.textContent='미션 '+m+' ('+MISSION_NAMES[m]+')'; sel.appendChild(o); });
+[1,2,3,4,5,6,7,8].forEach(m => { const o=document.createElement('option'); o.value=m; o.textContent=missionShort(m)+(m===5?'':' ('+MISSION_NAMES[m]+')'); sel.appendChild(o); });
 }
 const lbl = document.getElementById('tdRoomLabel');
 if(lbl) lbl.textContent = myRoom+'반';
@@ -5589,6 +5762,8 @@ renderTeacherMap();
 renderMapOverlay();
 const gs = document.getElementById('tdGroupSize');
 if(gs && document.activeElement !== gs) gs.value = String(state.groupSize || 4);
+const xt = document.getElementById('tdExtraTime');
+if(xt) xt.checked = !!state.extraTime;
 grid.innerHTML = ISLANDS.map((isl,i) => {
 const info = getMissionStepInfo(i);
 const coins = state.coins[i];
@@ -5630,53 +5805,26 @@ const stepLabel = info.step
   : '';
 
 return `
-<div style="background:var(--surface);border:2px solid ${fullyDone?isl.color:(isConnected?'rgba(34,197,94,.3)':'var(--border)')};border-radius:8px;padding:.85rem;display:flex;flex-direction:column;gap:.45rem;">
-
-  <!-- 헤더 줄 1: 섬 이름 + 접속 배지 -->
-  <div style="display:flex;align-items:center;gap:.4rem;">
-    <span style="font-size:1.4rem;">${isl.emoji}</span>
-    <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:.98rem;color:${isl.color};">${i+1}모둠 · ${isl.name}</div>
-    <div style="margin-left:auto;">${connBadge}</div>
+<div class="tc2${fullyDone ? ' fin' : ''}${isConnected ? ' on' : ''}" style="--isl:${isl.color};">
+  <div class="tc2-head">
+    <svg class="tc2-isl" viewBox="0 0 64 44" aria-hidden="true"><path d="${islandPath(i, 32, 22, 15, 1)}"/><text x="32" y="23" text-anchor="middle" dominant-baseline="central">${isl.emoji}</text></svg>
+    <div class="tc2-name">${i+1}모둠 <span>${isl.name}</span></div>
+    <span class="tc2-conn" title="${isConnected ? '접속 중' : '미접속'}"><i></i>${isConnected ? '접속 중' : '미접속'}</span>
   </div>
-  <!-- 헤더 줄 2: 코인 + 상태 -->
-  <div style="display:flex;align-items:center;gap:.5rem;">
-    <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.06rem;color:var(--accent);">${coins} 🪙</div>
-    <div title="연 힌트 수" style="font-size:.8rem;color:#facc15;">💡 ${totalHintsUsed(i)}</div>
-    <div style="font-size:.72rem;color:${statusColor};font-weight:bold;margin-left:auto;">${statusText}</div>
+  <div class="tc2-now">
+    <div><div class="tc2-mission">${missionShort(mission)} · ${info.mission}</div>
+      <div class="tc2-step">${fullyDone ? '탈출 완료 🚁' : waiting ? '다른 모둠 기다리는 중' : (info.step ? info.step + '/3단계 · ' + info.label : '시작 전')}</div></div>
+    <div class="tc2-pct">${pct}<small>%</small></div>
   </div>
-
-  <!-- 현재 미션 + 스텝 텍스트 -->
-  <div style="font-size:.8rem;color:var(--text2);">
-    미션 ${mission} · <span style="color:${isl.color};font-weight:bold;">${info.mission}</span>${stepLabel}
-  </div>
-
-  <!-- 8개 미션 도트 + 진행률 % -->
-  <div style="display:flex;align-items:center;gap:.5rem;">
-    <div style="display:flex;gap:3px;align-items:center;">${pips}</div>
-    <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:.96rem;color:var(--text2);margin-left:auto;">${pct}%</div>
-  </div>
-
-  <!-- 진행률 바 (초록=완료, 주황=현재 스텝) -->
-  <div style="position:relative;height:7px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;">
-    <div style="position:absolute;left:0;top:0;height:100%;width:${greenW}%;background:#22c55e;border-radius:4px 0 0 4px;"></div>
-    <div style="position:absolute;left:${greenW}%;top:0;height:100%;width:${orangeW}%;background:${isl.color};"></div>
-    ${[1,2,3,4,5,6,7].map(m=>`<div style="position:absolute;left:${m/8*100}%;top:0;height:100%;width:1px;background:rgba(0,0,0,.35);"></div>`).join('')}
-  </div>
-  <div style="display:flex;justify-content:space-between;font-size:.6rem;color:var(--text3);">
-    ${['위치','거주','식량','동료','달','위기','신호','탈출'].map((n,m)=>`<span>${n}</span>`).join('')}
-  </div>
-
-  <!-- 버튼: 화면 보기 + 스킵 -->
-  <div style="display:flex;gap:.35rem;margin-top:.1rem;">
-    <button onclick="tdViewTeam(${i})"
-      style="flex:1;background:rgba(79,209,197,.1);border:1px solid rgba(79,209,197,.25);border-radius:4px;padding:.3rem;font-size:.76rem;color:var(--accent2);cursor:pointer;">📺 화면 보기</button>
-    <select id="tdSkipSel-${i}" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem;font-size:.76rem;color:var(--text);">
-      ${[1,2,3,4,5,6,7,8].map(m=>`<option value="${m}"${state.teamMission[i]===m?' selected':''}>미션${m}</option>`).join('')}
+  ${routeStripHTML(i).replace('class="route-strip"', 'class="route-strip tc2-route"')}
+  <div class="tc2-stats"><span>🪙 <b>${coins}</b></span><span title="연 힌트 수">💡 힌트 <b>${totalHintsUsed(i)}</b></span><span style="color:${statusColor};">${statusText}</span></div>
+  <div class="tc2-btns">
+    <button onclick="tdViewTeam(${i})" class="tc2-view">📺 화면 보기</button>
+    <select id="tdSkipSel-${i}" aria-label="${i+1}모둠 이동할 미션">
+      ${[1,2,3,4,5,6,7,8].map(m=>`<option value="${m}"${state.teamMission[i]===m?' selected':''}>${missionShort(m)}</option>`).join('')}
     </select>
-    <button onclick="tdSkipTeam(${i})"
-      style="background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.25);border-radius:4px;padding:.3rem .5rem;font-size:.76rem;color:var(--accent);cursor:pointer;">⏭ 스킵</button>
+    <button onclick="tdSkipTeam(${i})" class="tc2-skip">⏭ 이동</button>
   </div>
-
 </div>`;
 }).join('');
 }
@@ -5972,12 +6120,12 @@ function renderLogOverlay() {
       + '<div class="log-item">' + escHTML(g.item) + '</div><div class="log-wrongs">' + answers + '</div></div>';
   }).join('') : '<div class="log-empty">아직 틀린 시도가 없어요.</div>';
 
-  // B. 미션 7 작문 변화 (AI 피드백 전 → 제출)
+  // B. 미션 7 작문 변화 (AI 피드백 전 → AI가 한 말 → 제출)
   const writing = {};
   list.filter(e => e.m === 8 && e.ok === null).forEach(e => { (writing[e.team] = writing[e.team] || []).push(e); });
   const writingHtml = Object.keys(writing).length ? Object.keys(writing).sort().map(t =>
     '<div class="log-card"><div class="log-card-top"><span class="log-mission">' + logTeamLabel(t) + '</span></div>'
-    + writing[t].map(e => '<div class="log-draft"><div class="log-draft-head">' + escHTML(e.item) + (e.note ? ' · ' + escHTML(e.note) : '') + ' · ' + logTime(e.t) + '</div>'
+    + writing[t].map(e => '<div class="log-draft' + (e.item === 'AI 피드백' ? ' log-ai' : '') + '"><div class="log-draft-head">' + (e.item === 'AI 피드백' ? '🤖 ' : '') + escHTML(e.item) + (e.note ? ' · ' + escHTML(e.note) : '') + ' · ' + logTime(e.t) + '</div>'
       + '<div class="log-draft-text">' + escHTML(e.answer) + '</div></div>').join('') + '</div>').join('')
     : '<div class="log-empty">아직 미션 7 작문 기록이 없어요.</div>';
 
@@ -6058,6 +6206,11 @@ function showM7Review() {
       ? `<div style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;padding:.75rem;font-size:.9rem;color:var(--text);line-height:1.8;white-space:pre-wrap;font-family:'Noto Sans KR',sans-serif;max-height:160px;overflow-y:auto;">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`
       : '<div style="background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.1);border-radius:6px;padding:.75rem;font-size:.9rem;color:var(--text3);text-align:center;">미제출</div>';
 
+    const aiInfo = (state.m7ai && state.m7ai[ti]) || null;
+    const aiHtml = aiInfo && aiInfo.last
+      ? '<details class="m7r-ai"><summary>🤖 학생이 마지막으로 본 AI 피드백 (' + aiInfo.count + '회차)</summary>'
+        + m7AiFeedbackHTML(aiInfo.last, { round: aiInfo.count, reveal: true }) + '</details>'
+      : '';
     const breakdownHtml = breakdown.length
       ? `<div style="font-size:.76rem;color:var(--text3);margin-top:.4rem;line-height:1.6;">${breakdown.map(b=>String(b).replace(/</g,'&lt;').replace(/>/g,'&gt;')).join(' · ')}</div>`
       : '';
@@ -6072,6 +6225,7 @@ function showM7Review() {
       <div style="font-size:.76rem;color:var(--text3);">필수: <span style="color:var(--text2);">${m7d.keyKr}</span> (${m7d.warning})${(state.m7ai && state.m7ai[ti] && state.m7ai[ti].count) ? ' · 🤖 AI 피드백 '+state.m7ai[ti].count+'회' : ''}</div>
       ${textHtml}
       ${breakdownHtml}
+      ${aiHtml}
     </div>`;
   }).join('');
 
@@ -6260,10 +6414,13 @@ function demoSeedTeacher() {
   });
   if(G.id === 'wh-to') {
     L(0, 8, 'AI 피드백 요청 전 작문', T.volBefore, null, 22, 'AI 피드백 1회차');
+    L(0, 8, 'AI 피드백', m7AiFeedbackText(state.m7ai[0].last, 1), null, 22.3, '1회차 · 학생이 본 내용');
     L(0, 8, '제출한 작문', T.volAfter, null, 23.5, 'AI 피드백 1회 받은 뒤 제출');
     L(0, 8, '교사 채점', '필수 내용 포함 + 발화 성공', true, 24.5);
     L(1, 8, 'AI 피드백 요청 전 작문', T.arcBefore1, null, 22.5, 'AI 피드백 1회차');
     L(1, 8, 'AI 피드백 요청 전 작문', T.arcBefore2, null, 24, 'AI 피드백 2회차');
+    L(1, 8, 'AI 피드백', m7AiFeedbackText(state.m7ai[1].last, 2), null, 24.3, '2회차 · 학생이 본 내용');
+    L(3, 8, 'AI 피드백', m7AiFeedbackText(state.m7ai[3].last, 1), null, 23.3, '1회차 · 학생이 본 내용');
     L(3, 8, 'AI 피드백 요청 전 작문', T.desBefore, null, 23, 'AI 피드백 1회차');
     L(5, 8, '제출한 작문', T.dinoFinal, null, 23, 'AI 피드백 없이 제출');
     L(5, 8, '교사 채점', '필수 내용 포함, 발화 미완성', true, 24);
