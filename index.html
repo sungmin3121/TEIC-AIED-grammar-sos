@@ -258,6 +258,48 @@ text-align:left;
 .hint-num { flex-shrink:0; width:1.25rem; height:1.25rem; border-radius:50%; background:#facc15; color:#111; font-size:.8rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-top:.1rem; }
 .hint-done { font-size:.82rem; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
 
+/* 새 문법 세트 만들기 (교사) */
+.td-gen-btn { background:rgba(168,85,247,.14); border:1px solid rgba(168,85,247,.4); border-radius:4px; padding:.3rem .8rem; font-size:.84rem; color:#c4b5fd; cursor:pointer; white-space:nowrap; font-family:'Noto Sans KR',sans-serif; }
+.td-lib-btn { background:transparent; border:1px solid var(--border); border-radius:4px; padding:.3rem .6rem; font-size:.8rem; color:var(--text2); cursor:pointer; white-space:nowrap; font-family:'Noto Sans KR',sans-serif; }
+.td-lib-del { color:var(--danger); border-color:rgba(239,68,68,.3); }
+.gen-form { max-width:640px; margin:0 auto; display:flex; flex-direction:column; gap:.9rem; }
+.gen-lead { font-size:.92rem; line-height:1.7; color:var(--text2); margin:0 0 .6rem; word-break:keep-all; }
+.gen-lead b { color:var(--text); }
+.gen-label { display:flex; flex-direction:column; gap:.3rem; font-size:.84rem; color:var(--text2); }
+.gen-label span { color:var(--text3); font-size:.76rem; }
+.gen-label small { color:var(--text3); font-size:.76rem; }
+.gen-input { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:.5rem .65rem; color:var(--text); font-size:.92rem; font-family:'Noto Sans KR',sans-serif; line-height:1.5; width:100%; box-sizing:border-box; resize:vertical; }
+.gen-input:focus { outline:none; border-color:var(--accent2); }
+.gen-go { background:var(--accent2); border:none; border-radius:6px; padding:.7rem 1.1rem; font-size:.95rem; font-weight:700; color:#0b1120; cursor:pointer; font-family:'Noto Sans KR',sans-serif; }
+.gen-go:disabled { opacity:.4; cursor:default; }
+.gen-small { font-size:.78rem; color:var(--text3); }
+.gen-chips { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:.5rem; }
+.gen-chip { display:flex; align-items:center; gap:.4rem; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:.55rem .7rem; font-size:.86rem; color:var(--text2); }
+.gen-chip.gen-ok { border-color:rgba(34,197,94,.4); }
+.gen-chip.gen-err { border-color:rgba(239,68,68,.4); color:#fca5a5; }
+.gen-chip.gen-busy { border-color:rgba(56,189,248,.45); }
+.gen-bar { position:sticky; top:-1rem; z-index:2; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.75rem; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.7rem .9rem; margin-bottom:.9rem; font-size:.88rem; color:var(--text2); }
+.gen-bar small { color:var(--text3); }
+.gen-bar-btns { display:flex; gap:.5rem; flex-wrap:wrap; }
+.gen-save { padding:.45rem .9rem; font-size:.88rem; }
+.gen-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:.7rem; align-items:start; }
+.gen-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.75rem .85rem; display:flex; flex-direction:column; gap:.45rem; min-width:0; }
+.gen-card-top { display:flex; justify-content:space-between; align-items:center; gap:.5rem; flex-wrap:wrap; }
+.gen-card-btns { display:flex; gap:.35rem; flex-wrap:wrap; }
+.gen-check { background:transparent; border:1px solid var(--border); border-radius:4px; padding:.3rem .65rem; font-size:.82rem; color:var(--text2); cursor:pointer; white-space:nowrap; font-family:'Noto Sans KR',sans-serif; }
+.gen-check.on { border-color:rgba(34,197,94,.5); color:var(--success); background:rgba(34,197,94,.08); }
+.gen-check:disabled { opacity:.45; cursor:default; }
+.gen-prob { font-size:.82rem; line-height:1.5; }
+.gen-prob.err { color:#fca5a5; }
+.gen-prob.warn { color:#fcd34d; }
+.gen-sum { font-size:.88rem; line-height:1.65; color:var(--text); word-break:break-word; }
+.gen-sum small { color:var(--text3); }
+.gen-sum u { color:var(--accent2); text-decoration-thickness:2px; }
+.gen-pill { display:inline-block; border:1px solid rgba(56,189,248,.35); border-radius:10px; padding:0 .45rem; margin:.1rem 0; font-size:.8rem; font-family:'Space Mono',monospace; color:var(--text2); }
+.gen-pill.trap { border-color:rgba(239,68,68,.45); color:#fca5a5; }
+.gen-edit summary { cursor:pointer; font-size:.84rem; color:var(--accent2); margin:.2rem 0; }
+.gen-edit[open] { display:flex; flex-direction:column; gap:.55rem; }
+
 /* 응답 기록 (교사) */
 .log-head { display:flex; align-items:center; flex-wrap:wrap; gap:.5rem; padding:.75rem 1rem; background:var(--surface); border-bottom:1px solid var(--border); flex-shrink:0; }
 .log-title { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:.08em; color:#facc15; flex:1; white-space:nowrap; }
@@ -709,8 +751,11 @@ window.dispatchEvent(new Event('firebaseReady'));
   <!-- 문법 세트 선택 -->
   <div style="display:flex;align-items:center;flex-wrap:wrap;gap:.6rem;padding:.6rem 1rem;background:rgba(56,189,248,.05);border-bottom:1px solid var(--border);flex-shrink:0;">
     <div style="font-size:.88rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;white-space:nowrap;">📚 문법 세트</div>
-    <select id="tdGrammarSelect" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.88rem;color:var(--text);max-width:100%;"></select>
+    <select id="tdGrammarSelect" onchange="tdGrammarSelectChanged()" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.88rem;color:var(--text);max-width:100%;"></select>
     <button onclick="tdApplyGrammar()" style="background:var(--accent2);border:none;border-radius:4px;padding:.3rem .8rem;font-size:.84rem;color:#0b1120;font-weight:700;cursor:pointer;white-space:nowrap;">이 문법으로 진행 →</button>
+    <button id="tdLibEdit" onclick="tdEditLibrarySet()" class="td-lib-btn" style="display:none;">✏️ 고치기</button>
+    <button id="tdLibDel" onclick="tdDeleteLibrarySet()" class="td-lib-btn td-lib-del" style="display:none;">🗑️ 지우기</button>
+    <button onclick="genOpen()" class="td-gen-btn">✨ 새 문법 세트 만들기</button>
     <div id="tdGrammarCurrent" style="font-size:.82rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;"></div>
   </div>
   <!-- 모둠 카드 그리드 -->
@@ -4530,8 +4575,528 @@ if(sel && !sel.options.length) {
 }
 const lbl = document.getElementById('tdRoomLabel');
 if(lbl) lbl.textContent = myRoom+'반';
+libraryLoad();
 renderGrammarSelector();
 updateTeacherDashboard();
+}
+
+// ══ 새 문법 세트 만들기 (교사) ══
+// 교사가 문법 이름과 예문을 넣으면 AI가 미션 8개의 문항을 만든다 → 교사가 미션별로 검토·수정·다시 만들기 →
+// 형식 검사를 통과하고 모든 미션을 확인해야 승인·저장할 수 있다. 저장한 세트는 '내가 만든 세트'로 다음에도 다시 쓴다.
+// 섬·이야기·아이템은 그대로 두고 문법에 따라 바뀌는 부분만 AI가 쓴다(본보기: 이미 있는 두 세트).
+// 저장 위치: Firebase grammar-sos/library/(세트 id). 체험 모드에서는 이 기기(localStorage)에만 저장.
+
+// AI가 쓰는 칸. 'r' = 통째로 바꿈, {each:{...}} = 같은 순서의 항목에 덮어씀(섬 이름·색 등은 그대로), {obj:{...}} = 하위 칸
+const GEN_FIELDS = {
+  meta: { titleEn:'r', tagline:'r' },
+  m1: { typeLabel:'r', hints:'r', stepLabel:'r', promptBefore:'r', promptAfter:'r', promptKr:'r', options:'r', answer:'r', correctFeedback:'r', wrongHint:'r' },
+  m2: { typeLabel:'r', hints:'r', promptKr:'r', answer:'r', wrongHint:'r' },
+  m3: { typeLabel:'r', hints:'r', stepLabel:'r', promptBefore:'r', promptAfter:'r', promptKr:'r', leftLabel:'r', leftSuffix:'r',
+        left:{ each:{ word:'r', kr:'r' } }, rightLabel:'r', right:'r', doneFeedback:'r', aiLine:'r', foodLabels:{ each:{ word:'r', rest:'r' } } },
+  m4: { typeLabel:'r', hints:'r', instructionKr:'r', items:'r' },
+  moon: { introEn:'r', introKr:'r', placeholder:'r', examples:'r', trapPrefixes:'r', trapMessage:'r', hints:'r', phrases:'r' },
+  m5: { typeLabel:'r', hints:'r', keyPrefix:'r', memoExampleA:'r', memoExampleB:'r', successText:'r', islands:{ each:{ sentence:'r', kr:'r', key:'r' } } },
+  m6: { typeLabel:'r', teamBHint:'r', teamBLabel1:'r', teamBLabel2:'r',
+        pairs:{ each:{ teamA_correct:'r', teamB_correct1:'r', teamB_correct2:'r', hintsA:'r', hintsB:'r' } } },
+  m7: { typeLabel:'r', hints:'r', islands:{ each:{ key:'r', hint:'r' } }, target:{ obj:{ label:'r', hint:'r', patterns:'r' } },
+        bonus:{ each:{ cardHtml:'r', checkLabel:'r', scoreLabel:'r', patterns:'r' } }, gradingNote:'r', templateHtml:'r' },
+};
+const GEN_PLAN = [['meta','m1','m2'], ['m3','m4'], ['moon','m5'], ['m6','m7']];
+const GEN_KEYS = ['meta','m1','m2','m3','m4','moon','m5','m6','m7'];
+const GEN_NAMES = { meta:'세트 정보', m1:'미션 1 위치 파악', m2:'미션 2 거주지', m3:'미션 3 식량', m4:'미션 4 동료', moon:'달 기지', m5:'미션 5 위기 대응', m6:'미션 6 신호', m7:'미션 7 탈출' };
+const LIBRARY_LOCAL_KEY = 'gsos_library';
+let LIBRARY_SETS = {};   // id → 세트 (내가 만든 세트)
+let genState = null;     // 지금 만들거나 고치는 중인 세트
+
+function genClone(o) { return JSON.parse(JSON.stringify(o)); }
+function genProject(src, spec) {
+  if(src == null) return src;
+  const out = {};
+  Object.keys(spec).forEach(k => {
+    const sp = spec[k];
+    if(sp === 'r') { if(src[k] !== undefined) out[k] = genClone(src[k]); }
+    else if(sp.each) out[k] = (src[k] || []).map(x => genProject(x, sp.each));
+    else if(sp.obj) out[k] = genProject(src[k] || {}, sp.obj);
+  });
+  return out;
+}
+function genMerge(base, gen, spec) {
+  if(!gen || typeof gen !== 'object') return;
+  Object.keys(spec).forEach(k => {
+    const sp = spec[k];
+    if(gen[k] === undefined) return;
+    if(sp === 'r') base[k] = genClone(gen[k]);
+    else if(sp.each) {
+      if(!Array.isArray(gen[k]) || !Array.isArray(base[k])) return;
+      base[k].forEach((b, i) => { if(gen[k][i]) genMerge(b, gen[k][i], sp.each); });
+    } else if(sp.obj) { base[k] = base[k] || {}; genMerge(base[k], gen[k], sp.obj); }
+  });
+}
+// 미션 데이터의 HTML은 <strong> <em> <br>과 정해진 색 span만 남기고 나머지는 글자로 바꾼다
+function genSafeHTML(str) {
+  return String(str).replace(/<[^>]*>?/g, t => {
+    if(/^<\/?(strong|em)>$/i.test(t) || /^<br\s*\/?>$/i.test(t) || /^<\/span>$/i.test(t)) return t;
+    if(/^<span style="color:var\(--(accent|accent2|danger|success)\);?">$/i.test(t)) return t;
+    return t.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  });
+}
+function genSanitize(o) {
+  if(typeof o === 'string') return genSafeHTML(o).slice(0, 600);
+  if(Array.isArray(o)) return o.slice(0, 40).map(genSanitize);
+  if(o && typeof o === 'object') { const r = {}; Object.keys(o).forEach(k => { r[k] = genSanitize(o[k]); }); return r; }
+  return o;
+}
+function genJoin(pieces) { return (pieces || []).join(' ').replace(/ ([?.!,])/g, '$1'); }
+// 정해진 값과 따라 바뀌는 값(조각 섞기용 목록, 전체 문장, 색 등)을 맞춘다
+function genDerive(set) {
+  const base = window.GRAMMAR_SETS[DEFAULT_GRAMMAR_SET];
+  (set.m6.pairs || []).forEach((p, i) => {
+    const bp = base.m6.pairs[i] || {};
+    p.item = bp.item; p.itemEn = bp.itemEn; p.teamA_given = bp.teamA_given;
+    p.teamA_pieces = (p.teamA_correct || []).slice();
+    p.teamB_pieces1 = (p.teamB_correct1 || []).slice();
+    p.teamB_pieces2 = (p.teamB_correct2 || []).slice();
+    p.teamA_full = p.teamA_given + ' ' + genJoin(p.teamA_correct);
+    p.teamB_full = genJoin(p.teamB_correct1) + ' ' + genJoin(p.teamB_correct2);
+  });
+  (set.m3.left || []).forEach((l, i) => { l.color = (base.m3.left[i] || base.m3.left[0]).color; });
+  (set.m3.foodLabels || []).forEach((l, i) => { l.color = (base.m3.foodLabels[i] || base.m3.foodLabels[0]).color; });
+  set.m4.passCount = Math.min(4, (set.m4.items || []).length);
+  set.m7.target.minCount = set.m7.target.minCount || 2;
+  if(!Array.isArray(set.moon.trapPrefixes)) set.moon.trapPrefixes = [];
+  set.m7.target.patterns = (set.m7.target.patterns || []).map(x => String(x).toLowerCase().trim()).filter(Boolean);
+  (set.m7.bonus || []).forEach(b => { b.patterns = (b.patterns || []).map(x => String(x).toLowerCase().trim()).filter(Boolean); });
+  return set;
+}
+function genNewSet(form) {
+  const set = genClone(window.GRAMMAR_SETS[DEFAULT_GRAMMAR_SET]);
+  set.id = 'my-' + Date.now().toString(36);
+  set.title = form.title;
+  set.titleEn = form.titleEn || '';
+  set.description = form.note || '내가 만든 세트';
+  set.examples = form.examples.slice();
+  set.source = 'ai';
+  delete set._v;
+  return set;
+}
+function genApply(set, mk, data) {
+  const clean = genSanitize(data || {});
+  if(mk === 'meta') {
+    if(clean.titleEn && !set.titleEn) set.titleEn = clean.titleEn;
+    if(clean.tagline) set.tagline = clean.tagline;
+  } else genMerge(set[mk], clean, GEN_FIELDS[mk]);
+  genDerive(set);
+}
+
+// 형식 검사 + 문항 점검. [{mk, level:'err'|'warn', msg}]
+function genChecks(set) {
+  const out = [];
+  const err = (mk, msg) => out.push({ mk, level:'err', msg });
+  const warn = (mk, msg) => out.push({ mk, level:'warn', msg });
+  const low = x => String(x || '').toLowerCase().replace(/<[^>]+>/g, '').trim();
+  try {
+    if(!set.title) err('meta', '문법 이름이 비어 있어요');
+    const o = set.m1.options || [];
+    if(o.length !== 4) err('m1', '보기 카드가 4개여야 해요');
+    if(new Set(o.map(x => low(x.word))).size !== o.length) err('m1', '같은 보기 카드가 있어요');
+    if(!o.some(x => x.word === set.m1.answer)) err('m1', '정답이 보기 카드에 없어요');
+    const a = set.m2.answer || [];
+    if(a.length < 3 || a.length > 9) err('m2', '조각은 3~9개여야 해요');
+    if(new Set(a).size !== a.length) err('m2', '같은 조각이 두 번 있어요');
+    if(a.some(x => !String(x).trim())) err('m2', '빈 조각이 있어요');
+    const L = (set.m3.left || []).map(x => x.word), R = set.m3.right || [];
+    if(L.length !== 3 || R.length !== 3) err('m3', '왼쪽·오른쪽 카드가 3개씩이어야 해요');
+    if(!R.every(r => L.includes(r.correct)) || new Set(R.map(r => r.correct)).size !== R.length) err('m3', '카드가 하나씩 짝지어지지 않아요');
+    const items = set.m4.items || [];
+    if(items.length !== 6) err('m4', '문장이 6개여야 해요');
+    const nTrue = items.filter(x => x.correct === true).length;
+    if(nTrue < 2 || nTrue > 4) warn('m4', '맞는 문장이 ' + nTrue + '개예요 (보통 3개)');
+    if(items.some(x => !/<strong>/.test(x.sentence || ''))) warn('m4', '판단할 부분이 굵게 표시되지 않은 문장이 있어요');
+    const ph = set.moon.phrases || [];
+    const good = ph.filter(x => !x.trap), trap = ph.filter(x => x.trap);
+    if(good.length < 10) err('moon', '정답 표현이 10개 이상 필요해요 (지금 ' + good.length + '개)');
+    if(trap.length < 2) err('moon', '함정 표현이 2개 이상 필요해요');
+    if(new Set(ph.map(x => low(x.text))).size !== ph.length) err('moon', '같은 표현이 두 번 있어요');
+    if(good.some(x => String(x.text).split(/\s+/).length > 5)) warn('moon', '운석 표현이 너무 긴 게 있어요 (5단어 이하 권장)');
+    const isl5 = set.m5.islands || [];
+    if(isl5.length !== 6) err('m5', '섬 6개 문장이 필요해요');
+    isl5.forEach((x, i) => {
+      if(!x.sentence || !x.key) err('m5', (i+1) + '번 섬 문장이나 핵심 표현이 비어 있어요');
+      else if(!low(x.sentence).includes(low(x.key))) warn('m5', (i+1) + '번 섬: 핵심 표현이 문장 안에 그대로 없어요');
+    });
+    const pairs = set.m6.pairs || [];
+    if(pairs.length !== 3) err('m6', '짝꿍 대화가 3세트여야 해요');
+    pairs.forEach((p, i) => ['teamA_correct','teamB_correct1','teamB_correct2'].forEach(k => {
+      const arr = p[k] || [];
+      if(arr.length < 3 || arr.length > 10) err('m6', (i+1) + '번 대화: 조각 수를 확인하세요');
+      else if(new Set(arr).size !== arr.length) err('m6', (i+1) + '번 대화: 같은 조각이 두 번 있어요');
+    }));
+    const pats = set.m7.target.patterns || [];
+    if(pats.length < 3) err('m7', '목표 표현 찾기용 패턴이 3개 이상 필요해요');
+    (set.m7.islands || []).forEach((x, i) => {
+      if(!x.hint) err('m7', (i+1) + '번 섬 예시 표현이 비어 있어요');
+      else if(!pats.some(pt => low(x.hint).includes(pt))) warn('m7', (i+1) + '번 섬 예시 표현에서 목표 표현이 잡히지 않아요 (패턴 확인)');
+    });
+    if((set.m7.bonus || []).length !== 2 || set.m7.bonus.some(b => !(b.patterns || []).length)) err('m7', '보너스 표현 2개와 패턴이 필요해요');
+    ['m1','m2','m3','m4','moon','m5','m7'].forEach(k => {
+      const h = set[k].hints || [];
+      if(!h.length || h.length > 3) err(k, '힌트는 1~3개여야 해요');
+    });
+  } catch(e) { err('meta', '빠진 항목이 있어요 (' + e.message + ')'); }
+  const v = validateGrammarSet(set);
+  if(v && !out.some(x => x.level === 'err')) err('meta', v);
+  return out;
+}
+
+// ── 화면 ──
+function genOpen(existing) {
+  let ov = document.getElementById('genOverlay');
+  if(ov) ov.remove();
+  ov = document.createElement('div');
+  ov.id = 'genOverlay';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:520;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;';
+  document.body.appendChild(ov);
+  if(existing) {
+    genState = { step:'review', form:{ title:existing.title, titleEn:existing.titleEn || '', examples:existing.examples || [], note:existing.description || '' },
+                 set: genClone(existing), checked: Object.fromEntries(GEN_KEYS.map(k => [k, true])), busy:{}, errors:{}, editing:true };
+  } else if(!genState || genState.step === 'saved') {
+    genState = { step:'form', form:{ title:'', titleEn:'', examples:[], note:'' }, set:null, checked:{}, busy:{}, errors:{} };
+  }
+  genRender();
+}
+function genClose() {
+  const ov = document.getElementById('genOverlay');
+  if(ov) ov.remove();
+  if(genState && genState.step === 'saved') genState = null;
+}
+function genHead(title, extra) {
+  return '<div class="log-head"><div class="log-title" style="color:var(--accent2);">✨ ' + title + '</div>' + (extra || '')
+    + '<button class="log-btn log-close" onclick="genClose()">✕ 닫기</button></div>';
+}
+function genRender() {
+  const ov = document.getElementById('genOverlay');
+  if(!ov || !genState) return;
+  if(genState.step === 'form') ov.innerHTML = genFormHTML();
+  else if(genState.step === 'gen') ov.innerHTML = genProgressHTML();
+  else if(genState.step === 'review') ov.innerHTML = genReviewHTML();
+  else if(genState.step === 'saved') ov.innerHTML = genSavedHTML();
+}
+function genFormHTML() {
+  const f = genState.form;
+  const v = x => escHTML(x || '');
+  return genHead('새 문법 세트 만들기')
+    + '<div class="log-body"><div class="gen-form">'
+    + '<p class="gen-lead">목표 문법과 예문을 넣으면 AI가 미션 7개와 달 기지의 문항·힌트를 만들어요. 섬과 이야기는 그대로이고, 문법에 따라 바뀌는 부분만 새로 써요. '
+    + '<b>선생님이 미션마다 확인하고 승인해야</b> 수업에 쓸 수 있고, 저장한 세트는 다음에도 다시 쓸 수 있어요.</p>'
+    + '<label class="gen-label">목표 문법 <span>필수</span><input id="genTitle" class="gen-input" maxlength="60" placeholder="예: 현재완료 (have + p.p.)" value="' + v(f.title) + '"></label>'
+    + '<label class="gen-label">영어 이름 <span>선택</span><input id="genTitleEn" class="gen-input" maxlength="80" placeholder="예: Present perfect" value="' + v(f.titleEn) + '"></label>'
+    + '<label class="gen-label">예문 <span>필수 · 한 줄에 하나, 2~3개</span><textarea id="genExamples" class="gen-input" rows="3" placeholder="예: I have lived on this island for three days.\nHave you ever seen a volcano?">' + v((f.examples || []).join('\n')) + '</textarea>'
+    + '<small>교과서 본문이나 수업에서 쓴 예문을 넣으면 수준과 뜻이 맞게 만들어져요.</small></label>'
+    + '<label class="gen-label">메모 <span>선택</span><input id="genNote" class="gen-input" maxlength="120" placeholder="예: 4과 · for/since 구분 강조" value="' + v(f.note) + '"></label>'
+    + (genState.formError ? '<div class="ai-error">⚠️ ' + escHTML(genState.formError) + '</div>' : '')
+    + '<button class="gen-go" onclick="genStart()"' + (AI_ENDPOINT ? '' : ' disabled') + '>✨ AI로 문항 만들기</button>'
+    + '<div class="gen-small">30초~1분쯤 걸려요. 학생 정보는 보내지 않고, 문법 이름·예문·메모만 AI에 보내요.</div>'
+    + '</div></div>';
+}
+function genReadForm() {
+  const g = id => (document.getElementById(id) || {}).value || '';
+  genState.form = {
+    title: g('genTitle').trim(), titleEn: g('genTitleEn').trim(), note: g('genNote').trim(),
+    examples: g('genExamples').split('\n').map(x => x.trim()).filter(Boolean).slice(0, 3),
+  };
+}
+async function genStart() {
+  genReadForm();
+  const f = genState.form;
+  genState.formError = !f.title ? '목표 문법을 써 주세요.' : f.examples.length < 1 ? '예문을 한 개 이상 써 주세요.' : '';
+  if(genState.formError) { genRender(); return; }
+  genState.set = genNewSet(f);
+  genState.step = 'gen';
+  genState.checked = {}; genState.errors = {}; genState.done = {};
+  genRender();
+  // 두 묶음씩 동시에 요청 (AI 서버 1분 한도 보호)
+  const queue = GEN_PLAN.slice();
+  const worker = async () => { while(queue.length) { const g = queue.shift(); await genRunGroup(g); } };
+  await Promise.all([worker(), worker()]);
+  genState.step = 'review';
+  genRender();
+}
+function genReferences(missions) {
+  return ['wh-to', 'participle'].map(id => window.GRAMMAR_SETS[id]).filter(Boolean).map(s => {
+    const ms = {};
+    missions.forEach(mk => { ms[mk] = mk === 'meta' ? { titleEn:s.titleEn, tagline:s.tagline } : genProject(s[mk], GEN_FIELDS[mk]); });
+    return { title:s.title, titleEn:s.titleEn, missions:ms };
+  });
+}
+async function genRunGroup(missions) {
+  missions.forEach(mk => { genState.busy[mk] = true; delete genState.errors[mk]; });
+  genRender();
+  let lastErr = '';
+  for(let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const data = await callAI({
+        action:'generate',
+        grammar:{ title:genState.form.title, titleEn:genState.form.titleEn, examples:genState.form.examples, note:genState.form.note },
+        missions,
+        references: genReferences(missions),
+      }, 90000);
+      missions.forEach(mk => {
+        if(data.missions && data.missions[mk]) { genApply(genState.set, mk, data.missions[mk]); (genState.done = genState.done || {})[mk] = true; }
+        else genState.errors[mk] = 'AI가 이 미션을 빠뜨렸어요. 다시 만들어 주세요.';
+      });
+      lastErr = '';
+      break;
+    } catch(e) {
+      lastErr = e.message || String(e);
+      if(attempt === 0) await new Promise(r => setTimeout(r, 4000));
+    }
+  }
+  if(lastErr) missions.forEach(mk => { genState.errors[mk] = lastErr; });
+  missions.forEach(mk => { delete genState.busy[mk]; });
+  genRender();
+}
+function genProgressHTML() {
+  const chips = GEN_KEYS.map(mk => {
+    const st = genState.busy[mk] ? 'busy' : genState.errors[mk] ? 'err' : (genState.done || {})[mk] ? 'ok' : 'wait';
+    const icon = { busy:'<span class="ai-spin"></span>', err:'⚠️', ok:'✅', wait:'⏳' }[st];
+    return '<div class="gen-chip gen-' + st + '">' + icon + ' ' + GEN_NAMES[mk] + '</div>';
+  }).join('');
+  return genHead('새 문법 세트 만들기')
+    + '<div class="log-body"><div class="gen-form"><p class="gen-lead"><b>' + escHTML(genState.form.title) + '</b> 문항을 만드는 중이에요. 끝나면 미션마다 검토 화면이 열려요.</p>'
+    + '<div class="gen-chips">' + chips + '</div></div></div>';
+}
+
+// 검토 화면에서 고칠 수 있는 칸. [경로, 이름, 종류]
+// 종류: text 한 줄, long 여러 줄 글, lines 한 줄에 하나(목록), pieces ' / '로 나눈 조각, csv 쉼표 목록, ox O/X
+function genEditSpec(set, mk) {
+  const S = [];
+  const add = (path, label, type) => S.push([path, label, type || 'text']);
+  if(mk === 'meta') {
+    add('title', '목표 문법'); add('titleEn', '영어 이름'); add('tagline', '한 줄 소개 (첫 화면)'); add('description', '설명 (목록에 표시)');
+  } else if(mk === 'm1') {
+    add('promptBefore', '문장 (빈칸 앞)'); add('promptAfter', '문장 (빈칸 뒤)'); add('promptKr', '우리말 상황');
+    (set.m1.options || []).forEach((_, i) => { add('m1.options.' + i + '.word', '보기 ' + (i+1)); add('m1.options.' + i + '.kr', '보기 ' + (i+1) + ' 뜻'); });
+    add('answer', '정답 (보기 중 하나)'); add('correctFeedback', '정답 피드백'); add('wrongHint', '오답 안내');
+  } else if(mk === 'm2') {
+    add('promptKr', '우리말 상황'); add('answer', '정답 조각 (순서대로, / 로 구분)', 'pieces'); add('wrongHint', '오답 안내');
+  } else if(mk === 'm3') {
+    add('promptBefore', '문장 (빈칸 앞)'); add('promptAfter', '문장 (빈칸 뒤)'); add('promptKr', '우리말 상황');
+    (set.m3.left || []).forEach((_, i) => add('m3.left.' + i + '.word', '왼쪽 카드 ' + (i+1)));
+    (set.m3.right || []).forEach((_, i) => { add('m3.right.' + i + '.text', '오른쪽 카드 ' + (i+1)); add('m3.right.' + i + '.correct', '오른쪽 ' + (i+1) + '의 짝 (왼쪽 카드 글자)'); });
+  } else if(mk === 'm4') {
+    add('instructionKr', '안내');
+    (set.m4.items || []).forEach((_, i) => { add('m4.items.' + i + '.sentence', '문장 ' + (i+1), 'long'); add('m4.items.' + i + '.correct', '문장 ' + (i+1) + ' 정답', 'ox'); add('m4.items.' + i + '.reason', '문장 ' + (i+1) + ' 이유'); });
+  } else if(mk === 'moon') {
+    add('moon.phrases:good', '정답 표현 (한 줄에 하나)', 'lines'); add('moon.phrases:trap', '함정 표현 (한 줄에 하나)', 'lines');
+    add('introKr', '안내 (우리말)', 'long'); add('examples', '입력 예시'); add('trapMessage', '함정 메시지');
+  } else if(mk === 'm5') {
+    (set.m5.islands || []).forEach((_, i) => { const n = ISLANDS[i] ? ISLANDS[i].name : (i+1) + '번 섬';
+      add('m5.islands.' + i + '.sentence', n + ' 문장', 'long'); add('m5.islands.' + i + '.kr', n + ' 뜻'); add('m5.islands.' + i + '.key', n + ' 핵심 표현'); });
+  } else if(mk === 'm6') {
+    (set.m6.pairs || []).forEach((p, i) => {
+      add('m6.pairs.' + i + '.teamA_correct', (i+1) + '번 대화 (' + p.item + ') · 질문 모둠 조각', 'pieces');
+      add('m6.pairs.' + i + '.teamB_correct1', (i+1) + '번 대화 · 답변 모둠 문장 1 조각', 'pieces');
+      add('m6.pairs.' + i + '.teamB_correct2', (i+1) + '번 대화 · 답변 모둠 문장 2 조각', 'pieces');
+      add('m6.pairs.' + i + '.hintsA', (i+1) + '번 대화 · 질문 모둠 힌트', 'lines');
+      add('m6.pairs.' + i + '.hintsB', (i+1) + '번 대화 · 답변 모둠 힌트', 'lines');
+    });
+  } else if(mk === 'm7') {
+    add('m7.target.label', '목표 표현 이름'); add('m7.target.patterns', '목표 표현 찾기 패턴 (쉼표로 구분)', 'csv');
+    (set.m7.islands || []).forEach((x, i) => add('m7.islands.' + i + '.hint', (ISLANDS[i] ? ISLANDS[i].name : '') + ' · ' + x.keyKr + ' 예시 표현'));
+    (set.m7.bonus || []).forEach((_, i) => { add('m7.bonus.' + i + '.checkLabel', '보너스 ' + (i+1)); add('m7.bonus.' + i + '.patterns', '보너스 ' + (i+1) + ' 패턴 (쉼표)', 'csv'); });
+  }
+  if(mk !== 'meta' && mk !== 'm6') add(mk + '.hints', '힌트 (한 줄에 하나, 1~3개)', 'lines');
+  // 경로가 미션 이름으로 시작하지 않으면 그 미션 안의 칸
+  return S.map(([p, l, t]) => [p.startsWith(mk + '.') || mk === 'meta' ? p : mk + '.' + p, l, t]);
+}
+function genGet(set, path) {
+  if(path === 'moon.phrases:good') return (set.moon.phrases || []).filter(x => !x.trap).map(x => x.text);
+  if(path === 'moon.phrases:trap') return (set.moon.phrases || []).filter(x => x.trap).map(x => x.text);
+  return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), set);
+}
+function genSet(set, path, val) {
+  if(path === 'moon.phrases:good' || path === 'moon.phrases:trap') {
+    const good = path.endsWith('good') ? val : genGet(set, 'moon.phrases:good');
+    const trap = path.endsWith('trap') ? val : genGet(set, 'moon.phrases:trap');
+    set.moon.phrases = good.map(t => ({ text:t, trap:false })).concat(trap.map(t => ({ text:t, trap:true })));
+    return;
+  }
+  const ks = path.split('.');
+  const last = ks.pop();
+  const obj = ks.reduce((o, k) => o[k], set);
+  obj[last] = val;
+}
+function genFieldHTML(mk, idx, [path, label, type]) {
+  const val = genGet(genState.set, path);
+  const id = 'gf-' + mk + '-' + idx;
+  const on = ' oninput="genEdit(' + jsArg(mk) + ',' + idx + ')" onchange="genEdit(' + jsArg(mk) + ',' + idx + ')"';
+  let input;
+  if(type === 'ox') input = '<select id="' + id + '" class="gen-input"' + on + '><option value="1"' + (val ? ' selected' : '') + '>O (맞는 문장)</option><option value="0"' + (!val ? ' selected' : '') + '>X (틀린 문장)</option></select>';
+  else if(type === 'lines') input = '<textarea id="' + id + '" class="gen-input" rows="' + Math.min(8, Math.max(2, (val || []).length)) + '"' + on + '>' + escHTML((val || []).join('\n')) + '</textarea>';
+  else if(type === 'long') input = '<textarea id="' + id + '" class="gen-input" rows="2"' + on + '>' + escHTML(val || '') + '</textarea>';
+  else {
+    const s = type === 'pieces' ? (val || []).join(' / ') : type === 'csv' ? (val || []).join(', ') : (val == null ? '' : String(val));
+    input = '<input id="' + id + '" class="gen-input" value="' + escHTML(s).replace(/"/g, '&quot;') + '"' + on + '>';
+  }
+  return '<label class="gen-label">' + escHTML(label) + input + '</label>';
+}
+function genEdit(mk, idx) {
+  const spec = genEditSpec(genState.set, mk)[idx];
+  const el = document.getElementById('gf-' + mk + '-' + idx);
+  if(!spec || !el) return;
+  const [path, , type] = spec;
+  let v = el.value;
+  if(type === 'ox') v = v === '1';
+  else if(type === 'lines') v = v.split('\n').map(x => x.trim()).filter(Boolean);
+  else if(type === 'pieces') v = v.split('/').map(x => x.trim()).filter(Boolean);
+  else if(type === 'csv') v = v.split(',').map(x => x.trim()).filter(Boolean);
+  genSet(genState.set, path, genSanitize(v));
+  genDerive(genState.set);
+  genState.checked[mk] = false;
+  genRefreshStatus();
+}
+function genRefreshStatus() {
+  const checks = genChecks(genState.set);
+  GEN_KEYS.forEach(mk => {
+    const box = document.getElementById('gen-probs-' + mk);
+    if(box) box.innerHTML = genProblemsHTML(mk, checks);
+    const chk = document.getElementById('gen-chk-' + mk);
+    if(chk) chk.outerHTML = genCheckBtnHTML(mk, checks);
+  });
+  const bar = document.getElementById('gen-bar');
+  if(bar) bar.outerHTML = genBarHTML(checks);
+}
+function genProblemsHTML(mk, checks) {
+  const mine = checks.filter(c => c.mk === mk);
+  const e = genState.errors[mk] ? '<div class="gen-prob err">⚠️ ' + escHTML(genState.errors[mk]) + '</div>' : '';
+  return e + mine.map(c => '<div class="gen-prob ' + c.level + '">' + (c.level === 'err' ? '⛔ ' : '⚠️ ') + escHTML(c.msg) + '</div>').join('');
+}
+function genCheckBtnHTML(mk, checks) {
+  const hasErr = checks.some(c => c.mk === mk && c.level === 'err') || !!genState.errors[mk];
+  const on = !!genState.checked[mk];
+  return '<button id="gen-chk-' + mk + '" class="gen-check' + (on ? ' on' : '') + '"' + (hasErr ? ' disabled title="빨간 문제를 먼저 고쳐 주세요"' : '')
+    + ' onclick="genToggleCheck(' + jsArg(mk) + ')">' + (on ? '✅ 확인했어요' : '☐ 확인하기') + '</button>';
+}
+function genToggleCheck(mk) { genState.checked[mk] = !genState.checked[mk]; genRefreshStatus(); }
+function genBarHTML(checks) {
+  const n = GEN_KEYS.filter(k => genState.checked[k]).length;
+  const errs = checks.filter(c => c.level === 'err').length + Object.keys(genState.errors).length;
+  const ready = n === GEN_KEYS.length && !errs;
+  return '<div id="gen-bar" class="gen-bar"><div><b>확인 ' + n + '/' + GEN_KEYS.length + '</b>' + (errs ? ' · <span style="color:var(--danger);">고칠 문제 ' + errs + '개</span>' : '') + '<br><small>미션마다 내용을 읽고 "확인하기"를 눌러 주세요. 모두 확인해야 저장할 수 있어요.</small></div>'
+    + '<div class="gen-bar-btns"><button class="log-btn" onclick="genPreview()">▶ 학생 화면으로 해 보기</button>'
+    + '<button class="gen-go gen-save" onclick="genSave()"' + (ready ? '' : ' disabled') + '>✅ 승인하고 저장</button></div></div>';
+}
+function genSummaryHTML(set, mk) {
+  // 읽기 쉬운 요약 (편집 칸 위에)
+  const e = x => genSafeHTML(x || '');
+  const t = x => escHTML(x || '');
+  if(mk === 'meta') return '<div class="gen-sum"><b>' + t(set.title) + '</b> ' + t(set.titleEn) + '<br>' + e(set.tagline) + '</div>';
+  if(mk === 'm1') return '<div class="gen-sum">' + t(set.m1.promptBefore) + '<u>' + t(set.m1.answer) + '</u>' + t(set.m1.promptAfter) + '<br><small>보기: ' + (set.m1.options || []).map(o => t(o.word)).join(' · ') + '</small></div>';
+  if(mk === 'm2') return '<div class="gen-sum">' + t(genJoin(set.m2.answer)) + '</div>';
+  if(mk === 'm3') return '<div class="gen-sum">' + (set.m3.right || []).map(r => t(r.correct) + ' + ' + t(r.text)).join('<br>') + '</div>';
+  if(mk === 'm4') return '<div class="gen-sum">' + (set.m4.items || []).map(x => (x.correct ? '⭕ ' : '❌ ') + e(x.sentence)).join('<br>') + '</div>';
+  if(mk === 'moon') return '<div class="gen-sum">' + (set.moon.phrases || []).map(x => '<span class="gen-pill' + (x.trap ? ' trap' : '') + '">' + t(x.text) + '</span>').join(' ') + '</div>';
+  if(mk === 'm5') return '<div class="gen-sum">' + (set.m5.islands || []).map((x, i) => (ISLANDS[i] ? ISLANDS[i].emoji + ' ' : '') + t(x.sentence)).join('<br>') + '</div>';
+  if(mk === 'm6') return '<div class="gen-sum">' + (set.m6.pairs || []).map(p => '<b>Q</b> ' + t(p.teamA_full) + '<br><b>A</b> ' + t(p.teamB_full)).join('<br><br>') + '</div>';
+  if(mk === 'm7') return '<div class="gen-sum">' + (set.m7.islands || []).map((x, i) => (ISLANDS[i] ? ISLANDS[i].emoji + ' ' : '') + t(x.keyKr) + ': ' + t(x.hint)).join('<br>') + '<br><small>목표 표현 패턴: ' + t((set.m7.target.patterns || []).join(', ')) + '</small></div>';
+  return '';
+}
+function genReviewHTML() {
+  const set = genState.set;
+  const checks = genChecks(set);
+  const cards = GEN_KEYS.map(mk => {
+    const busy = genState.busy[mk];
+    const fields = genEditSpec(set, mk).map((f, i) => genFieldHTML(mk, i, f)).join('');
+    return '<div class="gen-card" id="gen-card-' + mk + '"><div class="gen-card-top"><div class="log-mission">' + GEN_NAMES[mk] + '</div>'
+      + '<div class="gen-card-btns">' + (mk === 'meta' ? '' : '<button class="log-btn" onclick="genRegen(' + jsArg(mk) + ')"' + (busy ? ' disabled' : '') + '>' + (busy ? '<span class="ai-spin"></span> 만드는 중' : '↻ 이 미션 다시 만들기') + '</button>')
+      + genCheckBtnHTML(mk, checks) + '</div></div>'
+      + '<div id="gen-probs-' + mk + '">' + genProblemsHTML(mk, checks) + '</div>'
+      + genSummaryHTML(set, mk)
+      + '<details class="gen-edit"><summary>✏️ 고치기</summary>' + fields + '</details></div>';
+  }).join('');
+  return genHead((genState.editing ? '문법 세트 고치기 · ' : '검토하기 · ') + escHTML(set.title))
+    + '<div class="log-body">' + genBarHTML(checks)
+    + '<p class="gen-lead">AI가 만든 문항이에요. 틀린 영어, 어색한 상황, 너무 어려운 단어가 없는지 확인해 주세요. 마음에 안 드는 미션은 다시 만들거나 직접 고칠 수 있어요. 굵게 표시는 &lt;strong&gt;…&lt;/strong&gt;로 써요.</p>'
+    + '<div class="gen-cards">' + cards + '</div></div>';
+}
+async function genRegen(mk) {
+  await genRunGroup([mk]);
+  genState.checked[mk] = false;
+  genRender();
+}
+function genPreview() {
+  try { localStorage.setItem('gsos_preview_set', JSON.stringify(genState.set)); }
+  catch(e) { alert('이 브라우저에서는 미리 해 보기를 열 수 없어요.'); return; }
+  window.open(location.pathname + '?demo=1&preview=1', '_blank');
+}
+
+// ── 저장 / 불러오기 (내가 만든 세트) ──
+function libraryLocal() { try { return JSON.parse(localStorage.getItem(LIBRARY_LOCAL_KEY) || '{}') || {}; } catch(e) { return {}; } }
+function libraryUseFirebase() { return !!(window.firebaseReady && !DEMO); }
+async function genSave() {
+  const set = genDerive(genState.set);
+  if(genChecks(set).some(c => c.level === 'err')) return;
+  set.approvedAt = Date.now();
+  delete set._v;
+  try {
+    if(libraryUseFirebase()) await window.firebaseSet(window.firebaseRef(window.firebaseDB, 'grammar-sos/library/' + set.id), genClone(set));
+    else { const lib = libraryLocal(); lib[set.id] = set; localStorage.setItem(LIBRARY_LOCAL_KEY, JSON.stringify(lib)); }
+  } catch(e) { alert('저장하지 못했어요: ' + (e.message || e)); return; }
+  LIBRARY_SETS[set.id] = set;
+  genState.step = 'saved';
+  renderGrammarSelector();
+  const sel = document.getElementById('tdGrammarSelect');
+  if(sel) sel.value = set.id;
+  genRender();
+}
+function genSavedHTML() {
+  const s = genState.set;
+  return genHead('저장했어요')
+    + '<div class="log-body"><div class="gen-form"><p class="gen-lead"><b>' + escHTML(s.title) + '</b> 세트를 저장했어요. 문법 세트 목록의 <b>내가 만든 세트</b>에서 언제든 다시 고를 수 있어요'
+    + (libraryUseFirebase() ? ' (다른 반에서도).' : ' (체험 모드라 이 기기에만 저장돼요).') + '</p>'
+    + '<button class="gen-go" onclick="genClose(); tdApplyGrammar();">이 문법으로 지금 반 진행 →</button>'
+    + '<button class="log-btn" style="margin-top:.6rem;" onclick="genClose()">나중에 쓸게요</button></div></div>';
+}
+let librarySubscribed = false;
+function libraryLoad() {
+  if(libraryUseFirebase()) {
+    if(librarySubscribed) return;
+    librarySubscribed = true;
+    window.firebaseOnValue(window.firebaseRef(window.firebaseDB, 'grammar-sos/library'), snap => {
+      const v = (snap && snap.val()) || {};
+      LIBRARY_SETS = {};
+      Object.keys(v).forEach(id => { const s = v[id]; if(s && !validateGrammarSet(genDerive(s))) LIBRARY_SETS[id] = s; });
+      renderGrammarSelector();
+    });
+  } else {
+    LIBRARY_SETS = {};
+    const v = libraryLocal();
+    Object.keys(v).forEach(id => { if(v[id] && !validateGrammarSet(v[id])) LIBRARY_SETS[id] = v[id]; });
+  }
+}
+function librarySelectedSet() {
+  const sel = document.getElementById('tdGrammarSelect');
+  return sel ? LIBRARY_SETS[sel.value] : null;
+}
+function tdEditLibrarySet() {
+  const s = librarySelectedSet();
+  if(s) genOpen(s);
+}
+async function tdDeleteLibrarySet() {
+  const s = librarySelectedSet();
+  if(!s) return;
+  if(G && G.id === s.id) { alert('지금 진행 중인 문법은 지울 수 없어요. 다른 문법으로 바꾼 뒤 지워 주세요.'); return; }
+  if(!confirm('"' + s.title + '" 세트를 지울까요? 되돌릴 수 없어요.')) return;
+  try {
+    if(libraryUseFirebase()) await window.firebaseRemove(window.firebaseRef(window.firebaseDB, 'grammar-sos/library/' + s.id));
+    else { const lib = libraryLocal(); delete lib[s.id]; localStorage.setItem(LIBRARY_LOCAL_KEY, JSON.stringify(lib)); }
+  } catch(e) { alert('지우지 못했어요: ' + (e.message || e)); return; }
+  delete LIBRARY_SETS[s.id];
+  renderGrammarSelector();
+}
+function tdGrammarSelectChanged() {
+  const lib = !!librarySelectedSet();
+  ['tdLibEdit', 'tdLibDel'].forEach(id => { const b = document.getElementById(id); if(b) b.style.display = lib ? '' : 'none'; });
 }
 
 // ── 문법 세트 선택 (교사) ──
@@ -4539,13 +5104,17 @@ function renderGrammarSelector() {
   const sel = document.getElementById('tdGrammarSelect');
   const cur = document.getElementById('tdGrammarCurrent');
   if(!sel) return;
-  const sets = Object.assign({}, window.GRAMMAR_SETS);
-  if(G && !sets[G.id]) sets[G.id] = G; // 방에 저장된 (내장되지 않은) 세트도 목록에 표시
-  sel.innerHTML = Object.values(sets).map(s =>
-    '<option value="'+s.id.replace(/"/g,'&quot;')+'"'+(s.id===G.id?' selected':'')+'>'
-    + s.title + (s.description ? ' — '+s.description : '') + '</option>'
-  ).join('');
-  if(cur) cur.innerHTML = '지금 진행 중: <strong style="color:var(--text);">'+G.title+'</strong>';
+  const prev = sel.value;
+  const builtIn = Object.assign({}, window.GRAMMAR_SETS);
+  const mine = Object.assign({}, LIBRARY_SETS);
+  if(G && !builtIn[G.id] && !mine[G.id]) mine[G.id] = G; // 방에 저장된 (목록에 없는) 세트도 표시
+  const opt = s => '<option value="'+escHTML(s.id).replace(/"/g,'&quot;')+'">' + escHTML(stripTags(s.title)) + (s.description ? ' — '+escHTML(stripTags(s.description)) : '') + '</option>';
+  const mineList = Object.values(mine).sort((a, b) => (b.approvedAt || 0) - (a.approvedAt || 0));
+  sel.innerHTML = '<optgroup label="기본 세트">' + Object.values(builtIn).map(opt).join('') + '</optgroup>'
+    + (mineList.length ? '<optgroup label="내가 만든 세트">' + mineList.map(opt).join('') + '</optgroup>' : '');
+  sel.value = (prev && (builtIn[prev] || mine[prev])) ? prev : G.id;
+  tdGrammarSelectChanged();
+  if(cur) cur.innerHTML = '지금 진행 중: <strong style="color:var(--text);">'+escHTML(stripTags(G.title))+'</strong>';
 }
 
 // 교사가 고른 세트를 방에 저장 → 같은 방의 모든 기기가 이 세트로 바뀐다
@@ -4553,7 +5122,7 @@ async function tdApplyGrammar() {
   const sel = document.getElementById('tdGrammarSelect');
   if(!sel) return;
   const id = sel.value;
-  const set = window.GRAMMAR_SETS[id] || (G && G.id === id ? G : null);
+  const set = window.GRAMMAR_SETS[id] || LIBRARY_SETS[id] || (G && G.id === id ? G : null);
   if(!set) return;
   if(set.id === G.id) { alert('이미 이 문법으로 진행 중이에요.'); return; }
   const err = validateGrammarSet(set);
@@ -5232,12 +5801,32 @@ function demoSeedTeacher() {
   }
 }
 
+// 교사가 검토 중인 세트를 학생 화면으로 미리 해 보기 (?demo=1&preview=1, 세트는 이 브라우저 localStorage에서)
+const DEMO_PREVIEW = DEMO && new URLSearchParams(location.search).get('preview') === '1';
+if(DEMO_PREVIEW) {
+  try {
+    const ps = JSON.parse(localStorage.getItem('gsos_preview_set') || 'null');
+    if(ps && applyGrammarSet(genDerive(ps))) window._previewTitle = ps.title;
+  } catch(e) {}
+}
+function demoJump(m) {
+  const ti = ROLE_TO_TEAM[myRole] - 1;
+  if(!(ti >= 0) || !m) return;
+  state.teamMission[ti] = m; state.completedMission[ti] = m - 1;
+  state.currentTeam = ti;
+  showScreen('mission');
+  initMission(ti + 1, m);
+}
+
 if(DEMO) {
   document.body.classList.add('demo');
   myRoom = DEMO_ROOM;
   const badge = document.createElement('div');
   badge.id = 'demoBadge';
-  badge.innerHTML = '<b>체험 모드</b> 저장되지 않아요 · <a href="?demo=1">처음으로</a>';
+  badge.innerHTML = window._previewTitle
+    ? '<b>미리보기</b> ' + escHTML(stripTags(window._previewTitle)) + ' · <select onchange="demoJump(+this.value); this.value=\'\'" aria-label="미션으로 이동" style="background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:4px;font-size:.76rem;"><option value="">미션으로 이동</option>'
+      + [1,2,3,4,5,6,7,8].map(m => '<option value="'+m+'">'+(m===5?'달 기지':'미션 '+(m>5?m-1:m))+'</option>').join('') + '</select>'
+    : '<b>체험 모드</b> 저장되지 않아요 · <a href="?demo=1">처음으로</a>';
   document.body.appendChild(badge);
   const lb = document.getElementById('loginBtn');
   if(lb) lb.innerHTML = '▶ 학생으로 체험 시작';
