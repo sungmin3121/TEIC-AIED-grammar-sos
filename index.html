@@ -309,6 +309,10 @@ text-align:left;
 .ai-old { color:#f87171; text-decoration:line-through; text-decoration-color:rgba(248,113,113,.6); font-family:'Space Mono',monospace; }
 .ai-new { color:#4ade80; font-family:'Space Mono',monospace; }
 .ai-why { font-size:.84rem; color:var(--text3); margin-top:.15rem; }
+.ai-mark { color:#fbbf24; font-family:'Space Mono',monospace; text-decoration:underline wavy rgba(251,191,36,.7); text-underline-offset:3px; }
+.ai-ask { font-size:.86rem; color:var(--text2); margin-top:.3rem; }
+.ai-head { display:flex; justify-content:space-between; flex-wrap:wrap; gap:.25rem .75rem; font-size:.78rem; color:#c4b5fd; border-bottom:1px solid rgba(168,85,247,.2); padding-bottom:.45rem; }
+.ai-head span + span { color:var(--text3); }
 
 /* 교사 대시보드: 버튼 글자는 한 줄로, 자리가 모자라면 버튼째 다음 줄로 */
 .td-topbar { flex-wrap:wrap; }
@@ -1392,9 +1396,10 @@ function m7AiInner(ti) {
   else if(m7AiBusy[ti]) btn = '<button class="ai-btn" disabled><span class="ai-spin"></span> AI가 안내문을 읽는 중…</button>';
   else if(left <= 0) btn = '<button class="ai-btn" disabled>🤖 AI 피드백을 모두 사용했어요</button>';
   else btn = '<button class="ai-btn" onclick="m7RequestAI('+ti+')">🤖 AI 피드백 받기 <span class="hint-count">남은 '+left+'회</span></button>';
-  const note = '<div class="ai-note">제출 전에 AI가 문법을 봐 줘요. 고칠 점을 보고 직접 다시 써 보세요!</div>';
+  const note = '<div class="ai-note">제출 전에 AI가 문법을 봐 줘요. 첫 피드백은 고칠 곳과 힌트만, 마지막 피드백은 고친 형태까지 보여 줘요.</div>';
   const err = m7AiError[ti] ? '<div class="ai-error">⚠️ '+escHTML(m7AiError[ti])+'</div>' : '';
-  return btn + note + err + (info.last ? m7AiFeedbackHTML(info.last) : '');
+  const round = info.count || 0;
+  return btn + note + err + (info.last ? m7AiFeedbackHTML(info.last, { round, reveal: round >= AI_FEEDBACK_LIMIT }) : '');
 }
 // AI가 '잘 쓴 표현'에 고칠 문장을 섞어 넣는 경우를 거른다:
 // 목표 표현 패턴이 들어 있고, '고쳐 보기'의 원래 문장과 겹치지 않는 것만 남긴다.
@@ -1408,14 +1413,33 @@ function m7GoodTargets(fb) {
     return !wrong.some(w => x === w || x.includes(w)); // 고칠 문장 자체(또는 그걸 품은 표현)만 뺀다
   });
 }
-function m7AiFeedbackHTML(fb) {
+// 고친 형태를 아직 보여 주지 않는 회차에, 설명 글에 고친 표현이 섞여 들어가면 빈칸으로 가린다
+function m7HideAnswer(text, fixes) {
+  let out = String(text || '');
+  (fixes || []).forEach(f => {
+    const orig = String(f.original || '').toLowerCase();
+    String(f.better || '').split(/[()=]/).map(x => x.trim()).filter(x => x.length >= 6 && !orig.includes(x.toLowerCase()))
+      .forEach(x => { out = out.split(x).join('____'); out = out.replace(new RegExp(x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '____'); });
+  });
+  return out;
+}
+// opts.round: 몇 번째 피드백인지, opts.reveal: 고친 형태를 보여 줄지 (마지막 회차에만)
+function m7AiFeedbackHTML(fb, opts) {
+  opts = opts || {};
+  const reveal = opts.reveal !== false;
   const sec = (icon, title, body) => body ? '<div class="ai-sec"><div class="ai-sec-title">'+icon+' '+title+'</div>'+body+'</div>' : '';
+  const hide = t => reveal ? String(t || '') : m7HideAnswer(t, fb.fixes);
   const good = m7GoodTargets(fb);
   const found = good.length
     ? '<div class="ai-chips">'+good.map(t => '<span class="ai-chip">'+escHTML(t)+'</span>').join('')+'</div>' : '';
-  const fixes = (fb.fixes || []).map(f =>
-    '<div class="ai-fix"><div><span class="ai-old">'+escHTML(f.original)+'</span> → <span class="ai-new">'+escHTML(f.better)+'</span></div>'
-    + (f.why ? '<div class="ai-why">'+escHTML(f.why)+'</div>' : '') + '</div>').join('');
+  const fixes = (fb.fixes || []).map(f => reveal
+    ? '<div class="ai-fix"><div><span class="ai-old">'+escHTML(f.original)+'</span> → <span class="ai-new">'+escHTML(f.better)+'</span></div>'
+      + (f.why ? '<div class="ai-why">'+escHTML(f.why)+'</div>' : '') + '</div>'
+    : '<div class="ai-fix"><div><span class="ai-mark">'+escHTML(f.original)+'</span></div>'
+      + (f.why ? '<div class="ai-why">'+escHTML(hide(f.why))+'</div>' : '')
+      + (f.ask ? '<div class="ai-ask">💭 '+escHTML(hide(f.ask))+'</div>' : '') + '</div>').join('');
+  const fixesNote = (fb.fixes || []).length && !reveal
+    ? '<div class="ai-why">고친 형태는 마지막 피드백에서 보여 줘요. 먼저 모둠이 직접 고쳐 보세요.</div>' : '';
   // 철자: 목표 문법과 별개라 점수·지적 3개와 섞지 않고 따로 짧게 보여 준다 (예전 피드백에는 없음)
   const low = x => String(x || '').toLowerCase().trim();
   const spell = (fb.spelling || []).filter(x => x && x.wrong && x.right && low(x.wrong) !== low(x.right));
@@ -1424,13 +1448,14 @@ function m7AiFeedbackHTML(fb) {
       + '<div class="ai-why">문법과 상관없이 철자만 다시 확인해 보세요.</div>' : '';
   const rc = fb.requiredContent || {};
   const req = rc.comment ? '<div class="ai-text">'+(rc.included ? '✅ ' : '⚠️ ')+escHTML(rc.comment)+'</div>' : '';
-  return '<div class="ai-panel">'
-    + sec('👍', '잘한 점', fb.praise ? '<div class="ai-text">'+escHTML(fb.praise)+'</div>' : '')
+  const head = '<div class="ai-head"><span>🤖 AI 피드백' + (opts.round ? ' · ' + opts.round + '회차' : '') + '</span><span>참고용 · 점수와 상관없어요</span></div>';
+  return '<div class="ai-panel">' + head
+    + sec('👍', '잘한 점', fb.praise ? '<div class="ai-text">'+escHTML(hide(fb.praise))+'</div>' : '')
     + sec('✅', '잘 쓴 '+escHTML(G.m7.target.label), found)
-    + sec('✏️', '고쳐 보기', fixes)
+    + sec('✏️', reveal ? '고쳐 보기' : '다시 볼 곳', fixes ? fixes + fixesNote : '')
     + sec('🔤', '철자 확인', spelling)
     + sec('📌', '필수 내용', req)
-    + sec('👉', '다음에 할 일', fb.nextStep ? '<div class="ai-text">'+escHTML(fb.nextStep)+'</div>' : '')
+    + sec('👉', '다음에 할 일', fb.nextStep ? '<div class="ai-text">'+escHTML(hide(fb.nextStep))+'</div>' : '')
     + '</div>';
 }
 function m7AiRefresh(ti) {
@@ -5115,12 +5140,12 @@ function demoSeedTeacher() {
       praise: '용암 때문에 착륙 장소를 알려 달라는 내용을 분명히 썼어요.',
       targetFound: [],
       fixes: [
-        { original: 'where landing', better: 'where to land', why: '의문사 뒤에는 -ing가 아니라 to + 동사원형이 와요.' },
-        { original: "We don't know what should we do", better: "We don't know what we should do (= what to do)", why: '문장 속 의문사 뒤는 의문문 어순이 아니라 주어 + 동사 순서예요. what to do로 바꾸면 목표 표현이 돼요.' },
+        { original: 'where landing', better: 'where to land', why: '의문사 뒤에 -ing 형태가 왔어요. 이번 시간 목표 표현의 모양과 달라요.', ask: '의문사 바로 뒤에 무엇이 와야 할까요?' },
+        { original: "We don't know what should we do", better: "We don't know what we should do (= what to do)", why: '문장 속에 들어간 의문사 뒤에 의문문 어순(조동사 + 주어)이 그대로 왔어요.', ask: 'we와 should의 순서를 바꾸면 어떻게 될까요? 목표 표현으로도 바꿀 수 있을까요?' },
       ],
       spelling: [],
       requiredContent: { included: true, comment: '용암을 피할 착륙 장소를 안내했어요.' },
-      nextStep: '두 곳을 고친 뒤 소리 내어 한 번 읽어 보세요.' } },
+      nextStep: '표시된 두 곳을 모둠이 함께 고친 뒤 소리 내어 한 번 읽어 보세요.' } },
     1: { count: 2, at: now - 2*60e3, last: {
       praise: '북극곰이 있다는 위험을 구체적으로 알려 줬어요.',
       targetFound: ['what to avoid', 'how to stay warm'],
@@ -5131,10 +5156,10 @@ function demoSeedTeacher() {
     3: { count: 1, at: now - 3*60e3, last: {
       praise: '모래폭풍 전에 와 달라는 시간 조건을 잘 넣었어요.',
       targetFound: [],
-      fixes: [ { original: 'which way come', better: 'which way to come', why: '의문사(which way) 뒤에 동사원형만 오면 안 되고 to가 있어야 해요.' } ],
+      fixes: [ { original: 'which way come', better: 'which way to come', why: '의문사(which way) 뒤에 동사원형이 바로 왔어요. 목표 표현에서 한 단어가 빠졌어요.', ask: 'which way와 come 사이에 무엇이 들어가야 할까요?' } ],
       spelling: [],
-      requiredContent: { included: true, comment: '올 방향을 안내하려 했어요. to만 넣으면 완성돼요.' },
-      nextStep: 'which way 뒤에 to를 넣어 보세요.' } },
+      requiredContent: { included: true, comment: '올 방향을 안내하려 했어요.' },
+      nextStep: '표시된 곳을 고친 뒤 한 번 더 피드백을 받아 보세요.' } },
   };
 
   // 응답 기록 (오답 포함). 문항 문구는 지금 문법 세트에서 가져온다.
