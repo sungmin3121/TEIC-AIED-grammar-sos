@@ -5016,6 +5016,18 @@ const GEN_FIELDS = {
         bonus:{ each:{ cardHtml:'r', checkLabel:'r', scoreLabel:'r', patterns:'r' } }, gradingNote:'r', templateHtml:'r' },
 };
 const GEN_PLAN = [['meta','m1','m2'], ['m3','m4'], ['moon','m5'], ['m6','m7']];
+// 미션마다 화면에 고정된 이야기 (AI가 이 상황에 맞는 문장을 쓰도록 함께 보낸다)
+const GEN_STORY = {
+  meta: 'A survival game: six teams are shipwrecked on six islands today and must use the target grammar to survive and get rescued.',
+  m1: 'Mission 1: You just woke up on a strange island after a shipwreck. You have no idea where you are. The only thing you have is your AI chatbot device. Students fill the blank in what they say to the AI, then choose where to go.',
+  m2: 'Mission 2: It is getting dark and cold. You must build a shelter before night. Students put sentence pieces in order to ask the AI for help with the shelter.',
+  m3: 'Mission 3: You built a shelter but you are starving. Students match the left cards with the right cards to ask the AI about food, then choose food.',
+  m4: 'Mission 4: Strangers appear on the island. Only those who speak correctly can be trusted as allies. Students judge if each stranger\'s sentence is grammatically correct (O/X).',
+  moon: 'Moon base event: a meteor shower falls on the whole class. Students type the correct target-grammar phrases written on falling meteors; trap meteors have a typical learner error.',
+  m5: 'Mission 5: A sudden crisis hits each island (volcano: lava, arctic: polar bear, jungle: jaguar, desert: sandstorm, ocean: shark, dino: T-Rex). Students memorize a 2-sentence warning for 7 seconds and say it aloud in a relay.',
+  m6: 'Mission 6: Two teams work together to send a rescue signal with an item they found (a volcanic glass mirror, a palm tree torch, a shell horn). Team A asks a question about the item; team B answers with two sentences on how to use it.',
+  m7: 'Mission 7: A rescue helicopter spotted the signal. Each team writes a short rescue guide for the pilot (where to land / what to avoid / how to approach / which way to come), using the target grammar.',
+};
 const GEN_KEYS = ['meta','m1','m2','m3','m4','moon','m5','m6','m7'];
 const GEN_NAMES = { meta:'세트 정보', m1:'미션 1 위치 파악', m2:'미션 2 거주지', m3:'미션 3 식량', m4:'미션 4 동료', moon:'달 기지', m5:'미션 5 위기 대응', m6:'미션 6 신호', m7:'미션 7 탈출' };
 const LIBRARY_LOCAL_KEY = 'gsos_library';
@@ -5253,6 +5265,7 @@ async function genRunGroup(missions) {
         grammar:{ title:genState.form.title, titleEn:genState.form.titleEn, examples:genState.form.examples, note:genState.form.note },
         missions,
         references: genReferences(missions),
+        stories: Object.fromEntries(missions.map(mk => [mk, GEN_STORY[mk] || ''])),
       }, 90000);
       missions.forEach(mk => {
         if(data.missions && data.missions[mk]) { genApply(genState.set, mk, data.missions[mk]); (genState.done = genState.done || {})[mk] = true; }

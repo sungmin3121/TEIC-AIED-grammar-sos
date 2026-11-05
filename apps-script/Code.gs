@@ -131,6 +131,7 @@ function cleanFeedback_(r) {
  *   grammar: { title, titleEn, examples: [예문 1~3개], note },   // 교사가 입력
  *   missions: ['m1','m2'],                                         // 이번에 만들 미션 (한 번에 1~3개)
  *   references: [ { title, titleEn, missions: { m1: {...}, ... } }, ... ]  // 이미 있는 세트의 같은 미션 (형식 본보기)
+ *   stories: { m1: '이 미션의 고정된 이야기', ... }                   // 게임 화면에 고정된 상황 설명 (문법과 상관없음)
  * }
  * 돌려주는 값: { ok, missions: { m1: {...}, m2: {...} } }
  * 게임이 받은 뒤 형식 검사·HTML 정리를 하고, 교사가 미리보기·수정·승인해야 수업에 쓰인다.
@@ -144,6 +145,8 @@ function generateMissions_(body) {
   var examples = (Array.isArray(g.examples) ? g.examples : []).map(function (x) { return genStr_(x, 200).trim(); }).filter(String).slice(0, 3);
   var missions = (Array.isArray(body.missions) ? body.missions : []).filter(function (m) { return GEN_MISSIONS.indexOf(m) >= 0; }).slice(0, 3);
   var refs = (Array.isArray(body.references) ? body.references : []).slice(0, 2);
+  var stories = {};
+  missions.forEach(function (m) { if (body.stories && body.stories[m]) stories[m] = genStr_(body.stories[m], 600); });
   if (!title) return { ok: false, error: '문법 이름을 써 주세요.' };
   if (!missions.length) return { ok: false, error: '만들 미션이 없어요.' };
   if (!refs.length) return { ok: false, error: '본보기 세트가 없어요.' };
@@ -155,6 +158,8 @@ function generateMissions_(body) {
     'Rules:',
     '- Output exactly the same JSON keys and the same array lengths as the references for each requested mission. Do not add or drop keys.',
     '- Keep the story, islands, items, dangers and island order of the references. Change the language so that every task practises the NEW target grammar.',
+    '- Every sentence must fit that mission\'s fixed story in "missionStories" (shown on screen before the task). The survivors were shipwrecked and arrived on the island TODAY: never write that they have lived there long, that the island is their home, or anything that contradicts the story.',
+    '- Wrong choices must be clearly WRONG grammar in that exact place (an ungrammatical form, or a form that breaks the target grammar), not just a correct sentence with a different or less natural meaning. A teacher must be able to say "this is wrong because of the grammar rule".',
     '- Every English sentence must be grammatically correct, natural, and at high-school first-year level (CEFR A2-B1 words).',
     '- Korean text (hints, feedback, reasons, labels) is short, friendly 해요체, under 120 characters each.',
     '- Hints: 2-3 per mission, from general to specific; the last hint may give the first part of the answer but never the whole answer.',
@@ -178,6 +183,7 @@ function generateMissions_(body) {
   var user = JSON.stringify({
     newTargetGrammar: { title: title, titleEn: genStr_(g.titleEn, 80), teacherExamples: examples, teacherNote: genStr_(g.note, 300) },
     requestedMissions: missions,
+    missionStories: stories,
     references: refs.map(function (r) {
       var picked = {};
       missions.forEach(function (m) { if (r.missions && r.missions[m]) picked[m] = r.missions[m]; });
@@ -348,6 +354,7 @@ function testGenerate() {
   var out = generateMissions_({
     grammar: { title: '현재완료', titleEn: 'Present perfect', examples: ['I have lived here for three years.', 'Have you ever seen a shark?'] },
     missions: ['m1'],
+    stories: { m1: 'You just woke up on a strange island after a shipwreck. You have no idea where you are. The only thing you have is your AI chatbot device. Ask your AI for help! (Students fill a blank in what they say to the AI.)' },
     references: [{ title: '의문사 + to부정사', titleEn: 'Wh-word + to-infinitive', missions: { m1: {
       typeLabel: '의문사 카드 선택', hints: ['빈칸 뒤 <strong>to go</strong>를 보세요.', '어디로 갈지 모르는 상황이에요.'],
       stepLabel: '올바른 의문사를 선택하세요', promptBefore: '"I don\'t know ', promptAfter: ' to go. Help me!"',
