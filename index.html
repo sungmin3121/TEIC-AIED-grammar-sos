@@ -258,6 +258,22 @@ text-align:left;
 .hint-num { flex-shrink:0; width:1.25rem; height:1.25rem; border-radius:50%; background:#facc15; color:#111; font-size:.8rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-top:.1rem; }
 .hint-done { font-size:.82rem; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
 
+/* 미션 공통 띠 */
+.m-ribbon { display:flex; flex-wrap:wrap; justify-content:space-between; gap:.35rem 1rem; align-items:center; margin:-.35rem 0 1rem; padding:.5rem .8rem; border-radius:6px; background:rgba(56,189,248,.07); border:1px solid rgba(56,189,248,.25); font-size:.86rem; color:var(--text2); font-family:'Noto Sans KR',sans-serif; }
+.m-ribbon b { color:var(--text); }
+.m-turn b { color:var(--accent); }
+.m-turn small { color:var(--text3); font-size:.78rem; }
+/* 교사: 지금 볼 것 */
+.td-focus { display:flex; flex-wrap:wrap; align-items:center; gap:.45rem .7rem; padding:.55rem 1rem; background:rgba(250,204,21,.05); border-bottom:1px solid var(--border); font-size:.86rem; color:var(--text2); font-family:'Noto Sans KR',sans-serif; flex-shrink:0; }
+.tdf-label { font-weight:700; color:#facc15; white-space:nowrap; }
+.tdf-item { display:inline-flex; flex-wrap:wrap; align-items:center; gap:.35rem; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:.2rem .55rem; }
+.tdf-m { color:var(--accent2); font-size:.8rem; }
+.tdf-n { color:var(--danger); font-size:.8rem; }
+.tdf-stuck { background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.3); border-radius:6px; padding:.2rem .55rem; color:#fca5a5; }
+.tdf-empty { color:var(--text3); }
+.td-group { display:inline-flex; align-items:center; gap:.35rem; font-size:.82rem; color:var(--text2); font-family:'Noto Sans KR',sans-serif; white-space:nowrap; }
+.td-group select { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:.2rem .35rem; color:var(--text); font-size:.82rem; }
+
 /* 새 문법 세트 만들기 (교사) */
 .td-gen-btn { background:rgba(168,85,247,.14); border:1px solid rgba(168,85,247,.4); border-radius:4px; padding:.3rem .8rem; font-size:.84rem; color:#c4b5fd; cursor:pointer; white-space:nowrap; font-family:'Noto Sans KR',sans-serif; }
 .td-lib-btn { background:transparent; border:1px solid var(--border); border-radius:4px; padding:.3rem .6rem; font-size:.8rem; color:var(--text2); cursor:pointer; white-space:nowrap; font-family:'Noto Sans KR',sans-serif; }
@@ -756,8 +772,13 @@ window.dispatchEvent(new Event('firebaseReady'));
     <button id="tdLibEdit" onclick="tdEditLibrarySet()" class="td-lib-btn" style="display:none;">✏️ 고치기</button>
     <button id="tdLibDel" onclick="tdDeleteLibrarySet()" class="td-lib-btn td-lib-del" style="display:none;">🗑️ 지우기</button>
     <button onclick="genOpen()" class="td-gen-btn">✨ 새 문법 세트 만들기</button>
+    <label class="td-group">👥 모둠 인원
+      <select id="tdGroupSize" onchange="tdSetGroupSize(+this.value)"><option value="3">3명</option><option value="4" selected>4명</option><option value="5">5명</option><option value="6">6명</option></select>
+    </label>
     <div id="tdGrammarCurrent" style="font-size:.82rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;"></div>
   </div>
+  <!-- 지금 볼 것 -->
+  <div id="tdFocus" class="td-focus"></div>
   <!-- 모둠 카드 그리드 -->
   <div style="flex:1;overflow-y:auto;padding:1rem;">
     <div id="tdGrid" class="td-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;"></div>
@@ -2500,6 +2521,38 @@ function renderSidebar(teamNum) {
   `).join('');
 }
 
+// ══ 미션 공통 띠: 목표 문법 · 이번 미션 기기 담당 ══
+// 모둠원이 돌아가며 기기를 잡도록 미션마다 번호를 바꾼다(1번→2번→…). 인원은 교사 대시보드에서 정한다.
+function deviceTurn(missionId) {
+  const n = Math.max(2, Math.min(6, state.groupSize || 4));
+  return ((Math.max(1, missionId) - 1) % n) + 1;
+}
+function missionRibbonHTML() {
+  const m = state.currentMission || 1;
+  return '<div class="m-ribbon"><span>🎯 목표 문법 <b>' + escHTML(stripTags(G.title)) + '</b></span>'
+    + '<span class="m-turn">📱 이번 미션 기기 담당 <b>모둠원 ' + deviceTurn(m) + '번</b><small> · 나머지는 함께 읽고 말해요</small></span></div>';
+}
+function decorateMission() {
+  const main = document.getElementById('missionMain');
+  if(!main) return;
+  const old = main.querySelector(':scope > .m-ribbon');
+  const head = main.querySelector(':scope > .mission-header');
+  if(!head) { if(old) old.remove(); return; }
+  const html = missionRibbonHTML();
+  if(old && old.outerHTML === html) return;
+  if(old) old.remove();
+  head.insertAdjacentHTML('afterend', html);
+}
+(function() {
+  const main = document.getElementById('missionMain');
+  if(main && window.MutationObserver) new MutationObserver(() => decorateMission()).observe(main, { childList:true });
+})();
+function tdSetGroupSize(n) {
+  state.groupSize = n;
+  fbSaveState();
+  updateTeacherDashboard();
+}
+
 // ══ MISSION 1: 위치 파악 ══
 function renderMission1(teamNum) {
   const isl = ISLANDS[teamNum-1];
@@ -2524,7 +2577,7 @@ function renderMission1(teamNum) {
       <div class="step-label">STEP 1 · ${G.m1.stepLabel}</div>
       <div class="wh-prompt">
         💬 ${G.m1.promptBefore}<span class="blank" id="blank-${ti}">___</span>${G.m1.promptAfter}<br>
-        <span style="font-size:.84rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">${G.m1.promptKr}</span>
+        <span id="m1kr-${ti}" style="font-size:.84rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">🇰🇷 우리말 뜻은 정답을 고르면 보여요</span>
       </div>
       <div class="wh-cards" id="whCards-${ti}">
         ${G.m1.options.map((o,oi)=>`
@@ -2588,6 +2641,7 @@ function selectWh(ti, pick) {
   if(word===correct) {
     fb.className='feedback-box show feedback-correct';
     fb.innerHTML=`✅ 정답! ${G.m1.correctFeedback}<br><span style="font-size:.9rem;color:var(--text2)">이제 AI가 방향을 알려줬어요. 어디로 갈지 선택하세요!</span>`;
+    const kr = document.getElementById('m1kr-'+ti); if(kr) kr.textContent = G.m1.promptKr;
     setTimeout(()=>{ state.missionStep[ti]=2; renderMission1(ti+1); },1500);
   } else {
     fb.className='feedback-box show feedback-wrong';
@@ -5157,6 +5211,9 @@ function receiveRoomGrammarSet(set) {
 function updateTeacherDashboard() {
 const grid = document.getElementById('tdGrid');
 if(!grid) return;
+renderTeacherFocus();
+const gs = document.getElementById('tdGroupSize');
+if(gs && document.activeElement !== gs) gs.value = String(state.groupSize || 4);
 grid.innerHTML = ISLANDS.map((isl,i) => {
 const info = getMissionStepInfo(i);
 const coins = state.coins[i];
@@ -5472,17 +5529,8 @@ function setLogFilter(kind, v) {
   if(kind === 'team') logFilterTeam = v; else logFilterM = v;
   renderLogOverlay();
 }
-function renderLogOverlay() {
-  const ov = document.getElementById('logOverlay');
-  if(!ov) return;
-  const keepScroll = (ov.querySelector('.log-body') || {}).scrollTop || 0;
-  const all = logEntries(), list = logFiltered();
-  const sel = (kind, cur, opts) => '<select onchange="setLogFilter(\'' + kind + '\', this.value)" class="log-select">'
-    + opts.map(([v, l]) => '<option value="' + v + '"' + (String(cur) === String(v) ? ' selected' : '') + '>' + l + '</option>').join('') + '</select>';
-  const teamOpts = [['all', '모든 모둠']].concat(ISLANDS.map((_, i) => [String(i), logTeamLabel(i)]));
-  const mOpts = [['all', '모든 미션']].concat(Object.keys(LOG_MISSION_LABEL).map(k => [k, LOG_MISSION_LABEL[k]]));
-
-  // A. 자주 틀린 문항 (정오가 있는 기록만)
+// 자주 틀린 문항: 오답 수(그다음 틀린 모둠 수) 순. 발화 판정은 문항이 아니라 빼지 않는다
+function logHardItems(list) {
   const groups = {};
   list.filter(e => e.ok === true || e.ok === false).forEach(e => {
     const k = e.m + '|' + e.item;
@@ -5494,7 +5542,53 @@ function renderLogOverlay() {
       a.n++; a.teams.add(e.team);
     }
   });
-  const hard = Object.values(groups).filter(g => g.wrong > 0).sort((a, b) => b.wrong - a.wrong || b.teams.size - a.teams.size).slice(0, 10);
+  return Object.values(groups).filter(g => g.wrong > 0).sort((a, b) => b.teams.size - a.teams.size || b.wrong - a.wrong);
+}
+
+// 교사 대시보드 맨 위: 지금 볼 것 (여러 모둠이 틀린 표현, 막힌 모둠)
+function renderTeacherFocus() {
+  const box = document.getElementById('tdFocus');
+  if(!box) return;
+  const all = logEntries();
+  const hard = logHardItems(all).filter(g => g.teams.size >= 2).slice(0, 2);
+  const parts = hard.map(g => {
+    const top = Object.entries(g.answers).sort((a, b) => b[1].n - a[1].n)[0];
+    return '<div class="tdf-item"><span class="tdf-m">' + escHTML(LOG_MISSION_LABEL[g.m] || '') + '</span> '
+      + escHTML(g.item.length > 60 ? g.item.slice(0, 58) + '…' : g.item)
+      + (top ? ' <span class="log-wrong">' + escHTML(top[0]) + '</span>' : '')
+      + ' <span class="tdf-n">' + g.teams.size + '개 모둠</span></div>';
+  });
+  // 막힌 모둠: 지금 미션에서 2번 이상 틀렸거나 힌트를 3개 이상 연 모둠
+  const stuck = ISLANDS.map((isl, i) => {
+    const m = state.teamMission[i] || 1;
+    if(((state.completedMission || [])[i] || 0) >= m) return null;
+    const wrong = all.filter(e => e.team === i && e.m === m && e.ok === false).length;
+    const hk = Object.keys(HINT_MISSION_ID).find(k => HINT_MISSION_ID[k] === m);
+    const hints = hk ? hintCount(hk, i) : 0;
+    return (wrong >= 2 || hints >= 3) ? { i, m, wrong, hints } : null;
+  }).filter(Boolean).sort((a, b) => (b.wrong + b.hints) - (a.wrong + a.hints)).slice(0, 3);
+  const stuckHtml = stuck.map(x => '<span class="tdf-stuck">' + ISLANDS[x.i].emoji + ' ' + (x.i + 1) + '모둠 · ' + escHTML(LOG_MISSION_LABEL[x.m] || '')
+    + (x.wrong ? ' · 오답 ' + x.wrong : '') + (x.hints ? ' · 힌트 ' + x.hints : '') + '</span>').join('');
+  if(!parts.length && !stuck.length) {
+    box.innerHTML = '<span class="tdf-label">🎯 지금 볼 것</span><span class="tdf-empty">여러 모둠이 틀린 표현이나 막힌 모둠이 생기면 여기에 떠요.</span>';
+    return;
+  }
+  box.innerHTML = (parts.length ? '<span class="tdf-label">🎯 다시 짚을 표현</span>' + parts.join('') : '')
+    + (stuck.length ? '<span class="tdf-label">🆘 막힌 모둠</span>' + stuckHtml : '');
+}
+
+function renderLogOverlay() {
+  const ov = document.getElementById('logOverlay');
+  if(!ov) return;
+  const keepScroll = (ov.querySelector('.log-body') || {}).scrollTop || 0;
+  const all = logEntries(), list = logFiltered();
+  const sel = (kind, cur, opts) => '<select onchange="setLogFilter(\'' + kind + '\', this.value)" class="log-select">'
+    + opts.map(([v, l]) => '<option value="' + v + '"' + (String(cur) === String(v) ? ' selected' : '') + '>' + l + '</option>').join('') + '</select>';
+  const teamOpts = [['all', '모든 모둠']].concat(ISLANDS.map((_, i) => [String(i), logTeamLabel(i)]));
+  const mOpts = [['all', '모든 미션']].concat(Object.keys(LOG_MISSION_LABEL).map(k => [k, LOG_MISSION_LABEL[k]]));
+
+  // A. 자주 틀린 문항 (정오가 있는 기록만)
+  const hard = logHardItems(list).slice(0, 10);
   const hardHtml = hard.length ? hard.map(g => {
     const answers = Object.entries(g.answers).sort((a, b) => b[1].n - a[1].n).slice(0, 4).map(([ans, a]) =>
       '<span class="log-wrong">' + escHTML(ans) + ' <b>×' + a.n + '</b> ' + [...a.teams].map(t => (ISLANDS[t] || {}).emoji || '').join('') + '</span>').join('');
