@@ -70,6 +70,16 @@ body.demo #roomCard, body.demo #teacherLoginBox, body.demo .intro-demo, body.dem
 #demoBadge a { color:var(--text); }
 body.demo #demoBadge { display:flex; }
 body.demo:has(#screen-login.active) #demoBadge { display:none; }
+.tpin { display:flex; gap:.5rem; }
+.tpin input { flex:1; min-width:0; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:.6rem .75rem; color:var(--text); font-size:1rem; letter-spacing:.15em; }
+.tpin input:focus { outline:none; border-color:var(--accent); }
+.tpin button { background:var(--accent); color:#fff; border:none; border-radius:6px; padding:0 1rem; font-size:.92rem; font-weight:700; cursor:pointer; font-family:'Noto Sans KR',sans-serif; }
+.tpin button:disabled { opacity:.5; cursor:default; }
+.tpin-msg { margin-top:.5rem; font-size:.78rem; line-height:1.5; color:var(--text3); font-family:'Noto Sans KR',sans-serif; word-break:keep-all; }
+.tpin-msg.err { color:var(--danger); }
+.tpin-msg.ok { color:var(--success); }
+.teacher-link a { color:var(--text3); }
+body.demo .teacher-link { display:none; }
 .intro-step { font-size:.85rem; color:var(--text3); margin-bottom:.75rem; font-family:'Noto Sans KR',sans-serif; }
 .intro-foot { word-break:keep-all; margin-top:1.25rem; font-size:.75rem; line-height:1.5; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
 .sos-badge { display:inline-block; background:var(--danger); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:1.06rem; letter-spacing:.3em; padding:.3rem 1.2rem; border-radius:2px; margin-bottom:1.5rem; animation:badgePulse 2s ease-in-out infinite; }
@@ -631,10 +641,15 @@ window.dispatchEvent(new Event('firebaseReady'));
   </div>
 </div>
 
-<!-- 교사 접속 (URL에 ?teacher=sos2024 있을 때만 표시) -->
+<!-- 교사 접속: 맨 아래 '선생님 접속'을 누르면 열림. 교사 PIN을 확인한 뒤에만 교사로 접속할 수 있다 -->
 <div id="teacherLoginBox" style="display:none;background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:8px;padding:1rem;margin-bottom:1rem;text-align:left;">
   <div style="font-size:.8rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">👩‍🏫 교사 접속</div>
-  <button onclick="selectRole('teacher')" id="roleBtn-teacher" class="role-btn" style="width:100%;padding:.75rem;font-size:1rem;">
+  <form id="teacherPinForm" class="tpin" onsubmit="event.preventDefault(); teacherVerifyPin();">
+    <input id="teacherPin" type="password" inputmode="numeric" autocomplete="current-password" placeholder="교사 PIN" aria-label="교사 PIN">
+    <button type="submit" id="teacherPinBtn">확인</button>
+  </form>
+  <div id="teacherPinMsg" class="tpin-msg">학생 기기에서는 열지 마세요. PIN을 확인하면 교사로 접속할 수 있어요.</div>
+  <button onclick="selectRole('teacher')" id="roleBtn-teacher" class="role-btn" style="display:none;width:100%;padding:.75rem;font-size:1rem;">
     👩‍🏫 교사로 접속
   </button>
 </div>
@@ -645,7 +660,7 @@ window.dispatchEvent(new Event('firebaseReady'));
   font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.1em;cursor:pointer;opacity:.4;pointer-events:none;transition:all .2s;">
   ▶ 접속하기
 </button>
-<div class="intro-foot">Grammar SOS · 2026 SNU TEIC AIED Challenge 출품작 · 학생 이름과 개인정보는 저장하지 않아요<span class="demo-exit"> · <a href="./">체험 끝내기</a></span></div>
+<div class="intro-foot">Grammar SOS · 2026 SNU TEIC AIED Challenge 출품작 · 학생 이름과 개인정보는 저장하지 않아요<span class="demo-exit"> · <a href="./">체험 끝내기</a></span><span class="teacher-link"> · <a href="#" onclick="openTeacherLogin(); return false;">선생님 접속</a></span></div>
 
   </div>
 </div>
@@ -4161,6 +4176,7 @@ updateLoginBtn();
 }
 
 function selectRole(role) {
+if(role === 'teacher' && !teacherVerified()) { openTeacherLogin(); return; }
 myRole = role;
 updateSelectionVisuals();
 updateLoginBtn();
@@ -4182,6 +4198,7 @@ status.style.color = 'var(--text3)';
 }
 
 async function doLogin() {
+if(myRole === 'teacher' && !teacherVerified()) { openTeacherLogin(); return; }
 if(!myRoom || !myRole) return;
 const status = document.getElementById('loginStatus');
 status.textContent = '🔄 연결 중…';
@@ -5202,14 +5219,91 @@ if(DEMO) {
   updateLoginBtn();
 }
 
+// ══ 교사 인증 ══
+// 교사 화면은 교사 PIN을 확인해야 열린다. 코드에는 PIN이 아니라 PBKDF2-SHA256 해시만 있다.
+// PIN을 바꾸려면 새 PIN의 해시로 TEACHER_PIN_SALT/HASH를 교체한다.
+// 한계: 게임 데이터 경로의 Firebase 규칙은 학생 로그인 없이 쓰려고 열어 두었으므로, 이것은 화면 접근을 막는 장치다.
+const TEACHER_PIN_SALT = 'd5663c71734bb6bde567eeb9b73a1444';
+const TEACHER_PIN_HASH = '90338f89334b34d01a9c571821ff4698f8b1f2a93c4fcb7c84c53fd70b114b94';
+const TEACHER_PIN_ITER = 150000;
+const TEACHER_OK_KEY = 'gsos_teacher_ok';
+const TEACHER_LOCK_KEY = 'gsos_teacher_lock';
+
+function teacherVerified() {
+  if(window._teacherOk) return true;
+  try { return sessionStorage.getItem(TEACHER_OK_KEY) === TEACHER_PIN_HASH.slice(0, 16); } catch(e) { return false; }
+}
+function teacherMarkVerified() {
+  window._teacherOk = true;
+  try { sessionStorage.setItem(TEACHER_OK_KEY, TEACHER_PIN_HASH.slice(0, 16)); } catch(e) {}
+}
+function openTeacherLogin() {
+  const box = document.getElementById('teacherLoginBox');
+  if(!box) return;
+  box.style.display = 'block';
+  if(teacherVerified()) { teacherShowRole(); return; }
+  const inp = document.getElementById('teacherPin');
+  if(inp) setTimeout(() => inp.focus(), 50);
+  box.scrollIntoView({ block:'center', behavior:'smooth' });
+}
+function teacherShowRole() {
+  const f = document.getElementById('teacherPinForm'); if(f) f.style.display = 'none';
+  const m = document.getElementById('teacherPinMsg');
+  if(m) { m.className = 'tpin-msg ok'; m.textContent = '✅ 교사 인증됨 · 방 번호를 고르고 접속하세요'; }
+  const b = document.getElementById('roleBtn-teacher'); if(b) b.style.display = 'block';
+  selectRole('teacher');
+}
+async function teacherPinHash(pin) {
+  const enc = new TextEncoder();
+  const salt = new Uint8Array(TEACHER_PIN_SALT.match(/../g).map(h => parseInt(h, 16)));
+  const key = await crypto.subtle.importKey('raw', enc.encode(pin), 'PBKDF2', false, ['deriveBits']);
+  const bits = await crypto.subtle.deriveBits({ name:'PBKDF2', hash:'SHA-256', salt, iterations: TEACHER_PIN_ITER }, key, 256);
+  return Array.from(new Uint8Array(bits)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+function teacherLockState() {
+  try { return JSON.parse(localStorage.getItem(TEACHER_LOCK_KEY) || '{}') || {}; } catch(e) { return {}; }
+}
+function teacherSetLockState(o) { try { localStorage.setItem(TEACHER_LOCK_KEY, JSON.stringify(o)); } catch(e) {} }
+
+async function teacherVerifyPin() {
+  const inp = document.getElementById('teacherPin');
+  const msg = document.getElementById('teacherPinMsg');
+  const btn = document.getElementById('teacherPinBtn');
+  const pin = (inp.value || '').trim();
+  const lock = teacherLockState();
+  if(lock.until && Date.now() < lock.until) {
+    msg.className = 'tpin-msg err';
+    msg.textContent = '여러 번 틀려서 잠시 잠겼어요. ' + Math.ceil((lock.until - Date.now()) / 1000) + '초 뒤에 다시 해 주세요.';
+    return;
+  }
+  if(!pin) { msg.className = 'tpin-msg err'; msg.textContent = 'PIN을 입력하세요.'; return; }
+  if(!(window.crypto && crypto.subtle)) { msg.className = 'tpin-msg err'; msg.textContent = '이 브라우저에서는 PIN을 확인할 수 없어요. https 주소로 열어 주세요.'; return; }
+  btn.disabled = true; msg.className = 'tpin-msg'; msg.textContent = '확인하는 중...';
+  let ok = false;
+  try { ok = (await teacherPinHash(pin)) === TEACHER_PIN_HASH; } catch(e) { ok = false; }
+  btn.disabled = false; inp.value = '';
+  if(ok) {
+    teacherSetLockState({});
+    teacherMarkVerified();
+    teacherShowRole();
+    return;
+  }
+  const fails = (lock.fails || 0) + 1;
+  if(fails >= 5) {
+    teacherSetLockState({ fails: 0, until: Date.now() + 60000 });
+    msg.className = 'tpin-msg err'; msg.textContent = '5번 틀려서 1분 동안 잠겼어요.';
+  } else {
+    teacherSetLockState({ fails });
+    msg.className = 'tpin-msg err'; msg.textContent = 'PIN이 맞지 않아요. (' + fails + '/5)';
+  }
+  inp.focus();
+}
+
 // ══ INIT ══
-// URL에 ?teacher=sos2024 있으면 교사 로그인 버튼 표시
+// 예전 교사 주소(?teacher=...)로 들어오면 교사 PIN 입력 상자를 바로 연다. 주소만으로는 교사가 될 수 없다.
 (function() {
 const params = new URLSearchParams(window.location.search);
-if(params.get('teacher') === 'sos2024') {
-const box = document.getElementById('teacherLoginBox');
-if(box) box.style.display = 'block';
-}
+if(params.has('teacher') && !DEMO) openTeacherLogin();
 })();
 renderFloatBg();
 document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
