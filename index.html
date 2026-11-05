@@ -6,36 +6,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Grammar SOS</title>
 <script src="https://www.youtube.com/iframe_api"></script>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&family=Black+Han+Sans&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0a0e1a;
-  --surface: #1a2235;
-  --border: rgba(255,255,255,0.08);
-  --accent: #f97316;
-  --accent2: #38bdf8;
-  --danger: #ef4444;
-  --success: #22c55e;
-  --text: #f1f5f9;
-  --text2: #94a3b8;
-  --text3: #475569;
+  /* 밤바다 해도: 깊은 바다(bg) · 해도 종이(surface) · 모래(sand) · 조명탄(accent) · 석호(accent2) */
+  --bg: #0d1a24;
+  --surface: #16293a;
+  --surface2: #1d3447;
+  --border: rgba(233,216,166,0.12);
+  --sand: #e9d8a6;
+  --accent: #ff7a1a;
+  --accent2: #4fd1c5;
+  --danger: #f05252;
+  --success: #34d399;
+  --text: #eef3f7;
+  --text2: #b3c3cf;
+  --text3: #7c93a5;
+  --kr-display: 'Black Han Sans', 'Noto Sans KR', sans-serif;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Space Mono','Noto Sans KR',monospace; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+body { font-family:'Noto Sans KR','Space Mono',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; word-break:keep-all; }
 .screen { display:none; min-height:100vh; flex-direction:column; }
 .screen.active { display:flex; }
-body::before { content:''; position:fixed; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px); pointer-events:none; z-index:999; }
+/* 해도의 위도·경도 격자 */
+body::before { content:''; position:fixed; inset:0; background-image:linear-gradient(rgba(233,216,166,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(233,216,166,.035) 1px, transparent 1px); background-size:96px 96px; pointer-events:none; z-index:0; }
 
 /* ── MAIN ── */
 #screen-main { align-items:center; justify-content:center; position:relative;
 background:radial-gradient(ellipse at 50% 0%,rgba(249,115,22,.15) 0%,transparent 60%),
-radial-gradient(ellipse at 80% 80%,rgba(56,189,248,.08) 0%,transparent 50%),var(--bg); }
+radial-gradient(ellipse at 80% 80%,rgba(79,209,197,.08) 0%,transparent 50%),var(--bg); }
 .float-bg { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
 .float-bg span { position:absolute; font-size:clamp(36px,7vw,72px); opacity:.06; animation:floatUp linear infinite; }
 @keyframes floatUp { 0%{transform:translateY(110vh) rotate(0deg)} 100%{transform:translateY(-20vh) rotate(360deg)} }
 .main-content { text-align:center; z-index:1; padding:2rem; }
 .intro { margin:-.25rem 0 1.5rem; font-family:'Noto Sans KR',sans-serif; }
-.intro-title { font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:clamp(2.4rem,11vw,3rem); line-height:1; letter-spacing:.05em; color:var(--accent); margin:0 0 .6rem; white-space:nowrap; }
+.intro-title { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-weight:400; font-size:clamp(2.4rem,11vw,3rem); line-height:1; letter-spacing:.05em; color:var(--accent); margin:0 0 .6rem; white-space:nowrap; }
 .intro-lead { font-size:.95rem; line-height:1.6; word-break:keep-all; color:var(--text2); margin:0 0 .9rem; text-wrap:balance; }
 .intro-lead strong { color:var(--text); font-weight:700; }
 .intro-chips { display:flex; flex-wrap:wrap; justify-content:center; gap:.4rem; margin-bottom:.9rem; }
@@ -49,10 +54,10 @@ radial-gradient(ellipse at 80% 80%,rgba(56,189,248,.08) 0%,transparent 50%),var(
 .intro-how li + li { margin-top:.35rem; }
 .intro-how b { color:var(--text); }
 @media (max-width:420px) { .sos-badge { letter-spacing:.15em; padding:.3rem .8rem; } }
-.intro-demo { display:block; margin:0 auto .9rem; max-width:340px; padding:.6rem 1rem; border:1px solid rgba(56,189,248,.45); border-radius:8px; background:rgba(56,189,248,.08); color:var(--accent2); text-decoration:none; font-size:.92rem; font-weight:700; }
+.intro-demo { display:block; margin:0 auto .9rem; max-width:340px; padding:.6rem 1rem; border:1px solid rgba(79,209,197,.45); border-radius:8px; background:rgba(79,209,197,.08); color:var(--accent2); text-decoration:none; font-size:.92rem; font-weight:700; }
 .intro-demo small { display:block; margin-top:.15rem; font-size:.76rem; font-weight:400; color:var(--text2); }
-.intro-demo:hover { background:rgba(56,189,248,.14); }
-.demo-panel { display:none; text-align:left; background:rgba(56,189,248,.06); border:1px solid rgba(56,189,248,.35); border-radius:8px; padding:1rem 1.1rem; margin-bottom:1rem; font-family:'Noto Sans KR',sans-serif; word-break:keep-all; }
+.intro-demo:hover { background:rgba(79,209,197,.14); }
+.demo-panel { display:none; text-align:left; background:rgba(79,209,197,.06); border:1px solid rgba(79,209,197,.35); border-radius:8px; padding:1rem 1.1rem; margin-bottom:1rem; font-family:'Noto Sans KR',sans-serif; word-break:keep-all; }
 .demo-tag { display:inline-block; font-size:.74rem; letter-spacing:.08em; color:#0a0e1a; background:var(--accent2); border-radius:3px; padding:.1rem .45rem; margin-bottom:.5rem; font-weight:700; }
 .demo-panel p { margin:0 0 .8rem; font-size:.86rem; line-height:1.6; color:var(--text2); }
 .demo-teacher { display:block; width:100%; text-align:left; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.7rem .9rem; color:var(--text); font-size:.95rem; font-weight:700; cursor:pointer; font-family:inherit; }
@@ -65,7 +70,7 @@ radial-gradient(ellipse at 80% 80%,rgba(56,189,248,.08) 0%,transparent 50%),var(
 body.demo .demo-panel { display:block; }
 body.demo .demo-exit { display:inline; }
 body.demo #roomCard, body.demo #teacherLoginBox, body.demo .intro-demo, body.demo .intro-step { display:none !important; }
-#demoBadge { position:fixed; right:4rem; bottom:1.1rem; z-index:260; display:none; align-items:center; gap:.5rem; background:rgba(10,14,26,.9); border:1px solid rgba(56,189,248,.45); border-radius:999px; padding:.35rem .8rem; font-size:.78rem; color:var(--text2); font-family:'Noto Sans KR',sans-serif; backdrop-filter:blur(6px); }
+#demoBadge { position:fixed; right:4rem; bottom:1.1rem; z-index:260; display:none; align-items:center; gap:.5rem; background:rgba(10,14,26,.9); border:1px solid rgba(79,209,197,.45); border-radius:999px; padding:.35rem .8rem; font-size:.78rem; color:var(--text2); font-family:'Noto Sans KR',sans-serif; backdrop-filter:blur(6px); }
 #demoBadge b { color:var(--accent2); }
 #demoBadge a { color:var(--text); }
 body.demo #demoBadge { display:flex; }
@@ -82,9 +87,9 @@ body.demo:has(#screen-login.active) #demoBadge { display:none; }
 body.demo .teacher-link { display:none; }
 .intro-step { font-size:.85rem; color:var(--text3); margin-bottom:.75rem; font-family:'Noto Sans KR',sans-serif; }
 .intro-foot { word-break:keep-all; margin-top:1.25rem; font-size:.75rem; line-height:1.5; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
-.sos-badge { display:inline-block; background:var(--danger); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:1.06rem; letter-spacing:.3em; padding:.3rem 1.2rem; border-radius:2px; margin-bottom:1.5rem; animation:badgePulse 2s ease-in-out infinite; }
+.sos-badge { display:inline-block; background:var(--danger); color:#fff; font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.06rem; letter-spacing:.3em; padding:.3rem 1.2rem; border-radius:2px; margin-bottom:1.5rem; animation:badgePulse 2s ease-in-out infinite; }
 @keyframes badgePulse { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)} 50%{box-shadow:0 0 0 8px rgba(239,68,68,0)} }
-.main-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(3rem,10vw,7rem); line-height:.9; letter-spacing:.05em; margin-bottom:.5rem; }
+.main-title { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:clamp(3rem,10vw,7rem); line-height:.9; letter-spacing:.05em; margin-bottom:.5rem; }
 .title-sos { color:var(--text); }
 .title-secure { color:var(--accent); text-shadow:0 0 40px rgba(249,115,22,.5); animation:glitch 4s infinite; }
 .title-our { color:var(--accent2); }
@@ -92,11 +97,11 @@ body.demo .teacher-link { display:none; }
 .main-sub { font-size:.88rem; color:var(--text2); letter-spacing:.2em; margin:1rem 0 .4rem; text-transform:uppercase; }
 .main-desc { font-size:.92rem; color:var(--text3); margin-bottom:2.5rem; font-family:'Noto Sans KR',sans-serif; line-height:1.8; }
 .stat-row { display:flex; gap:2rem; justify-content:center; margin-top:2.5rem; padding-top:2rem; border-top:1px solid var(--border); }
-.stat-num { font-family:'Bebas Neue',sans-serif; font-size:2rem; color:var(--accent2); }
+.stat-num { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:2rem; color:var(--accent2); }
 .stat-label { font-size:.72rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; }
 
 /* ── BUTTONS ── */
-.btn { border:none; border-radius:4px; cursor:pointer; transition:all .2s; font-family:'Bebas Neue',sans-serif; }
+.btn { border:none; border-radius:4px; cursor:pointer; transition:all .2s; font-family:'Bebas Neue','Black Han Sans',sans-serif; }
 .btn-primary { background:var(--accent); color:#fff; font-size:1.3rem; letter-spacing:.15em; padding:.85rem 2.5rem; }
 .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(249,115,22,.4); }
 .btn-primary:active { transform:translateY(0); }
@@ -108,7 +113,7 @@ body.demo .teacher-link { display:none; }
 /* ── LOBBY ── */
 #screen-lobby { background:var(--bg); padding:1.5rem; }
 .lobby-header { text-align:center; margin-bottom:1.5rem; }
-.lobby-title { font-family:'Bebas Neue',sans-serif; font-size:2.8rem; letter-spacing:.1em; color:var(--accent); }
+.lobby-title { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:2.8rem; letter-spacing:.1em; color:var(--accent); }
 .lobby-sub { font-size:.82rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; margin-top:.2rem; }
 .team-cards-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.85rem; margin-bottom:1.5rem; }
 .team-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.9rem 1rem; display:flex; align-items:center; gap:.75rem; cursor:pointer; transition:all .2s; }
@@ -116,13 +121,13 @@ body.demo .teacher-link { display:none; }
 .team-card.active-team { border-color:var(--card-color,var(--accent)); box-shadow:0 0 0 2px var(--card-color,var(--accent)); }
 .tc-emoji { font-size:1.8rem; }
 .tc-info { flex:1; }
-.tc-name { font-family:'Bebas Neue',sans-serif; font-size:1.06rem; letter-spacing:.08em; }
+.tc-name { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.06rem; letter-spacing:.08em; }
 .tc-island { font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; }
 .tc-coins { text-align:right; }
-.tc-coin-num { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; color:var(--accent); }
+.tc-coin-num { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.6rem; color:var(--accent); }
 .tc-coin-label { font-size:.65rem; color:var(--text3); letter-spacing:.05em; }
 .mission-progress { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1rem 1.1rem; margin-bottom:1.25rem; }
-.mp-title { font-family:'Bebas Neue',sans-serif; font-size:1.06rem; letter-spacing:.1em; color:var(--text2); margin-bottom:.75rem; }
+.mp-title { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.06rem; letter-spacing:.1em; color:var(--text2); margin-bottom:.75rem; }
 .mp-items { display:grid; grid-template-columns:repeat(8,1fr); gap:.4rem; }
 .mp-item { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:.45rem .25rem; text-align:center; opacity:.4; transition:all .3s; }
 .mp-item.current { opacity:1; border-color:var(--accent); box-shadow:0 0 12px rgba(249,115,22,.25); }
@@ -138,11 +143,11 @@ body.demo .teacher-link { display:none; }
 .mission-sidebar { background:var(--surface); border-right:1px solid var(--border); padding:1.25rem; display:flex; flex-direction:column; gap:1rem; }
 .sidebar-island { text-align:center; padding:1rem; border-radius:8px; border:1px solid var(--border); }
 .sidebar-island-emoji { font-size:3rem; display:block; margin-bottom:.5rem; }
-.sidebar-island-name { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:.08em; }
+.sidebar-island-name { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.3rem; letter-spacing:.08em; }
 .sidebar-island-crisis { font-size:.76rem; color:var(--text3); margin-top:.2rem; text-transform:uppercase; }
 .sidebar-coins { background:var(--bg); border-radius:8px; padding:.85rem; text-align:center; border:1px solid var(--border); }
 .sidebar-coin-label { font-size:.72rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.25rem; }
-.sidebar-coin-num { font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:var(--accent); }
+.sidebar-coin-num { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:2.5rem; color:var(--accent); }
 .sidebar-items { background:var(--bg); border-radius:8px; padding:.85rem; border:1px solid var(--border); }
 .sidebar-items-label { font-size:.72rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.5rem; }
 .items-list { display:flex; flex-wrap:wrap; gap:.4rem; }
@@ -158,7 +163,7 @@ body.demo .teacher-link { display:none; }
 .mission-main { padding:2rem; overflow-y:auto; display:flex; flex-direction:column; }
 .mission-header { margin-bottom:1.5rem; }
 .mission-num { font-size:.82rem; color:var(--text3); letter-spacing:.2em; text-transform:uppercase; margin-bottom:.3rem; }
-.mission-title { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; letter-spacing:.08em; color:var(--text); }
+.mission-title { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:2.2rem; letter-spacing:.08em; color:var(--text); }
 .mission-situation {
 background:var(--surface);
 border:1px solid var(--border);
@@ -199,7 +204,7 @@ min-width:100px;
 .wh-card.wrong { border-color:var(--danger); background:rgba(239,68,68,.1); animation:shake .3s ease; }
 .wh-card.correct { border-color:var(--success); background:rgba(34,197,94,.1); }
 @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
-.wh-word { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:.1em; }
+.wh-word { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.6rem; letter-spacing:.1em; }
 .wh-kr { font-size:.76rem; color:var(--text3); margin-top:.2rem; font-family:'Noto Sans KR',sans-serif; }
 .feedback-box { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1rem 1.25rem; margin-top:1rem; font-size:.94rem; line-height:1.7; display:none; }
 .feedback-box.show { display:block; animation:fadeIn .3s ease; }
@@ -222,8 +227,8 @@ gap:1rem;
 text-align:left;
 }
 .choice-btn:hover { border-color:var(--accent2); transform:translateX(4px); }
-.choice-btn.chosen { border-color:var(--accent2); background:rgba(56,189,248,.08); pointer-events:none; }
-.choice-letter { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--text3); min-width:28px; }
+.choice-btn.chosen { border-color:var(--accent2); background:rgba(79,209,197,.08); pointer-events:none; }
+.choice-letter { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.5rem; color:var(--text3); min-width:28px; }
 .choice-btn:hover .choice-letter, .choice-btn.chosen .choice-letter { color:var(--accent2); }
 .choice-text { flex:1; }
 .choice-main { font-size:1rem; color:var(--text); font-family:'Noto Sans KR',sans-serif; }
@@ -233,8 +238,8 @@ text-align:left;
 .result-box { text-align:center; padding:2rem; }
 .result-emoji { font-size:4rem; display:block; margin-bottom:1rem; animation:popIn .4s cubic-bezier(.34,1.56,.64,1); }
 @keyframes popIn { from{transform:scale(0)} to{transform:scale(1)} }
-.result-title { font-family:'Bebas Neue',sans-serif; font-size:2rem; letter-spacing:.1em; margin-bottom:.5rem; }
-.result-coin { font-family:'Bebas Neue',sans-serif; font-size:3rem; margin:.75rem 0; }
+.result-title { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:2rem; letter-spacing:.1em; margin-bottom:.5rem; }
+.result-coin { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:3rem; margin:.75rem 0; }
 .result-coin.positive { color:var(--success); }
 .result-coin.negative { color:var(--danger); }
 .result-coin.neutral { color:var(--text2); }
@@ -259,7 +264,7 @@ text-align:left;
 .hint-done { font-size:.82rem; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
 
 /* 미션 공통 띠 */
-.m-ribbon { display:flex; flex-wrap:wrap; justify-content:space-between; gap:.35rem 1rem; align-items:center; margin:-.35rem 0 1rem; padding:.5rem .8rem; border-radius:6px; background:rgba(56,189,248,.07); border:1px solid rgba(56,189,248,.25); font-size:.86rem; color:var(--text2); font-family:'Noto Sans KR',sans-serif; }
+.m-ribbon { display:flex; flex-wrap:wrap; justify-content:space-between; gap:.35rem 1rem; align-items:center; margin:-.35rem 0 1rem; padding:.5rem .8rem; border-radius:6px; background:rgba(79,209,197,.07); border:1px solid rgba(79,209,197,.25); font-size:.86rem; color:var(--text2); font-family:'Noto Sans KR',sans-serif; }
 .m-ribbon b { color:var(--text); }
 .m-turn b { color:var(--accent); }
 .m-turn small { color:var(--text3); font-size:.78rem; }
@@ -293,7 +298,7 @@ text-align:left;
 .gen-chip { display:flex; align-items:center; gap:.4rem; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:.55rem .7rem; font-size:.86rem; color:var(--text2); }
 .gen-chip.gen-ok { border-color:rgba(34,197,94,.4); }
 .gen-chip.gen-err { border-color:rgba(239,68,68,.4); color:#fca5a5; }
-.gen-chip.gen-busy { border-color:rgba(56,189,248,.45); }
+.gen-chip.gen-busy { border-color:rgba(79,209,197,.45); }
 .gen-bar { position:sticky; top:-1rem; z-index:2; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.75rem; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.7rem .9rem; margin-bottom:.9rem; font-size:.88rem; color:var(--text2); }
 .gen-bar small { color:var(--text3); }
 .gen-bar-btns { display:flex; gap:.5rem; flex-wrap:wrap; }
@@ -311,14 +316,14 @@ text-align:left;
 .gen-sum { font-size:.88rem; line-height:1.65; color:var(--text); word-break:break-word; }
 .gen-sum small { color:var(--text3); }
 .gen-sum u { color:var(--accent2); text-decoration-thickness:2px; }
-.gen-pill { display:inline-block; border:1px solid rgba(56,189,248,.35); border-radius:10px; padding:0 .45rem; margin:.1rem 0; font-size:.8rem; font-family:'Space Mono',monospace; color:var(--text2); }
+.gen-pill { display:inline-block; border:1px solid rgba(79,209,197,.35); border-radius:10px; padding:0 .45rem; margin:.1rem 0; font-size:.8rem; font-family:'Space Mono',monospace; color:var(--text2); }
 .gen-pill.trap { border-color:rgba(239,68,68,.45); color:#fca5a5; }
 .gen-edit summary { cursor:pointer; font-size:.84rem; color:var(--accent2); margin:.2rem 0; }
 .gen-edit[open] { display:flex; flex-direction:column; gap:.55rem; }
 
 /* 응답 기록 (교사) */
 .log-head { display:flex; align-items:center; flex-wrap:wrap; gap:.5rem; padding:.75rem 1rem; background:var(--surface); border-bottom:1px solid var(--border); flex-shrink:0; }
-.log-title { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:.08em; color:#facc15; flex:1; white-space:nowrap; }
+.log-title { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.1rem; letter-spacing:.08em; color:#facc15; flex:1; white-space:nowrap; }
 .log-count { font-family:'Space Mono',monospace; font-size:.82rem; color:var(--text3); letter-spacing:0; margin-left:.35rem; }
 .log-select { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:.3rem .5rem; font-size:.84rem; color:var(--text); }
 .log-btn { background:rgba(250,204,21,.1); border:1px solid rgba(250,204,21,.35); border-radius:4px; padding:.3rem .75rem; font-size:.84rem; color:#facc15; cursor:pointer; white-space:nowrap; }
@@ -415,7 +420,7 @@ background: var(--bg);
 border: 1px solid var(--border);
 border-radius: 6px;
 padding: .6rem;
-font-family: 'Bebas Neue', sans-serif;
+font-family: 'Bebas Neue','Black Han Sans',sans-serif;
 font-size: 1.2rem;
 color: var(--text3);
 cursor: pointer;
@@ -448,7 +453,7 @@ position: relative;
 background: #050810;
 min-height: 400px;
 border-radius: 8px;
-border: 1px solid rgba(56,189,248,.2);
+border: 1px solid rgba(79,209,197,.2);
 overflow: hidden;
 margin-bottom: 1rem;
 }
@@ -478,8 +483,8 @@ transition: width .4s ease, background .4s;
 .moon-hp-fill.danger { background: linear-gradient(90deg, var(--danger), #fca5a5); }
 .meteor {
 position: absolute;
-background: rgba(56,189,248,.12);
-border: 1px solid rgba(56,189,248,.3);
+background: rgba(79,209,197,.12);
+border: 1px solid rgba(79,209,197,.3);
 border-radius: 6px;
 padding: .3rem .7rem;
 font-family: 'Space Mono', monospace;
@@ -521,7 +526,7 @@ font-size: .9rem;
 color: var(--text3);
 margin-bottom: .5rem;
 }
-.moon-score-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; }
+.moon-score-val { font-family: 'Bebas Neue','Black Han Sans',sans-serif; font-size: 1.2rem; }
 .moon-score-val.accent { color: var(--accent2); }
 .moon-score-val.danger { color: var(--danger); }
 
@@ -559,7 +564,7 @@ background: rgba(10,14,26,.85);
 border: 1px solid rgba(249,115,22,.35);
 border-radius: 6px;
 padding: .35rem .75rem;
-font-family: 'Bebas Neue', sans-serif;
+font-family: 'Bebas Neue','Black Han Sans',sans-serif;
 font-size: 1.1rem;
 color: var(--accent);
 backdrop-filter: blur(8px);
@@ -591,6 +596,92 @@ backdrop-filter: blur(8px);
 font-family: 'Space Mono', monospace;
 }
 
+
+/* ══════════ 디자인 다듬기 (11/5) ══════════
+   원칙: 지도가 이 게임에서 가장 눈에 띄는 것. 나머지는 조용히, 읽기 쉽게.
+   - 한글 제목은 Black Han Sans(표지판 같은 굵은 글씨), 본문은 Noto Sans KR, 영어 숫자·코인은 Bebas Neue
+   - 한글 라벨은 대문자·자간 늘림을 쓰지 않는다 */
+.mission-title { font-family:var(--kr-display); font-weight:400; font-size:2.1rem; letter-spacing:0; line-height:1.2; }
+.mission-num { font-family:'Space Mono',monospace; font-size:.8rem; letter-spacing:.06em; text-transform:none; color:var(--text3); }
+.step-label { font-size:.9rem; letter-spacing:0; text-transform:none; color:var(--text2); font-weight:700; }
+.sml-title, .sidebar-coin-label, .sidebar-items-label, .lobby-sub { letter-spacing:0; text-transform:none; font-size:.82rem; color:var(--text2); font-weight:500; }
+.sidebar-island-name { font-family:var(--kr-display); font-size:1.35rem; letter-spacing:0; }
+.sidebar-island-crisis { text-transform:none; font-size:.8rem; }
+.mission-sidebar { background:linear-gradient(180deg, var(--surface) 0%, rgba(22,41,58,.92) 100%); border-right:1px solid var(--border); position:relative; z-index:1; }
+.mission-main { position:relative; z-index:1; }
+.mission-situation { line-height:1.75; }
+.sidebar-coins, .sidebar-items { background:rgba(13,26,36,.6); }
+#screen-teacher, #screen-lobby, #screen-mission, #screen-login, #screen-main { position:relative; z-index:1; }
+:focus-visible { outline:2px solid var(--accent2); outline-offset:2px; }
+
+/* 학생 탐험 경로 (사이드바) */
+.sidebar-mission-list { margin-top:.25rem; }
+.route-map { display:block; overflow:visible; }
+.rt-line { fill:none; stroke:rgba(233,216,166,.28); stroke-width:2.5; stroke-dasharray:2 6; stroke-linecap:round; }
+.rt-line.done { stroke:var(--accent2); stroke-dasharray:none; opacity:.75; }
+.rt-dot { fill:var(--bg); stroke:rgba(233,216,166,.3); stroke-width:1.5; }
+.rt-done .rt-dot { fill:rgba(79,209,197,.18); stroke:var(--accent2); }
+.rt-cur .rt-dot { fill:var(--accent); stroke:#ffd2ad; stroke-width:2; }
+.rt-halo { fill:rgba(255,122,26,.18); }
+.rt-emoji { font-size:15px; }
+.rt-done .rt-emoji { fill:var(--accent2); font-weight:700; font-size:16px; font-family:'Noto Sans KR',sans-serif; }
+.rt-label { font-size:13.5px; fill:var(--text3); font-family:'Noto Sans KR',sans-serif; }
+.rt-done .rt-label { fill:var(--text2); }
+.rt-cur .rt-label { fill:var(--text); font-weight:700; font-size:14.5px; }
+.rt-here { font-size:11px; fill:var(--accent); font-family:'Noto Sans KR',sans-serif; font-weight:700; }
+@media (prefers-reduced-motion: no-preference) {
+  .rt-halo { animation:rtPulse 2.4s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
+  @keyframes rtPulse { 0%,100% { opacity:.35; transform:scale(.85); } 50% { opacity:1; transform:scale(1.1); } }
+}
+/* 좁은 화면: 사이드바 대신 미션 띠 안에 가로 경로 */
+.route-strip { display:none; width:100%; align-items:center; gap:0; margin-top:.15rem; }
+.rs-dot { flex:0 0 auto; width:1.7rem; height:1.7rem; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:.85rem; background:var(--bg); border:1px solid rgba(233,216,166,.3); }
+.rs-done { background:rgba(79,209,197,.18); border-color:var(--accent2); color:var(--accent2); font-weight:700; }
+.rs-cur { background:var(--accent); border-color:#ffd2ad; width:2.1rem; height:2.1rem; }
+.rs-line { flex:1 1 auto; height:2px; min-width:.3rem; background:repeating-linear-gradient(90deg, rgba(233,216,166,.3) 0 3px, transparent 3px 7px); }
+@media (max-width:768px) { .route-strip { display:flex; } }
+
+/* 여섯 섬 해도 (교사·로비) */
+.world-map { display:block; max-height:72vh; }
+.wm-grid line { stroke:rgba(233,216,166,.06); stroke-width:1; }
+.wm-reef { fill:rgba(79,209,197,.07); stroke:rgba(79,209,197,.22); stroke-width:1.2; stroke-dasharray:3 5; }
+.wm-land { fill:color-mix(in srgb, var(--isl) 22%, #2a3a3a); stroke:var(--sand); stroke-opacity:.55; stroke-width:1.5; }
+.wm-contour { fill:none; stroke:var(--sand); stroke-opacity:.16; stroke-width:1; }
+.wm-trail { stroke:rgba(233,216,166,.35); stroke-width:2; stroke-dasharray:2 5; stroke-linecap:round; }
+.wm-trail.done { stroke:var(--accent2); stroke-dasharray:none; stroke-opacity:.85; }
+.wm-wp { fill:var(--bg); stroke:rgba(233,216,166,.45); stroke-width:1.2; }
+.wm-done { fill:var(--accent2); stroke:var(--accent2); }
+.wm-cur { fill:var(--accent); stroke:#ffd2ad; }
+.wm-token circle { fill:#0d1a24; stroke-width:3; }
+.wm-token text { font-size:17px; }
+.wm-token.fin circle { fill:rgba(52,211,153,.18); stroke:var(--success) !important; }
+.wm-name { font-family:var(--kr-display); font-size:21px; fill:var(--text); }
+.wm-sub { font-size:14px; fill:var(--text2); font-family:'Noto Sans KR',sans-serif; }
+.wm-island.clickable { cursor:pointer; }
+.wm-island.clickable:hover .wm-land, .wm-island.clickable:focus .wm-land { stroke-opacity:1; stroke-width:2.5; }
+.wm-island:focus { outline:none; }
+.wm-compass circle { fill:none; stroke:rgba(233,216,166,.3); }
+.wm-compass path { fill:rgba(233,216,166,.45); }
+.wm-compass text { fill:rgba(233,216,166,.55); font-size:13px; font-family:'Space Mono',monospace; }
+.wm-legend { display:flex; flex-wrap:wrap; gap:.4rem 1.1rem; justify-content:center; font-size:.84rem; color:var(--text2); margin-top:.5rem; }
+.wm-legend .lg { display:inline-block; width:.7rem; height:.7rem; border-radius:50%; margin-right:.35rem; vertical-align:-.05rem; }
+.lg-done { background:var(--accent2); } .lg-cur { background:var(--accent); } .lg-next { border:1.5px solid rgba(233,216,166,.5); }
+.lobby-map, .td-map { background:rgba(13,26,36,.55); border:1px solid var(--border); border-radius:12px; padding:.75rem; margin-bottom:1.25rem; }
+.td-viewbar { display:flex; flex-wrap:wrap; gap:.4rem; align-items:center; margin-bottom:.75rem; }
+.td-viewbtn { background:transparent; border:1px solid var(--border); border-radius:999px; padding:.3rem .9rem; font-size:.86rem; color:var(--text2); cursor:pointer; font-family:'Noto Sans KR',sans-serif; }
+.td-viewbtn.on { background:var(--surface2); color:var(--text); border-color:rgba(233,216,166,.35); }
+.td-viewbig { margin-left:auto; background:transparent; border:none; color:var(--accent2); font-size:.84rem; cursor:pointer; text-decoration:underline; text-underline-offset:3px; font-family:'Noto Sans KR',sans-serif; }
+.map-overlay { position:fixed; inset:0; z-index:530; background:var(--bg); display:flex; flex-direction:column; }
+.map-ov-head { display:flex; justify-content:space-between; align-items:center; padding:.75rem 1.25rem; border-bottom:1px solid var(--border); font-size:1.05rem; color:var(--text2); }
+.map-ov-head b { font-family:var(--kr-display); font-weight:400; color:var(--text); font-size:1.3rem; }
+.map-ov-body { flex:1; display:flex; flex-direction:column; justify-content:center; padding:1rem 2rem; min-height:0; }
+.map-ov-body .world-map { max-height:calc(100vh - 9rem); }
+.map-ov-body .wm-legend { font-size:1rem; }
+/* 한글이 들어가는 큰 글씨: 자간을 좁힌다 */
+.btn, #loginBtn, .result-title, .log-title, .tc-name, .lobby-title { letter-spacing:.03em !important; }
+.wm-landmark { font-size:34px; opacity:.9; }
+.wm-halo { fill:rgba(255,122,26,.22); stroke:var(--accent); stroke-width:1.5; stroke-opacity:.7; }
+.wm-token text { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:19px; fill:var(--text); }
 </style>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -719,7 +810,7 @@ window.dispatchEvent(new Event('firebaseReady'));
 <div id="loginStatus" style="font-size:.88rem;color:var(--text3);margin-bottom:1rem;font-family:'Noto Sans KR',sans-serif;min-height:1.2rem;"></div>
 <button id="loginBtn" onclick="doLogin()"
   style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:.9rem;
-  font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.1em;cursor:pointer;opacity:.4;pointer-events:none;transition:all .2s;">
+  font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.3rem;letter-spacing:.1em;cursor:pointer;opacity:.4;pointer-events:none;transition:all .2s;">
   ▶ 접속하기
 </button>
 <div class="intro-foot">Grammar SOS · 2026 SNU TEIC AIED Challenge 출품작 · 학생 이름과 개인정보는 저장하지 않아요<span class="demo-exit"> · <a href="./">체험 끝내기</a></span><span class="teacher-link"> · <a href="#" onclick="openTeacherLogin(); return false;">선생님 접속</a></span></div>
@@ -754,18 +845,18 @@ window.dispatchEvent(new Event('firebaseReady'));
 <div id="screen-teacher" class="screen" style="background:var(--bg);flex-direction:column;">
   <!-- 상단 바 -->
   <div class="td-topbar" style="display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.1em;color:var(--accent);white-space:nowrap;">👩‍🏫 교사 대시보드</div>
+    <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.1rem;letter-spacing:.1em;color:var(--accent);white-space:nowrap;">👩‍🏫 교사 대시보드</div>
     <div id="tdRoomLabel" style="font-size:.82rem;color:var(--text3);flex:1;white-space:nowrap;"></div>
     <!-- 전체 강제 이동 -->
     <select id="tdForceSelect" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.84rem;color:var(--text);"></select>
     <button onclick="tdForceAll()" style="background:var(--accent);border:none;border-radius:4px;padding:.3rem .8rem;font-size:.84rem;color:#fff;cursor:pointer;white-space:nowrap;">전체 이동 →</button>
     <button onclick="showLogOverlay()" style="background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.35);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:#facc15;cursor:pointer;white-space:nowrap;">📋 응답 기록 <span id="tdLogCount">0</span></button>
     <button onclick="showM7Review()" style="background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:#a855f7;cursor:pointer;">📝 미션8 응답</button>
-    <button onclick="teacherSyncNow()" style="background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:var(--accent2);cursor:pointer;">🔄 동기화</button>
+    <button onclick="teacherSyncNow()" style="background:rgba(79,209,197,.12);border:1px solid rgba(79,209,197,.3);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:var(--accent2);cursor:pointer;">🔄 동기화</button>
     <button onclick="teacherResetRoom()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:var(--danger);cursor:pointer;">🗑️ 초기화</button>
   </div>
   <!-- 문법 세트 선택 -->
-  <div style="display:flex;align-items:center;flex-wrap:wrap;gap:.6rem;padding:.6rem 1rem;background:rgba(56,189,248,.05);border-bottom:1px solid var(--border);flex-shrink:0;">
+  <div style="display:flex;align-items:center;flex-wrap:wrap;gap:.6rem;padding:.6rem 1rem;background:rgba(79,209,197,.05);border-bottom:1px solid var(--border);flex-shrink:0;">
     <div style="font-size:.88rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;white-space:nowrap;">📚 문법 세트</div>
     <select id="tdGrammarSelect" onchange="tdGrammarSelectChanged()" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.88rem;color:var(--text);max-width:100%;"></select>
     <button onclick="tdApplyGrammar()" style="background:var(--accent2);border:none;border-radius:4px;padding:.3rem .8rem;font-size:.84rem;color:#0b1120;font-weight:700;cursor:pointer;white-space:nowrap;">이 문법으로 진행 →</button>
@@ -781,6 +872,12 @@ window.dispatchEvent(new Event('firebaseReady'));
   <div id="tdFocus" class="td-focus"></div>
   <!-- 모둠 카드 그리드 -->
   <div style="flex:1;overflow-y:auto;padding:1rem;">
+    <div class="td-viewbar" role="group" aria-label="보기 방식">
+      <button class="td-viewbtn" data-v="cards" onclick="tdSetView('cards')">모둠 카드</button>
+      <button class="td-viewbtn" data-v="map" onclick="tdSetView('map')">🗺️ 섬 지도</button>
+      <button class="td-viewbig" onclick="tdMapFullscreen()">프로젝터로 지도 띄우기</button>
+    </div>
+    <div id="tdMap" class="td-map" style="display:none;"></div>
     <div id="tdGrid" class="td-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;"></div>
   </div>
 </div>
@@ -792,10 +889,11 @@ window.dispatchEvent(new Event('firebaseReady'));
     <div class="lobby-header">
       <div class="sos-badge">MISSION CONTROL</div>
       <div class="lobby-title">SURVIVAL HQ</div>
-      <div class="lobby-sub">모둠을 선택해서 미션을 시작하세요</div>
+      <div class="lobby-sub">섬이나 모둠 카드를 눌러 그 모둠 미션으로 가요</div>
     </div>
     <div class="team-cards-grid" id="lobbyCards"></div>
-    <div class="mission-progress">
+    <div class="lobby-map" id="lobbyMap"></div>
+    <div class="mission-progress" style="display:none;">
       <div class="mp-title">MISSION PROGRESS</div>
       <div class="mp-items">
         <div class="mp-item current" id="mp-1"><span class="mp-emoji">🧭</span><div class="mp-name">위치 파악</div></div>
@@ -836,15 +934,15 @@ window.dispatchEvent(new Event('firebaseReady'));
         <div class="sidebar-island-crisis" id="sideCrisis">⚠️ 용암</div>
       </div>
       <div class="sidebar-coins">
-        <div class="sidebar-coin-label">🪙 MY COINS</div>
+        <div class="sidebar-coin-label">🪙 우리 모둠 코인</div>
         <div class="sidebar-coin-num" id="sideCoins">0</div>
       </div>
       <div class="sidebar-items">
-        <div class="sidebar-items-label">🎒 ITEMS</div>
+        <div class="sidebar-items-label">🎒 가방</div>
         <div class="items-list" id="sideItems"><span style="font-size:.82rem;color:var(--text3)">없음</span></div>
       </div>
       <div class="sidebar-mission-list">
-        <div class="sml-title">MISSIONS</div>
+        <div class="sml-title">🗺️ 탐험 경로</div>
         <div id="smlList"></div>
       </div>
       <button class="btn-ghost" id="backBtn" onclick="myRole==='teacher'?showTeacherDashboard():showScreen('lobby')" style="margin-top:auto;">← 로비로</button>
@@ -1732,6 +1830,7 @@ function renderFloatBg() {
 }
 
 // ══ LOBBY ══
+function lobbyEnter(i) { showScreen('mission'); initMission(i+1, state.teamMission[i]); }
 function renderLobby() {
   const c = document.getElementById('lobbyCards');
   c.innerHTML = '';
@@ -1750,9 +1849,11 @@ function renderLobby() {
         <div class="tc-coin-label">🪙 COINS</div>
       </div>
     `;
-    div.onclick = () => { showScreen('mission'); initMission(i+1, state.teamMission[i]); };
+    div.onclick = () => lobbyEnter(i);
     c.appendChild(div);
   });
+  const lm = document.getElementById('lobbyMap');
+  if(lm) lm.innerHTML = worldMapSVG({ onIsland: 'lobbyEnter' }) + worldLegendHTML();
   updateMissionProgress();
 }
 
@@ -2513,12 +2614,159 @@ function renderSidebar(teamNum) {
   updateHUD(teamNum);
   // mission list
   const sml = document.getElementById('smlList');
-  const teamMission = state.teamMission[teamNum-1];
-  sml.innerHTML = MISSIONS.map(m=>`
-    <div class="sml-item ${m.id===teamMission?'current':typeof m.id==='number'&&m.id<teamMission?'done':''}">
-      <span class="sml-emoji">${m.emoji}</span>${m.name}
-    </div>
-  `).join('');
+  sml.innerHTML = routeMapSVG(teamNum-1);
+}
+
+// ══ 탐험 지도 ══
+// 학생: 우리 섬의 탐험 경로(미션 8곳)를 사이드바에 세로 지도로, 좁은 화면에서는 미션 띠 안에 가로 점으로.
+// 교사·로비: 여섯 섬을 한 장의 해도(바다 지도)에 놓고 모둠 말이 지금 미션 위치에 서 있다. 섬을 누르면 그 모둠 화면.
+// 미션 번호(missionId) 1~8 = MISSIONS 순서 (5번째가 달 기지).
+const ROUTE_SHORT = ['위치', '거주지', '식량', '동료', '달 기지', '위기', '신호', '탈출'];
+
+function routeStatus(ti, k) {
+  const done = ((state.completedMission || [])[ti] || 0);
+  const cur = state.teamMission[ti] || 1;
+  if(done >= k + 1) return 'done';
+  if(cur === k + 1) return 'cur';
+  return 'next';
+}
+
+// 섬 모양: 섬마다 정해진 규칙으로 울퉁불퉁한 해안선을 만든다 (매번 같은 모양)
+function islandPath(i, cx, cy, r, scale) {
+  const n = 16, pts = [];
+  const ph1 = i * 1.7 + .4, ph2 = i * 2.9 + 1.1, ph3 = i * .9;
+  for(let k = 0; k < n; k++) {
+    const a = (k / n) * Math.PI * 2;
+    const rr = r * scale * (1 + .14 * Math.sin(2 * a + ph1) + .09 * Math.sin(3 * a + ph2) + .05 * Math.sin(5 * a + ph3));
+    pts.push([cx + Math.cos(a) * rr * 1.18, cy + Math.sin(a) * rr * .86]);
+  }
+  // Catmull-Rom → 베지어 (닫힌 곡선)
+  let d = 'M' + pts[0][0].toFixed(1) + ',' + pts[0][1].toFixed(1);
+  for(let k = 0; k < n; k++) {
+    const p0 = pts[(k - 1 + n) % n], p1 = pts[k], p2 = pts[(k + 1) % n], p3 = pts[(k + 2) % n];
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    d += 'C' + c1.map(v => v.toFixed(1)).join(',') + ' ' + c2.map(v => v.toFixed(1)).join(',') + ' ' + p2.map(v => v.toFixed(1)).join(',');
+  }
+  return d + 'Z';
+}
+
+// ── 학생: 세로 탐험 경로 (사이드바) ──
+function routeMapSVG(ti) {
+  const W = 236, top = 22, gap = 46;
+  const nodes = MISSIONS.map((m, k) => ({ k, m, x: 34 + 16 * Math.sin(k * 1.35), y: top + k * gap, st: routeStatus(ti, k) }));
+  const H = top + (MISSIONS.length - 1) * gap + 24;
+  let path = '';
+  for(let k = 1; k < nodes.length; k++) {
+    const a = nodes[k - 1], b = nodes[k], my = (a.y + b.y) / 2;
+    const cls = a.st === 'done' ? 'rt-line done' : 'rt-line';
+    path += '<path class="' + cls + '" d="M' + a.x.toFixed(1) + ',' + a.y + ' C' + a.x.toFixed(1) + ',' + my + ' ' + b.x.toFixed(1) + ',' + my + ' ' + b.x.toFixed(1) + ',' + b.y + '"/>';
+  }
+  const dots = nodes.map(n => {
+    const label = n.m.name;
+    return '<g class="rt-node rt-' + n.st + '">'
+      + (n.st === 'cur' ? '<circle class="rt-halo" cx="' + n.x.toFixed(1) + '" cy="' + n.y + '" r="22"/>' : '')
+      + '<circle class="rt-dot" cx="' + n.x.toFixed(1) + '" cy="' + n.y + '" r="16"/>'
+      + '<text class="rt-emoji" x="' + n.x.toFixed(1) + '" y="' + n.y + '" text-anchor="middle" dominant-baseline="central">' + (n.st === 'done' ? '✓' : n.m.emoji) + '</text>'
+      + '<text class="rt-label" x="' + (n.x + 28).toFixed(1) + '" y="' + (n.y + 4.5) + '">' + escHTML(label) + '</text>'
+      + (n.st === 'cur' ? '<text class="rt-here" x="' + (n.x + 28).toFixed(1) + '" y="' + (n.y + 19) + '">지금 여기</text>' : '')
+      + '</g>';
+  }).join('');
+  return '<svg class="route-map" viewBox="0 0 ' + W + ' ' + H + '" width="100%" role="img" aria-label="탐험 경로: 미션 '
+    + (state.teamMission[ti] || 1) + '번째 장소">' + path + dots + '</svg>';
+}
+
+// ── 학생: 좁은 화면용 가로 점 경로 (미션 띠 안) ──
+function routeStripHTML(ti) {
+  if(!(ti >= 0)) return '';
+  return '<div class="route-strip" aria-label="탐험 경로">' + MISSIONS.map((m, k) => {
+    const st = routeStatus(ti, k);
+    return '<span class="rs-dot rs-' + st + '" title="' + escHTML(m.name) + '">' + (st === 'done' ? '✓' : m.emoji) + '</span>';
+  }).join('<span class="rs-line"></span>') + '</div>';
+}
+
+// ── 교사·로비: 여섯 섬 해도 ──
+const WORLD_POS = [[190, 175], [500, 150], [810, 185], [195, 440], [505, 460], [815, 430]];
+function worldMapSVG(opts) {
+  opts = opts || {};
+  const R = 92;
+  const grid = [];
+  for(let x = 100; x < 1000; x += 100) grid.push('<line x1="' + x + '" y1="0" x2="' + x + '" y2="600"/>');
+  for(let y = 100; y < 600; y += 100) grid.push('<line x1="0" y1="' + y + '" x2="1000" y2="' + y + '"/>');
+  const islands = ISLANDS.map((isl, i) => {
+    const [cx, cy] = WORLD_POS[i];
+    const done = ((state.completedMission || [])[i] || 0);
+    const cur = Math.min(8, state.teamMission[i] || 1);
+    const finished = done >= 8;
+    // 경로 위 8곳: 섬 안쪽 고리, 왼쪽 아래에서 시작해 시계 방향
+    const wp = MISSIONS.map((_, k) => {
+      const a = Math.PI * .78 + (k / 8) * Math.PI * 2 * .92;
+      return [cx + Math.cos(a) * R * .74, cy + Math.sin(a) * R * .5];
+    });
+    let trail = '';
+    for(let k = 1; k < wp.length; k++) {
+      trail += '<line class="wm-trail' + (done >= k ? ' done' : '') + '" x1="' + wp[k-1][0].toFixed(1) + '" y1="' + wp[k-1][1].toFixed(1) + '" x2="' + wp[k][0].toFixed(1) + '" y2="' + wp[k][1].toFixed(1) + '"/>';
+    }
+    const pts = wp.map((p, k) => {
+      const st = routeStatus(i, k);
+      return '<circle class="wm-wp wm-' + st + '" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + (k === 7 ? 7 : 5) + '"/>';
+    }).join('');
+    const tk = finished ? wp[7] : wp[cur - 1];
+    const halo = finished ? '' : '<circle class="wm-halo" cx="' + tk[0].toFixed(1) + '" cy="' + tk[1].toFixed(1) + '" r="25"/>';
+    const token = '<g class="wm-token' + (finished ? ' fin' : '') + '"><circle cx="' + tk[0].toFixed(1) + '" cy="' + tk[1].toFixed(1) + '" r="17" style="stroke:' + isl.color + '"/>'
+      + '<text x="' + tk[0].toFixed(1) + '" y="' + tk[1].toFixed(1) + '" text-anchor="middle" dominant-baseline="central">' + (finished ? '🚁' : (i + 1)) + '</text></g>';
+    const where = finished ? '탈출 완료' : (ROUTE_SHORT[cur - 1] || '') + ' 미션' + (done >= cur ? ' · 대기' : '');
+    const click = opts.onIsland ? ' onclick="' + opts.onIsland + '(' + i + ')" tabindex="0" role="button" onkeydown="if(event.key===\'Enter\')' + opts.onIsland + '(' + i + ')"' : '';
+    return '<g class="wm-island' + (opts.onIsland ? ' clickable' : '') + '"' + click + ' aria-label="' + (i + 1) + '모둠 ' + isl.name + ', ' + where + '">'
+      + '<path class="wm-reef" d="' + islandPath(i, cx, cy, R, 1.16) + '"/>'
+      + '<path class="wm-land" d="' + islandPath(i, cx, cy, R, 1) + '" style="--isl:' + isl.color + '"/>'
+      + '<path class="wm-contour" d="' + islandPath(i, cx, cy, R, .7) + '"/>'
+      + '<path class="wm-contour" d="' + islandPath(i, cx, cy, R, .42) + '"/>'
+      + '<text class="wm-landmark" x="' + cx + '" y="' + (cy - 2) + '" text-anchor="middle" dominant-baseline="central">' + isl.emoji + '</text>'
+      + trail + pts + halo + token
+      + '<text class="wm-name" x="' + cx + '" y="' + (cy + R * .9 + 26) + '" text-anchor="middle">' + (i + 1) + '모둠 · ' + isl.name + '</text>'
+      + '<text class="wm-sub" x="' + cx + '" y="' + (cy + R * .9 + 46) + '" text-anchor="middle">' + escHTML(where) + ' · 🪙 ' + (state.coins[i] || 0) + '</text>'
+      + '</g>';
+  }).join('');
+  const compass = '<g class="wm-compass" transform="translate(950,555)"><circle r="24"/><path d="M0,-20 L5,0 L0,20 L-5,0Z"/><text y="-28" text-anchor="middle">N</text></g>';
+  return '<svg class="world-map" viewBox="0 0 1000 600" width="100%" role="img" aria-label="여섯 섬 진행 지도">'
+    + '<g class="wm-grid">' + grid.join('') + '</g>' + islands + compass + '</svg>';
+}
+function worldLegendHTML() {
+  return '<div class="wm-legend"><span><i class="lg lg-done"></i>지나온 곳</span><span><i class="lg lg-cur"></i>지금 미션</span><span><i class="lg lg-next"></i>남은 곳</span><span>🚁 탈출 완료</span></div>';
+}
+
+// ── 교사 대시보드: 카드 / 지도 보기 ──
+let tdView = 'cards';
+function tdSetView(v) {
+  tdView = v;
+  try { localStorage.setItem('gsos_td_view', v); } catch(e) {}
+  updateTeacherDashboard();
+}
+try { tdView = localStorage.getItem('gsos_td_view') || 'cards'; } catch(e) {}
+function renderTeacherMap() {
+  const grid = document.getElementById('tdGrid');
+  const map = document.getElementById('tdMap');
+  document.querySelectorAll('.td-viewbtn').forEach(b => b.classList.toggle('on', b.dataset.v === tdView));
+  if(!grid || !map) return;
+  grid.style.display = tdView === 'map' ? 'none' : 'grid';
+  map.style.display = tdView === 'map' ? 'block' : 'none';
+  if(tdView === 'map') map.innerHTML = worldMapSVG({ onIsland: 'tdViewTeam' }) + worldLegendHTML();
+}
+function tdMapFullscreen() {
+  let ov = document.getElementById('mapOverlay');
+  if(ov) ov.remove();
+  ov = document.createElement('div');
+  ov.id = 'mapOverlay';
+  ov.className = 'map-overlay';
+  ov.innerHTML = '<div class="map-ov-head"><div><b>' + escHTML(stripTags(G.title)) + '</b> · 여섯 섬 탈출 지도</div><button class="log-btn log-close" onclick="document.getElementById(\'mapOverlay\').remove()">✕ 닫기</button></div>'
+    + '<div class="map-ov-body" id="mapOverlayBody"></div>';
+  document.body.appendChild(ov);
+  renderMapOverlay();
+}
+function renderMapOverlay() {
+  const b = document.getElementById('mapOverlayBody');
+  if(b) b.innerHTML = worldMapSVG() + worldLegendHTML();
 }
 
 // ══ 미션 공통 띠: 목표 문법 · 이번 미션 기기 담당 ══
@@ -2530,7 +2778,8 @@ function deviceTurn(missionId) {
 function missionRibbonHTML() {
   const m = state.currentMission || 1;
   return '<div class="m-ribbon"><span>🎯 목표 문법 <b>' + escHTML(stripTags(G.title)) + '</b></span>'
-    + '<span class="m-turn">📱 이번 미션 기기 담당 <b>모둠원 ' + deviceTurn(m) + '번</b><small> · 나머지는 함께 읽고 말해요</small></span></div>';
+    + '<span class="m-turn">📱 이번 미션 기기 담당 <b>모둠원 ' + deviceTurn(m) + '번</b><small> · 나머지는 함께 읽고 말해요</small></span>'
+    + routeStripHTML(state.currentTeam) + '</div>';
 }
 function decorateMission() {
   const main = document.getElementById('missionMain');
@@ -2974,11 +3223,11 @@ function moonResultHTML(ti, result) {
       <div class="result-title">${title}</div>
       <div style="display:flex;gap:1.5rem;justify-content:center;margin:.75rem 0;flex-wrap:wrap;">
         <div style="text-align:center;">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--accent2);">${score}</div>
+          <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:2rem;color:var(--accent2);">${score}</div>
           <div style="font-size:.76rem;color:var(--text3);text-transform:uppercase;">격파</div>
         </div>
         <div style="text-align:center;">
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:${hp>2?'var(--success)':'var(--danger)'};">${hp}/5</div>
+          <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:2rem;color:${hp>2?'var(--success)':'var(--danger)'};">${hp}/5</div>
           <div style="font-size:.76rem;color:var(--text3);text-transform:uppercase;">HP 잔여</div>
         </div>
       </div>
@@ -3011,7 +3260,7 @@ function moonBufferingHTML(ti, score) {
     <div class="result-box">
       <span class="result-emoji" style="animation:pulseGlow 1.5s infinite;">🛸</span>
       <div class="result-title">CALCULATING...</div>
-      <div style="font-size:.96rem;color:var(--accent2);margin:.5rem 0;font-family:'Bebas Neue',sans-serif;">${score}개 격파</div>
+      <div style="font-size:.96rem;color:var(--accent2);margin:.5rem 0;font-family:'Bebas Neue','Black Han Sans',sans-serif;">${score}개 격파</div>
       <div style="background:var(--surface);border-radius:8px;padding:1rem;margin:1rem 0;">
         <div style="font-size:.84rem;color:var(--text3);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.1em;">모둠 참여 현황</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;">
@@ -3111,7 +3360,7 @@ function moonFinalHTML(ti, total, target, cleared) {
     <div class="result-box">
       <span class="result-emoji">${cleared?'🎉':'😢'}</span>
       <div class="result-title">${cleared?'MISSION CLEARED!':'NOT ENOUGH...'}</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--accent2);margin:.5rem 0;">${total} / ${target}</div>
+      <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:2.5rem;color:var(--accent2);margin:.5rem 0;">${total} / ${target}</div>
       <div style="font-size:.84rem;color:var(--text3);margin-bottom:1rem;">전체 격파 수 (목표: ${target}개 이상)</div>
       <div class="result-coin ${cleared?'positive':'negative'}">${cleared?'+3':'-3'} 🪙 전체 지급</div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:1rem 0;">
@@ -3152,7 +3401,7 @@ function moonShowSummary(ti) {
     <div class="result-box">
       <span class="result-emoji">${cleared ? '🎉' : completed < 6 ? '⏳' : '😢'}</span>
       <div class="result-title">${cleared ? 'MISSION CLEARED!' : completed < 6 ? 'WAITING...' : 'NOT ENOUGH...'}</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--accent2);margin:.5rem 0;">${total} / ${target}</div>
+      <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:3rem;color:var(--accent2);margin:.5rem 0;">${total} / ${target}</div>
       <div style="font-size:.88rem;color:var(--text3);margin-bottom:1.25rem;">전체 격파 수 (목표: ${target}개)</div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1.25rem;">
         ${ISLANDS.map((isl,i) => {
@@ -3275,7 +3524,7 @@ function renderMission5(teamNum) {
       </div>
 
       <div class="step-label">STEP 1 · 7초 안에 문장을 외우세요!</div>
-      <div style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);border-radius:8px;padding:.85rem 1rem;margin-bottom:1rem;font-size:.92rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
+      <div style="background:rgba(79,209,197,.08);border:1px solid rgba(79,209,197,.25);border-radius:8px;padding:.85rem 1rem;margin-bottom:1rem;font-size:.92rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
         📢 <strong>외우는 방법:</strong><br>
         문장을 모둠원끼리 나눠서 각자 한 부분씩 외우세요!<br>
         예: 1번 사람 → <em>"${G.m5.memoExampleA}"</em><br>
@@ -3295,7 +3544,7 @@ function renderMission5(teamNum) {
       ${hintBoxHTML('m5', ti)}
 
       <div style="text-align:center;margin-bottom:1rem;">
-        <div id="m5timer-${ti}" style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--accent2);">7</div>
+        <div id="m5timer-${ti}" style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:3rem;color:var(--accent2);">7</div>
         <div style="font-size:.82rem;color:var(--text3);">seconds remaining</div>
       </div>
 
@@ -3312,7 +3561,7 @@ function renderMission5(teamNum) {
       </div>
       <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:1.5rem;text-align:center;margin-bottom:1rem;">
         <div style="font-size:.92rem;color:var(--text3);margin-bottom:.5rem;font-family:'Noto Sans KR',sans-serif;">문장이 가려졌어요! 기억나는 대로 발화하세요</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:.1em;color:var(--text3);">??? ??? ??? ??? ???</div>
+        <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.5rem;letter-spacing:.1em;color:var(--text3);">??? ??? ??? ??? ???</div>
         <div style="font-size:.84rem;color:var(--accent);margin-top:.75rem;font-family:'Space Mono',monospace;">힌트: ${G.m5.keyPrefix}${m5.key}</div>
       </div>
       <div style="font-size:.92rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:1rem;background:var(--surface);border-radius:8px;padding:.85rem;">
@@ -3493,7 +3742,7 @@ function renderMission6(teamNum) {
 
     <!-- STEP 2: 발화 -->
     <div class="step ${step===2?'active':''}" id="m6step2-${ti}">
-      <div style="background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);border-radius:8px;padding:1rem;margin-bottom:1rem;">
+      <div style="background:rgba(79,209,197,.08);border:1px solid rgba(79,209,197,.25);border-radius:8px;padding:1rem;margin-bottom:1rem;">
         <div style="font-size:.9rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
           📢 <strong>발화 방법:</strong><br>
           짝꿍 모둠과 함께 완성된 대화를 주고받으세요!<br>
@@ -3948,7 +4197,7 @@ function m4RenderResult(ti, correct, coins) {
     <div class="result-box">
       <span class="result-emoji">${failed ? '😢' : npc.emoji}</span>
       <div class="result-title">${failed ? 'NO ALLY...' : 'NEW ALLY FOUND!'}</div>
-      ${!failed ? `<div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.1em;color:${npc.color};margin:.5rem 0;">${npc.name}</div>` : ''}
+      ${!failed ? `<div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.8rem;letter-spacing:.1em;color:${npc.color};margin:.5rem 0;">${npc.name}</div>` : ''}
       <div class="result-coin ${coins>0?'positive':'neutral'}">${coins>0?'+'+coins:'±0'} 🪙</div>
       ${!failed ? `
       <div style="background:rgba(255,255,255,.04);border:1px solid ${npc.color}33;border-radius:8px;padding:1rem;margin:1rem 0;text-align:left;">
@@ -4039,16 +4288,16 @@ function renderMission7(teamNum) {
             <div style="color:var(--text2);">${G.m7.target.label} <strong>${G.m7.target.minCount}개 이상</strong></div>
             <div style="color:var(--text3);font-size:.8rem;margin-top:.2rem;">${G.m7.target.hint}</div>
           </div>
-          <div style="background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:6px;padding:.5rem .75rem;">
+          <div style="background:rgba(79,209,197,.06);border:1px solid rgba(79,209,197,.15);border-radius:6px;padding:.5rem .75rem;">
             <div style="color:var(--accent2);font-weight:700;margin-bottom:.2rem;">⭐ 보너스</div>
             <div style="color:var(--text2);">영어로 작성 <strong>+2코인</strong></div>
             <div style="color:var(--text3);font-size:.8rem;margin-top:.2rem;">모르는 단어는 한글/사전 OK!</div>
           </div>
-          <div style="background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:6px;padding:.5rem .75rem;">
+          <div style="background:rgba(79,209,197,.06);border:1px solid rgba(79,209,197,.15);border-radius:6px;padding:.5rem .75rem;">
             <div style="color:var(--accent2);font-weight:700;margin-bottom:.2rem;">⭐ 보너스</div>
             <div style="color:var(--text2);">${G.m7.bonus[0].cardHtml}</div>
           </div>
-          <div style="background:rgba(56,189,248,.06);border:1px solid rgba(56,189,248,.15);border-radius:6px;padding:.5rem .75rem;grid-column:span 2;">
+          <div style="background:rgba(79,209,197,.06);border:1px solid rgba(79,209,197,.15);border-radius:6px;padding:.5rem .75rem;grid-column:span 2;">
             <div style="color:var(--accent2);font-weight:700;margin-bottom:.2rem;">⭐ 보너스</div>
             <div style="color:var(--text2);">${G.m7.bonus[1].cardHtml}</div>
           </div>
@@ -5212,6 +5461,8 @@ function updateTeacherDashboard() {
 const grid = document.getElementById('tdGrid');
 if(!grid) return;
 renderTeacherFocus();
+renderTeacherMap();
+renderMapOverlay();
 const gs = document.getElementById('tdGroupSize');
 if(gs && document.activeElement !== gs) gs.value = String(state.groupSize || 4);
 grid.innerHTML = ISLANDS.map((isl,i) => {
@@ -5260,12 +5511,12 @@ return `
   <!-- 헤더 줄 1: 섬 이름 + 접속 배지 -->
   <div style="display:flex;align-items:center;gap:.4rem;">
     <span style="font-size:1.4rem;">${isl.emoji}</span>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:.98rem;color:${isl.color};">${i+1}모둠 · ${isl.name}</div>
+    <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:.98rem;color:${isl.color};">${i+1}모둠 · ${isl.name}</div>
     <div style="margin-left:auto;">${connBadge}</div>
   </div>
   <!-- 헤더 줄 2: 코인 + 상태 -->
   <div style="display:flex;align-items:center;gap:.5rem;">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.06rem;color:var(--accent);">${coins} 🪙</div>
+    <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.06rem;color:var(--accent);">${coins} 🪙</div>
     <div title="연 힌트 수" style="font-size:.8rem;color:#facc15;">💡 ${totalHintsUsed(i)}</div>
     <div style="font-size:.72rem;color:${statusColor};font-weight:bold;margin-left:auto;">${statusText}</div>
   </div>
@@ -5278,7 +5529,7 @@ return `
   <!-- 8개 미션 도트 + 진행률 % -->
   <div style="display:flex;align-items:center;gap:.5rem;">
     <div style="display:flex;gap:3px;align-items:center;">${pips}</div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:.96rem;color:var(--text2);margin-left:auto;">${pct}%</div>
+    <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:.96rem;color:var(--text2);margin-left:auto;">${pct}%</div>
   </div>
 
   <!-- 진행률 바 (초록=완료, 주황=현재 스텝) -->
@@ -5294,7 +5545,7 @@ return `
   <!-- 버튼: 화면 보기 + 스킵 -->
   <div style="display:flex;gap:.35rem;margin-top:.1rem;">
     <button onclick="tdViewTeam(${i})"
-      style="flex:1;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.25);border-radius:4px;padding:.3rem;font-size:.76rem;color:var(--accent2);cursor:pointer;">📺 화면 보기</button>
+      style="flex:1;background:rgba(79,209,197,.1);border:1px solid rgba(79,209,197,.25);border-radius:4px;padding:.3rem;font-size:.76rem;color:var(--accent2);cursor:pointer;">📺 화면 보기</button>
     <select id="tdSkipSel-${i}" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem;font-size:.76rem;color:var(--text);">
       ${[1,2,3,4,5,6,7,8].map(m=>`<option value="${m}"${state.teamMission[i]===m?' selected':''}>미션${m}</option>`).join('')}
     </select>
@@ -5366,7 +5617,7 @@ div.id = 'teacherPanel';
 div.style.cssText = 'position:fixed;bottom:1rem;right:1rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;z-index:200;width:380px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.5);';
 div.innerHTML = `
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.06rem;letter-spacing:.1em;color:var(--accent);">👩‍🏫 교사 제어 패널</div>
+    <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.06rem;letter-spacing:.1em;color:var(--accent);">👩‍🏫 교사 제어 패널</div>
     <button onclick="document.getElementById('teacherPanel').style.display='none'" style="background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:1.06rem;line-height:1;">✕</button>
   </div>
 
@@ -5400,7 +5651,7 @@ div.innerHTML = `
   </div>
 
   <div style="display:flex;gap:.4rem;">
-    <button onclick="teacherSyncNow()" style="flex:1;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.3);border-radius:4px;padding:.4rem;font-size:.82rem;color:var(--accent2);cursor:pointer;">🔄 동기화</button>
+    <button onclick="teacherSyncNow()" style="flex:1;background:rgba(79,209,197,.12);border:1px solid rgba(79,209,197,.3);border-radius:4px;padding:.4rem;font-size:.82rem;color:var(--accent2);cursor:pointer;">🔄 동기화</button>
     <button onclick="teacherResetRoom()" style="flex:1;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:4px;padding:.4rem;font-size:.82rem;color:var(--danger);cursor:pointer;">🗑️ 방 초기화</button>
   </div>`;
 document.body.appendChild(div);
@@ -5421,7 +5672,7 @@ panel.innerHTML = ISLANDS.map((isl, i) => {
   return `
     <div style="background:var(--bg);border:2px solid ${fullyDone?isl.color:'rgba(255,255,255,.08)'};border-radius:6px;padding:.5rem;text-align:center;">
       <div style="font-size:1.1rem;">${isl.emoji}</div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:.9rem;color:${isl.color};">${i+1}모둠</div>
+      <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:.9rem;color:${isl.color};">${i+1}모둠</div>
       <div style="font-size:.68rem;color:var(--text3);margin:.1rem 0;">${MN[mission]||'?'}</div>
       <div style="font-size:.76rem;color:var(--accent);">🪙 ${coins}</div>
       <div style="font-size:.68rem;color:${fullyDone?'var(--success)':isWaiting?'var(--accent)':'var(--accent2)'};margin-top:.1rem;">
@@ -5690,7 +5941,7 @@ function showM7Review() {
     return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.85rem;display:flex;flex-direction:column;gap:.5rem;">
       <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;">
         <span style="font-size:1.06rem;">${isl.emoji}</span>
-        <span style="font-family:'Bebas Neue',sans-serif;font-size:1.04rem;letter-spacing:.05em;color:${isl.color};">${isl.name}</span>
+        <span style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.04rem;letter-spacing:.05em;color:${isl.color};">${isl.name}</span>
         ${gradeHtml}
         ${coinsHtml}
       </div>
@@ -5702,7 +5953,7 @@ function showM7Review() {
 
   ov.innerHTML = `
     <div style="display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;">
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.1em;color:#a855f7;">📝 미션 8 · 탈출 안내문 (모둠별 응답)</div>
+      <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.1rem;letter-spacing:.1em;color:#a855f7;">📝 미션 8 · 탈출 안내문 (모둠별 응답)</div>
       <div style="flex:1;font-size:.8rem;color:var(--text3);">실시간 반영 — 채점 후 결과 포함</div>
       <button onclick="document.getElementById('m7ReviewOverlay').remove()" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);border-radius:4px;padding:.3rem .8rem;font-size:.84rem;color:var(--danger);cursor:pointer;">✕ 닫기</button>
     </div>
