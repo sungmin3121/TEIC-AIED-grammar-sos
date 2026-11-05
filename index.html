@@ -49,6 +49,27 @@ radial-gradient(ellipse at 80% 80%,rgba(56,189,248,.08) 0%,transparent 50%),var(
 .intro-how li + li { margin-top:.35rem; }
 .intro-how b { color:var(--text); }
 @media (max-width:420px) { .sos-badge { letter-spacing:.15em; padding:.3rem .8rem; } }
+.intro-demo { display:block; margin:0 auto .9rem; max-width:340px; padding:.6rem 1rem; border:1px solid rgba(56,189,248,.45); border-radius:8px; background:rgba(56,189,248,.08); color:var(--accent2); text-decoration:none; font-size:.92rem; font-weight:700; }
+.intro-demo small { display:block; margin-top:.15rem; font-size:.76rem; font-weight:400; color:var(--text2); }
+.intro-demo:hover { background:rgba(56,189,248,.14); }
+.demo-panel { display:none; text-align:left; background:rgba(56,189,248,.06); border:1px solid rgba(56,189,248,.35); border-radius:8px; padding:1rem 1.1rem; margin-bottom:1rem; font-family:'Noto Sans KR',sans-serif; word-break:keep-all; }
+.demo-tag { display:inline-block; font-size:.74rem; letter-spacing:.08em; color:#0a0e1a; background:var(--accent2); border-radius:3px; padding:.1rem .45rem; margin-bottom:.5rem; font-weight:700; }
+.demo-panel p { margin:0 0 .8rem; font-size:.86rem; line-height:1.6; color:var(--text2); }
+.demo-teacher { display:block; width:100%; text-align:left; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.7rem .9rem; color:var(--text); font-size:.95rem; font-weight:700; cursor:pointer; font-family:inherit; }
+.demo-teacher:hover { border-color:var(--accent2); }
+.demo-teacher small { display:block; margin-top:.15rem; font-size:.76rem; font-weight:400; color:var(--text2); }
+.demo-or { margin-top:.8rem; font-size:.84rem; color:var(--text2); }
+.demo-or b { color:var(--text); }
+.demo-exit { display:none; }
+.demo-exit a { color:var(--accent2); }
+body.demo .demo-panel { display:block; }
+body.demo .demo-exit { display:inline; }
+body.demo #roomCard, body.demo #teacherLoginBox, body.demo .intro-demo, body.demo .intro-step { display:none !important; }
+#demoBadge { position:fixed; right:4rem; bottom:1.1rem; z-index:260; display:none; align-items:center; gap:.5rem; background:rgba(10,14,26,.9); border:1px solid rgba(56,189,248,.45); border-radius:999px; padding:.35rem .8rem; font-size:.78rem; color:var(--text2); font-family:'Noto Sans KR',sans-serif; backdrop-filter:blur(6px); }
+#demoBadge b { color:var(--accent2); }
+#demoBadge a { color:var(--text); }
+body.demo #demoBadge { display:flex; }
+body.demo:has(#screen-login.active) #demoBadge { display:none; }
 .intro-step { font-size:.85rem; color:var(--text3); margin-bottom:.75rem; font-family:'Noto Sans KR',sans-serif; }
 .intro-foot { word-break:keep-all; margin-top:1.25rem; font-size:.75rem; line-height:1.5; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
 .sos-badge { display:inline-block; background:var(--danger); color:#fff; font-family:'Bebas Neue',sans-serif; font-size:1.06rem; letter-spacing:.3em; padding:.3rem 1.2rem; border-radius:2px; margin-bottom:1.5rem; animation:badgePulse 2s ease-in-out infinite; }
@@ -513,6 +534,8 @@ messagingSenderId: "248764760707",
 appId: "1:248764760707:web:2cfd7f06c6ced0db4e11b6"
 };
 
+// 체험 모드(?demo=1)에서는 Firebase에 연결하지 않는다: 아무것도 읽거나 쓰지 않음
+if(new URLSearchParams(location.search).get('demo') !== '1') {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
@@ -528,6 +551,7 @@ window.firebaseReady = true;
 
 // Firebase 준비 완료 이벤트
 window.dispatchEvent(new Event('firebaseReady'));
+}
 </script>
 
 </head>
@@ -549,6 +573,7 @@ window.dispatchEvent(new Event('firebaseReady'));
     <span>🧭 미션 7개 · 약 25분</span>
     <span>🔒 로그인·이름 없음</span>
   </div>
+  <a class="intro-demo" href="?demo=1">👀 기기 한 대로 체험해 보기<small>학생 미션과 선생님 화면을 혼자 둘러봐요</small></a>
   <details class="intro-how">
     <summary>어떻게 진행되나요?</summary>
     <ol>
@@ -562,8 +587,16 @@ window.dispatchEvent(new Event('firebaseReady'));
 
     <div class="intro-step">접속하기 · 방 번호와 섬을 고르세요</div>
 
+<!-- 체험 모드 안내 (?demo=1일 때만) -->
+<div id="demoPanel" class="demo-panel">
+  <div class="demo-tag">체험 모드</div>
+  <p>기기 한 대로 둘러보는 모드예요. 나머지 다섯 모둠은 가상 모둠이고, 여기서 한 일은 이 화면에만 남고 어디에도 저장되지 않아요.</p>
+  <button class="demo-teacher" onclick="demoTeacher()">👩‍🏫 선생님 화면 보기<small>예시 반 · 모둠별 진행 · 응답 기록 · 작문 전후</small></button>
+  <div class="demo-or">또는 아래에서 섬을 골라 <b>학생으로</b> 미션 7개를 끝까지 해 보세요</div>
+</div>
+
 <!-- 방 번호 -->
-<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem;text-align:left;">
+<div id="roomCard" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem;text-align:left;">
   <div style="font-size:.8rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">🏫 방 번호 (반 구분용)</div>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;">
     <button onclick="selectRoom(5)" id="roomBtn-5" class="room-btn">5반</button>
@@ -612,7 +645,7 @@ window.dispatchEvent(new Event('firebaseReady'));
   font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.1em;cursor:pointer;opacity:.4;pointer-events:none;transition:all .2s;">
   ▶ 접속하기
 </button>
-<div class="intro-foot">Grammar SOS · 2026 SNU TEIC AIED Challenge 출품작 · 학생 이름과 개인정보는 저장하지 않아요</div>
+<div class="intro-foot">Grammar SOS · 2026 SNU TEIC AIED Challenge 출품작 · 학생 이름과 개인정보는 저장하지 않아요<span class="demo-exit"> · <a href="./">체험 끝내기</a></span></div>
 
   </div>
 </div>
@@ -4138,11 +4171,12 @@ const btn = document.getElementById('loginBtn');
 const status = document.getElementById('loginStatus');
 if(myRoom && myRole) {
 btn.style.opacity='1'; btn.style.pointerEvents='auto';
-status.textContent = myRoom+'반 · '+(myRole==='teacher'?'👩‍🏫 교사':'학생 ('+myRole+' 섬)');
+const islName = myRole==='teacher' ? '👩‍🏫 교사' : '학생 ('+((ISLANDS[ROLE_TO_TEAM[myRole]-1]||{}).name||myRole)+')';
+status.textContent = (DEMO ? '체험 모드 · ' : myRoom+'반 · ') + islName;
 status.style.color = 'var(--accent2)';
 } else {
 btn.style.opacity='0.4'; btn.style.pointerEvents='none';
-status.textContent = '방 번호와 역할을 모두 선택하세요';
+status.textContent = DEMO ? '체험할 섬을 하나 고르세요' : '방 번호와 역할을 모두 선택하세요';
 status.style.color = 'var(--text3)';
 }
 }
@@ -4153,7 +4187,7 @@ const status = document.getElementById('loginStatus');
 status.textContent = '🔄 연결 중…';
 
 // Firebase 준비 대기 (최대 3초)
-if(!window.firebaseReady) {
+if(!window.firebaseReady && !DEMO) {
 await Promise.race([
 new Promise(r => window.addEventListener('firebaseReady', r, {once:true})),
 new Promise(r => setTimeout(r, 3000))
@@ -4175,6 +4209,14 @@ initMission(teamNum, state.teamMission[teamNum-1] || 1);
 }
 }, 500);
 };
+
+// 체험 모드: 저장 없이 이 기기에서만, 나머지 다섯 모둠은 가상 모둠
+if(DEMO) {
+  demoSeedStudent(ROLE_TO_TEAM[myRole] - 1);
+  status.textContent = '✅ 체험 모드로 시작해요';
+  proceed();
+  return;
+}
 
 // Firebase 사용 가능하면 동기화, 아니면 로컬로 진행
 if(window.firebaseReady && window.firebaseDB) {
@@ -4524,7 +4566,8 @@ const connBadge = isConnected
 const totalUnits = 8 * 3;
 const doneUnits = completed * 3;
 const stepUnits = info.step ? (info.step - 1) : 0;
-const pct = Math.round((doneUnits + stepUnits) / totalUnits * 100);
+// 미션 7까지 끝낸 모둠은 현재 단계가 더해져 100%를 넘지 않게 한다
+const pct = Math.min(100, Math.round((doneUnits + (completed >= 8 ? 0 : stepUnits)) / totalUnits * 100));
 // 완료 구간(초록), 현재 미션 진행 구간(주황) 너비
 const greenW = (completed / 8 * 100).toFixed(1);
 const orangeW = info.step ? ((info.step - 1) / 3 / 8 * 100).toFixed(1) : '0';
@@ -4982,6 +5025,181 @@ btn.title = '교사 제어 패널';
 btn.style.cssText = 'position:fixed;bottom:1rem;left:1rem;z-index:200;background:var(--accent);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 12px rgba(249,115,22,.4);';
 btn.onclick = showTeacherPanel;
 document.body.appendChild(btn);
+}
+
+// ══ 체험 모드 (?demo=1) ══
+// 심사위원이나 처음 보는 사람이 기기 한 대로 둘러보는 모드.
+// - Firebase에 연결하지 않는다(맨 위 모듈에서 건너뜀): 어떤 반의 데이터도 읽거나 쓰지 않는다.
+// - 학생 체험: 나머지 다섯 모둠은 '이미 끝낸 가상 모둠'으로 채워서, 달 기지 결과와 최종 결과까지 혼자 볼 수 있다.
+// - 선생님 체험: 수업 중간쯤 된 가상 반(모둠별 진행, 힌트, 응답 기록, 작문 전후)을 보여 준다.
+// - AI 피드백은 실제 AI 서버를 쓴다(학생 이름 없이 작문만 보냄).
+const DEMO = new URLSearchParams(location.search).get('demo') === '1';
+const DEMO_ROOM = '체험';
+
+function demoSeedStudent(myTi) {
+  myRoom = DEMO_ROOM;
+  const coins = [14, 11, 16, 9, 13, 12];
+  const moon = [7, 5, 8, 6, 6, 7];
+  state.moonScores = state.moonScores || {};
+  for(let i = 0; i < 6; i++) {
+    if(i === myTi) continue;
+    state.coins[i] = coins[i];
+    state.teamMission[i] = 8;
+    state.completedMission[i] = 8;
+    state.moonScores[i] = moon[i];
+  }
+}
+
+function demoTeacher() {
+  myRole = 'teacher';
+  myRoom = DEMO_ROOM;
+  demoSeedTeacher();
+  renderLobby();
+  showTeacherDashboard();
+  const b = document.getElementById('tdLogCount');
+  if(b) b.textContent = Object.keys(roomLog).length;
+}
+
+function demoSeedTeacher() {
+  connectedRoles = { volcano:true, arctic:true, jungle:true, desert:true, ocean:true, dino:true, teacher:true };
+  // 수업 25분쯤 지난 반: 두 모둠은 끝, 세 모둠은 미션 7 작문 중이거나 앞 미션, 한 모둠은 위기 대응에서 막힘
+  state.teamMission      = [8, 8, 7, 8, 6, 8];
+  state.completedMission = [8, 7, 6, 7, 5, 8];
+  state.coins            = [18, 14, 12, 15, 8, 13];
+  state.moonScores = { 0:8, 1:6, 2:7, 3:5, 4:4, 5:7 };
+  state.moonAllDone = true; state.moonCleared = true; state.moonBonusGiven = true;
+  state.globalMission = computeGlobalMission();
+  state.missionStep = Object.assign(state.missionStep || {}, { m7_0:3, m7_1:2, m6_2:2, m7_3:2, m5_4:2, m7_5:3 });
+  state.hints = {
+    0: { m1:0, m2:1, m4:0, moon:0, m7:0 },
+    1: { m2:2, m4:1, m7:1 },
+    2: { m3:1, m4:2, m6:1 },
+    3: { m1:1, m2:1, moon:1, m7:2 },
+    4: { m1:2, m2:3, m3:2, m4:2, moon:2, m5:3 },
+    5: { m4:1 },
+  };
+
+  const T = {
+    volBefore: "Dear rescue team, We are stranded on Volcano Island. It is important to come quickly. Please make sure to know where landing because of the lava. We don't know what should we do.",
+    volAfter:  "Dear rescue team, We are stranded on Volcano Island. It is important to come quickly. Please make sure to know where to land because of the lava. We don't know what to do.",
+    arcBefore1:"Dear rescue team, We are stranded on Arctic Island. It is important to bring warm clothes. Please make sure to know what avoid. There are polar bears!",
+    arcBefore2:"Dear rescue team, We are stranded on Arctic Island. It is important to bring warm clothes. Please make sure to know what to avoid becuase there are polar bears. We don't know how to stay warm.",
+    desBefore: "Dear rescue team, We are stranded on Desert Island. It is important to come before the sandstorm. Please make sure to know which way come. We will wave a red flag.",
+    dinoFinal: "Dear rescue team, We are stranded on Dino Island. It is important to fly high. Please make sure to know what to avoid. The T-Rex is near the lake!",
+  };
+  state.m7text = { 0: T.volAfter, 1: T.arcBefore2, 3: T.desBefore, 5: T.dinoFinal };
+  state.m7result = {
+    0: { coins: 3, grade: 'perfect', breakdown: ['필수 내용 포함 +2', '발화 성공 +1'] },
+    5: { coins: 2, grade: 'partial', breakdown: ['필수 내용 포함 +2'] },
+  };
+  const now = Date.now();
+  state.m7ai = {
+    0: { count: 1, at: now - 6*60e3, last: {
+      praise: '용암 때문에 착륙 장소를 알려 달라는 내용을 분명히 썼어요.',
+      targetFound: [],
+      fixes: [
+        { original: 'where landing', better: 'where to land', why: '의문사 뒤에는 -ing가 아니라 to + 동사원형이 와요.' },
+        { original: "We don't know what should we do", better: "We don't know what we should do (= what to do)", why: '문장 속 의문사 뒤는 의문문 어순이 아니라 주어 + 동사 순서예요. what to do로 바꾸면 목표 표현이 돼요.' },
+      ],
+      spelling: [],
+      requiredContent: { included: true, comment: '용암을 피할 착륙 장소를 안내했어요.' },
+      nextStep: '두 곳을 고친 뒤 소리 내어 한 번 읽어 보세요.' } },
+    1: { count: 2, at: now - 2*60e3, last: {
+      praise: '북극곰이 있다는 위험을 구체적으로 알려 줬어요.',
+      targetFound: ['what to avoid', 'how to stay warm'],
+      fixes: [],
+      spelling: [{ wrong: 'becuase', right: 'because' }],
+      requiredContent: { included: true, comment: '피해야 할 것(북극곰)을 안내했어요.' },
+      nextStep: '철자 하나만 고치고 제출해 보세요.' } },
+    3: { count: 1, at: now - 3*60e3, last: {
+      praise: '모래폭풍 전에 와 달라는 시간 조건을 잘 넣었어요.',
+      targetFound: [],
+      fixes: [ { original: 'which way come', better: 'which way to come', why: '의문사(which way) 뒤에 동사원형만 오면 안 되고 to가 있어야 해요.' } ],
+      spelling: [],
+      requiredContent: { included: true, comment: '올 방향을 안내하려 했어요. to만 넣으면 완성돼요.' },
+      nextStep: 'which way 뒤에 to를 넣어 보세요.' } },
+  };
+
+  // 응답 기록 (오답 포함). 문항 문구는 지금 문법 세트에서 가져온다.
+  roomLog = {}; logSeq = 0;
+  const base = now - 26*60e3;
+  const L = (ti, m, item, answer, ok, min, note, hint) => {
+    const e = { t: base + min*60e3 + ti*7e3 + (logSeq % 5)*1e3, team: ti, m, item: stripTags(item).slice(0,200), answer: String(answer),
+                ok: ok === true ? true : ok === false ? false : null, hint: hint || 0, set: (G && G.id) || '', by: TEAM_TO_ROLE[ti] };
+    if(note) e.note = note;
+    roomLog[e.t.toString(36) + '-' + e.by + '-' + (++logSeq)] = e;
+  };
+  const m1item = G.m1.promptBefore + '___' + G.m1.promptAfter, m1ok = G.m1.answer;
+  const m1wrong = G.m1.options.map(o => o.word).filter(w => w !== m1ok);
+  [[0],[1,0],[2],[3,1],[4,0,2],[5]].forEach(seq => {
+    const ti = seq[0];
+    seq.slice(1).forEach((wi, k) => L(ti, 1, m1item, m1wrong[wi % m1wrong.length], false, 1 + k*.3, '', ti === 4 ? 1 : 0));
+    L(ti, 1, m1item, m1ok, true, 1.5 + seq.length*.3);
+  });
+  const m2item = '조각 배열: ' + G.m2.promptKr, m2ok = G.m2.answer.join(' ');
+  const a = G.m2.answer;
+  const m2w1 = a.length >= 5 ? [a[0], a[1], a[2], a[4], a[3]].concat(a.slice(5)).join(' ') : a.slice().reverse().join(' ');
+  const m2w2 = a.length >= 5 ? a.slice(2, 5).concat(a.slice(0, 2), a.slice(5)).join(' ') : a.slice().reverse().join(' ');
+  [[0],[1,m2w2],[2],[3,m2w1],[4,m2w1,m2w2],[5]].forEach(seq => {
+    const ti = seq[0];
+    seq.slice(1).forEach((w, k) => L(ti, 2, m2item, w, false, 4 + k*.4, '', ti === 4 ? 2 : 0));
+    L(ti, 2, m2item, m2ok, true, 5);
+  });
+  const right = G.m3.right || [];
+  const wrongLeft = (r) => (G.m3.left || []).map(x => x.word).find(w => w !== r.correct) || '';
+  for(let ti = 0; ti < 6; ti++) right.forEach((r, k) => {
+    if(k === 0 && (ti === 2 || ti === 4)) L(ti, 3, '짝짓기: ' + r.text, wrongLeft(r) + ' + ' + r.text, false, 7);
+    L(ti, 3, '짝짓기: ' + r.text, r.correct + ' + ' + r.text, true, 7.5 + k*.2);
+  });
+  const oxItems = (G.m4.items || []);
+  const oxWrongBy = { 1:[4], 3:[1,2,4] };   // 문항 번호 → 틀린 모둠
+  for(let ti = 0; ti < 6; ti++) oxItems.forEach((q, k) => {
+    const wrong = (oxWrongBy[k] || []).includes(ti);
+    const ans = wrong ? !q.correct : q.correct;
+    L(ti, 4, 'OX: ' + q.sentence, ans ? 'O (맞다)' : 'X (틀리다)', !wrong, 10 + k*.3);
+  });
+  const good = (G.moon.phrases || []).filter(x => !x.trap).map(x => x.text);
+  const trap = (G.moon.phrases || []).find(x => x.trap);
+  for(let ti = 0; ti < 6; ti++) {
+    good.slice(0, 2 + (ti % 3)).forEach((ph, k) => L(ti, 5, '운석 입력', ph, true, 13 + k*.2));
+    if(trap && (ti === 3 || ti === 4)) L(ti, 5, '운석 입력', trap.text, false, 13.5, '함정 표현');
+    if(G.id === 'wh-to' && (ti === 3 || ti === 4)) L(ti, 5, '운석 입력', 'where to going', false, 13.8, '떨어지는 표현과 다름');
+  }
+  [0,1,2,3,5].forEach(ti => L(ti, 6, '암기 발화: ' + ((MISSION5_DATA[ti]||{}).sentence || ''), '발화 성공', true, 16));
+  L(4, 6, '암기 발화: ' + ((MISSION5_DATA[4]||{}).sentence || ''), '발화 실패', false, 17, '', 2);
+  L(4, 6, '암기 발화: ' + ((MISSION5_DATA[4]||{}).sentence || ''), '발화 실패', false, 19, '', 3);
+  [0,1,2,3,5].forEach(ti => {
+    const d = MISSION6_DATA[ti] || {};
+    if(getPairRole(ti) === 'A') {
+      if(ti === 2) L(ti, 7, '질문 배열: ' + d.teamA_given, (d.teamA_correct || []).slice().reverse().join(' '), false, 20, '', 1);
+      if(ti !== 2) L(ti, 7, '질문 배열: ' + d.teamA_given, (d.teamA_correct || []).join(' '), true, 20);
+    } else {
+      L(ti, 7, '답변 배열: ' + d.teamA_given, (d.teamB_correct1 || []).join(' ') + ' / ' + (d.teamB_correct2 || []).join(' '), true, 20.5);
+    }
+    if(ti !== 2) L(ti, 7, '짝꿍 모둠과 대화 발화', '발화 성공', true, 21);
+  });
+  if(G.id === 'wh-to') {
+    L(0, 8, 'AI 피드백 요청 전 작문', T.volBefore, null, 22, 'AI 피드백 1회차');
+    L(0, 8, '제출한 작문', T.volAfter, null, 23.5, 'AI 피드백 1회 받은 뒤 제출');
+    L(0, 8, '교사 채점', '필수 내용 포함 + 발화 성공', true, 24.5);
+    L(1, 8, 'AI 피드백 요청 전 작문', T.arcBefore1, null, 22.5, 'AI 피드백 1회차');
+    L(1, 8, 'AI 피드백 요청 전 작문', T.arcBefore2, null, 24, 'AI 피드백 2회차');
+    L(3, 8, 'AI 피드백 요청 전 작문', T.desBefore, null, 23, 'AI 피드백 1회차');
+    L(5, 8, '제출한 작문', T.dinoFinal, null, 23, 'AI 피드백 없이 제출');
+    L(5, 8, '교사 채점', '필수 내용 포함, 발화 미완성', true, 24);
+  }
+}
+
+if(DEMO) {
+  document.body.classList.add('demo');
+  myRoom = DEMO_ROOM;
+  const badge = document.createElement('div');
+  badge.id = 'demoBadge';
+  badge.innerHTML = '<b>체험 모드</b> 저장되지 않아요 · <a href="?demo=1">처음으로</a>';
+  document.body.appendChild(badge);
+  const lb = document.getElementById('loginBtn');
+  if(lb) lb.innerHTML = '▶ 학생으로 체험 시작';
+  updateLoginBtn();
 }
 
 // ══ INIT ══
