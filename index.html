@@ -677,6 +677,46 @@ font-family: 'Space Mono', monospace;
 .map-ov-body { flex:1; display:flex; flex-direction:column; justify-content:center; padding:1rem 2rem; min-height:0; }
 .map-ov-body .world-map { max-height:calc(100vh - 9rem); }
 .map-ov-body .wm-legend { font-size:1rem; }
+
+/* 미션 무대 (2차): 섬 장면 머리, 단계표, AI 기기 말풍선 */
+.mission-header.has-scene { position:relative; overflow:hidden; border-radius:14px; padding:1.1rem 1.25rem 1rem; margin-bottom:1.1rem;
+  background:linear-gradient(180deg, #13283a 0%, #183447 62%, #12304a 100%); border:1px solid var(--border); }
+.mission-header.has-scene > :not(.m-scene) { position:relative; z-index:1; }
+.m-scene { position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+.ms-wave { fill:none; stroke:rgba(79,209,197,.28); stroke-width:1.5; }
+.ms-land { fill:color-mix(in srgb, var(--isl) 30%, #2a3a3a); stroke:var(--sand); stroke-opacity:.45; stroke-width:1.2; }
+.ms-mark { font-size:26px; }
+.ms-reef { fill:none; stroke:rgba(79,209,197,.3); stroke-dasharray:2 4; }
+@media (max-width:520px) { .m-scene { opacity:.45; } }
+.mission-header.has-scene .mission-title { text-shadow:0 2px 12px rgba(13,26,36,.8); max-width:70%; }
+.m-steps { display:flex; align-items:center; margin-top:.75rem; max-width:260px; }
+.ms-step { flex:0 0 auto; width:1.6rem; height:1.6rem; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:.78rem; font-weight:700;
+  background:rgba(13,26,36,.75); border:1.5px solid rgba(233,216,166,.35); color:var(--text3); }
+.ms-step.done { border-color:var(--accent2); color:var(--accent2); }
+.ms-step.cur { background:var(--accent); border-color:#ffd2ad; color:#1b0e04; }
+.ms-bar { flex:1 1 auto; height:2px; background:rgba(233,216,166,.25); min-width:.6rem; }
+.bot-row { display:flex; gap:.85rem; align-items:flex-start; margin-bottom:1.6rem; }
+.bot-row > .mission-situation { flex:1; min-width:0; margin-bottom:0 !important; position:relative; border-left:1px solid var(--border); border-radius:4px 14px 14px 14px; background:var(--surface); }
+.bot-row > .mission-situation::before { content:''; position:absolute; left:-8px; top:16px; width:14px; height:14px; background:var(--surface); border-left:1px solid var(--border); border-bottom:1px solid var(--border); transform:rotate(45deg); }
+.sos-bot { flex:0 0 auto; width:48px; height:64px; margin-top:.15rem; }
+.sb-body { fill:#24394c; stroke:var(--sand); stroke-opacity:.55; stroke-width:1.5; }
+.sb-screen { fill:#0b1620; stroke:rgba(79,209,197,.5); stroke-width:1; }
+.sb-eye { fill:var(--accent2); }
+.sb-mouth path { fill:none; stroke:var(--accent2); stroke-width:2; stroke-linecap:round; }
+.sb-ant { stroke:var(--sand); stroke-opacity:.6; stroke-width:1.5; }
+.sb-light { fill:var(--accent); }
+.sb-btn { fill:#38506a; } .sb-btn.sos { fill:var(--danger); }
+@media (prefers-reduced-motion: no-preference) {
+  .sb-light { animation:sbBlink 3s ease-in-out infinite; }
+  @keyframes sbBlink { 0%,80%,100% { opacity:1; } 88% { opacity:.25; } }
+}
+@media (max-width:520px) { .sos-bot { width:36px; height:48px; } .bot-row { gap:.6rem; } .mission-header.has-scene .mission-title { max-width:100%; } }
+.isl-pick { display:block; width:100%; max-width:110px; height:58px; margin:0 auto .15rem; overflow:visible; }
+.isl-pick text { font-size:24px; }
+.ip-reef { fill:rgba(79,209,197,.06); stroke:rgba(79,209,197,.25); stroke-dasharray:2 4; }
+.ip-land { fill:color-mix(in srgb, var(--isl) 26%, #2a3a3a); stroke:var(--sand); stroke-opacity:.4; stroke-width:1; transition:stroke-opacity .2s; }
+.role-btn:hover .ip-land { stroke-opacity:.8; }
+.role-btn.selected .ip-land { stroke:var(--accent); stroke-opacity:1; stroke-width:2; }
 /* 한글이 들어가는 큰 글씨: 자간을 좁힌다 */
 .btn, #loginBtn, .result-title, .log-title, .tc-name, .lobby-title { letter-spacing:.03em !important; }
 .wm-landmark { font-size:34px; opacity:.9; }
@@ -760,7 +800,7 @@ window.dispatchEvent(new Event('firebaseReady'));
 
 <!-- 방 번호 -->
 <div id="roomCard" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem;text-align:left;">
-  <div style="font-size:.8rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">🏫 방 번호 (반 구분용)</div>
+  <div style="font-size:.86rem;color:var(--text2);margin-bottom:.6rem;">🏫 방 번호 (반 구분용)</div>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;">
     <button onclick="selectRoom(5)" id="roomBtn-5" class="room-btn">5반</button>
     <button onclick="selectRoom(6)" id="roomBtn-6" class="room-btn">6반</button>
@@ -771,7 +811,7 @@ window.dispatchEvent(new Event('firebaseReady'));
 
 <!-- 섬 선택 (학생용) -->
 <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem;text-align:left;">
-  <div style="font-size:.8rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;">🏝️ 내 섬 선택</div>
+  <div style="font-size:.86rem;color:var(--text2);margin-bottom:.6rem;">🏝️ 우리 모둠 섬</div>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;">
     <button onclick="selectRole('volcano')" id="roleBtn-volcano" class="role-btn">
       <div style="font-size:1.2rem;">🌋</div><div>화산 섬</div>
@@ -2781,9 +2821,61 @@ function missionRibbonHTML() {
     + '<span class="m-turn">📱 이번 미션 기기 담당 <b>모둠원 ' + deviceTurn(m) + '번</b><small> · 나머지는 함께 읽고 말해요</small></span>'
     + routeStripHTML(state.currentTeam) + '</div>';
 }
+// AI 기기 캐릭터 (이야기 속 '주머니 속 AI 기기'): 미션 상황을 말풍선으로 들려준다
+function sosBotSVG(mood) {
+  const mouth = mood === 'happy' ? '<path d="M17,33 Q24,39 31,33" />' : '<path d="M18,34 Q24,37 30,34" />';
+  return '<svg class="sos-bot" viewBox="0 0 48 64" aria-hidden="true">'
+    + '<line x1="24" y1="9" x2="24" y2="2" class="sb-ant"/><circle cx="24" cy="3" r="3" class="sb-light"/>'
+    + '<rect x="4" y="9" width="40" height="52" rx="10" class="sb-body"/>'
+    + '<rect x="9" y="15" width="30" height="27" rx="6" class="sb-screen"/>'
+    + '<circle cx="18" cy="26" r="2.6" class="sb-eye"/><circle cx="30" cy="26" r="2.6" class="sb-eye"/>'
+    + '<g class="sb-mouth">' + mouth + '</g>'
+    + '<circle cx="16" cy="51" r="3" class="sb-btn"/><circle cx="24" cy="51" r="3" class="sb-btn sos"/><circle cx="32" cy="51" r="3" class="sb-btn"/>'
+    + '</svg>';
+}
+// 미션 머리 뒤에 까는 섬 장면 (지금 모둠의 섬 모양·색)
+function missionSceneSVG(ti) {
+  const isl = ISLANDS[ti] || ISLANDS[0];
+  const d = islandPath(Math.max(0, ti), 340, 104, 46, 1);
+  return '<svg class="m-scene" viewBox="0 0 420 150" preserveAspectRatio="xMaxYMax meet" aria-hidden="true">'
+    + '<path class="ms-wave" d="M0,128 Q35,120 70,128 T140,128 T210,128 T280,128 T350,128 T420,128"/>'
+    + '<path class="ms-wave" d="M0,142 Q35,134 70,142 T140,142 T210,142 T280,142 T350,142 T420,142"/>'
+    + '<path class="ms-land" d="' + d + '" style="--isl:' + isl.color + '"/>'
+    + '<path class="ms-reef" d="' + islandPath(Math.max(0, ti), 340, 104, 46, 1.2) + '"/>'
+    + '<text x="340" y="102" text-anchor="middle" dominant-baseline="central" class="ms-mark">' + isl.emoji + '</text></svg>';
+}
+// 미션 안 단계(STEP 1, 2, 3…)를 점 단계표로
+function missionStepperHTML(main) {
+  const steps = [...main.querySelectorAll('.step')];
+  if(steps.length < 2) return '';
+  const cur = steps.findIndex(x => x.classList.contains('active'));
+  return '<div class="m-steps" aria-label="미션 단계 ' + (cur + 1) + ' / ' + steps.length + '">' + steps.map((_, i) =>
+    '<span class="ms-step' + (i < cur ? ' done' : i === cur ? ' cur' : '') + '">' + (i < cur ? '✓' : (i + 1)) + '</span>').join('<span class="ms-bar"></span>') + '</div>';
+}
 function decorateMission() {
   const main = document.getElementById('missionMain');
   if(!main) return;
+  const headEl = main.querySelector(':scope > .mission-header');
+  if(headEl) {
+    const ti = state.currentTeam;
+    if(!headEl.querySelector('.m-scene') || headEl.dataset.team !== String(ti)) {
+      const old = headEl.querySelector('.m-scene'); if(old) old.remove();
+      headEl.insertAdjacentHTML('afterbegin', missionSceneSVG(ti));
+      headEl.dataset.team = String(ti);
+      headEl.classList.add('has-scene');
+    }
+    const sh = missionStepperHTML(main);
+    const oldSt = headEl.querySelector('.m-steps');
+    if((oldSt ? oldSt.outerHTML : '') !== sh) { if(oldSt) oldSt.remove(); if(sh) headEl.insertAdjacentHTML('beforeend', sh); }
+  }
+  main.querySelectorAll('.mission-situation:not(.has-bot)').forEach(el => {
+    el.classList.add('has-bot');
+    el.insertAdjacentHTML('beforebegin', '<div class="bot-row-anchor"></div>');
+    const row = el.previousElementSibling;
+    row.className = 'bot-row';
+    row.innerHTML = sosBotSVG();
+    row.appendChild(el);
+  });
   const old = main.querySelector(':scope > .m-ribbon');
   const head = main.querySelector(':scope > .mission-header');
   if(!head) { if(old) old.remove(); return; }
@@ -2794,7 +2886,14 @@ function decorateMission() {
 }
 (function() {
   const main = document.getElementById('missionMain');
-  if(main && window.MutationObserver) new MutationObserver(() => decorateMission()).observe(main, { childList:true });
+  if(main && window.MutationObserver) {
+    let queued = false;
+    new MutationObserver(() => {
+      if(queued) return;
+      queued = true;
+      requestAnimationFrame(() => { queued = false; decorateMission(); });
+    }).observe(main, { childList:true, subtree:true, attributes:true, attributeFilter:['class'] });
+  }
 })();
 function tdSetGroupSize(n) {
   state.groupSize = n;
@@ -4535,6 +4634,18 @@ const ROLE_TO_TEAM = { volcano:1, arctic:2, jungle:3, desert:4, ocean:5, dino:6 
 const TEAM_TO_ROLE = ['volcano','arctic','jungle','desert','ocean','dino'];
 
 // ── 로그인 UI ──
+// 섬 고르기 버튼에 그 섬의 해안선 모양을 넣는다
+function decorateIslandButtons() {
+  ISLANDS.forEach((isl, i) => {
+    const b = document.getElementById('roleBtn-' + isl.id);
+    if(!b || b.querySelector('.isl-pick')) return;
+    const first = b.firstElementChild;
+    const svg = '<svg class="isl-pick" viewBox="0 0 120 70" aria-hidden="true"><path class="ip-reef" d="' + islandPath(i, 60, 35, 31, 1.15) + '"/>'
+      + '<path class="ip-land" d="' + islandPath(i, 60, 35, 31, 1) + '" style="--isl:' + isl.color + '"/>'
+      + '<text x="60" y="37" text-anchor="middle" dominant-baseline="central">' + isl.emoji + '</text></svg>';
+    if(first) first.outerHTML = svg; else b.insertAdjacentHTML('afterbegin', svg);
+  });
+}
 function updateSelectionVisuals() {
 document.querySelectorAll('.room-btn').forEach(b => b.classList.remove('selected'));
 if(myRoom) { const b = document.getElementById('roomBtn-'+myRoom); if(b) b.classList.add('selected'); }
@@ -6265,6 +6376,7 @@ const params = new URLSearchParams(window.location.search);
 if(params.has('teacher') && !DEMO) openTeacherLogin();
 })();
 renderFloatBg();
+decorateIslandButtons();
 document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
 document.getElementById('screen-login').classList.add('active');
 
