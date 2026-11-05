@@ -5341,6 +5341,13 @@ function genChecks(set) {
       const h = set[k].hints || [];
       if(!h.length || h.length > 3) err(k, '힌트는 1~3개여야 해요');
     });
+    // 힌트가 정답을 통째로 알려 주면 안 된다
+    const giveaway = { m1: [set.m1.answer], m2: [genJoin(set.m2.answer)] };
+    Object.keys(giveaway).forEach(k => {
+      const ans = giveaway[k].map(low).filter(x => x && x.length >= 3);
+      if((set[k].hints || []).some(h => ans.some(x => low(h).includes(x)) || /정답은/.test(h))) warn(k, '힌트에 정답이 그대로 들어 있어요');
+    });
+    if((set.m1.options || []).some(o => /(과거|현재|미래|완료|진행)형?/.test(o.kr || '') && /형|시제|완료/.test(o.kr || ''))) warn('m1', '보기 뜻에 문법 이름이 있어요 (정답 힌트가 될 수 있어요)');
   } catch(e) { err('meta', '빠진 항목이 있어요 (' + e.message + ')'); }
   const v = validateGrammarSet(set);
   if(v && !out.some(x => x.level === 'err')) err('meta', v);
