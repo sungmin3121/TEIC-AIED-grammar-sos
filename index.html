@@ -75,6 +75,19 @@ body.demo #roomCard, body.demo #teacherLoginBox, body.demo .intro-demo, body.dem
 #demoBadge a { color:var(--text); }
 body.demo #demoBadge { display:flex; }
 body.demo:has(#screen-login.active) #demoBadge { display:none; }
+/* 휴대폰: 체험 모드 띠가 마지막 버튼을 가리지 않게, 미션 3 두 칸과 달 기지 입력 줄이 화면 안에 들어오게 */
+body.demo #missionMain { padding-bottom:4.5rem; }
+.m4-ox-btn, #missionMain .btn-ghost { min-height:42px; } /* 손가락으로 누르기 쉬운 크기 */
+@media (max-width:520px) {
+  .m3-grid { gap:.5rem !important; }
+  .m3-grid .wh-card { padding:.6rem .5rem; }
+  .m3-grid .wh-word { font-size:1.35rem; letter-spacing:.04em; overflow-wrap:anywhere; }
+  .m3-grid .wh-card div[style*="monospace"] { font-size:.86rem !important; overflow-wrap:anywhere; }
+  .moon-input-row { flex-wrap:wrap; }
+  .moon-input-row .moon-input { min-width:0; flex:1 1 100%; }
+  .moon-input-row #moonStartBtn { flex:1 1 100%; }
+  #demoBadge { right:auto; left:50%; transform:translateX(-50%); bottom:.6rem; font-size:.72rem; white-space:nowrap; }
+}
 .tpin { display:flex; gap:.5rem; }
 .tpin input { flex:1; min-width:0; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:.6rem .75rem; color:var(--text); font-size:1rem; letter-spacing:.15em; }
 .tpin input:focus { outline:none; border-color:var(--accent); }
@@ -2078,6 +2091,23 @@ function checkGlobalGate() {
   state.globalMission = computeGlobalMission();
 }
 
+// 접속·새로고침 뒤 이어서 하기: 다른 모둠을 기다리던 중이었으면 다시 대기 화면
+// (교사가 직접 보낸 미션이면 기다리지 않는다)
+function studentResumeMission(teamNum) {
+  const ti = teamNum - 1, tm = state.teamMission[ti] || 1;
+  const pass = (((state.teacherPass || {})[ti]) || 0) >= tm;
+  if(tm > 1 && !pass && !canAdvance(tm)) {
+    state.currentTeam = ti;
+    state.currentMission = tm;
+    renderTeamSelector(teamNum);
+    renderSidebar(teamNum);
+    waitingForMission = { ti, toMission: tm };
+    showWaitingForTeams(ti, tm);
+    return;
+  }
+  initMission(teamNum, tm);
+}
+
 function showWaitingForTeams(ti, toMission) {
   const main = document.getElementById('missionMain');
   if(!main) return;
@@ -2336,7 +2366,7 @@ function renderMission3(teamNum) {
         <span style="font-size:.84rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">${G.m3.promptKr}</span>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:start;margin-bottom:1.5rem;">
+      <div class="m3-grid" style="display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:1rem;align-items:start;margin-bottom:1.5rem;">
         <!-- 의문사 -->
         <div>
           <div class="step-label" style="margin-bottom:.5rem;">${G.m3.leftLabel}</div>
@@ -2771,7 +2801,8 @@ function wrapData() {
   const list = logEntries();
   const hard = logHardItems(list).slice(0, 3).map(g => {
     const top = Object.entries(g.answers).sort((a, b) => b[1].n - a[1].n)[0];
-    const right = list.find(e => e.m === g.m && e.item === g.item && e.ok === true);
+    // 달 기지 입력은 운석마다 정답이 달라서 '틀린 것 → 맞은 것'으로 짝짓지 않는다
+    const right = g.m === 5 ? null : list.find(e => e.m === g.m && e.item === g.item && e.ok === true);
     return { m: g.m, item: g.item, wrong: top ? top[0] : '', right: right ? right.answer : '', teams: g.teams.size };
   });
   const writings = ISLANDS.map((_, i) => ({ i, text: (state.m7text && state.m7text[i]) || '' })).filter(x => x.text.trim());
@@ -3189,6 +3220,9 @@ function selectChoice(ti, idx) {
 }
 
 function renderResult(ti, choice) {
+  // 결과를 다시 그리기 직전에 동기화로 지워졌을 수 있다 (교사 이동·초기화 직후)
+  const rcBox = document.getElementById(`resultContent-${ti}`);
+  if(!choice || !rcBox) return;
   const isPositive = choice.coins > 0;
   const isNeutral = choice.coins === 0;
   const emoji = choice.coins >= 2 ? '🎉' : choice.coins === 1 ? '😊' : choice.coins === 0 ? '😐' : '😱';
@@ -3381,7 +3415,7 @@ function moonSubmit(ti) {
 
   // 함정 표현 체크
   if(moonIsTrapInput(val)) {
-    logResponse(ti, 5, '운석 입력', val, false, '함정 표현');
+    logResponse(ti, 5, '함정 표현 입력', val, false, '함정 표현');
     moonDamage(ti, G.moon.trapMessage);
     input.classList.add('miss');
     setTimeout(() => input.classList.remove('miss'), 500);
@@ -4879,7 +4913,7 @@ const teamNum = ROLE_TO_TEAM[myRole];
 document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
 document.getElementById('screen-mission').classList.add('active');
 hideHUD();
-initMission(teamNum, state.teamMission[teamNum-1] || 1);
+studentResumeMission(teamNum);
 }
 }, 500);
 };
@@ -4958,6 +4992,8 @@ state.currentMission = savedMission;
 const curr = JSON.stringify(state.coins) + JSON.stringify(state.teamMission) + JSON.stringify(state.moonScores) + (state.globalMission||1) + JSON.stringify(state.completedMission);
 if(prev !== curr) {
 refreshCurrentScreen();
+} else if(myRole === 'teacher') {
+teacherSoftRefresh();
 }
 }
 }
@@ -4998,6 +5034,7 @@ if(myRole === 'teacher') {
         if(document.getElementById('logOverlay')) renderLogOverlay();
         const b = document.getElementById('tdLogCount');
         if(b) b.textContent = Object.keys(roomLog).length;
+        renderTeacherFocus(); // 막힌 모둠·여러 모둠이 틀린 표현은 기록에서 나온다
       }, 300);
     }
   );
@@ -5019,12 +5056,17 @@ fbUnsubscribes.push(rolesUnsub);
 
 // 교사 명령 감지 (학생용)
 if(myRole !== 'teacher') {
+// 접속(또는 새로고침 후 재접속) 때 받는 첫 값은 이미 지난 명령이다.
+// 교사는 명령 전에 state를 먼저 저장하므로 그 결과는 이미 받아 왔다. 다시 실행하면
+// 새로고침한 모둠이 예전에 이동된 미션으로 되돌아가고 진행이 지워진다.
+let cmdFirst = true, cmdLastTs = 0;
 const cmdUnsub = window.firebaseOnValue(
 window.firebaseRef(db, 'grammar-sos/rooms/room'+myRoom+'/teacherCmd'),
 (snap) => {
-if(!snap.exists()) return;
-const cmd = snap.val();
-if(!cmd || cmd.processed) return;
+const cmd = snap.exists() ? snap.val() : null;
+if(cmdFirst) { cmdFirst = false; cmdLastTs = (cmd && cmd.ts) || 0; return; }
+if(!cmd || cmd.processed || cmd.ts === cmdLastTs) return;
+cmdLastTs = cmd.ts;
 if(cmd.target === myRole || cmd.target === 'all') {
 handleTeacherCmd(cmd);
 }
@@ -5055,7 +5097,8 @@ function buildTeamUpdate(ti) {
   for(const f of MOON_FLAGS) if(st[f]) put(f, st[f]);
   put('globalMission', computeGlobalMission());
   // 위 목록에 없는 새 필드는 통째로 (나중에 필드를 추가해도 저장이 빠지지 않게)
-  const known = new Set(LOCAL_ONLY_KEYS.concat(TEAM_ARRAY_FIELDS, TEAM_KEYED_FIELDS, MOON_FLAGS, ['missionStep', 'globalMission', '_lastUpdatedBy', '_updatedAt']));
+  // teacherPass는 교사만 쓴다 (학생 기기가 옛 값을 덮어쓰지 않게)
+  const known = new Set(LOCAL_ONLY_KEYS.concat(TEAM_ARRAY_FIELDS, TEAM_KEYED_FIELDS, MOON_FLAGS, ['missionStep', 'globalMission', 'teacherPass', '_lastUpdatedBy', '_updatedAt']));
   for(const k of Object.keys(st)) if(!known.has(k)) put(k, st[k]);
   put('_lastUpdatedBy', myRole);
   put('_updatedAt', Date.now());
@@ -5078,6 +5121,17 @@ try {
     await window.firebaseUpdate(roomRef, { state: saveData });
   }
 } catch(e) { console.warn('Firebase save failed:', e); }
+}
+
+// 교사 화면 가벼운 갱신: 힌트 수·진행 단계·막힌 모둠처럼 미션 이동 없이 바뀌는 것
+let teacherSoftTimer = null;
+function teacherSoftRefresh() {
+  clearTimeout(teacherSoftTimer);
+  teacherSoftTimer = setTimeout(() => {
+    if(myRole !== 'teacher') return;
+    if(document.getElementById('screen-teacher').classList.contains('active')) updateTeacherDashboard();
+    if(document.getElementById('wrapOverlay') && typeof renderWrapUp === 'function') renderWrapUp();
+  }, 400);
 }
 
 // ── 현재 화면 새로고침 ──
@@ -5327,7 +5381,7 @@ function genChecks(set) {
     if(pairs.length !== 3) err('m6', '짝꿍 대화가 3세트여야 해요');
     pairs.forEach((p, i) => ['teamA_correct','teamB_correct1','teamB_correct2'].forEach(k => {
       const arr = p[k] || [];
-      if(arr.length < 3 || arr.length > 10) err('m6', (i+1) + '번 대화: 조각 수를 확인하세요');
+      if(arr.length < 3 || arr.length > 12) err('m6', (i+1) + '번 대화: 조각 수를 확인하세요');
       else if(new Set(arr).size !== arr.length) err('m6', (i+1) + '번 대화: 같은 조각이 두 번 있어요');
     }));
     const pats = set.m7.target.patterns || [];
@@ -5345,7 +5399,8 @@ function genChecks(set) {
     const giveaway = { m1: [set.m1.answer], m2: [genJoin(set.m2.answer)] };
     Object.keys(giveaway).forEach(k => {
       const ans = giveaway[k].map(low).filter(x => x && x.length >= 3);
-      if((set[k].hints || []).some(h => ans.some(x => low(h).includes(x)) || /정답은/.test(h))) warn(k, '힌트에 정답이 그대로 들어 있어요');
+      const word = (h, x) => new RegExp('(^|[^a-z])' + x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([^a-z]|$)').test(low(h));
+      if((set[k].hints || []).some(h => ans.some(x => word(h, x)))) warn(k, '힌트에 정답이 그대로 들어 있어요');
     });
     if((set.m1.options || []).some(o => /(과거|현재|미래|완료|진행)형?/.test(o.kr || '') && /형|시제|완료/.test(o.kr || ''))) warn('m1', '보기 뜻에 문법 이름이 있어요 (정답 힌트가 될 수 있어요)');
   } catch(e) { err('meta', '빠진 항목이 있어요 (' + e.message + ')'); }
@@ -5771,6 +5826,12 @@ const gs = document.getElementById('tdGroupSize');
 if(gs && document.activeElement !== gs) gs.value = String(state.groupSize || 4);
 const xt = document.getElementById('tdExtraTime');
 if(xt) xt.checked = !!state.extraTime;
+const fe = document.activeElement;
+if(fe && fe.tagName === 'SELECT' && grid.contains(fe)) {
+  clearTimeout(window.__tdGridRetry);
+  window.__tdGridRetry = setTimeout(updateTeacherDashboard, 1500);
+  return;
+}
 grid.innerHTML = ISLANDS.map((isl,i) => {
 const info = getMissionStepInfo(i);
 const coins = state.coins[i];
@@ -5858,7 +5919,7 @@ function tdForceAll() {
 const sel = document.getElementById('tdForceSelect');
 if(!sel) return;
 const missionId = parseInt(sel.value);
-if(!confirm(`모든 모둠을 미션 ${missionId}(${MISSION_NAMES[missionId]})로 강제 이동할까요?`)) return;
+if(!confirm(`모든 모둠을 ${missionShort(missionId)}(${MISSION_NAMES[missionId]})(으)로 이동할까요?`)) return;
 teacherForceAll(missionId);
 setTimeout(()=>updateTeacherDashboard(), 300);
 }
@@ -5870,6 +5931,8 @@ const missionId = parseInt(sel.value);
 const role = TEAM_TO_ROLE[i];
 if(missionId <= (state.teamMission[i] || 1)) applyRollback(i, missionId);
 state.teamMission[i] = missionId;
+state.teacherPass = state.teacherPass || {};
+state.teacherPass[i] = missionId; // 교사가 보낸 미션: 새로고침해도 대기 화면 없이 이어서 한다
 state.completedMission = state.completedMission || [0,0,0,0,0,0];
 // 앞으로 보내든 뒤로 되돌리든, 이 모둠은 '바로 앞 미션까지 완료'한 상태가 된다
 state.completedMission[i] = missionId - 1;
@@ -5992,6 +6055,8 @@ const missionId = parseInt(sel.value);
 const role = TEAM_TO_ROLE[ti];
 if(missionId <= (state.teamMission[ti] || 1)) applyRollback(ti, missionId);
 state.teamMission[ti] = missionId;
+state.teacherPass = state.teacherPass || {};
+state.teacherPass[ti] = missionId;
 // 스킵된 팀의 완료 기록 & 글로벌 게이트 조정
 state.completedMission = state.completedMission || [0,0,0,0,0,0];
 // 앞으로 보내든 뒤로 되돌리든, 이 모둠은 '바로 앞 미션까지 완료'한 상태가 된다
@@ -6007,7 +6072,7 @@ window.firebaseRef(window.firebaseDB, 'grammar-sos/rooms/room'+myRoom+'/teacherC
 }
 renderLobby();
 updateTeacherMonitor();
-alert(ISLANDS[ti].name + ' → 미션'+missionId+'로 스킵!');
+alert(ISLANDS[ti].name + ' → ' + missionShort(missionId) + '(으)로 이동!');
 }
 
 async function teacherSyncNow() {
