@@ -5919,7 +5919,7 @@ function tdForceAll() {
 const sel = document.getElementById('tdForceSelect');
 if(!sel) return;
 const missionId = parseInt(sel.value);
-if(!confirm(`모든 모둠을 ${missionShort(missionId)}(${MISSION_NAMES[missionId]})(으)로 이동할까요?`)) return;
+if(!confirm(`모든 모둠을 ${missionShort(missionId)}${missionId === 5 ? '' : '(' + MISSION_NAMES[missionId] + ')'}(으)로 이동할까요?`)) return;
 teacherForceAll(missionId);
 setTimeout(()=>updateTeacherDashboard(), 300);
 }
