@@ -5439,7 +5439,7 @@ const GEN_STORY = {
   m7: 'Mission 7: A rescue helicopter spotted the signal. Each team writes a short rescue guide for the pilot (where to land / what to avoid / how to approach / which way to come), using the target grammar.',
 };
 // 모든 미션에 붙는 공통 규칙 (서버를 다시 배포하지 않아도 이야기와 함께 전달된다)
-const GEN_STORY_RULES = ' Writing rules: The players are a TEAM of survivors, so sentences the students say or write use "we" (not "I") as the subject whenever a subject is needed. In word-ordering items (sentence pieces), do not use adverbs whose position can move (already, just, also, still, often, ever, never, really); exactly one word order must be correct.';
+const GEN_STORY_RULES = ' Writing rules: The players are a TEAM of survivors, so sentences the students say or write use "we" (not "I") as the subject whenever a subject is needed. In word-ordering items (sentence pieces), do not use adverbs whose position can move (already, just, also, still, often, ever, never, really); exactly one word order must be correct. If the target grammar is a tense or aspect, put a clear time signal (just, already, yet, ever, since, for, now) in every fill-in sentence so that exactly one choice is grammatical. Option meanings ("kr") are short Korean meanings of the words, never grammar terms such as 과거형, 동사원형, 현재완료. Hints never state the whole answer.';
 Object.keys(GEN_STORY).forEach(k => { if(k !== 'm4') GEN_STORY[k] += GEN_STORY_RULES; });
 const GEN_KEYS = ['meta','m1','m2','m3','m4','moon','m5','m6','m7'];
 const GEN_NAMES = { meta:'세트 정보', m1:'미션 1 위치 파악', m2:'미션 2 거주지', m3:'미션 3 식량', m4:'미션 4 동료', moon:'달 기지', m5:'미션 5 위기 대응', m6:'미션 6 신호', m7:'미션 7 탈출' };
@@ -5476,6 +5476,10 @@ function genSafeHTML(str) {
   return String(str).replace(/<[^>]*>?/g, t => {
     if(/^<\/?(strong|em)>$/i.test(t) || /^<br\s*\/?>$/i.test(t) || /^<\/span>$/i.test(t)) return t;
     if(/^<span style="color:var\(--(accent|accent2|danger|success)\);?">$/i.test(t)) return t;
+    // 허용한 태그에 다른 속성이 붙어 오면 속성만 떼고 살린다 (글자로 깨져 보이지 않게)
+    const m = /^<(strong|em|b|span)(\s[^>]*)?>$/i.exec(t);
+    if(m) { const tag = m[1].toLowerCase(); return tag === 'b' ? '<strong>' : '<' + tag + '>'; }
+    if(/^<\/b>$/i.test(t)) return '</strong>';
     return t.replace(/</g, '&lt;').replace(/>/g, '&gt;');
   });
 }
