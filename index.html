@@ -6150,8 +6150,9 @@ const stepLabel = info.step
   ? `<span style="font-size:.68rem;color:var(--text3);margin-left:.3rem;">STEP ${info.step}/3 · ${info.label}</span>`
   : '';
 
-const help = teamNeedsHelp(i);
-const curWrong = help ? help.wrong : 0;
+const hInfo = teamNeedsHelp(i);
+const help = hInfo && !hInfo.ok ? hInfo : null;
+const curWrong = hInfo ? hInfo.wrong : 0;
 const turn = (!fullyDone && !TEAM_ACTIVITY[mission]) ? deviceTurn(mission, i) : 0;
 return `
 <div class="tc2${fullyDone ? ' fin' : ''}${isConnected ? ' on' : ''}${help ? ' help' : ''}" style="--isl:${isl.color};">
