@@ -6,30 +6,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Grammar SOS</title>
 <script src="https://www.youtube.com/iframe_api"></script>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&family=Black+Han+Sans&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&family=Do+Hyeon&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* 밤바다 해도: 깊은 바다(bg) · 해도 종이(surface) · 모래(sand) · 조명탄(accent) · 석호(accent2) */
-  --bg: #0d1a24;
-  --surface: #16293a;
-  --surface2: #1d3447;
-  --border: rgba(233,216,166,0.12);
-  --sand: #e9d8a6;
-  --accent: #ff7a1a;
-  --accent2: #4fd1c5;
-  --danger: #f05252;
-  --success: #34d399;
-  --text: #eef3f7;
-  --text2: #b3c3cf;
-  --text3: #7c93a5;
-  --kr-display: 'Black Han Sans', 'Noto Sans KR', sans-serif;
+  /* 밝은 해도 (기본): 모래빛 종이(bg) · 흰 카드(surface) · 진한 금빛 제목(sand) · 주황(accent) · 청록(accent2)
+     교실 프로젝터·크롬북에서 잘 보이도록 밝은 배경 + 진한 글자 (중간 피드백 반영) */
+  --bg: #f3eee2;
+  --surface: #ffffff;
+  --surface2: #f7f2e7;
+  --border: rgba(70,55,25,0.18);
+  --sand: #7a5a12;
+  --accent: #e0600a;
+  --accent2: #0b8178;
+  --danger: #cf2a2a;
+  --success: #12875a;
+  --text: #17232e;
+  --text2: #3f4f5e;
+  --text3: #5f6f7d;
+  --ink-rgb: 25,35,45;       /* 옅은 덧칠 (어두운 화면에서는 흰색) */
+  --deep-rgb: 255,255,255;   /* 반투명 판 (어두운 화면에서는 밤바다색) */
+  --line-rgb: 120,95,40;     /* 격자·테두리 선 */
+  --t-red: #b42318; --t-violet: #6d28d9; --t-violet2: #7c3aed; --t-yellow: #8a6100; --t-green: #12703f; --t-orange: #b84a0c; --t-sky: #0b6aa2;
+  --kr-display: 'Do Hyeon', 'Noto Sans KR', sans-serif;
 }
+body.dark {
+  /* 밤바다 해도 (어두운 화면) */
+  --bg: #0d1a24; --surface: #16293a; --surface2: #1d3447; --border: rgba(var(--line-rgb),0.12);
+  --sand: #e9d8a6; --accent: #ff7a1a; --accent2: #4fd1c5; --danger: #f05252; --success: #34d399;
+  --text: #eef3f7; --text2: #b3c3cf; --text3: #7c93a5;
+  --ink-rgb: 255,255,255; --deep-rgb: 13,26,36; --line-rgb: 233,216,166;
+  --t-red: #fca5a5; --t-violet: #c4b5fd; --t-violet2: #c084fc; --t-yellow: #facc15; --t-green: #4ade80; --t-orange: #ffd2ad; --t-sky: #38bdf8;
+}
+html { font-size: 17px; } /* 본문·버튼 글자 한 단계 크게 */
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Noto Sans KR','Space Mono',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; word-break:keep-all; }
 .screen { display:none; min-height:100vh; flex-direction:column; }
 .screen.active { display:flex; }
 /* 해도의 위도·경도 격자 */
-body::before { content:''; position:fixed; inset:0; background-image:linear-gradient(rgba(233,216,166,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(233,216,166,.035) 1px, transparent 1px); background-size:96px 96px; pointer-events:none; z-index:0; }
+body::before { content:''; position:fixed; inset:0; background-image:linear-gradient(rgba(var(--line-rgb),.035) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--line-rgb),.035) 1px, transparent 1px); background-size:96px 96px; pointer-events:none; z-index:0; }
 
 /* ── MAIN ── */
 #screen-main { align-items:center; justify-content:center; position:relative;
@@ -40,7 +54,7 @@ radial-gradient(ellipse at 80% 80%,rgba(79,209,197,.08) 0%,transparent 50%),var(
 @keyframes floatUp { 0%{transform:translateY(110vh) rotate(0deg)} 100%{transform:translateY(-20vh) rotate(360deg)} }
 .main-content { text-align:center; z-index:1; padding:2rem; }
 .intro { margin:-.25rem 0 1.5rem; font-family:'Noto Sans KR',sans-serif; }
-.intro-title { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-weight:400; font-size:clamp(2.4rem,11vw,3rem); line-height:1; letter-spacing:.05em; color:var(--accent); margin:0 0 .6rem; white-space:nowrap; }
+.intro-title { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-weight:400; font-size:clamp(2.4rem,11vw,3rem); line-height:1; letter-spacing:.05em; color:var(--accent); margin:0 0 .6rem; white-space:nowrap; }
 .intro-lead { font-size:.95rem; line-height:1.6; word-break:keep-all; color:var(--text2); margin:0 0 .9rem; text-wrap:balance; }
 .intro-lead strong { color:var(--text); font-weight:700; }
 .intro-chips { display:flex; flex-wrap:wrap; justify-content:center; gap:.4rem; margin-bottom:.9rem; }
@@ -70,11 +84,15 @@ radial-gradient(ellipse at 80% 80%,rgba(79,209,197,.08) 0%,transparent 50%),var(
 body.demo .demo-panel { display:block; }
 body.demo .demo-exit { display:inline; }
 body.demo #roomCard, body.demo #teacherLoginBox, body.demo .intro-demo, body.demo .intro-step { display:none !important; }
-#demoBadge { position:fixed; right:4rem; bottom:1.1rem; z-index:260; display:none; align-items:center; gap:.5rem; background:rgba(10,14,26,.9); border:1px solid rgba(79,209,197,.45); border-radius:999px; padding:.35rem .8rem; font-size:.78rem; color:var(--text2); font-family:'Noto Sans KR',sans-serif; backdrop-filter:blur(6px); }
+#demoBadge { position:fixed; right:4rem; bottom:1.1rem; z-index:260; display:none; align-items:center; gap:.5rem; background:rgba(var(--deep-rgb),.9); border:1px solid rgba(79,209,197,.45); border-radius:999px; padding:.35rem .8rem; font-size:.78rem; color:var(--text2); font-family:'Noto Sans KR',sans-serif; backdrop-filter:blur(6px); }
 #demoBadge b { color:var(--accent2); }
 #demoBadge a { color:var(--text); }
 body.demo #demoBadge { display:flex; }
 body.demo:has(#screen-login.active) #demoBadge { display:none; }
+/* 교사 검토에서 연 미리보기: 선생님 화면으로 다시 들어가는 길은 없앤다 (헷갈림) */
+body.preview .demo-teacher, body.preview .demo-or, body.preview .teacher-link { display:none !important; }
+body.preview #demoBadge, body.preview:has(#screen-login.active) #demoBadge { display:flex; font-size:1rem; padding:.55rem 1.1rem; gap:.7rem; }
+body.preview #demoBadge select { font-size:.95rem !important; padding:.25rem .4rem; }
 /* 휴대폰: 체험 모드 띠가 마지막 버튼을 가리지 않게, 미션 3 두 칸과 달 기지 입력 줄이 화면 안에 들어오게 */
 body.demo #missionMain { padding-bottom:4.5rem; }
 .m4-ox-btn, #missionMain .btn-ghost { min-height:42px; } /* 손가락으로 누르기 쉬운 크기 */
@@ -100,9 +118,9 @@ body.demo #missionMain { padding-bottom:4.5rem; }
 body.demo .teacher-link { display:none; }
 .intro-step { font-size:.85rem; color:var(--text3); margin-bottom:.75rem; font-family:'Noto Sans KR',sans-serif; }
 .intro-foot { word-break:keep-all; margin-top:1.25rem; font-size:.75rem; line-height:1.5; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
-.sos-badge { display:inline-block; background:var(--danger); color:#fff; font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.06rem; letter-spacing:.3em; padding:.3rem 1.2rem; border-radius:2px; margin-bottom:1.5rem; animation:badgePulse 2s ease-in-out infinite; }
+.sos-badge { display:inline-block; background:var(--danger); color:#fff; font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:1.06rem; letter-spacing:.3em; padding:.3rem 1.2rem; border-radius:2px; margin-bottom:1.5rem; animation:badgePulse 2s ease-in-out infinite; }
 @keyframes badgePulse { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)} 50%{box-shadow:0 0 0 8px rgba(239,68,68,0)} }
-.main-title { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:clamp(3rem,10vw,7rem); line-height:.9; letter-spacing:.05em; margin-bottom:.5rem; }
+.main-title { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:clamp(3rem,10vw,7rem); line-height:.9; letter-spacing:.05em; margin-bottom:.5rem; }
 .title-sos { color:var(--text); }
 .title-secure { color:var(--accent); text-shadow:0 0 40px rgba(249,115,22,.5); animation:glitch 4s infinite; }
 .title-our { color:var(--accent2); }
@@ -110,11 +128,11 @@ body.demo .teacher-link { display:none; }
 .main-sub { font-size:.88rem; color:var(--text2); letter-spacing:.2em; margin:1rem 0 .4rem; text-transform:uppercase; }
 .main-desc { font-size:.92rem; color:var(--text3); margin-bottom:2.5rem; font-family:'Noto Sans KR',sans-serif; line-height:1.8; }
 .stat-row { display:flex; gap:2rem; justify-content:center; margin-top:2.5rem; padding-top:2rem; border-top:1px solid var(--border); }
-.stat-num { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:2rem; color:var(--accent2); }
+.stat-num { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:2rem; color:var(--accent2); }
 .stat-label { font-size:.72rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; }
 
 /* ── BUTTONS ── */
-.btn { border:none; border-radius:4px; cursor:pointer; transition:all .2s; font-family:'Bebas Neue','Black Han Sans',sans-serif; }
+.btn { border:none; border-radius:4px; cursor:pointer; transition:all .2s; font-family:'Bebas Neue','Do Hyeon',sans-serif; }
 .btn-primary { background:var(--accent); color:#fff; font-size:1.3rem; letter-spacing:.15em; padding:.85rem 2.5rem; }
 .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(249,115,22,.4); }
 .btn-primary:active { transform:translateY(0); }
@@ -126,7 +144,7 @@ body.demo .teacher-link { display:none; }
 /* ── LOBBY ── */
 #screen-lobby { background:var(--bg); padding:1.5rem; }
 .lobby-header { text-align:center; margin-bottom:1.5rem; }
-.lobby-title { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:2.8rem; letter-spacing:.1em; color:var(--accent); }
+.lobby-title { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:2.8rem; letter-spacing:.1em; color:var(--accent); }
 .lobby-sub { font-size:.82rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; margin-top:.2rem; }
 .team-cards-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.85rem; margin-bottom:1.5rem; }
 .team-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.9rem 1rem; display:flex; align-items:center; gap:.75rem; cursor:pointer; transition:all .2s; }
@@ -134,13 +152,13 @@ body.demo .teacher-link { display:none; }
 .team-card.active-team { border-color:var(--card-color,var(--accent)); box-shadow:0 0 0 2px var(--card-color,var(--accent)); }
 .tc-emoji { font-size:1.8rem; }
 .tc-info { flex:1; }
-.tc-name { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.06rem; letter-spacing:.08em; }
+.tc-name { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:1.06rem; letter-spacing:.08em; }
 .tc-island { font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; }
 .tc-coins { text-align:right; }
-.tc-coin-num { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.6rem; color:var(--accent); }
+.tc-coin-num { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:1.6rem; color:var(--accent); }
 .tc-coin-label { font-size:.65rem; color:var(--text3); letter-spacing:.05em; }
 .mission-progress { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1rem 1.1rem; margin-bottom:1.25rem; }
-.mp-title { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.06rem; letter-spacing:.1em; color:var(--text2); margin-bottom:.75rem; }
+.mp-title { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:1.06rem; letter-spacing:.1em; color:var(--text2); margin-bottom:.75rem; }
 .mp-items { display:grid; grid-template-columns:repeat(8,1fr); gap:.4rem; }
 .mp-item { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:.45rem .25rem; text-align:center; opacity:.4; transition:all .3s; }
 .mp-item.current { opacity:1; border-color:var(--accent); box-shadow:0 0 12px rgba(249,115,22,.25); }
@@ -156,11 +174,11 @@ body.demo .teacher-link { display:none; }
 .mission-sidebar { background:var(--surface); border-right:1px solid var(--border); padding:1.25rem; display:flex; flex-direction:column; gap:1rem; }
 .sidebar-island { text-align:center; padding:1rem; border-radius:8px; border:1px solid var(--border); }
 .sidebar-island-emoji { font-size:3rem; display:block; margin-bottom:.5rem; }
-.sidebar-island-name { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.3rem; letter-spacing:.08em; }
+.sidebar-island-name { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:1.3rem; letter-spacing:.08em; }
 .sidebar-island-crisis { font-size:.76rem; color:var(--text3); margin-top:.2rem; text-transform:uppercase; }
 .sidebar-coins { background:var(--bg); border-radius:8px; padding:.85rem; text-align:center; border:1px solid var(--border); }
 .sidebar-coin-label { font-size:.72rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.25rem; }
-.sidebar-coin-num { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:2.5rem; color:var(--accent); }
+.sidebar-coin-num { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:2.5rem; color:var(--accent); }
 .sidebar-items { background:var(--bg); border-radius:8px; padding:.85rem; border:1px solid var(--border); }
 .sidebar-items-label { font-size:.72rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; margin-bottom:.5rem; }
 .items-list { display:flex; flex-wrap:wrap; gap:.4rem; }
@@ -176,7 +194,7 @@ body.demo .teacher-link { display:none; }
 .mission-main { padding:2rem; overflow-y:auto; display:flex; flex-direction:column; }
 .mission-header { margin-bottom:1.5rem; }
 .mission-num { font-size:.82rem; color:var(--text3); letter-spacing:.2em; text-transform:uppercase; margin-bottom:.3rem; }
-.mission-title { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:2.2rem; letter-spacing:.08em; color:var(--text); }
+.mission-title { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:2.2rem; letter-spacing:.08em; color:var(--text); }
 .mission-situation {
 background:var(--surface);
 border:1px solid var(--border);
@@ -217,7 +235,7 @@ min-width:100px;
 .wh-card.wrong { border-color:var(--danger); background:rgba(239,68,68,.1); animation:shake .3s ease; }
 .wh-card.correct { border-color:var(--success); background:rgba(34,197,94,.1); }
 @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
-.wh-word { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.6rem; letter-spacing:.1em; }
+.wh-word { font-family:'Noto Sans KR',sans-serif; font-weight:700; font-size:1.6rem; letter-spacing:.01em; }
 .wh-kr { font-size:.76rem; color:var(--text3); margin-top:.2rem; font-family:'Noto Sans KR',sans-serif; }
 .feedback-box { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1rem 1.25rem; margin-top:1rem; font-size:.94rem; line-height:1.7; display:none; }
 .feedback-box.show { display:block; animation:fadeIn .3s ease; }
@@ -241,34 +259,34 @@ text-align:left;
 }
 .choice-btn:hover { border-color:var(--accent2); transform:translateX(4px); }
 .choice-btn.chosen { border-color:var(--accent2); background:rgba(79,209,197,.08); pointer-events:none; }
-.choice-letter { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.5rem; color:var(--text3); min-width:28px; }
+.choice-letter { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:1.5rem; color:var(--text3); min-width:28px; }
 .choice-btn:hover .choice-letter, .choice-btn.chosen .choice-letter { color:var(--accent2); }
 .choice-text { flex:1; }
 .choice-main { font-size:1rem; color:var(--text); font-family:'Noto Sans KR',sans-serif; }
 .choice-sub { font-size:.84rem; color:var(--text3); margin-top:.2rem; font-family:'Space Mono',monospace; }
 
 /* STEP 3: 결과 */
-.result-box { text-align:center; padding:2rem 1.5rem; background:linear-gradient(180deg, var(--surface) 0%, rgba(22,41,58,.6) 100%); border:1px solid var(--border); border-radius:16px; max-width:640px; margin:0 auto; position:relative; }
+.result-box { text-align:center; padding:2rem 1.5rem; background:linear-gradient(180deg, var(--surface) 0%, rgba(var(--deep-rgb),.6) 100%); border:1px solid var(--border); border-radius:16px; max-width:640px; margin:0 auto; position:relative; }
 .result-emoji { font-size:4rem; display:block; margin-bottom:1rem; animation:popIn .4s cubic-bezier(.34,1.56,.64,1); }
 @keyframes popIn { from{transform:scale(0)} to{transform:scale(1)} }
-.result-title { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:2rem; letter-spacing:.1em; margin-bottom:.5rem; }
-.result-coin { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:3rem; margin:.75rem 0; }
+.result-title { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:2rem; letter-spacing:.1em; margin-bottom:.5rem; }
+.result-coin { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:3rem; margin:.75rem 0; }
 .result-coin.positive { color:var(--success); }
 .result-coin.negative { color:var(--danger); }
 .result-coin.neutral { color:var(--text2); }
 .result-desc { font-size:.94rem; color:var(--text2); line-height:1.7; font-family:'Noto Sans KR',sans-serif; margin-bottom:1.5rem; }
-.result-item { display:inline-block; background:rgba(249,115,22,.1); border:1px solid rgba(249,115,22,.3); border-radius:6px; padding:.4rem 1rem; font-size:.92rem; color:var(--accent); margin-bottom:1.5rem; }
+.result-item { display:table; margin-left:auto; margin-right:auto; background:rgba(249,115,22,.1); border:1px solid rgba(249,115,22,.3); border-radius:6px; padding:.4rem 1rem; font-size:.92rem; color:var(--accent); margin-bottom:1.5rem; }
 
 /* TEAM SELECTOR */
 .team-selector { background:var(--surface); border-bottom:1px solid var(--border); padding:.75rem 1.5rem; display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; position:sticky; top:0; z-index:50; }
 .ts-label { font-size:.76rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; }
 .ts-btn { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:.3rem .7rem; font-size:.84rem; font-family:'Space Mono',monospace; color:var(--text3); cursor:pointer; transition:all .2s; }
 .ts-btn:hover { border-color:var(--text3); color:var(--text); }
-.ts-btn.active { border-color:var(--btn-color,var(--accent)); color:var(--btn-color,var(--accent)); background:rgba(255,255,255,.03); }
+.ts-btn.active { border-color:var(--btn-color,var(--accent)); color:var(--btn-color,var(--accent)); background:rgba(var(--ink-rgb),.03); }
 
 /* 단계별 힌트 */
 .hint-box { margin:.75rem 0 1rem; display:flex; flex-direction:column; gap:.4rem; align-items:flex-start; }
-.hint-btn { background:rgba(250,204,21,.1); border:1px solid rgba(250,204,21,.4); color:#facc15; border-radius:6px; padding:.45rem .9rem; font-size:.9rem; font-family:'Noto Sans KR',sans-serif; cursor:pointer; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+.hint-btn { background:rgba(250,204,21,.1); border:1px solid rgba(250,204,21,.4); color:var(--t-yellow); border-radius:6px; padding:.45rem .9rem; font-size:.9rem; font-family:'Noto Sans KR',sans-serif; cursor:pointer; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
 .hint-btn:hover { background:rgba(250,204,21,.18); }
 .hint-count { font-family:'Space Mono',monospace; font-size:.8rem; opacity:.75; margin-left:.25rem; }
 .hint-item { display:flex; gap:.55rem; align-items:flex-start; width:100%; box-sizing:border-box; background:rgba(250,204,21,.06); border-left:3px solid #facc15; border-radius:4px; padding:.5rem .75rem; font-size:.92rem; line-height:1.65; color:var(--text2); font-family:'Noto Sans KR',sans-serif; }
@@ -283,17 +301,17 @@ text-align:left;
 .m-turn small { color:var(--text3); font-size:.78rem; }
 /* 교사: 지금 볼 것 */
 .td-focus { display:flex; flex-wrap:wrap; align-items:center; gap:.45rem .7rem; padding:.55rem 1rem; background:rgba(250,204,21,.05); border-bottom:1px solid var(--border); font-size:.86rem; color:var(--text2); font-family:'Noto Sans KR',sans-serif; flex-shrink:0; }
-.tdf-label { font-weight:700; color:#facc15; white-space:nowrap; }
+.tdf-label { font-weight:700; color:var(--t-yellow); white-space:nowrap; }
 .tdf-item { display:inline-flex; flex-wrap:wrap; align-items:center; gap:.35rem; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:.2rem .55rem; }
 .tdf-m { color:var(--accent2); font-size:.8rem; }
 .tdf-n { color:var(--danger); font-size:.8rem; }
-.tdf-stuck { background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.3); border-radius:6px; padding:.2rem .55rem; color:#fca5a5; }
+.tdf-stuck { background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.3); border-radius:6px; padding:.2rem .55rem; color:var(--t-red); }
 .tdf-empty { color:var(--text3); }
 .td-group { display:inline-flex; align-items:center; gap:.35rem; font-size:.82rem; color:var(--text2); font-family:'Noto Sans KR',sans-serif; white-space:nowrap; }
 .td-group select { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:.2rem .35rem; color:var(--text); font-size:.82rem; }
 
 /* 새 문법 세트 만들기 (교사) */
-.td-gen-btn { background:rgba(168,85,247,.14); border:1px solid rgba(168,85,247,.4); border-radius:4px; padding:.3rem .8rem; font-size:.84rem; color:#c4b5fd; cursor:pointer; white-space:nowrap; font-family:'Noto Sans KR',sans-serif; }
+.td-gen-btn { background:rgba(168,85,247,.14); border:1px solid rgba(168,85,247,.4); border-radius:4px; padding:.3rem .8rem; font-size:.84rem; color:var(--t-violet); cursor:pointer; white-space:nowrap; font-family:'Noto Sans KR',sans-serif; }
 .td-lib-btn { background:transparent; border:1px solid var(--border); border-radius:4px; padding:.3rem .6rem; font-size:.8rem; color:var(--text2); cursor:pointer; white-space:nowrap; font-family:'Noto Sans KR',sans-serif; }
 .td-lib-del { color:var(--danger); border-color:rgba(239,68,68,.3); }
 .gen-form { max-width:640px; margin:0 auto; display:flex; flex-direction:column; gap:.9rem; }
@@ -310,7 +328,7 @@ text-align:left;
 .gen-chips { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:.5rem; }
 .gen-chip { display:flex; align-items:center; gap:.4rem; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:.55rem .7rem; font-size:.86rem; color:var(--text2); }
 .gen-chip.gen-ok { border-color:rgba(34,197,94,.4); }
-.gen-chip.gen-err { border-color:rgba(239,68,68,.4); color:#fca5a5; }
+.gen-chip.gen-err { border-color:rgba(239,68,68,.4); color:var(--t-red); }
 .gen-chip.gen-busy { border-color:rgba(79,209,197,.45); }
 .gen-bar { position:sticky; top:-1rem; z-index:2; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.75rem; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.7rem .9rem; margin-bottom:.9rem; font-size:.88rem; color:var(--text2); }
 .gen-bar small { color:var(--text3); }
@@ -318,28 +336,38 @@ text-align:left;
 .gen-save { padding:.45rem .9rem; font-size:.88rem; }
 .gen-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:.7rem; align-items:start; }
 .gen-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.75rem .85rem; display:flex; flex-direction:column; gap:.45rem; min-width:0; }
-.gen-card-top { display:flex; justify-content:space-between; align-items:center; gap:.5rem; flex-wrap:wrap; }
-.gen-card-btns { display:flex; gap:.35rem; flex-wrap:wrap; }
+.gen-card-top { display:flex; justify-content:space-between; align-items:center; gap:.4rem .5rem; flex-wrap:wrap; }
+.gen-card-top .log-mission { min-width:0; flex:1 1 auto; white-space:nowrap; }
+.gen-card-btns { display:flex; gap:.35rem; flex-wrap:nowrap; flex-shrink:0; }
+.gen-card-btns .log-btn, .gen-card-btns .gen-check { white-space:nowrap; }
+.gen-edit-btn { align-self:flex-start; background:transparent; border:1px solid var(--accent2); color:var(--accent2); border-radius:6px; padding:.35rem .8rem; font-size:.86rem; cursor:pointer; font-family:'Noto Sans KR',sans-serif; }
+.gen-tpl { margin:.5rem 0; padding:.5rem .65rem; border-left:3px solid var(--accent2); background:var(--surface2); border-radius:4px; font-family:'Space Mono',monospace; font-size:.82rem; line-height:1.7; }
+.gen-tpl small { display:block; font-family:'Noto Sans KR',sans-serif; color:var(--text2); }
+.gen-modal { position:fixed; inset:0; z-index:600; background:rgba(0,0,0,.45); display:flex; align-items:center; justify-content:center; padding:1rem; }
+.gen-modal-box { width:min(680px,100%); max-height:calc(100vh - 2rem); overflow:auto; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1rem 1.1rem; display:flex; flex-direction:column; gap:.7rem; box-shadow:0 20px 50px rgba(0,0,0,.35); }
+.gen-modal-head { display:flex; justify-content:space-between; align-items:center; position:sticky; top:-1rem; background:var(--surface); padding:.2rem 0; z-index:1; }
+.gen-modal-sum { padding:.6rem .75rem; border:1px dashed var(--border); border-radius:8px; }
+.gen-modal-fields { display:flex; flex-direction:column; gap:.55rem; }
 .gen-check { background:transparent; border:1px solid var(--border); border-radius:4px; padding:.3rem .65rem; font-size:.82rem; color:var(--text2); cursor:pointer; white-space:nowrap; font-family:'Noto Sans KR',sans-serif; }
 .gen-check.on { border-color:rgba(34,197,94,.5); color:var(--success); background:rgba(34,197,94,.08); }
 .gen-check:disabled { opacity:.45; cursor:default; }
 .gen-prob { font-size:.82rem; line-height:1.5; }
-.gen-prob.err { color:#fca5a5; }
-.gen-prob.warn { color:#fcd34d; }
+.gen-prob.err { color:var(--t-red); }
+.gen-prob.warn { color:var(--t-yellow); }
 .gen-sum { font-size:.88rem; line-height:1.65; color:var(--text); word-break:break-word; }
 .gen-sum small { color:var(--text3); }
 .gen-sum u { color:var(--accent2); text-decoration-thickness:2px; }
 .gen-pill { display:inline-block; border:1px solid rgba(79,209,197,.35); border-radius:10px; padding:0 .45rem; margin:.1rem 0; font-size:.8rem; font-family:'Space Mono',monospace; color:var(--text2); }
-.gen-pill.trap { border-color:rgba(239,68,68,.45); color:#fca5a5; }
+.gen-pill.trap { border-color:rgba(239,68,68,.45); color:var(--t-red); }
 .gen-edit summary { cursor:pointer; font-size:.84rem; color:var(--accent2); margin:.2rem 0; }
 .gen-edit[open] { display:flex; flex-direction:column; gap:.55rem; }
 
 /* 응답 기록 (교사) */
 .log-head { display:flex; align-items:center; flex-wrap:wrap; gap:.5rem; padding:.75rem 1rem; background:var(--surface); border-bottom:1px solid var(--border); flex-shrink:0; }
-.log-title { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:1.1rem; letter-spacing:.08em; color:#facc15; flex:1; white-space:nowrap; }
+.log-title { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:1.1rem; letter-spacing:.08em; color:var(--t-yellow); flex:1; white-space:nowrap; }
 .log-count { font-family:'Space Mono',monospace; font-size:.82rem; color:var(--text3); letter-spacing:0; margin-left:.35rem; }
 .log-select { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:.3rem .5rem; font-size:.84rem; color:var(--text); }
-.log-btn { background:rgba(250,204,21,.1); border:1px solid rgba(250,204,21,.35); border-radius:4px; padding:.3rem .75rem; font-size:.84rem; color:#facc15; cursor:pointer; white-space:nowrap; }
+.log-btn { background:rgba(250,204,21,.1); border:1px solid rgba(250,204,21,.35); border-radius:4px; padding:.3rem .75rem; font-size:.84rem; color:var(--t-yellow); cursor:pointer; white-space:nowrap; }
 .log-close { background:rgba(239,68,68,.12); border-color:rgba(239,68,68,.25); color:var(--danger); }
 .log-body { flex:1; overflow-y:auto; padding:1rem; -webkit-overflow-scrolling:touch; font-family:'Noto Sans KR',sans-serif; }
 .log-sec { font-size:.92rem; font-weight:700; color:var(--text); margin:1.1rem 0 .55rem; }
@@ -352,15 +380,15 @@ text-align:left;
 .log-rate { font-size:.8rem; color:var(--danger); }
 .log-item { font-size:.9rem; color:var(--text); line-height:1.5; }
 .log-wrongs { display:flex; flex-wrap:wrap; gap:.3rem; }
-.log-wrong { background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.25); border-radius:10px; padding:.1rem .5rem; font-size:.84rem; color:#fca5a5; font-family:'Space Mono',monospace; }
+.log-wrong { background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.25); border-radius:10px; padding:.1rem .5rem; font-size:.84rem; color:var(--t-red); font-family:'Space Mono',monospace; }
 .log-wrong b { color:var(--text); font-weight:700; }
 .log-draft { border-left:3px solid rgba(168,85,247,.5); padding:.25rem 0 .25rem .6rem; }
-.log-draft-head { font-size:.76rem; color:#c084fc; }
+.log-draft-head { font-size:.76rem; color:var(--t-violet2); }
 .log-draft-text { font-size:.9rem; color:var(--text2); line-height:1.6; white-space:pre-wrap; word-break:break-word; }
 .log-table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:8px; -webkit-overflow-scrolling:touch; }
 .log-table { width:100%; border-collapse:collapse; font-size:.84rem; color:var(--text2); min-width:640px; }
 .log-table th { text-align:left; background:var(--surface); color:var(--text3); font-weight:600; padding:.45rem .55rem; border-bottom:1px solid var(--border); white-space:nowrap; }
-.log-table td { padding:.4rem .55rem; border-bottom:1px solid rgba(255,255,255,.05); vertical-align:top; white-space:nowrap; }
+.log-table td { padding:.4rem .55rem; border-bottom:1px solid rgba(var(--ink-rgb),.05); vertical-align:top; white-space:nowrap; }
 .log-table td.log-wrap { white-space:normal; word-break:break-word; max-width:280px; }
 .log-ans { font-family:'Space Mono',monospace; color:var(--text); }
 .log-note { font-family:'Noto Sans KR',sans-serif; font-size:.74rem; color:var(--text3); margin-top:.1rem; }
@@ -369,25 +397,25 @@ text-align:left;
 
 /* AI 작문 피드백 */
 .ai-box { margin-top:.85rem; display:flex; flex-direction:column; gap:.45rem; align-items:flex-start; }
-.ai-btn { background:rgba(168,85,247,.12); border:1px solid rgba(168,85,247,.45); color:#c084fc; border-radius:6px; padding:.5rem 1rem; font-size:.92rem; font-family:'Noto Sans KR',sans-serif; cursor:pointer; display:inline-flex; align-items:center; gap:.4rem; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+.ai-btn { background:rgba(168,85,247,.12); border:1px solid rgba(168,85,247,.45); color:var(--t-violet2); border-radius:6px; padding:.5rem 1rem; font-size:.92rem; font-family:'Noto Sans KR',sans-serif; cursor:pointer; display:inline-flex; align-items:center; gap:.4rem; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
 .ai-btn:disabled { opacity:.55; cursor:default; }
-.ai-note { font-size:.8rem; color:var(--text3); font-family:'Noto Sans KR',sans-serif; }
+.ai-note { font-size:.84rem; color:var(--text2); font-family:'Noto Sans KR',sans-serif; }
 .ai-error { font-size:.88rem; color:var(--danger); font-family:'Noto Sans KR',sans-serif; }
-.ai-spin { width:.8rem; height:.8rem; border:2px solid rgba(192,132,252,.35); border-top-color:#c084fc; border-radius:50%; display:inline-block; animation:aiSpin .8s linear infinite; }
+.ai-spin { width:.8rem; height:.8rem; border:2px solid rgba(192,132,252,.35); border-top-color:var(--t-violet2); border-radius:50%; display:inline-block; animation:aiSpin .8s linear infinite; }
 @keyframes aiSpin { to { transform:rotate(360deg); } }
 .ai-panel { width:100%; box-sizing:border-box; background:rgba(168,85,247,.06); border:1px solid rgba(168,85,247,.25); border-radius:8px; padding:.85rem 1rem; display:flex; flex-direction:column; gap:.7rem; font-family:'Noto Sans KR',sans-serif; }
 .ai-chip.ai-spell { background:rgba(251,191,36,.10); border-color:rgba(251,191,36,.35); color:var(--text2); }
-.ai-sec-title { font-size:.82rem; color:#c084fc; letter-spacing:.05em; margin-bottom:.3rem; }
-.ai-text { font-size:.92rem; color:var(--text2); line-height:1.65; }
+.ai-sec-title { font-size:.82rem; color:var(--t-violet2); letter-spacing:.05em; margin-bottom:.3rem; }
+.ai-text { font-size:.95rem; color:var(--text); line-height:1.65; }
 .ai-chips { display:flex; flex-wrap:wrap; gap:.35rem; }
-.ai-chip { background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.35); color:#4ade80; border-radius:12px; padding:.15rem .6rem; font-size:.88rem; font-family:'Space Mono',monospace; }
-.ai-fix { background:rgba(255,255,255,.03); border-radius:6px; padding:.5rem .65rem; margin-bottom:.35rem; font-size:.92rem; line-height:1.6; }
-.ai-old { color:#f87171; text-decoration:line-through; text-decoration-color:rgba(248,113,113,.6); font-family:'Space Mono',monospace; }
-.ai-new { color:#4ade80; font-family:'Space Mono',monospace; }
-.ai-why { font-size:.84rem; color:var(--text3); margin-top:.15rem; }
-.ai-mark { color:#fbbf24; font-family:'Space Mono',monospace; text-decoration:underline wavy rgba(251,191,36,.7); text-underline-offset:3px; }
-.ai-ask { font-size:.86rem; color:var(--text2); margin-top:.3rem; }
-.ai-head { display:flex; justify-content:space-between; flex-wrap:wrap; gap:.25rem .75rem; font-size:.78rem; color:#c4b5fd; border-bottom:1px solid rgba(168,85,247,.2); padding-bottom:.45rem; }
+.ai-chip { background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.35); color:var(--t-green); border-radius:12px; padding:.15rem .6rem; font-size:.88rem; font-family:'Space Mono',monospace; }
+.ai-fix { background:rgba(var(--ink-rgb),.03); border-radius:6px; padding:.5rem .65rem; margin-bottom:.35rem; font-size:.92rem; line-height:1.6; }
+.ai-old { color:var(--t-red); text-decoration:line-through; text-decoration-color:rgba(248,113,113,.6); font-family:'Space Mono',monospace; }
+.ai-new { color:var(--t-green); font-family:'Space Mono',monospace; }
+.ai-why { font-size:.88rem; color:var(--text2); margin-top:.15rem; }
+.ai-mark { color:var(--t-yellow); font-family:'Space Mono',monospace; text-decoration:underline wavy rgba(251,191,36,.7); text-underline-offset:3px; }
+.ai-ask { font-size:.9rem; color:var(--text); margin-top:.3rem; }
+.ai-head { display:flex; justify-content:space-between; flex-wrap:wrap; gap:.25rem .75rem; font-size:.78rem; color:var(--t-violet); border-bottom:1px solid rgba(168,85,247,.2); padding-bottom:.45rem; }
 .ai-head span + span { color:var(--text3); }
 
 /* 교사 대시보드: 버튼 글자는 한 줄로, 자리가 모자라면 버튼째 다음 줄로 */
@@ -433,7 +461,7 @@ background: var(--bg);
 border: 1px solid var(--border);
 border-radius: 6px;
 padding: .6rem;
-font-family: 'Bebas Neue','Black Han Sans',sans-serif;
+font-family: 'Bebas Neue','Do Hyeon',sans-serif;
 font-size: 1.2rem;
 color: var(--text3);
 cursor: pointer;
@@ -473,16 +501,16 @@ margin-bottom: 1rem;
 .moon-stars {
 position: absolute;
 inset: 0;
-background-image: radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.8) 0%, transparent 100%),
-radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,.6) 0%, transparent 100%),
-radial-gradient(1px 1px at 50% 60%, rgba(255,255,255,.4) 0%, transparent 100%),
-radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,.7) 0%, transparent 100%),
-radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,.5) 0%, transparent 100%);
+background-image: radial-gradient(1px 1px at 20% 30%, rgba(var(--ink-rgb),.8) 0%, transparent 100%),
+radial-gradient(1px 1px at 80% 10%, rgba(var(--ink-rgb),.6) 0%, transparent 100%),
+radial-gradient(1px 1px at 50% 60%, rgba(var(--ink-rgb),.4) 0%, transparent 100%),
+radial-gradient(1px 1px at 10% 80%, rgba(var(--ink-rgb),.7) 0%, transparent 100%),
+radial-gradient(1px 1px at 90% 70%, rgba(var(--ink-rgb),.5) 0%, transparent 100%);
 pointer-events: none;
 }
 .moon-hp-bar {
 height: 8px;
-background: rgba(255,255,255,.1);
+background: rgba(var(--ink-rgb),.1);
 border-radius: 4px;
 margin-bottom: .75rem;
 overflow: hidden;
@@ -539,7 +567,7 @@ font-size: .9rem;
 color: var(--text3);
 margin-bottom: .5rem;
 }
-.moon-score-val { font-family: 'Bebas Neue','Black Han Sans',sans-serif; font-size: 1.2rem; }
+.moon-score-val { font-family: 'Bebas Neue','Do Hyeon',sans-serif; font-size: 1.2rem; }
 .moon-score-val.accent { color: var(--accent2); }
 .moon-score-val.danger { color: var(--danger); }
 
@@ -573,11 +601,11 @@ gap: .5rem;
 align-items: center;
 }
 .hud-coin {
-background: rgba(10,14,26,.85);
+background: rgba(var(--deep-rgb),.85);
 border: 1px solid rgba(249,115,22,.35);
 border-radius: 6px;
 padding: .35rem .75rem;
-font-family: 'Bebas Neue','Black Han Sans',sans-serif;
+font-family: 'Bebas Neue','Do Hyeon',sans-serif;
 font-size: 1.1rem;
 color: var(--accent);
 backdrop-filter: blur(8px);
@@ -586,8 +614,8 @@ align-items: center;
 gap: .35rem;
 }
 .hud-items {
-background: rgba(10,14,26,.85);
-border: 1px solid rgba(255,255,255,.08);
+background: rgba(var(--deep-rgb),.85);
+border: 1px solid rgba(var(--ink-rgb),.08);
 border-radius: 6px;
 padding: .35rem .75rem;
 font-size: .92rem;
@@ -599,8 +627,8 @@ gap: .3rem;
 min-width: 60px;
 }
 .hud-island {
-background: rgba(10,14,26,.85);
-border: 1px solid rgba(255,255,255,.08);
+background: rgba(var(--deep-rgb),.85);
+border: 1px solid rgba(var(--ink-rgb),.08);
 border-radius: 6px;
 padding: .35rem .75rem;
 font-size: .88rem;
@@ -620,21 +648,21 @@ font-family: 'Space Mono', monospace;
 .sml-title, .sidebar-coin-label, .sidebar-items-label, .lobby-sub { letter-spacing:0; text-transform:none; font-size:.82rem; color:var(--text2); font-weight:500; }
 .sidebar-island-name { font-family:var(--kr-display); font-size:1.35rem; letter-spacing:0; }
 .sidebar-island-crisis { text-transform:none; font-size:.8rem; }
-.mission-sidebar { background:linear-gradient(180deg, var(--surface) 0%, rgba(22,41,58,.92) 100%); border-right:1px solid var(--border); position:relative; z-index:1; }
+.mission-sidebar { background:linear-gradient(180deg, var(--surface) 0%, rgba(var(--deep-rgb),.92) 100%); border-right:1px solid var(--border); position:relative; z-index:1; }
 .mission-main { position:relative; z-index:1; }
 .mission-situation { line-height:1.75; }
-.sidebar-coins, .sidebar-items { background:rgba(13,26,36,.6); }
+.sidebar-coins, .sidebar-items { background:rgba(var(--deep-rgb),.6); }
 #screen-teacher, #screen-lobby, #screen-mission, #screen-login, #screen-main { position:relative; z-index:1; }
 :focus-visible { outline:2px solid var(--accent2); outline-offset:2px; }
 
 /* 학생 탐험 경로 (사이드바) */
 .sidebar-mission-list { margin-top:.25rem; }
 .route-map { display:block; overflow:visible; }
-.rt-line { fill:none; stroke:rgba(233,216,166,.28); stroke-width:2.5; stroke-dasharray:2 6; stroke-linecap:round; }
+.rt-line { fill:none; stroke:rgba(var(--line-rgb),.28); stroke-width:2.5; stroke-dasharray:2 6; stroke-linecap:round; }
 .rt-line.done { stroke:var(--accent2); stroke-dasharray:none; opacity:.75; }
-.rt-dot { fill:var(--bg); stroke:rgba(233,216,166,.3); stroke-width:1.5; }
+.rt-dot { fill:var(--bg); stroke:rgba(var(--line-rgb),.3); stroke-width:1.5; }
 .rt-done .rt-dot { fill:rgba(79,209,197,.18); stroke:var(--accent2); }
-.rt-cur .rt-dot { fill:var(--accent); stroke:#ffd2ad; stroke-width:2; }
+.rt-cur .rt-dot { fill:var(--accent); stroke:var(--t-orange); stroke-width:2; }
 .rt-halo { fill:rgba(255,122,26,.18); }
 .rt-emoji { font-size:15px; }
 .rt-done .rt-emoji { fill:var(--accent2); font-weight:700; font-size:16px; font-family:'Noto Sans KR',sans-serif; }
@@ -648,23 +676,23 @@ font-family: 'Space Mono', monospace;
 }
 /* 좁은 화면: 사이드바 대신 미션 띠 안에 가로 경로 */
 .route-strip { display:none; width:100%; align-items:center; gap:0; margin-top:.15rem; }
-.rs-dot { flex:0 0 auto; width:1.7rem; height:1.7rem; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:.85rem; background:var(--bg); border:1px solid rgba(233,216,166,.3); }
+.rs-dot { flex:0 0 auto; width:1.7rem; height:1.7rem; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:.85rem; background:var(--bg); border:1px solid rgba(var(--line-rgb),.3); }
 .rs-done { background:rgba(79,209,197,.18); border-color:var(--accent2); color:var(--accent2); font-weight:700; }
-.rs-cur { background:var(--accent); border-color:#ffd2ad; width:2.1rem; height:2.1rem; }
-.rs-line { flex:1 1 auto; height:2px; min-width:.3rem; background:repeating-linear-gradient(90deg, rgba(233,216,166,.3) 0 3px, transparent 3px 7px); }
+.rs-cur { background:var(--accent); border-color:var(--t-orange); width:2.1rem; height:2.1rem; }
+.rs-line { flex:1 1 auto; height:2px; min-width:.3rem; background:repeating-linear-gradient(90deg, rgba(var(--line-rgb),.3) 0 3px, transparent 3px 7px); }
 @media (max-width:768px) { .route-strip { display:flex; } }
 
 /* 여섯 섬 해도 (교사·로비) */
 .world-map { display:block; max-height:72vh; }
-.wm-grid line { stroke:rgba(233,216,166,.06); stroke-width:1; }
+.wm-grid line { stroke:rgba(var(--line-rgb),.06); stroke-width:1; }
 .wm-reef { fill:rgba(79,209,197,.07); stroke:rgba(79,209,197,.22); stroke-width:1.2; stroke-dasharray:3 5; }
 .wm-land { fill:color-mix(in srgb, var(--isl) 22%, #2a3a3a); stroke:var(--sand); stroke-opacity:.55; stroke-width:1.5; }
 .wm-contour { fill:none; stroke:var(--sand); stroke-opacity:.16; stroke-width:1; }
-.wm-trail { stroke:rgba(233,216,166,.35); stroke-width:2; stroke-dasharray:2 5; stroke-linecap:round; }
+.wm-trail { stroke:rgba(var(--line-rgb),.35); stroke-width:2; stroke-dasharray:2 5; stroke-linecap:round; }
 .wm-trail.done { stroke:var(--accent2); stroke-dasharray:none; stroke-opacity:.85; }
-.wm-wp { fill:var(--bg); stroke:rgba(233,216,166,.45); stroke-width:1.2; }
+.wm-wp { fill:var(--bg); stroke:rgba(var(--line-rgb),.45); stroke-width:1.2; }
 .wm-done { fill:var(--accent2); stroke:var(--accent2); }
-.wm-cur { fill:var(--accent); stroke:#ffd2ad; }
+.wm-cur { fill:var(--accent); stroke:var(--t-orange); }
 .wm-token circle { fill:#0d1a24; stroke-width:3; }
 .wm-token text { font-size:17px; }
 .wm-token.fin circle { fill:rgba(52,211,153,.18); stroke:var(--success) !important; }
@@ -673,16 +701,16 @@ font-family: 'Space Mono', monospace;
 .wm-island.clickable { cursor:pointer; }
 .wm-island.clickable:hover .wm-land, .wm-island.clickable:focus .wm-land { stroke-opacity:1; stroke-width:2.5; }
 .wm-island:focus { outline:none; }
-.wm-compass circle { fill:none; stroke:rgba(233,216,166,.3); }
-.wm-compass path { fill:rgba(233,216,166,.45); }
-.wm-compass text { fill:rgba(233,216,166,.55); font-size:13px; font-family:'Space Mono',monospace; }
+.wm-compass circle { fill:none; stroke:rgba(var(--line-rgb),.3); }
+.wm-compass path { fill:rgba(var(--line-rgb),.45); }
+.wm-compass text { fill:rgba(var(--line-rgb),.55); font-size:13px; font-family:'Space Mono',monospace; }
 .wm-legend { display:flex; flex-wrap:wrap; gap:.4rem 1.1rem; justify-content:center; font-size:.84rem; color:var(--text2); margin-top:.5rem; }
 .wm-legend .lg { display:inline-block; width:.7rem; height:.7rem; border-radius:50%; margin-right:.35rem; vertical-align:-.05rem; }
-.lg-done { background:var(--accent2); } .lg-cur { background:var(--accent); } .lg-next { border:1.5px solid rgba(233,216,166,.5); }
-.lobby-map, .td-map { background:rgba(13,26,36,.55); border:1px solid var(--border); border-radius:12px; padding:.75rem; margin-bottom:1.25rem; }
+.lg-done { background:var(--accent2); } .lg-cur { background:var(--accent); } .lg-next { border:1.5px solid rgba(var(--line-rgb),.5); }
+.lobby-map, .td-map { background:rgba(var(--deep-rgb),.55); border:1px solid var(--border); border-radius:12px; padding:.75rem; margin-bottom:1.25rem; }
 .td-viewbar { display:flex; flex-wrap:wrap; gap:.4rem; align-items:center; margin-bottom:.75rem; }
 .td-viewbtn { background:transparent; border:1px solid var(--border); border-radius:999px; padding:.3rem .9rem; font-size:.86rem; color:var(--text2); cursor:pointer; font-family:'Noto Sans KR',sans-serif; }
-.td-viewbtn.on { background:var(--surface2); color:var(--text); border-color:rgba(233,216,166,.35); }
+.td-viewbtn.on { background:var(--surface2); color:var(--text); border-color:rgba(var(--line-rgb),.35); }
 .td-viewbig { margin-left:auto; background:transparent; border:none; color:var(--accent2); font-size:.84rem; cursor:pointer; text-decoration:underline; text-underline-offset:3px; font-family:'Noto Sans KR',sans-serif; }
 .map-overlay { position:fixed; inset:0; z-index:530; background:var(--bg); display:flex; flex-direction:column; }
 .map-ov-head { display:flex; justify-content:space-between; align-items:center; padding:.75rem 1.25rem; border-bottom:1px solid var(--border); font-size:1.05rem; color:var(--text2); }
@@ -694,9 +722,9 @@ font-family: 'Space Mono', monospace;
 /* 결과 화면 (2차) */
 .result-title { font-family:var(--kr-display) !important; font-weight:400; font-size:1.9rem; letter-spacing:.02em !important; color:var(--text); }
 .result-emoji { filter:drop-shadow(0 6px 18px rgba(255,122,26,.25)); }
-.result-coin { display:inline-block; font-size:2.4rem; padding:.15rem 1.1rem; border-radius:999px; border:2px dashed currentColor; transform:rotate(-3deg); background:rgba(13,26,36,.5); }
+.result-coin { display:table; margin:.75rem auto; font-size:2.4rem; padding:.15rem 1.1rem; border-radius:999px; border:2px dashed currentColor; transform:rotate(-3deg); background:rgba(var(--deep-rgb),.5); }
 .result-desc { max-width:46ch; margin-left:auto; margin-right:auto; }
-.result-box > div[style*="background:var(--surface)"] { background:rgba(13,26,36,.55) !important; border:1px solid var(--border); }
+.result-box > div[style*="background:var(--surface)"] { background:rgba(var(--deep-rgb),.55) !important; border:1px solid var(--border); }
 .result-box [style*="text-transform:uppercase"] { text-transform:none !important; letter-spacing:0 !important; font-size:.84rem !important; color:var(--text2) !important; }
 .result-box .btn-primary { font-size:1.15rem; padding:.75rem 1.8rem; border-radius:8px; }
 .result-box .btn-ghost { font-family:'Noto Sans KR',sans-serif; font-size:.86rem; }
@@ -711,7 +739,7 @@ font-family: 'Space Mono', monospace;
 .tc2-name { font-family:var(--kr-display); font-size:1.15rem; color:var(--text); }
 .tc2-name span { font-family:'Noto Sans KR',sans-serif; font-size:.82rem; color:var(--isl); margin-left:.2rem; }
 .tc2-conn { margin-left:auto; font-size:.76rem; color:var(--text3); display:inline-flex; align-items:center; gap:.3rem; white-space:nowrap; }
-.tc2-conn i { width:.5rem; height:.5rem; border-radius:50%; background:rgba(233,216,166,.25); display:inline-block; }
+.tc2-conn i { width:.5rem; height:.5rem; border-radius:50%; background:rgba(var(--line-rgb),.25); display:inline-block; }
 .tc2.on .tc2-conn { color:var(--success); } .tc2.on .tc2-conn i { background:var(--success); box-shadow:0 0 6px var(--success); }
 .tc2-now { display:flex; align-items:flex-end; justify-content:space-between; gap:.5rem; }
 .tc2-mission { font-size:1rem; font-weight:700; color:var(--text); }
@@ -729,7 +757,7 @@ font-family: 'Space Mono', monospace;
 .tc2-btns select { flex:1; background:var(--bg); border:1px solid var(--border); color:var(--text); }
 .log-draft.log-ai { border-left:3px solid #a855f7; background:rgba(168,85,247,.06); }
 .log-draft.log-ai .log-draft-text { white-space:pre-wrap; font-family:'Noto Sans KR',sans-serif; font-size:.86rem; color:var(--text2); }
-.m7r-ai summary { cursor:pointer; font-size:.8rem; color:#c4b5fd; }
+.m7r-ai summary { cursor:pointer; font-size:.8rem; color:var(--t-violet); }
 .m7r-ai .ai-panel { margin-top:.4rem; }
 /* 수업 정리 (프로젝터) */
 .wrap-overlay { position:fixed; inset:0; z-index:535; background:var(--bg); display:flex; flex-direction:column; overflow-y:auto; padding:1.25rem 2rem 1.5rem; }
@@ -742,16 +770,18 @@ font-family: 'Space Mono', monospace;
 @media (max-width:900px) { .wu-body { grid-template-columns:1fr; } }
 .wu-sec h3 { font-family:var(--kr-display); font-weight:400; font-size:1.45rem; color:var(--sand); margin:0 0 .8rem; }
 .wu-sec h3.wu-sub { margin-top:1.4rem; font-size:1.2rem; }
+.wu-basis { margin:-.4rem 0 .8rem; font-size:.84rem; line-height:1.55; color:var(--text2); }
+.wu-basis b { color:var(--text); }
 .wu-err { display:flex; gap:.9rem; align-items:flex-start; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:.9rem 1rem; margin-bottom:.7rem; }
 .wu-err-n { flex:0 0 auto; width:2rem; height:2rem; border-radius:50%; background:var(--accent); color:#1b0e04; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.05rem; }
 .wu-err-item { font-size:1.05rem; color:var(--text2); line-height:1.5; }
 .wu-err-fix { font-size:1.35rem; margin-top:.35rem; line-height:1.5; }
-.wu-x { color:#fca5a5; text-decoration:line-through; text-decoration-thickness:2px; }
+.wu-x { color:var(--t-red); text-decoration:line-through; text-decoration-thickness:2px; }
 .wu-o { color:var(--success); font-weight:700; }
 .wu-arrow { color:var(--text3); }
 .wu-err-meta { font-size:.88rem; color:var(--text3); margin-top:.25rem; }
 .wu-quote { margin:0 0 .9rem; background:var(--surface); border-left:4px solid var(--accent2); border-radius:0 12px 12px 0; padding:1rem 1.2rem; font-size:1.35rem; line-height:1.7; color:var(--text); }
-.wu-quote mark { background:rgba(255,122,26,.22); color:#ffd2ad; border-radius:4px; padding:0 .15rem; }
+.wu-quote mark { background:rgba(255,122,26,.22); color:var(--t-orange); border-radius:4px; padding:0 .15rem; }
 .wu-chips { display:flex; flex-wrap:wrap; gap:.5rem; }
 .wu-chip { background:rgba(79,209,197,.1); border:1px solid rgba(79,209,197,.35); border-radius:999px; padding:.3rem .9rem; font-size:1.1rem; color:var(--text); font-family:'Space Mono',monospace; }
 .wu-chip small { color:var(--accent2); font-family:'Noto Sans KR',sans-serif; }
@@ -760,7 +790,7 @@ font-family: 'Space Mono', monospace;
 .wu-picker summary { cursor:pointer; color:var(--text2); font-size:.92rem; }
 .wu-picks { display:flex; flex-direction:column; gap:.4rem; margin-top:.6rem; }
 .wu-pick { text-align:left; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.5rem .75rem; color:var(--text2); font-size:.9rem; cursor:pointer; font-family:'Noto Sans KR',sans-serif; }
-.wu-pick.on { border-color:#facc15; color:var(--text); }
+.wu-pick.on { border-color:var(--t-yellow); color:var(--text); }
 .tc2-skip { background:rgba(255,122,26,.1); border:1px solid rgba(255,122,26,.3); color:var(--accent); }
 
 /* 미션 무대 (2차): 섬 장면 머리, 단계표, AI 기기 말풍선 */
@@ -773,13 +803,13 @@ font-family: 'Space Mono', monospace;
 .ms-mark { font-size:26px; }
 .ms-reef { fill:none; stroke:rgba(79,209,197,.3); stroke-dasharray:2 4; }
 @media (max-width:520px) { .m-scene { opacity:.45; } }
-.mission-header.has-scene .mission-title { text-shadow:0 2px 12px rgba(13,26,36,.8); max-width:70%; }
+.mission-header.has-scene .mission-title { text-shadow:0 2px 12px rgba(var(--deep-rgb),.8); max-width:70%; }
 .m-steps { display:flex; align-items:center; margin-top:.75rem; max-width:260px; }
 .ms-step { flex:0 0 auto; width:1.6rem; height:1.6rem; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:.78rem; font-weight:700;
-  background:rgba(13,26,36,.75); border:1.5px solid rgba(233,216,166,.35); color:var(--text3); }
+  background:rgba(var(--deep-rgb),.75); border:1.5px solid rgba(var(--line-rgb),.35); color:var(--text3); }
 .ms-step.done { border-color:var(--accent2); color:var(--accent2); }
-.ms-step.cur { background:var(--accent); border-color:#ffd2ad; color:#1b0e04; }
-.ms-bar { flex:1 1 auto; height:2px; background:rgba(233,216,166,.25); min-width:.6rem; }
+.ms-step.cur { background:var(--accent); border-color:var(--t-orange); color:#1b0e04; }
+.ms-bar { flex:1 1 auto; height:2px; background:rgba(var(--line-rgb),.25); min-width:.6rem; }
 .bot-row { display:flex; gap:.85rem; align-items:flex-start; margin-bottom:1.6rem; }
 .bot-row > .mission-situation { flex:1; min-width:0; margin-bottom:0 !important; position:relative; border-left:1px solid var(--border); border-radius:4px 14px 14px 14px; background:var(--surface); }
 .bot-row > .mission-situation::before { content:''; position:absolute; left:-8px; top:16px; width:14px; height:14px; background:var(--surface); border-left:1px solid var(--border); border-bottom:1px solid var(--border); transform:rotate(45deg); }
@@ -806,7 +836,100 @@ font-family: 'Space Mono', monospace;
 .btn, #loginBtn, .result-title, .log-title, .tc-name, .lobby-title { letter-spacing:.03em !important; }
 .wm-landmark { font-size:34px; opacity:.9; }
 .wm-halo { fill:rgba(255,122,26,.22); stroke:var(--accent); stroke-width:1.5; stroke-opacity:.7; }
-.wm-token text { font-family:'Bebas Neue','Black Han Sans',sans-serif; font-size:19px; fill:var(--text); }
+.wm-token text { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:19px; fill:var(--text); }
+/* 화면 밝기 버튼 */
+.theme-btn { position:fixed; left:.75rem; bottom:.75rem; z-index:240; background:var(--surface); color:var(--text2); border:1px solid var(--border); border-radius:999px; padding:.35rem .8rem; font-size:.8rem; font-family:'Noto Sans KR',sans-serif; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+.theme-btn:hover { color:var(--text); border-color:var(--accent2); }
+@media (max-width:360px) { .hud { gap:.3rem; } .hud > * { font-size:.82rem !important; padding-left:.45rem !important; padding-right:.45rem !important; } #missionMain [style*="grid-template-columns:1fr 1fr"] { grid-template-columns:1fr !important; } #missionMain [style*="grid-column:span 2"] { grid-column:auto !important; } }
+@media (max-width:400px) { .rs-dot { width:1.45rem; height:1.45rem; font-size:.72rem; } .rs-cur { width:1.65rem !important; height:1.65rem !important; } }
+@media (max-width:520px) { .theme-btn { bottom:auto; top:.6rem; left:.6rem; padding:.25rem .6rem; font-size:.72rem; } }
+
+/* 교사 대시보드 (3차): 위에는 자주 누르는 것만, 설정은 접고, 도와줄 모둠을 크게 */
+#screen-teacher .td-topbar { display:flex; align-items:center; gap:.75rem; padding:.7rem 1rem; background:var(--surface); border-bottom:1px solid var(--border); flex-shrink:0; flex-wrap:wrap; }
+.td-brand { font-family:var(--kr-display); font-size:1.35rem; color:var(--accent); white-space:nowrap; }
+.td-room { font-size:.95rem; color:var(--text2); flex:1; white-space:nowrap; }
+.td-top-btns { display:flex; gap:.45rem; flex-wrap:wrap; }
+.td-tbtn { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:.5rem .9rem; font-size:.95rem; color:var(--text); cursor:pointer; white-space:nowrap; font-family:'Noto Sans KR',sans-serif; }
+.td-tbtn:hover { border-color:var(--accent2); }
+.td-tbtn-wrap { border-color:color-mix(in srgb, var(--success) 50%, transparent); color:var(--success); font-weight:700; }
+.td-tbtn-set.on { background:var(--accent2); color:#fff; border-color:var(--accent2); }
+.td-count { display:inline-block; min-width:1.4em; padding:0 .35em; border-radius:999px; background:rgba(var(--ink-rgb),.08); font-size:.8rem; }
+.td-settings { background:var(--surface2); border-bottom:1px solid var(--border); padding:.6rem 1rem .8rem; display:grid; gap:.55rem; flex-shrink:0; }
+.td-settings[hidden] { display:none; }
+.td-set-row { display:grid; grid-template-columns:7.5rem 1fr; gap:.75rem; align-items:start; }
+.td-set-label { font-weight:700; font-size:.92rem; color:var(--text); padding-top:.35rem; }
+.td-set-ctrl { display:flex; flex-wrap:wrap; gap:.45rem; align-items:center; }
+.td-set-note { flex-basis:100%; font-size:.82rem; color:var(--text2); line-height:1.5; }
+.td-select { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:.4rem .55rem; font-size:.9rem; color:var(--text); max-width:100%; }
+.td-apply { background:var(--accent2); border:none; border-radius:6px; padding:.42rem .9rem; font-size:.9rem; color:#fff; font-weight:700; cursor:pointer; white-space:nowrap; }
+.td-apply-warm { background:var(--accent); }
+.td-sizes { display:flex; flex-wrap:wrap; gap:.35rem .8rem; }
+.td-size { display:inline-flex; align-items:center; gap:.3rem; font-size:.88rem; color:var(--text); white-space:nowrap; }
+.td-size select { background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:.2rem .3rem; color:var(--text); font-size:.86rem; }
+@media (max-width:700px) { .td-set-row { grid-template-columns:1fr; gap:.3rem; } }
+
+.td-focus { display:flex; align-items:center; gap:.75rem; padding:.7rem 1rem; background:var(--surface); border-bottom:1px solid var(--border); flex-shrink:0; font-family:'Noto Sans KR',sans-serif; }
+.tdf-main { flex:1; display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; }
+.tdf-label { font-weight:700; font-size:1rem; color:var(--danger); white-space:nowrap; }
+.tdf-team { display:inline-flex; flex-direction:column; align-items:flex-start; gap:.05rem; background:color-mix(in srgb, var(--danger) 9%, var(--surface)); border:2px solid var(--danger); border-left:6px solid var(--isl); border-radius:10px; padding:.4rem .8rem; cursor:pointer; text-align:left; font-family:inherit; color:var(--text); }
+.tdf-team b { font-size:1.05rem; }
+.tdf-team span { font-size:.85rem; color:var(--text2); }
+.tdf-team small { font-size:.82rem; color:var(--danger); font-weight:700; }
+.tdf-calm { font-size:.95rem; color:var(--success); font-weight:700; }
+.tdf-side { flex-shrink:0; }
+.tdf-hard-btn { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:.5rem .9rem; font-size:.92rem; color:var(--text); cursor:pointer; font-family:inherit; }
+.tdf-hard-btn b { color:var(--accent); margin-left:.15rem; }
+.tdf-hard-btn:disabled { opacity:.5; cursor:default; }
+.tdf-m { color:var(--accent2); font-size:.82rem; font-weight:700; }
+.tdf-n { color:var(--danger); font-size:.82rem; }
+.td-hard-pop { position:absolute; right:1rem; top:7.5rem; z-index:60; width:min(440px, calc(100vw - 2rem)); max-height:60vh; overflow:auto; background:var(--surface); border:1px solid var(--border); border-radius:12px; box-shadow:0 18px 40px rgba(0,0,0,.18); padding:.8rem 1rem; display:flex; flex-direction:column; gap:.55rem; }
+#screen-teacher { position:relative; }
+.thp-head { display:flex; justify-content:space-between; align-items:center; }
+.thp-basis { font-size:.82rem; color:var(--text2); margin:0; }
+.thp-item { font-size:.9rem; line-height:1.5; padding:.45rem .55rem; border:1px solid var(--border); border-radius:8px; }
+
+.tc2 { gap:.55rem; }
+.tc2.help { border-color:var(--danger); box-shadow:0 0 0 2px color-mix(in srgb, var(--danger) 25%, transparent); }
+.tc2-help { font-size:.78rem; font-weight:700; color:#fff; background:var(--danger); border-radius:999px; padding:.1rem .5rem; white-space:nowrap; }
+.tc2-now { display:block; }
+.tc2-mission { font-size:1.1rem; }
+.tc2-step { font-size:.88rem; }
+.tc2-gauge { position:relative; height:1.25rem; border-radius:999px; background:rgba(var(--ink-rgb),.08); overflow:hidden; }
+.tc2-gauge i { position:absolute; inset:0 auto 0 0; background:var(--isl); border-radius:999px; transition:width .4s; }
+.tc2.fin .tc2-gauge i { background:var(--success); }
+.tc2-gauge b { position:absolute; right:.5rem; top:50%; transform:translateY(-50%); font-size:.78rem; color:var(--text); }
+.tc2-stats { font-size:.95rem; gap:.3rem 1.1rem; }
+.tc2-stats .bad b { color:var(--danger); }
+.tc2-btns { align-items:stretch; }
+.tc2-view { padding:.45rem .6rem !important; font-size:.88rem !important; }
+.tc2-more { position:relative; }
+.tc2-more summary { list-style:none; cursor:pointer; height:100%; display:flex; align-items:center; padding:0 .75rem; border:1px solid var(--border); border-radius:6px; font-size:1.1rem; color:var(--text2); }
+.tc2-more summary::-webkit-details-marker { display:none; }
+.tc2-move { position:absolute; right:0; bottom:calc(100% + .3rem); z-index:5; display:flex; gap:.3rem; background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.4rem; box-shadow:0 8px 20px rgba(0,0,0,.15); white-space:nowrap; }
+
+/* 모둠원별 기록 */
+.lm-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:.75rem; margin-bottom:1rem; }
+.lm-table { width:100%; border-collapse:collapse; font-size:.86rem; }
+.lm-table th { text-align:left; white-space:nowrap; padding:.35rem .5rem .35rem 0; vertical-align:top; color:var(--text); }
+.lm-table td { padding:.3rem 0; border-top:1px solid var(--border); }
+.lm-table tr:first-child td { border-top:none; }
+.lm-watch th { color:var(--danger); }
+.lm-m { display:flex; justify-content:space-between; gap:.5rem; padding:.1rem 0; }
+.lm-name { color:var(--text2); }
+.lm-name small { display:block; font-size:.74rem; color:var(--text3); }
+.lm-ok { color:var(--success); font-weight:700; } .lm-bad { color:var(--danger); font-weight:700; } .lm-hint { color:var(--t-yellow); }
+
+/* 밝은 화면 보정: 어두운 바다 위에 쓰던 밝은 색 글자를 진하게 */
+body:not(.dark) .wh-word, body:not(.dark) .m3-food-card [style*="color:#"], body:not(.dark) [style*="color:#38bdf8"], body:not(.dark) [style*="color:#22c55e"] { filter:brightness(.72) saturate(1.3); }
+body:not(.dark) .tc2-isl path, body:not(.dark) .wm-land { filter:saturate(1.1); }
+body:not(.dark) .mission-header.has-scene { background:linear-gradient(180deg, #eaf5f3 0%, #dcefec 62%, #cfe7e3 100%); }
+body:not(.dark) .mission-header.has-scene .mission-title { text-shadow:none; }
+body:not(.dark) .ms-land, body:not(.dark) .tc2-isl path { fill:color-mix(in srgb, var(--isl) 45%, #f1e6c8); }
+body:not(.dark) .ms-wave, body:not(.dark) .ms-reef { stroke:rgba(11,129,120,.35); }
+body:not(.dark) .wm-land { fill:color-mix(in srgb, var(--isl) 40%, #f1e6c8); }
+body:not(.dark) .lobby-map, body:not(.dark) .td-map, body:not(.dark) .map-ov-body { background:#dcefec; }
+body:not(.dark) .wm-token circle { fill:#ffffff; }
+
 </style>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -844,6 +967,18 @@ window.dispatchEvent(new Event('firebaseReady'));
 
 </head>
 <body>
+<script>
+// 화면 밝기: 밝은 화면이 기본. 어두운 화면을 고르면 이 기기에 기억한다.
+(function(){ try { if(localStorage.getItem('gsos_theme') === 'dark') document.body.classList.add('dark'); } catch(e) {} })();
+function toggleTheme() {
+  const dark = document.body.classList.toggle('dark');
+  try { localStorage.setItem('gsos_theme', dark ? 'dark' : 'light'); } catch(e) {}
+  const b = document.getElementById('themeBtn');
+  if(b) { b.textContent = dark ? '☀️ 밝게' : '🌙 어둡게'; b.setAttribute('aria-pressed', String(dark)); }
+}
+</script>
+<button id="themeBtn" class="theme-btn" onclick="toggleTheme()" aria-pressed="false" title="화면 밝기 바꾸기">🌙 어둡게</button>
+<script>(function(){ const b=document.getElementById('themeBtn'); if(document.body.classList.contains('dark')) { b.textContent='☀️ 밝게'; b.setAttribute('aria-pressed','true'); } })();</script>
 
 <!-- ══ LOGIN SCREEN ══ -->
 
@@ -858,7 +993,7 @@ window.dispatchEvent(new Event('firebaseReady'));
   <p class="intro-lead">무인도에 갇힌 모둠이 <strong>목표 문법</strong>으로 살아남아 탈출하는<br>반 전체 실시간 영어 문법 게임</p>
   <div class="intro-chips">
     <span>👥 모둠당 기기 1대</span>
-    <span>🧭 미션 7개 · 약 25분</span>
+    <span>🧭 미션 7개 · 약 30분</span>
     <span>🔒 로그인·이름 없음</span>
   </div>
   <a class="intro-demo" href="?demo=1">👀 기기 한 대로 체험해 보기<small>학생 미션과 선생님 화면을 혼자 둘러봐요</small></a>
@@ -935,7 +1070,7 @@ window.dispatchEvent(new Event('firebaseReady'));
 <div id="loginStatus" style="font-size:.88rem;color:var(--text3);margin-bottom:1rem;font-family:'Noto Sans KR',sans-serif;min-height:1.2rem;"></div>
 <button id="loginBtn" onclick="doLogin()"
   style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:.9rem;
-  font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.3rem;letter-spacing:.1em;cursor:pointer;opacity:.4;pointer-events:none;transition:all .2s;">
+  font-family:'Bebas Neue','Do Hyeon',sans-serif;font-size:1.3rem;letter-spacing:.1em;cursor:pointer;opacity:.4;pointer-events:none;transition:all .2s;">
   ▶ 접속하기
 </button>
 <div class="intro-foot">Grammar SOS · 2026 SNU TEIC AIED Challenge 출품작 · 학생 이름과 개인정보는 저장하지 않아요<span class="demo-exit"> · <a href="./">체험 끝내기</a></span><span class="teacher-link"> · <a href="#" onclick="openTeacherLogin(); return false;">선생님 접속</a></span></div>
@@ -968,36 +1103,55 @@ window.dispatchEvent(new Event('firebaseReady'));
 
 <!-- ══ TEACHER DASHBOARD ══ -->
 <div id="screen-teacher" class="screen" style="background:var(--bg);flex-direction:column;">
-  <!-- 상단 바 -->
-  <div class="td-topbar" style="display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;">
-    <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.1rem;letter-spacing:.1em;color:var(--accent);white-space:nowrap;">👩‍🏫 교사 대시보드</div>
-    <div id="tdRoomLabel" style="font-size:.82rem;color:var(--text3);flex:1;white-space:nowrap;"></div>
-    <!-- 전체 강제 이동 -->
-    <select id="tdForceSelect" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.84rem;color:var(--text);"></select>
-    <button onclick="tdForceAll()" style="background:var(--accent);border:none;border-radius:4px;padding:.3rem .8rem;font-size:.84rem;color:#fff;cursor:pointer;white-space:nowrap;">전체 이동 →</button>
-    <button onclick="showLogOverlay()" style="background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.35);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:#facc15;cursor:pointer;white-space:nowrap;">📋 응답 기록 <span id="tdLogCount">0</span></button>
-    <button onclick="showM7Review()" style="background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.3);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:#a855f7;cursor:pointer;">📝 미션 7 작문</button>
-    <button onclick="showWrapUp()" style="background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.35);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:var(--success);cursor:pointer;white-space:nowrap;">🎬 수업 정리</button>
-    <button onclick="teacherSyncNow()" style="background:rgba(79,209,197,.12);border:1px solid rgba(79,209,197,.3);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:var(--accent2);cursor:pointer;">🔄 동기화</button>
-    <button onclick="teacherResetRoom()" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:4px;padding:.3rem .7rem;font-size:.84rem;color:var(--danger);cursor:pointer;">🗑️ 초기화</button>
+  <!-- 상단 바: 수업 중에 자주 누르는 것만 -->
+  <div class="td-topbar">
+    <div class="td-brand">👩‍🏫 교사 대시보드</div>
+    <div id="tdRoomLabel" class="td-room"></div>
+    <div class="td-top-btns">
+      <button onclick="showLogOverlay()" class="td-tbtn">📋 응답 기록 <span id="tdLogCount" class="td-count">0</span></button>
+      <button onclick="showM7Review()" class="td-tbtn">📝 미션 7 작문</button>
+      <button onclick="showWrapUp()" class="td-tbtn td-tbtn-wrap">🎬 수업 정리</button>
+      <button onclick="tdToggleSettings()" id="tdSettingsBtn" class="td-tbtn td-tbtn-set" aria-expanded="false" aria-controls="tdSettings">⚙️ 수업 설정</button>
+    </div>
   </div>
-  <!-- 문법 세트 선택 -->
-  <div style="display:flex;align-items:center;flex-wrap:wrap;gap:.6rem;padding:.6rem 1rem;background:rgba(79,209,197,.05);border-bottom:1px solid var(--border);flex-shrink:0;">
-    <div style="font-size:.88rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;white-space:nowrap;">📚 문법 세트</div>
-    <select id="tdGrammarSelect" onchange="tdGrammarSelectChanged()" style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:.3rem .5rem;font-size:.88rem;color:var(--text);max-width:100%;"></select>
-    <button onclick="tdApplyGrammar()" style="background:var(--accent2);border:none;border-radius:4px;padding:.3rem .8rem;font-size:.84rem;color:#0b1120;font-weight:700;cursor:pointer;white-space:nowrap;">이 문법으로 진행 →</button>
-    <button id="tdLibEdit" onclick="tdEditLibrarySet()" class="td-lib-btn" style="display:none;">✏️ 고치기</button>
-    <button id="tdLibDel" onclick="tdDeleteLibrarySet()" class="td-lib-btn td-lib-del" style="display:none;">🗑️ 지우기</button>
-    <button onclick="genOpen()" class="td-gen-btn">✨ 새 문법 세트 만들기</button>
-    <label class="td-group" title="달 기지 운석이 천천히 떨어지고, 미션 5 암기 시간이 7초 → 11초가 돼요">
-      <input type="checkbox" id="tdExtraTime" onchange="tdSetExtraTime(this.checked)"> ⏱️ 시간 넉넉하게
-    </label>
-    <label class="td-group">👥 모둠 인원
-      <select id="tdGroupSize" onchange="tdSetGroupSize(+this.value)"><option value="3">3명</option><option value="4" selected>4명</option><option value="5">5명</option><option value="6">6명</option></select>
-    </label>
-    <div id="tdGrammarCurrent" style="font-size:.82rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;"></div>
+  <!-- 수업 설정 (접어 둠): 수업 전에 한 번 정하는 것 -->
+  <div id="tdSettings" class="td-settings" hidden>
+    <div class="td-set-row">
+      <div class="td-set-label">📚 문법 세트</div>
+      <div class="td-set-ctrl">
+        <select id="tdGrammarSelect" onchange="tdGrammarSelectChanged()" class="td-select"></select>
+        <button onclick="tdApplyGrammar()" class="td-apply">이 문법으로 진행 →</button>
+        <button id="tdLibEdit" onclick="tdEditLibrarySet()" class="td-lib-btn" style="display:none;">✏️ 이 세트 고치기</button>
+        <button id="tdLibDel" onclick="tdDeleteLibrarySet()" class="td-lib-btn td-lib-del" style="display:none;">🗑️ 지우기</button>
+        <button onclick="genOpen()" class="td-gen-btn">✨ 새 문법 세트 만들기</button>
+        <div id="tdGrammarCurrent" class="td-set-note"></div>
+      </div>
+    </div>
+    <div class="td-set-row">
+      <div class="td-set-label">⏱️ 시간</div>
+      <div class="td-set-ctrl">
+        <label class="td-group"><input type="checkbox" id="tdExtraTime" onchange="tdSetExtraTime(this.checked)"> 시간 넉넉하게</label>
+        <div class="td-set-note">켜면 달 기지 운석이 1.5배 천천히 떨어지고, 미션 5에서 문장을 외우는 시간이 7초 → 11초가 돼요. 타자나 암기가 느린 학생이 많은 반에서 켜세요.</div>
+      </div>
+    </div>
+    <div class="td-set-row">
+      <div class="td-set-label">👥 모둠 인원</div>
+      <div class="td-set-ctrl">
+        <div id="tdGroupSizes" class="td-sizes"></div>
+        <div class="td-set-note">미션마다 기기를 잡는 모둠원 번호(1번 → 2번 → …)가 이 인원 안에서 돌아가요. 모둠마다 다르게 정할 수 있어요.</div>
+      </div>
+    </div>
+    <div class="td-set-row">
+      <div class="td-set-label">🧭 진행</div>
+      <div class="td-set-ctrl">
+        <select id="tdForceSelect" class="td-select"></select>
+        <button onclick="tdForceAll()" class="td-apply td-apply-warm">모든 모둠 이동 →</button>
+        <button onclick="teacherSyncNow()" class="td-lib-btn">🔄 다시 불러오기</button>
+        <button onclick="teacherResetRoom()" class="td-lib-btn td-lib-del">🗑️ 초기화</button>
+      </div>
+    </div>
   </div>
-  <!-- 지금 볼 것 -->
+  <!-- 지금 볼 것: 도와줄 모둠을 크게 -->
   <div id="tdFocus" class="td-focus"></div>
   <!-- 모둠 카드 그리드 -->
   <div style="flex:1;overflow-y:auto;padding:1rem;">
@@ -1096,7 +1250,7 @@ window.dispatchEvent(new Event('firebaseReady'));
 window.GRAMMAR_SETS = window.GRAMMAR_SETS || {};
 window.GRAMMAR_SETS['wh-to'] = {
   id: 'wh-to',
-  description: '3과 · 교생실습 6차시 원본',
+  description: '3과',
   title: '의문사 + to부정사',
   titleEn: 'Wh-word + to-infinitive',
   tagline: '의문사 + to부정사로 살아남아라',
@@ -1116,7 +1270,7 @@ window.GRAMMAR_SETS['wh-to'] = {
       { word: 'who', kr: '누구를' },
     ],
     answer: 'where',
-    correctFeedback: '<strong>WHERE to go</strong> — "어디로 가야 할지" 맞아요!',
+    correctFeedback: '<strong>where to go</strong> — "어디로 가야 할지" 맞아요!',
     wrongHint: '"어디로 가야 할지"에 맞는 의문사를 다시 골라보세요!',
   },
 
@@ -1132,7 +1286,7 @@ window.GRAMMAR_SETS['wh-to'] = {
   // ── MISSION 3 · 식량 구하기: 왼쪽 카드와 오른쪽 카드 짝짓기 ──
   m3: {
     typeLabel: '의문사-동사 매칭',
-    hints: ["오른쪽 동사구를 먼저 읽고, '무엇을 / 어디서 / 어떻게' 중 무엇이 자연스러운지 생각해요.", "<strong>찾다(find)</strong>는 장소와, <strong>요리하다(cook)</strong>는 방법과 어울려요.", "<strong>WHAT → to eat</strong>부터 연결해 보세요."],
+    hints: ["오른쪽 동사구를 먼저 읽고, '무엇을 / 어디서 / 어떻게' 중 무엇이 자연스러운지 생각해요.", "<strong>찾다(find)</strong>는 장소와, <strong>요리하다(cook)</strong>는 방법과 어울려요.", "<strong>what → to eat</strong>부터 연결해 보세요."],
     stepLabel: '의문사와 동사를 올바르게 매칭하세요 (3개 모두)',
     promptBefore: '"We have no idea ',
     promptAfter: '. Help me!"',
@@ -1154,9 +1308,9 @@ window.GRAMMAR_SETS['wh-to'] = {
     aiLine: 'Here are your options. Choose what to eat, where to find it, and how to cook it!',
     // 식량 카드의 세 줄 설명 머리말 (식량 정보 what / where / how 순서)
     foodLabels: [
-      { word: 'WHAT', rest: ' to eat: ', color: '#f97316' },
-      { word: 'WHERE', rest: ' to find: ', color: '#38bdf8' },
-      { word: 'HOW', rest: ' to cook: ', color: '#22c55e' },
+      { word: 'what', rest: ' to eat: ', color: '#f97316' },
+      { word: 'where', rest: ' to find: ', color: '#38bdf8' },
+      { word: 'how', rest: ' to cook: ', color: '#22c55e' },
     ],
   },
 
@@ -1283,7 +1437,7 @@ window.GRAMMAR_SETS['wh-to'] = {
   // ── MISSION 7 · 최종 탈출: 자유 작문 + 자동 체크 ──
   m7: {
     typeLabel: '자유 작문 + 발화',
-    hints: ["템플릿의 빈칸부터 채워 보세요. 한 문장에 <strong>의문사 + to부정사</strong> 하나씩!", "필수 안내 내용은 위 카드의 <strong>힌트 표현</strong>을 그대로 써도 돼요.", "예: <em>We don't know where to go. Please tell us how to land.</em>"],
+    hints: ["템플릿의 빈칸부터 채워 보세요. 한 문장에 <strong>의문사 + to부정사</strong> 하나씩!", "⚠️ 필수 칸의 <strong>힌트:</strong> 뒤에 있는 영어 표현은 안내문에 그대로 가져다 써도 돼요.", "예: <em>We don't know where to go. Please tell us how to land.</em>"],
     // 섬별 필수 안내 내용
     islands: [
       { island: 'volcano', key: 'where to land', keyKr: '착륙 장소', warning: '용암 때문에', hint: 'where to land safely away from lava' },
@@ -1320,7 +1474,7 @@ window.GRAMMAR_SETS['wh-to'] = {
 window.GRAMMAR_SETS = window.GRAMMAR_SETS || {};
 window.GRAMMAR_SETS['participle'] = {
   id: 'participle',
-  description: '3과 · 두 번째 목표 문법',
+  description: '3과',
   title: '분사의 후치 수식',
   titleEn: 'Post-nominal participial phrases',
   tagline: '분사로 명사를 꾸며 살아남아라',
@@ -1339,7 +1493,7 @@ window.GRAMMAR_SETS['participle'] = {
       { word: 'leads', kr: '3인칭 단수 동사' },
     ],
     answer: 'leading',
-    correctFeedback: '<strong>a path LEADING to the hill</strong> — "언덕으로 이어지는 길" 맞아요!',
+    correctFeedback: '<strong>a path leading to the hill</strong> — "언덕으로 이어지는 길" 맞아요!',
     wrongHint: '명사(a path)를 뒤에서 꾸미는 말이 필요해요. 길이 "이어지는" 것은 능동이에요!',
   },
 
@@ -1374,9 +1528,9 @@ window.GRAMMAR_SETS['participle'] = {
     doneFeedback: '모두 완성! 이제 어떤 식량을 먹을지 선택하세요!',
     aiLine: 'Here is the food found on this island. Choose the one you want!',
     foodLabels: [
-      { word: 'FOOD', rest: ' found: ', color: '#f97316' },
-      { word: 'PLACE', rest: ' marked: ', color: '#38bdf8' },
-      { word: 'METHOD', rest: ' suggested: ', color: '#22c55e' },
+      { word: 'food', rest: ' found: ', color: '#f97316' },
+      { word: 'place', rest: ' marked: ', color: '#38bdf8' },
+      { word: 'method', rest: ' suggested: ', color: '#22c55e' },
     ],
   },
 
@@ -1496,7 +1650,7 @@ window.GRAMMAR_SETS['participle'] = {
 
   m7: {
     typeLabel: '자유 작문 + 발화',
-    hints: ["템플릿 빈칸을 <strong>명사 + 분사구</strong>로 채워 보세요.", "필수 안내 내용은 위 카드의 <strong>힌트 표현</strong>을 그대로 써도 돼요.", "예: <em>We are the survivors waiting for you. Land on the beach covered with sand.</em>"],
+    hints: ["템플릿 빈칸을 <strong>명사 + 분사구</strong>로 채워 보세요.", "⚠️ 필수 칸의 <strong>힌트:</strong> 뒤에 있는 영어 표현은 안내문에 그대로 가져다 써도 돼요.", "예: <em>We are the survivors waiting for you. Land on the beach covered with sand.</em>"],
     islands: [
       { island: 'volcano', key: 'the field located far from the lava', keyKr: '착륙 장소', warning: '용암 때문에', hint: 'the field located far from the lava' },
       { island: 'arctic', key: 'the bear hiding behind the ice', keyKr: '피해야 할 것', warning: '북극곰 때문에', hint: 'the polar bear hiding behind the ice' },
@@ -1689,7 +1843,7 @@ function m7AiInner(ti) {
   else if(m7AiBusy[ti]) btn = '<button class="ai-btn" disabled><span class="ai-spin"></span> AI가 안내문을 읽는 중…</button>';
   else if(left <= 0) btn = '<button class="ai-btn" disabled>🤖 AI 피드백을 모두 사용했어요</button>';
   else btn = '<button class="ai-btn" onclick="m7RequestAI('+ti+')">🤖 AI 피드백 받기 <span class="hint-count">남은 '+left+'회</span></button>';
-  const note = '<div class="ai-note">제출 전에 AI가 문법을 봐 줘요. 첫 피드백은 고칠 곳과 힌트만, 마지막 피드백은 고친 형태까지 보여 줘요.</div>';
+  const note = '<div class="ai-note">제출 전에 AI가 문법을 봐 줘요. 첫 피드백은 고칠 곳과 힌트만, 마지막 피드백은 고친 형태까지 보여 줘요. AI에는 작문 글만 보내고 이름·모둠 정보는 보내지 않아요. 이름이나 연락처는 쓰지 마세요.</div>';
   const err = m7AiError[ti] ? '<div class="ai-error">⚠️ '+escHTML(m7AiError[ti])+'</div>' : '';
   const round = info.count || 0;
   return btn + note + err + (info.last ? m7AiFeedbackHTML(info.last, { round, reveal: round >= AI_FEEDBACK_LIMIT }) : '');
@@ -1826,6 +1980,8 @@ function logResponse(ti, m, item, answer, ok, note) {
       by: (typeof myRole !== 'undefined' && myRole) || '',
     };
     if(note) e.note = String(note).slice(0, 100);
+    // 누가 했나: 기기 담당 모둠원 번호 (이름 없이). 모둠 전체 활동은 0
+    e.member = TEAM_ACTIVITY[m] ? 0 : deviceTurn(m, ti);
     const key = e.t.toString(36) + '-' + (e.by || 'x') + '-' + (++logSeq);
     roomLog[key] = e;
     if(fbOnline && myRoom && window.firebaseSet) {
@@ -2138,7 +2294,7 @@ function showWaitingForTeams(ti, toMission) {
         </div>
       </div>
       <div style="font-size:.88rem;color:var(--text3);font-family:\'Noto Sans KR\',sans-serif;margin-bottom:.75rem;">${done}/6 모둠 완료 — 모두 완료되면 자동으로 다음 미션이 시작돼요!</div>
-      <button onclick="inAppRefresh()" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:.5rem 1.25rem;font-size:.9rem;color:var(--text2);cursor:pointer;font-family:'Space Mono',monospace;">🔄 현황 새로고침</button>
+      <button onclick="inAppRefresh()" style="background:rgba(var(--ink-rgb),.07);border:1px solid rgba(var(--ink-rgb),.15);border-radius:8px;padding:.5rem 1.25rem;font-size:.9rem;color:var(--text2);cursor:pointer;font-family:'Space Mono',monospace;">🔄 현황 새로고침</button>
     </div>`;
 }
 
@@ -2371,9 +2527,9 @@ function renderMission3(teamNum) {
         <div>
           <div class="step-label" style="margin-bottom:.5rem;">${G.m3.leftLabel}</div>
           ${wh.map((w,wi)=>`
-            <div class="wh-card" style="min-width:unset;margin-bottom:.5rem;border-color:${state.m3match[ti][w.word]?w.color:'var(--border)'};background:${state.m3match[ti][w.word]?'rgba(255,255,255,.04)':'var(--surface)'};"
+            <div class="wh-card" style="min-width:unset;margin-bottom:.5rem;border-color:${state.m3match[ti][w.word]?w.color:'var(--border)'};background:${state.m3match[ti][w.word]?'rgba(var(--ink-rgb),.04)':'var(--surface)'};"
               onclick="m3SelectWh(${ti},${jsArg(w.word)},${jsArg(w.color)})" id="m3wh-${ti}-${wi}">
-              <div class="wh-word" style="color:${w.color}">${w.word.toUpperCase()}</div>
+              <div class="wh-word" style="color:${w.color}">${escHTML(w.word)}</div>
               <div class="wh-kr">${w.kr}${G.m3.leftSuffix}</div>
               ${state.m3match[ti][w.word]?'<div style="font-size:.76rem;color:'+w.color+';margin-top:.25rem;">→ '+state.m3match[ti][w.word]+'</div>':''}
             </div>
@@ -2466,12 +2622,12 @@ function m3SelectVerb(ti, verbText, correctWh) {
   if(isCorrect){
     state.m3match[ti][m3SelectedWh] = verbText;
     fb.className='feedback-box show feedback-correct';
-    fb.innerHTML=`✅ <strong>${m3SelectedWh.toUpperCase()} ${verbText}</strong> — 정답!`;
+    fb.innerHTML=`✅ <strong>${escHTML(m3SelectedWh)}</strong> · <strong>${verbText}</strong> — 맞는 짝이에요!`;
     m3SelectedWh=null; m3SelectedColor=null;
     renderMission3(ti+1);
   } else {
     fb.className='feedback-box show feedback-wrong';
-    fb.innerHTML=`❌ <strong>${m3SelectedWh.toUpperCase()} ${verbText}</strong> — 맞지 않아요. 다시 생각해보세요!`;
+    fb.innerHTML=`❌ <strong>${escHTML(m3SelectedWh)}</strong> · <strong>${verbText}</strong> — 짝이 맞지 않아요. 다시 생각해 보세요!`;
     setTimeout(()=>fb.classList.remove('show'),1800);
   }
   setTimeout(()=>{
@@ -2726,7 +2882,7 @@ function m2Pick(ti,idx){
           <span class="result-emoji">${emoji}</span>
           <div class="result-title">${title}</div>
           <div class="result-coin ${cc}">${ch.coins>0?'+'+ch.coins:ch.coins} 🪙</div>
-          ${ch.item?'<div class="result-item">'+ITEMS[ch.item].emoji+' '+ITEMS[ch.item].name+' 획득!':''}
+          ${ch.item?'<div class="result-item">'+ITEMS[ch.item].emoji+' '+ITEMS[ch.item].name+' 획득!</div>':''}
           <div class="result-desc"><strong>${ch.text}</strong><br>
             ${ch.coins>=2?'안전하고 튼튼한 거처 완성! 오늘 밤은 살아남을 수 있어요. 💪'
               :ch.coins===1?'그럭저럭 지낼 만한 거처예요. 하지만 더 좋은 방법이 있었어요.'
@@ -2847,8 +3003,8 @@ function renderWrapUp() {
   ov.innerHTML = '<div class="wu-head"><div><span class="wu-kicker">오늘의 정리</span><h2>' + escHTML(stripTags(G.title)) + '</h2></div>'
     + '<div class="wu-stats"><span>🚁 탈출 <b>' + d.escaped + '</b>/6 모둠</span><span>✍️ AI 피드백 뒤 고쳐 쓴 모둠 <b>' + d.revised + '</b></span></div>'
     + '<button class="log-btn log-close" onclick="document.getElementById(\'wrapOverlay\').remove()">✕ 닫기</button></div>'
-    + '<div class="wu-body"><section class="wu-sec"><h3>다시 짚을 표현</h3>' + hardHtml + '</section>'
-    + '<section class="wu-sec"><h3>잘 쓴 구조 요청문</h3>' + writingHtml + '<h3 class="wu-sub">오늘 많이 쓴 목표 표현</h3><div class="wu-chips">' + usedHtml + '</div></section></div>'
+    + '<div class="wu-body"><section class="wu-sec"><h3>다시 짚을 표현</h3><p class="wu-basis">응답 기록에서 <b>2개 이상 모둠이 틀린 문항</b>을 틀린 모둠이 많은 순으로 모았어요. 줄 그은 것은 가장 많이 나온 오답, 초록은 맞힌 모둠이 고른 답이에요.</p>' + hardHtml + '</section>'
+    + '<section class="wu-sec"><h3>잘 쓴 구조 요청문</h3><p class="wu-basis">선생님이 아래 목록에서 고른 미션 7 작문이에요. 목표 표현은 문법 세트의 표현 목록과 맞는 부분을 표시했어요.</p>' + writingHtml + '<h3 class="wu-sub">오늘 많이 쓴 목표 표현</h3><p class="wu-basis">제출된 미션 7 작문 전체에서 목표 표현을 세었어요.</p><div class="wu-chips">' + usedHtml + '</div></section></div>'
     + '<details class="wu-picker"' + (shown.length ? '' : ' open') + '><summary>교사용: 띄울 작문 고르기 (' + starred.length + '개 선택)</summary><div class="wu-picks">' + pick + '</div></details>';
 }
 
@@ -3006,10 +3162,18 @@ function renderMapOverlay() {
 
 // ══ 미션 공통 띠: 목표 문법 · 이번 미션 기기 담당 ══
 // 모둠원이 돌아가며 기기를 잡도록 미션마다 번호를 바꾼다(1번→2번→…). 인원은 교사 대시보드에서 정한다.
-function deviceTurn(missionId) {
-  const n = Math.max(2, Math.min(6, state.groupSize || 4));
-  return ((Math.max(1, missionId) - 1) % n) + 1;
+function teamSize(ti) {
+  const own = (state.groupSizes || {})[ti];
+  return Math.max(2, Math.min(6, own || state.groupSize || 4));
 }
+function deviceTurn(missionId, ti) {
+  if(ti == null) ti = state.currentTeam;
+  return ((Math.max(1, missionId) - 1) % teamSize(ti)) + 1;
+}
+// 달 기지와 미션 7은 모둠 전체가 함께 하는 활동 (기기 담당 한 명의 기록이 아님)
+const TEAM_ACTIVITY = { 5: true, 8: true };
+// 활동마다 무엇을 보는지 (교사 대시보드·기록에 표시)
+const MISSION_MEASURE = { 1:'뜻에 맞는 표현 고르기', 2:'어순 배열', 3:'뜻과 형태 연결', 4:'문법 판단 (O/X)', 5:'형태 정확히 쓰기', 6:'외워서 말하기', 7:'짝 대화 어순', 8:'작문 (필수 내용 + 목표 표현)' };
 function missionRibbonHTML() {
   const m = state.currentMission || 1;
   return '<div class="m-ribbon"><span>🎯 목표 문법 <b>' + escHTML(stripTags(G.title)) + '</b></span>'
@@ -3095,6 +3259,17 @@ function tdSetGroupSize(n) {
   fbSaveState();
   updateTeacherDashboard();
 }
+function tdSetTeamSize(ti, n) {
+  state.groupSizes = state.groupSizes || {};
+  state.groupSizes[ti] = n;
+  fbSaveState();
+  updateTeacherDashboard();
+}
+
+// 미션 7 템플릿: (e.g. …) 예시는 학생 화면에서 뺀다. 그대로 베껴 쓰지 않고 빈칸을 스스로 채우게.
+function m7TemplateNoExamples(html) {
+  return String(html || '').replace(/\s*\(e\.g\.[^)]*\)/g, '');
+}
 
 // ══ MISSION 1: 위치 파악 ══
 function renderMission1(teamNum) {
@@ -3125,7 +3300,7 @@ function renderMission1(teamNum) {
       <div class="wh-cards" id="whCards-${ti}">
         ${G.m1.options.map((o,oi)=>`
           <div class="wh-card" onclick="selectWh(${ti},${oi})">
-            <div class="wh-word">${o.word.toUpperCase()}</div>
+            <div class="wh-word">${escHTML(o.word)}</div>
             <div class="wh-kr">${o.kr}</div>
           </div>
         `).join('')}
@@ -3188,7 +3363,7 @@ function selectWh(ti, pick) {
     setTimeout(()=>{ state.missionStep[ti]=2; renderMission1(ti+1); },1500);
   } else {
     fb.className='feedback-box show feedback-wrong';
-    fb.innerHTML=`❌ <strong>${word.toUpperCase()}</strong>는 이 상황에 맞지 않아요.<br><span style="font-size:.9rem;color:var(--text2)">${G.m1.wrongHint}</span>`;
+    fb.innerHTML=`❌ <strong>${escHTML(word)}</strong>는 이 상황에 맞지 않아요.<br><span style="font-size:.9rem;color:var(--text2)">${G.m1.wrongHint}</span>`;
     setTimeout(()=>{ fb.classList.remove('show'); cards.forEach(c=>c.classList.remove('wrong')); }, 1500);
   }
 }
@@ -3273,7 +3448,7 @@ function renderMoonEvent(teamNum) {
   if(state.moonAllDone) {
     const scores = state.moonScores || {};
     const total = Object.values(scores).reduce((a,b)=>a+b,0);
-    const target = Math.floor(12 * 6 / 2);
+    const target = MOON_TARGET;
     main.innerHTML = moonFinalHTML(ti, total, target, state.moonCleared);
     setTimeout(()=>{
       const nb = document.getElementById('moonFinalNext');
@@ -3358,6 +3533,9 @@ function moonStart(ti) {
   }, 1200 * timeFactor());
 }
 
+// 달 기지 난이도 (실기기 점검 뒤 조정): 떨어지는 속도 0.7배, 반 전체가 운석의 1/3을 막으면 성공
+const MOON_SPEED = 0.7;
+const MOON_TARGET = Math.floor(12 * 6 / 3); // 6모둠 × 12개 = 72개 중 24개
 function moonSpawnMeteor(ti) {
   const screen = document.getElementById('moonScreen');
   if(!screen) return;
@@ -3384,7 +3562,7 @@ function moonSpawnMeteor(ti) {
 
   // 떨어지는 애니메이션
   const screenH = screen.offsetHeight || 400;
-  const duration = (13000 + Math.random() * 5000) * timeFactor();
+  const duration = (13000 + Math.random() * 5000) / MOON_SPEED * timeFactor();
   const start = Date.now();
 
   function fall() {
@@ -3520,11 +3698,11 @@ function moonResultHTML(ti, result) {
       <div class="result-title">${title}</div>
       <div style="display:flex;gap:1.5rem;justify-content:center;margin:.75rem 0;flex-wrap:wrap;">
         <div style="text-align:center;">
-          <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:2rem;color:var(--accent2);">${score}</div>
+          <div style="font-family:'Bebas Neue','Do Hyeon',sans-serif;font-size:2rem;color:var(--accent2);">${score}</div>
           <div style="font-size:.76rem;color:var(--text3);text-transform:uppercase;">격파</div>
         </div>
         <div style="text-align:center;">
-          <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:2rem;color:${hp>2?'var(--success)':'var(--danger)'};">${hp}/5</div>
+          <div style="font-family:'Bebas Neue','Do Hyeon',sans-serif;font-size:2rem;color:${hp>2?'var(--success)':'var(--danger)'};">${hp}/5</div>
           <div style="font-size:.76rem;color:var(--text3);text-transform:uppercase;">HP 잔여</div>
         </div>
       </div>
@@ -3557,7 +3735,7 @@ function moonBufferingHTML(ti, score) {
     <div class="result-box">
       <span class="result-emoji" style="animation:pulseGlow 1.5s infinite;">🛸</span>
       <div class="result-title">CALCULATING...</div>
-      <div style="font-size:.96rem;color:var(--accent2);margin:.5rem 0;font-family:'Bebas Neue','Black Han Sans',sans-serif;">${score}개 격파</div>
+      <div style="font-size:.96rem;color:var(--accent2);margin:.5rem 0;font-family:'Bebas Neue','Do Hyeon',sans-serif;">${score}개 격파</div>
       <div style="background:var(--surface);border-radius:8px;padding:1rem;margin:1rem 0;">
         <div style="font-size:.84rem;color:var(--text3);margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.1em;">모둠 참여 현황</div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;">
@@ -3594,7 +3772,7 @@ function moonPollResult(ti) {
         moonBonusUnsaved = true;
         const scores = state.moonScores || {};
         const total = Object.values(scores).reduce((a,b)=>a+b,0);
-        const target = Math.floor(12 * 6 / 2);
+        const target = MOON_TARGET;
         const cleared = total >= target;
         if(cleared) { for(let i=0;i<6;i++) state.coins[i]+=3; }
         else { for(let i=0;i<6;i++) state.coins[i]-=3; }
@@ -3608,7 +3786,7 @@ function moonPollResult(ti) {
         if(main) {
           const scores = state.moonScores || {};
           const total = Object.values(scores).reduce((a,b)=>a+b,0);
-          const target = Math.floor(12 * 6 / 2);
+          const target = MOON_TARGET;
           main.innerHTML = moonFinalHTML(ti, total, target, state.moonCleared);
           setTimeout(()=>{
             const nb = document.getElementById('moonFinalNext');
@@ -3627,7 +3805,7 @@ function moonApplyFinalResult(ti) {
   const total = Object.values(scores).reduce((a,b)=>a+b,0);
   const maxSpawnPerTeam = 12;
   const totalMeteors = maxSpawnPerTeam * 6; // 72개
-  const target = Math.floor(totalMeteors / 2); // 절반 = 36개
+  const target = MOON_TARGET; // 전체 운석의 1/3 = 24개
   const cleared = total >= target;
 
   if(!state.moonBonusGiven) {
@@ -3657,7 +3835,7 @@ function moonFinalHTML(ti, total, target, cleared) {
     <div class="result-box">
       <span class="result-emoji">${cleared?'🎉':'😢'}</span>
       <div class="result-title">${cleared?'MISSION CLEARED!':'NOT ENOUGH...'}</div>
-      <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:2.5rem;color:var(--accent2);margin:.5rem 0;">${total} / ${target}</div>
+      <div style="font-family:'Bebas Neue','Do Hyeon',sans-serif;font-size:2.5rem;color:var(--accent2);margin:.5rem 0;">${total} / ${target}</div>
       <div style="font-size:.84rem;color:var(--text3);margin-bottom:1rem;">전체 격파 수 (목표: ${target}개 이상)</div>
       <div class="result-coin ${cleared?'positive':'negative'}">${cleared?'+3':'-3'} 🪙 전체 지급</div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:1rem 0;">
@@ -3671,7 +3849,7 @@ function moonFinalHTML(ti, total, target, cleared) {
         }).join('')}
       </div>
       <div style="font-size:.9rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:1rem;">
-        ${cleared?'🎉 운석을 절반 이상 막았어요! 모든 모둠 코인 +3!':'😢 운석을 절반도 못 막았어요. 모든 모둠 코인 -3...'}
+        ${cleared?'🎉 운석을 3분의 1 이상 막았어요! 모든 모둠 코인 +3!':'😢 운석을 3분의 1도 못 막았어요. 모든 모둠 코인 -3...'}
       </div>
       <div style="display:flex;gap:.75rem;justify-content:center;">
         <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button>
@@ -3684,7 +3862,7 @@ function moonFinalHTML(ti, total, target, cleared) {
 function moonShowSummary(ti) {
   const scores = state.moonScores || {};
   const total = Object.values(scores).reduce((a,b) => a+b, 0);
-  const target = Math.floor(12 * 6 / 2); // 총 운석의 절반 = 36개
+  const target = MOON_TARGET;
   const completed = Object.keys(scores).length;
   const cleared = total >= target;
 
@@ -3698,7 +3876,7 @@ function moonShowSummary(ti) {
     <div class="result-box">
       <span class="result-emoji">${cleared ? '🎉' : completed < 6 ? '⏳' : '😢'}</span>
       <div class="result-title">${cleared ? 'MISSION CLEARED!' : completed < 6 ? 'WAITING...' : 'NOT ENOUGH...'}</div>
-      <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:3rem;color:var(--accent2);margin:.5rem 0;">${total} / ${target}</div>
+      <div style="font-family:'Bebas Neue','Do Hyeon',sans-serif;font-size:3rem;color:var(--accent2);margin:.5rem 0;">${total} / ${target}</div>
       <div style="font-size:.88rem;color:var(--text3);margin-bottom:1.25rem;">전체 격파 수 (목표: ${target}개)</div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1.25rem;">
         ${ISLANDS.map((isl,i) => {
@@ -3841,7 +4019,7 @@ function renderMission5(teamNum) {
       ${hintBoxHTML('m5', ti)}
 
       <div style="text-align:center;margin-bottom:1rem;">
-        <div id="m5timer-${ti}" style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:3rem;color:var(--accent2);">${m5Seconds()}</div>
+        <div id="m5timer-${ti}" style="font-family:'Bebas Neue','Do Hyeon',sans-serif;font-size:3rem;color:var(--accent2);">${m5Seconds()}</div>
         <div style="font-size:.82rem;color:var(--text3);">seconds remaining</div>
       </div>
 
@@ -3858,7 +4036,7 @@ function renderMission5(teamNum) {
       </div>
       <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:1.5rem;text-align:center;margin-bottom:1rem;">
         <div style="font-size:.92rem;color:var(--text3);margin-bottom:.5rem;font-family:'Noto Sans KR',sans-serif;">문장이 가려졌어요! 기억나는 대로 발화하세요</div>
-        <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.5rem;letter-spacing:.1em;color:var(--text3);">??? ??? ??? ??? ???</div>
+        <div style="font-family:'Bebas Neue','Do Hyeon',sans-serif;font-size:1.5rem;letter-spacing:.1em;color:var(--text3);">??? ??? ??? ??? ???</div>
         <div style="font-size:.84rem;color:var(--accent);margin-top:.75rem;font-family:'Space Mono',monospace;">힌트: ${G.m5.keyPrefix}${m5.key}</div>
       </div>
       <div style="font-size:.92rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:1rem;background:var(--surface);border-radius:8px;padding:.85rem;">
@@ -4503,10 +4681,10 @@ function m4RenderResult(ti, correct, coins) {
     <div class="result-box">
       <span class="result-emoji">${failed ? '😢' : npc.emoji}</span>
       <div class="result-title">${failed ? 'NO ALLY...' : 'NEW ALLY FOUND!'}</div>
-      ${!failed ? `<div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.8rem;letter-spacing:.1em;color:${npc.color};margin:.5rem 0;">${npc.name}</div>` : ''}
+      ${!failed ? `<div style="font-family:'Bebas Neue','Do Hyeon',sans-serif;font-size:1.8rem;letter-spacing:.1em;color:${npc.color};margin:.5rem 0;">${npc.name}</div>` : ''}
       <div class="result-coin ${coins>0?'positive':'neutral'}">${coins>0?'+'+coins:'±0'} 🪙</div>
       ${!failed ? `
-      <div style="background:rgba(255,255,255,.04);border:1px solid ${npc.color}33;border-radius:8px;padding:1rem;margin:1rem 0;text-align:left;">
+      <div style="background:rgba(var(--ink-rgb),.04);border:1px solid ${npc.color}33;border-radius:8px;padding:1rem;margin:1rem 0;text-align:left;">
         <div style="font-size:.82rem;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;">💪 NPC 버프 효과</div>
         <div style="font-size:1rem;color:${npc.color};font-family:'Noto Sans KR',sans-serif;">${npc.buff}</div>
 
@@ -4608,7 +4786,7 @@ function renderMission7(teamNum) {
             <div style="color:var(--text2);">${G.m7.bonus[1].cardHtml}</div>
           </div>
         </div>
-        <div style="margin-top:.75rem;padding:.6rem .75rem;background:rgba(255,255,255,.04);border-radius:6px;font-size:.84rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;line-height:1.7;">
+        <div style="margin-top:.75rem;padding:.6rem .75rem;background:rgba(var(--ink-rgb),.04);border-radius:6px;font-size:.84rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;line-height:1.7;">
           ${G.m7.gradingNote}
         </div>
       </div>
@@ -4617,7 +4795,7 @@ function renderMission7(teamNum) {
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-bottom:1rem;">
         <div style="font-size:.8rem;color:var(--text3);margin-bottom:.6rem;letter-spacing:.1em;text-transform:uppercase;">📄 템플릿 (참고용 — 자유롭게 변형 가능)</div>
         <div style="font-size:.9rem;color:var(--text2);line-height:2.1;font-family:'Space Mono',monospace;">
-          ${G.m7.templateHtml.split('{island}').join(isl.name)}
+          ${m7TemplateNoExamples(G.m7.templateHtml).split('{island}').join(isl.name)}
         </div>
       </div>
 
@@ -4806,7 +4984,7 @@ function showM7WaitingFinal() {
         </div>
       </div>
       <div style="font-size:.88rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;margin-bottom:.75rem;">${doneCount}/6 모둠 완료 — 모두 완료되면 자동으로 최종 결과가 나타나요!</div>
-      <button onclick="inAppRefresh()" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:.5rem 1.25rem;font-size:.9rem;color:var(--text2);cursor:pointer;font-family:'Space Mono',monospace;">🔄 현황 새로고침</button>
+      <button onclick="inAppRefresh()" style="background:rgba(var(--ink-rgb),.07);border:1px solid rgba(var(--ink-rgb),.15);border-radius:8px;padding:.5rem 1.25rem;font-size:.9rem;color:var(--text2);cursor:pointer;font-family:'Space Mono',monospace;">🔄 현황 새로고침</button>
     </div>`;
 }
 
@@ -5098,7 +5276,7 @@ function buildTeamUpdate(ti) {
   put('globalMission', computeGlobalMission());
   // 위 목록에 없는 새 필드는 통째로 (나중에 필드를 추가해도 저장이 빠지지 않게)
   // teacherPass는 교사만 쓴다 (학생 기기가 옛 값을 덮어쓰지 않게)
-  const known = new Set(LOCAL_ONLY_KEYS.concat(TEAM_ARRAY_FIELDS, TEAM_KEYED_FIELDS, MOON_FLAGS, ['missionStep', 'globalMission', 'teacherPass', '_lastUpdatedBy', '_updatedAt']));
+  const known = new Set(LOCAL_ONLY_KEYS.concat(TEAM_ARRAY_FIELDS, TEAM_KEYED_FIELDS, MOON_FLAGS, ['missionStep', 'globalMission', 'teacherPass', 'groupSizes', '_lastUpdatedBy', '_updatedAt']));
   for(const k of Object.keys(st)) if(!known.has(k)) put(k, st[k]);
   put('_lastUpdatedBy', myRole);
   put('_updatedAt', Date.now());
@@ -5216,6 +5394,11 @@ if(sel && !sel.options.length) {
 }
 const lbl = document.getElementById('tdRoomLabel');
 if(lbl) lbl.textContent = myRoom+'반';
+if(!window.__tdSettingsInit) {
+  window.__tdSettingsInit = true;
+  let saved = null; try { saved = localStorage.getItem('gsos_td_settings'); } catch(e) {}
+  tdToggleSettings(saved == null ? true : saved === '1'); // 처음에는 펼쳐 두고, 접으면 기억
+}
 libraryLoad();
 renderGrammarSelector();
 updateTeacherDashboard();
@@ -5255,6 +5438,9 @@ const GEN_STORY = {
   m6: 'Mission 6: Two teams work together to send a rescue signal with an item they found (a volcanic glass mirror, a palm tree torch, a shell horn). Team A asks a question about the item; team B answers with two sentences on how to use it.',
   m7: 'Mission 7: A rescue helicopter spotted the signal. Each team writes a short rescue guide for the pilot (where to land / what to avoid / how to approach / which way to come), using the target grammar.',
 };
+// 모든 미션에 붙는 공통 규칙 (서버를 다시 배포하지 않아도 이야기와 함께 전달된다)
+const GEN_STORY_RULES = ' Writing rules: The players are a TEAM of survivors, so sentences the students say or write use "we" (not "I") as the subject whenever a subject is needed. In word-ordering items (sentence pieces), do not use adverbs whose position can move (already, just, also, still, often, ever, never, really); exactly one word order must be correct.';
+Object.keys(GEN_STORY).forEach(k => { if(k !== 'm4') GEN_STORY[k] += GEN_STORY_RULES; });
 const GEN_KEYS = ['meta','m1','m2','m3','m4','moon','m5','m6','m7'];
 const GEN_NAMES = { meta:'세트 정보', m1:'미션 1 위치 파악', m2:'미션 2 거주지', m3:'미션 3 식량', m4:'미션 4 동료', moon:'달 기지', m5:'미션 5 위기 대응', m6:'미션 6 신호', m7:'미션 7 탈출' };
 const LIBRARY_LOCAL_KEY = 'gsos_library';
@@ -5426,6 +5612,7 @@ function genOpen(existing) {
   genRender();
 }
 function genClose() {
+  genCloseEdit(false);
   const ov = document.getElementById('genOverlay');
   if(ov) ov.remove();
   if(genState && genState.step === 'saved') genState = null;
@@ -5503,8 +5690,19 @@ async function genRunGroup(missions) {
         stories: Object.fromEntries(missions.map(mk => [mk, GEN_STORY[mk] || ''])),
       }, 90000);
       missions.forEach(mk => {
-        if(data.missions && data.missions[mk]) { genApply(genState.set, mk, data.missions[mk]); (genState.done = genState.done || {})[mk] = true; }
-        else genState.errors[mk] = 'AI가 이 미션을 빠뜨렸어요. 다시 만들어 주세요.';
+        if(!(data.missions && data.missions[mk])) { genState.errors[mk] = 'AI가 이 미션을 빠뜨렸어요. 다시 만들어 주세요.'; return; }
+        // 결과에 빈칸·빠진 정답 같은 오류가 있으면, 이미 괜찮은 내용이 있을 때는 그대로 둔다
+        const before = genClone(genState.set);
+        genApply(genState.set, mk, data.missions[mk]);
+        genDerive(genState.set);
+        const bad = genChecks(genState.set).filter(c => c.mk === mk && c.level === 'err');
+        const hadGood = (genState.done || {})[mk] && !genChecks(before).some(c => c.mk === mk && c.level === 'err');
+        if(bad.length && hadGood) {
+          genState.set = before;
+          genState.errors[mk] = 'AI가 만든 새 결과에 빈칸이 있어서(' + bad[0].msg + ') 이전 내용을 그대로 두었어요. 1분쯤 뒤 다시 눌러 보세요.';
+          return;
+        }
+        (genState.done = genState.done || {})[mk] = true;
       });
       lastErr = '';
       break;
@@ -5513,7 +5711,12 @@ async function genRunGroup(missions) {
       if(attempt === 0) await new Promise(r => setTimeout(r, 4000));
     }
   }
-  if(lastErr) missions.forEach(mk => { genState.errors[mk] = lastErr; });
+  if(lastErr) {
+    // 무료 AI는 1분에 쓸 수 있는 양이 정해져 있다. 여러 번 연달아 누르면 잠깐 막힌다.
+    if(/429|503|바빠|quota|RESOURCE_EXHAUSTED|rate/i.test(lastErr)) lastErr = 'AI 사용량이 잠깐 꽉 찼어요 (무료 AI는 1분에 쓸 수 있는 양이 정해져 있어요). 1분쯤 기다렸다가 다시 눌러 주세요.';
+    else if(/시간|timeout|abort/i.test(lastErr)) lastErr = 'AI 응답이 너무 오래 걸렸어요. 잠시 뒤 다시 눌러 주세요.';
+    missions.forEach(mk => { genState.errors[mk] = lastErr; });
+  }
   missions.forEach(mk => { delete genState.busy[mk]; });
   genRender();
 }
@@ -5543,8 +5746,12 @@ function genEditSpec(set, mk) {
     add('promptKr', '우리말 상황'); add('answer', '정답 조각 (순서대로, / 로 구분)', 'pieces'); add('wrongHint', '오답 안내');
   } else if(mk === 'm3') {
     add('promptBefore', '문장 (빈칸 앞)'); add('promptAfter', '문장 (빈칸 뒤)'); add('promptKr', '우리말 상황');
-    (set.m3.left || []).forEach((_, i) => add('m3.left.' + i + '.word', '왼쪽 카드 ' + (i+1)));
-    (set.m3.right || []).forEach((_, i) => { add('m3.right.' + i + '.text', '오른쪽 카드 ' + (i+1)); add('m3.right.' + i + '.correct', '오른쪽 ' + (i+1) + '의 짝 (왼쪽 카드 글자)'); });
+    // 짝을 한 번만 적는다. 학생 화면의 오른쪽 카드 순서는 자동으로 섞인다.
+    (set.m3.left || []).forEach((_, i) => {
+      add('m3.pair:' + i + ':left', '짝 ' + (i+1) + ' · 왼쪽 카드');
+      add('m3.left.' + i + '.kr', '짝 ' + (i+1) + ' · 왼쪽 카드 뜻 (우리말)');
+      add('m3.pair:' + i + ':right', '짝 ' + (i+1) + ' · 오른쪽 카드');
+    });
   } else if(mk === 'm4') {
     add('instructionKr', '안내');
     (set.m4.items || []).forEach((_, i) => { add('m4.items.' + i + '.sentence', '문장 ' + (i+1), 'long'); add('m4.items.' + i + '.correct', '문장 ' + (i+1) + ' 정답', 'ox'); add('m4.items.' + i + '.reason', '문장 ' + (i+1) + ' 이유'); });
@@ -5563,6 +5770,7 @@ function genEditSpec(set, mk) {
       add('m6.pairs.' + i + '.hintsB', (i+1) + '번 대화 · 답변 모둠 힌트', 'lines');
     });
   } else if(mk === 'm7') {
+    add('m7.templateHtml', '학생 화면 템플릿 ({island} = 섬 이름, <br> = 줄 바꿈. (e.g. …) 예시는 학생 화면에 안 보여요)', 'long');
     add('m7.target.label', '목표 표현 이름'); add('m7.target.patterns', '목표 표현 찾기 패턴 (쉼표로 구분)', 'csv');
     (set.m7.islands || []).forEach((x, i) => add('m7.islands.' + i + '.hint', (ISLANDS[i] ? ISLANDS[i].name : '') + ' · ' + x.keyKr + ' 예시 표현'));
     (set.m7.bonus || []).forEach((_, i) => { add('m7.bonus.' + i + '.checkLabel', '보너스 ' + (i+1)); add('m7.bonus.' + i + '.patterns', '보너스 ' + (i+1) + ' 패턴 (쉼표)', 'csv'); });
@@ -5571,12 +5779,31 @@ function genEditSpec(set, mk) {
   // 경로가 미션 이름으로 시작하지 않으면 그 미션 안의 칸
   return S.map(([p, l, t]) => [p.startsWith(mk + '.') || mk === 'meta' ? p : mk + '.' + p, l, t]);
 }
+// 미션 3 오른쪽 카드 순서: 왼쪽과 같은 줄에 정답이 오지 않게 한 칸씩 민다
+function genM3Order(pairs) {
+  return pairs.length > 1 ? pairs.slice(1).concat(pairs.slice(0, 1)) : pairs;
+}
+function genM3PairTexts(set) {
+  return (set.m3.left || []).map(l => ((set.m3.right || []).find(r => r.correct === l.word) || {}).text || '');
+}
 function genGet(set, path) {
+  if(path.startsWith('m3.pair:')) {
+    const [, i, side] = path.split(':');
+    const l = (set.m3.left || [])[+i] || {};
+    return side === 'left' ? (l.word || '') : genM3PairTexts(set)[+i];
+  }
   if(path === 'moon.phrases:good') return (set.moon.phrases || []).filter(x => !x.trap).map(x => x.text);
   if(path === 'moon.phrases:trap') return (set.moon.phrases || []).filter(x => x.trap).map(x => x.text);
   return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), set);
 }
 function genSet(set, path, val) {
+  if(path.startsWith('m3.pair:')) {
+    const [, i, side] = path.split(':');
+    const texts = genM3PairTexts(set);
+    if(side === 'left') set.m3.left[+i].word = val; else texts[+i] = val;
+    set.m3.right = genM3Order(set.m3.left.map((l, k) => ({ text: texts[k], correct: l.word })));
+    return;
+  }
   if(path === 'moon.phrases:good' || path === 'moon.phrases:trap') {
     const good = path.endsWith('good') ? val : genGet(set, 'moon.phrases:good');
     const trap = path.endsWith('trap') ? val : genGet(set, 'moon.phrases:trap');
@@ -5616,6 +5843,10 @@ function genEdit(mk, idx) {
   genDerive(genState.set);
   genState.checked[mk] = false;
   genRefreshStatus();
+  const sum = document.getElementById('gen-modal-sum');
+  if(sum) sum.innerHTML = genSummaryHTML(genState.set, mk);
+  const pr = document.getElementById('gen-modal-probs');
+  if(pr) pr.innerHTML = genProblemsHTML(mk, genChecks(genState.set));
 }
 function genRefreshStatus() {
   const checks = genChecks(genState.set);
@@ -5660,7 +5891,9 @@ function genSummaryHTML(set, mk) {
   if(mk === 'moon') return '<div class="gen-sum">' + (set.moon.phrases || []).map(x => '<span class="gen-pill' + (x.trap ? ' trap' : '') + '">' + t(x.text) + '</span>').join(' ') + '</div>';
   if(mk === 'm5') return '<div class="gen-sum">' + (set.m5.islands || []).map((x, i) => (ISLANDS[i] ? ISLANDS[i].emoji + ' ' : '') + t(x.sentence)).join('<br>') + '</div>';
   if(mk === 'm6') return '<div class="gen-sum">' + (set.m6.pairs || []).map(p => '<b>Q</b> ' + t(p.teamA_full) + '<br><b>A</b> ' + t(p.teamB_full)).join('<br><br>') + '</div>';
-  if(mk === 'm7') return '<div class="gen-sum">' + (set.m7.islands || []).map((x, i) => (ISLANDS[i] ? ISLANDS[i].emoji + ' ' : '') + t(x.keyKr) + ': ' + t(x.hint)).join('<br>') + '<br><small>목표 표현 패턴: ' + t((set.m7.target.patterns || []).join(', ')) + '</small></div>';
+  if(mk === 'm7') return '<div class="gen-sum">' + (set.m7.islands || []).map((x, i) => (ISLANDS[i] ? ISLANDS[i].emoji + ' ' : '') + t(x.keyKr) + ': ' + t(x.hint)).join('<br>')
+    + '<div class="gen-tpl"><small>학생 화면 템플릿 (화산 섬 예)</small><div>' + genSafeHTML(m7TemplateNoExamples(set.m7.templateHtml || '').split('{island}').join(ISLANDS[0].name)) + '</div></div>'
+    + '<small>목표 표현 패턴: ' + t((set.m7.target.patterns || []).join(', ')) + '</small></div>';
   return '';
 }
 function genReviewHTML() {
@@ -5668,18 +5901,45 @@ function genReviewHTML() {
   const checks = genChecks(set);
   const cards = GEN_KEYS.map(mk => {
     const busy = genState.busy[mk];
-    const fields = genEditSpec(set, mk).map((f, i) => genFieldHTML(mk, i, f)).join('');
     return '<div class="gen-card" id="gen-card-' + mk + '"><div class="gen-card-top"><div class="log-mission">' + GEN_NAMES[mk] + '</div>'
       + '<div class="gen-card-btns">' + (mk === 'meta' ? '' : '<button class="log-btn" onclick="genRegen(' + jsArg(mk) + ')"' + (busy ? ' disabled' : '') + '>' + (busy ? '<span class="ai-spin"></span> 만드는 중' : '↻ 이 미션 다시 만들기') + '</button>')
       + genCheckBtnHTML(mk, checks) + '</div></div>'
       + '<div id="gen-probs-' + mk + '">' + genProblemsHTML(mk, checks) + '</div>'
       + genSummaryHTML(set, mk)
-      + '<details class="gen-edit"><summary>✏️ 고치기</summary>' + fields + '</details></div>';
+      + '<button class="gen-edit-btn" onclick="genOpenEdit(' + jsArg(mk) + ')">✏️ 고치기</button></div>';
   }).join('');
   return genHead((genState.editing ? '문법 세트 고치기 · ' : '검토하기 · ') + escHTML(set.title))
     + '<div class="log-body">' + genBarHTML(checks)
     + '<p class="gen-lead">AI가 만든 문항이에요. 틀린 영어, 어색한 상황, 너무 어려운 단어가 없는지 확인해 주세요. 마음에 안 드는 미션은 다시 만들거나 직접 고칠 수 있어요. 굵게 표시는 &lt;strong&gt;…&lt;/strong&gt;로 써요.</p>'
     + '<div class="gen-cards">' + cards + '</div></div>';
+}
+// 고치기 팝업: 고친 내용이 위 미리보기에 바로 보인다
+function genOpenEdit(mk) {
+  genCloseEdit(false);
+  const set = genState.set;
+  const m = document.createElement('div');
+  m.id = 'genEditModal';
+  m.className = 'gen-modal';
+  m.innerHTML = '<div class="gen-modal-box" role="dialog" aria-label="' + GEN_NAMES[mk] + ' 고치기">'
+    + '<div class="gen-modal-head"><b>✏️ ' + GEN_NAMES[mk] + ' 고치기</b><button class="log-btn" onclick="genCloseEdit(true)">완료</button></div>'
+    + '<div class="gen-modal-sum" id="gen-modal-sum">' + genSummaryHTML(set, mk) + '</div>'
+    + '<div id="gen-modal-probs">' + genProblemsHTML(mk, genChecks(set)) + '</div>'
+    + '<div class="gen-modal-fields">' + genEditSpec(set, mk).map((f, i) => genFieldHTML(mk, i, f)).join('') + '</div></div>';
+  m.addEventListener('click', e => { if(e.target === m) genCloseEdit(true); });
+  m.dataset.mk = mk;
+  document.body.appendChild(m);
+}
+function genCloseEdit(rerender) {
+  const m = document.getElementById('genEditModal');
+  if(!m) return;
+  m.remove();
+  if(rerender) {
+    const body = document.querySelector('#genOverlay .log-body');
+    const top = body ? body.scrollTop : 0;
+    genRender();
+    const nb = document.querySelector('#genOverlay .log-body');
+    if(nb) nb.scrollTop = top;
+  }
 }
 async function genRegen(mk) {
   await genRunGroup([mk]);
@@ -5756,6 +6016,25 @@ async function tdDeleteLibrarySet() {
   delete LIBRARY_SETS[s.id];
   renderGrammarSelector();
 }
+// 수업 설정 (접고 펴기, 기억)
+function tdToggleSettings(force) {
+  const box = document.getElementById('tdSettings'), btn = document.getElementById('tdSettingsBtn');
+  if(!box) return;
+  const open = force == null ? box.hidden : force;
+  box.hidden = !open;
+  if(btn) { btn.setAttribute('aria-expanded', String(open)); btn.classList.toggle('on', open); }
+  try { localStorage.setItem('gsos_td_settings', open ? '1' : '0'); } catch(e) {}
+}
+function renderTeamSizes() {
+  const box = document.getElementById('tdGroupSizes');
+  if(!box) return;
+  const fe = document.activeElement;
+  if(fe && box.contains(fe)) return;
+  box.innerHTML = ISLANDS.map((isl, i) => '<label class="td-size">' + isl.emoji + ' ' + (i + 1) + '모둠'
+    + '<select onchange="tdSetTeamSize(' + i + ', +this.value)" aria-label="' + (i + 1) + '모둠 인원">'
+    + [2,3,4,5,6].map(n => '<option value="' + n + '"' + (teamSize(i) === n ? ' selected' : '') + '>' + n + '명</option>').join('') + '</select></label>').join('');
+}
+
 function tdGrammarSelectChanged() {
   const lib = !!librarySelectedSet();
   ['tdLibEdit', 'tdLibDel'].forEach(id => { const b = document.getElementById(id); if(b) b.style.display = lib ? '' : 'none'; });
@@ -5822,8 +6101,7 @@ if(!grid) return;
 renderTeacherFocus();
 renderTeacherMap();
 renderMapOverlay();
-const gs = document.getElementById('tdGroupSize');
-if(gs && document.activeElement !== gs) gs.value = String(state.groupSize || 4);
+renderTeamSizes();
 const xt = document.getElementById('tdExtraTime');
 if(xt) xt.checked = !!state.extraTime;
 const fe = document.activeElement;
@@ -5846,7 +6124,7 @@ const role = TEAM_TO_ROLE[i];
 const isConnected = !!(connectedRoles && connectedRoles[role]);
 const connBadge = isConnected
   ? '<span style="background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.45);border-radius:10px;padding:.15rem .5rem;font-size:.76rem;color:#22c55e;white-space:nowrap;">🟢 접속중</span>'
-  : '<span style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.15rem .5rem;font-size:.76rem;color:var(--text3);white-space:nowrap;">⚫ 미접속</span>';
+  : '<span style="background:rgba(var(--ink-rgb),.05);border:1px solid rgba(var(--ink-rgb),.12);border-radius:10px;padding:.15rem .5rem;font-size:.76rem;color:var(--text3);white-space:nowrap;">⚫ 미접속</span>';
 
 // ── 진행률 계산 (전체 8미션 × 3스텝 = 24단위) ──
 const totalUnits = 8 * 3;
@@ -5863,7 +6141,7 @@ const pips = Array.from({length:8}, (_,m) => {
   const mn = m+1;
   const pipColor = mn <= completed ? '#22c55e'
     : mn === mission ? isl.color
-    : 'rgba(255,255,255,.12)';
+    : 'rgba(var(--ink-rgb),.12)';
   const glow = mn === mission ? `box-shadow:0 0 5px ${isl.color};` : '';
   return `<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${pipColor};${glow}flex-shrink:0;"></span>`;
 }).join('');
@@ -5872,26 +6150,33 @@ const stepLabel = info.step
   ? `<span style="font-size:.68rem;color:var(--text3);margin-left:.3rem;">STEP ${info.step}/3 · ${info.label}</span>`
   : '';
 
+const help = teamNeedsHelp(i);
+const curWrong = help ? help.wrong : 0;
+const turn = (!fullyDone && !TEAM_ACTIVITY[mission]) ? deviceTurn(mission, i) : 0;
 return `
-<div class="tc2${fullyDone ? ' fin' : ''}${isConnected ? ' on' : ''}" style="--isl:${isl.color};">
+<div class="tc2${fullyDone ? ' fin' : ''}${isConnected ? ' on' : ''}${help ? ' help' : ''}" style="--isl:${isl.color};">
   <div class="tc2-head">
     <svg class="tc2-isl" viewBox="0 0 64 44" aria-hidden="true"><path d="${islandPath(i, 32, 22, 15, 1)}"/><text x="32" y="23" text-anchor="middle" dominant-baseline="central">${isl.emoji}</text></svg>
     <div class="tc2-name">${i+1}모둠 <span>${isl.name}</span></div>
+    ${help ? '<span class="tc2-help">🆘 도움 필요</span>' : ''}
     <span class="tc2-conn" title="${isConnected ? '접속 중' : '미접속'}"><i></i>${isConnected ? '접속 중' : '미접속'}</span>
   </div>
   <div class="tc2-now">
-    <div><div class="tc2-mission">${missionShort(mission)} · ${info.mission}</div>
-      <div class="tc2-step">${fullyDone ? '탈출 완료 🚁' : waiting ? '다른 모둠 기다리는 중' : (info.step ? info.step + '/3단계 · ' + info.label : '시작 전')}</div></div>
-    <div class="tc2-pct">${pct}<small>%</small></div>
+    <div class="tc2-mission">${fullyDone ? '🚁 탈출 완료' : missionShort(mission) + ' · ' + info.mission}</div>
+    <div class="tc2-step">${fullyDone ? '' : waiting ? '⏸ 다른 모둠 기다리는 중' : (info.step ? info.step + '/3단계' : '시작 전') + (turn ? ' · 📱 모둠원 ' + turn + '번' : TEAM_ACTIVITY[mission] ? ' · 👥 모둠 전체' : '')}</div>
   </div>
-  ${routeStripHTML(i).replace('class="route-strip"', 'class="route-strip tc2-route"')}
-  <div class="tc2-stats"><span>🪙 <b>${coins}</b></span><span title="연 힌트 수">💡 힌트 <b>${totalHintsUsed(i)}</b></span><span style="color:${statusColor};">${statusText}</span></div>
+  <div class="tc2-gauge" role="img" aria-label="진행 ${pct}%"><i style="width:${pct}%"></i><b>${pct}%</b></div>
+  <div class="tc2-stats"><span title="코인">🪙 <b>${coins}</b></span><span title="연 힌트 수">💡 <b>${totalHintsUsed(i)}</b></span><span title="지금 미션에서 틀린 횟수" class="${curWrong >= 2 ? 'bad' : ''}">❌ <b>${curWrong}</b></span></div>
   <div class="tc2-btns">
     <button onclick="tdViewTeam(${i})" class="tc2-view">📺 화면 보기</button>
-    <select id="tdSkipSel-${i}" aria-label="${i+1}모둠 이동할 미션">
-      ${[1,2,3,4,5,6,7,8].map(m=>`<option value="${m}"${state.teamMission[i]===m?' selected':''}>${missionShort(m)}</option>`).join('')}
-    </select>
-    <button onclick="tdSkipTeam(${i})" class="tc2-skip">⏭ 이동</button>
+    <details class="tc2-more"><summary aria-label="${i+1}모둠 미션 이동">⋯</summary>
+      <div class="tc2-move">
+        <select id="tdSkipSel-${i}" aria-label="${i+1}모둠 이동할 미션">
+          ${[1,2,3,4,5,6,7,8].map(m=>`<option value="${m}"${state.teamMission[i]===m?' selected':''}>${missionShort(m)}</option>`).join('')}
+        </select>
+        <button onclick="tdSkipTeam(${i})" class="tc2-skip">⏭ 이동</button>
+      </div>
+    </details>
   </div>
 </div>`;
 }).join('');
@@ -5959,7 +6244,7 @@ div.id = 'teacherPanel';
 div.style.cssText = 'position:fixed;bottom:1rem;right:1rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;z-index:200;width:380px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.5);';
 div.innerHTML = `
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;">
-    <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.06rem;letter-spacing:.1em;color:var(--accent);">👩‍🏫 교사 제어 패널</div>
+    <div style="font-family:'Bebas Neue','Do Hyeon',sans-serif;font-size:1.06rem;letter-spacing:.1em;color:var(--accent);">👩‍🏫 교사 제어 패널</div>
     <button onclick="document.getElementById('teacherPanel').style.display='none'" style="background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:1.06rem;line-height:1;">✕</button>
   </div>
 
@@ -6012,9 +6297,9 @@ panel.innerHTML = ISLANDS.map((isl, i) => {
   const fullyDone = completed >= 8;
   const isWaiting = isDone && !fullyDone;
   return `
-    <div style="background:var(--bg);border:2px solid ${fullyDone?isl.color:'rgba(255,255,255,.08)'};border-radius:6px;padding:.5rem;text-align:center;">
+    <div style="background:var(--bg);border:2px solid ${fullyDone?isl.color:'rgba(var(--ink-rgb),.08)'};border-radius:6px;padding:.5rem;text-align:center;">
       <div style="font-size:1.1rem;">${isl.emoji}</div>
-      <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:.9rem;color:${isl.color};">${i+1}모둠</div>
+      <div style="font-family:'Bebas Neue','Do Hyeon',sans-serif;font-size:.9rem;color:${isl.color};">${i+1}모둠</div>
       <div style="font-size:.68rem;color:var(--text3);margin:.1rem 0;">${MN[mission]||'?'}</div>
       <div style="font-size:.76rem;color:var(--accent);">🪙 ${coins}</div>
       <div style="font-size:.68rem;color:${fullyDone?'var(--success)':isWaiting?'var(--accent)':'var(--accent2)'};margin-top:.1rem;">
@@ -6141,35 +6426,54 @@ function logHardItems(list) {
 }
 
 // 교사 대시보드 맨 위: 지금 볼 것 (여러 모둠이 틀린 표현, 막힌 모둠)
+// 도움이 필요한 모둠: 지금 미션에서 2번 이상 틀렸거나 힌트를 3개 이상 연 모둠
+function teamNeedsHelp(i) {
+  const m = state.teamMission[i] || 1;
+  if(((state.completedMission || [])[i] || 0) >= m) return null;
+  const all = logEntries();
+  const wrong = all.filter(e => e.team === i && e.m === m && e.ok === false).length;
+  const hk = Object.keys(HINT_MISSION_ID).find(k => HINT_MISSION_ID[k] === m);
+  const hints = hk ? hintCount(hk, i) : 0;
+  return (wrong >= 2 || hints >= 3) ? { i, m, wrong, hints } : { i, m, wrong, hints, ok: true };
+}
 function renderTeacherFocus() {
   const box = document.getElementById('tdFocus');
   if(!box) return;
-  const all = logEntries();
-  const hard = logHardItems(all).filter(g => g.teams.size >= 2).slice(0, 2);
-  const parts = hard.map(g => {
-    const top = Object.entries(g.answers).sort((a, b) => b[1].n - a[1].n)[0];
-    return '<div class="tdf-item"><span class="tdf-m">' + escHTML(LOG_MISSION_LABEL[g.m] || '') + '</span> '
-      + escHTML(g.item.length > 60 ? g.item.slice(0, 58) + '…' : g.item)
-      + (top ? ' <span class="log-wrong">' + escHTML(top[0]) + '</span>' : '')
-      + ' <span class="tdf-n">' + g.teams.size + '개 모둠</span></div>';
-  });
-  // 막힌 모둠: 지금 미션에서 2번 이상 틀렸거나 힌트를 3개 이상 연 모둠
-  const stuck = ISLANDS.map((isl, i) => {
-    const m = state.teamMission[i] || 1;
-    if(((state.completedMission || [])[i] || 0) >= m) return null;
-    const wrong = all.filter(e => e.team === i && e.m === m && e.ok === false).length;
-    const hk = Object.keys(HINT_MISSION_ID).find(k => HINT_MISSION_ID[k] === m);
-    const hints = hk ? hintCount(hk, i) : 0;
-    return (wrong >= 2 || hints >= 3) ? { i, m, wrong, hints } : null;
-  }).filter(Boolean).sort((a, b) => (b.wrong + b.hints) - (a.wrong + a.hints)).slice(0, 3);
-  const stuckHtml = stuck.map(x => '<span class="tdf-stuck">' + ISLANDS[x.i].emoji + ' ' + (x.i + 1) + '모둠 · ' + escHTML(LOG_MISSION_LABEL[x.m] || '')
-    + (x.wrong ? ' · 오답 ' + x.wrong : '') + (x.hints ? ' · 힌트 ' + x.hints : '') + '</span>').join('');
-  if(!parts.length && !stuck.length) {
-    box.innerHTML = '<span class="tdf-label">🎯 지금 볼 것</span><span class="tdf-empty">여러 모둠이 틀린 표현이나 막힌 모둠이 생기면 여기에 떠요.</span>';
-    return;
-  }
-  box.innerHTML = (parts.length ? '<span class="tdf-label">🎯 다시 짚을 표현</span>' + parts.join('') : '')
-    + (stuck.length ? '<span class="tdf-label">🆘 막힌 모둠</span>' + stuckHtml : '');
+  const stuck = ISLANDS.map((_, i) => teamNeedsHelp(i)).filter(x => x && !x.ok)
+    .sort((a, b) => (b.wrong + b.hints) - (a.wrong + a.hints));
+  const hard = logHardItems(logEntries()).filter(g => g.teams.size >= 2);
+  const stuckHtml = stuck.length ? stuck.map(x => '<button class="tdf-team" onclick="tdViewTeam(' + x.i + ')" style="--isl:' + ISLANDS[x.i].color + '">'
+      + '<b>' + ISLANDS[x.i].emoji + ' ' + (x.i + 1) + '모둠</b><span>' + escHTML(LOG_MISSION_LABEL[x.m] || '')
+      + (TEAM_ACTIVITY[x.m] ? '' : ' · 모둠원 ' + deviceTurn(x.m, x.i) + '번') + '</span>'
+      + '<small>' + (x.wrong ? '오답 ' + x.wrong : '') + (x.wrong && x.hints ? ' · ' : '') + (x.hints ? '힌트 ' + x.hints : '') + '</small></button>').join('')
+    : '<span class="tdf-calm">✓ 지금은 막힌 모둠이 없어요</span>';
+  box.innerHTML = '<div class="tdf-main"><span class="tdf-label">🆘 지금 도와줄 모둠</span>' + stuckHtml + '</div>'
+    + '<div class="tdf-side"><button class="tdf-hard-btn" onclick="tdToggleHard()"' + (hard.length ? '' : ' disabled') + ' aria-expanded="' + (!!document.getElementById('tdHardPop')) + '">🎯 다시 짚을 표현 <b>' + hard.length + '</b></button></div>';
+  const pop = document.getElementById('tdHardPop');
+  if(pop) renderHardPop();
+}
+// 다시 짚을 표현: 누르면 펼쳐 보는 창 (평소에는 숫자만)
+function tdToggleHard() {
+  const pop = document.getElementById('tdHardPop');
+  if(pop) { pop.remove(); renderTeacherFocus(); return; }
+  const p = document.createElement('div');
+  p.id = 'tdHardPop';
+  p.className = 'td-hard-pop';
+  document.getElementById('screen-teacher').appendChild(p);
+  renderHardPop();
+  renderTeacherFocus();
+}
+function renderHardPop() {
+  const pop = document.getElementById('tdHardPop');
+  if(!pop) return;
+  const hard = logHardItems(logEntries()).filter(g => g.teams.size >= 2).slice(0, 8);
+  pop.innerHTML = '<div class="thp-head"><b>🎯 다시 짚을 표현</b><button class="log-btn" onclick="tdToggleHard()">닫기</button></div>'
+    + '<p class="thp-basis">2개 이상 모둠이 틀린 문항이에요. 틀린 모둠이 많은 순.</p>'
+    + (hard.length ? hard.map(g => {
+      const top = Object.entries(g.answers).sort((a, b) => b[1].n - a[1].n)[0];
+      return '<div class="thp-item"><span class="tdf-m">' + escHTML(LOG_MISSION_LABEL[g.m] || '') + '</span> ' + escHTML(g.item)
+        + (top ? '<div><span class="log-wrong">' + escHTML(top[0]) + '</span> <span class="tdf-n">' + g.teams.size + '개 모둠</span></div>' : '') + '</div>';
+    }).join('') : '<p class="thp-basis">아직 없어요.</p>');
 }
 
 function renderLogOverlay() {
@@ -6201,6 +6505,9 @@ function renderLogOverlay() {
       + '<div class="log-draft-text">' + escHTML(e.answer) + '</div></div>').join('') + '</div>').join('')
     : '<div class="log-empty">아직 미션 7 작문 기록이 없어요.</div>';
 
+  // B2. 모둠원별 (기기 담당 번호 기준, 이름 없음)
+  const memberHtml = logMemberHTML(list);
+
   // C. 전체 시도 기록 (최근 순)
   const rows = list.slice().reverse().slice(0, 400).map(e =>
     '<tr><td>' + logTime(e.t) + '</td><td>' + logTeamLabel(e.team) + '</td><td>' + escHTML(LOG_MISSION_LABEL[e.m] || '') + '</td>'
@@ -6217,6 +6524,7 @@ function renderLogOverlay() {
     + '<button class="log-btn log-close" onclick="document.getElementById(\'logOverlay\').remove()">✕ 닫기</button></div>'
     + '<div class="log-body">'
     + '<div class="log-sec">자주 틀린 문항</div><div class="log-grid">' + hardHtml + '</div>'
+    + '<div class="log-sec">모둠원별 기록 <span class="log-sub">미션마다 기기를 잡은 모둠원 번호 기준 · 이름은 저장하지 않아요</span></div>' + memberHtml
     + '<div class="log-sec">미션 7 작문 변화 <span class="log-sub">AI 피드백 받기 전 → 제출</span></div><div class="log-grid">' + writingHtml + '</div>'
     + '<div class="log-sec">전체 시도 기록 <span class="log-sub">최근 순' + (list.length > 400 ? ', 최근 400건' : '') + '</span></div>' + tableHtml
     + '<div class="log-foot">학생 이름 없이 모둠 단위로만 기록돼요. 🗑️ 초기화하면 이 기록도 지워지니 필요하면 먼저 CSV로 내려받으세요.</div>'
@@ -6224,16 +6532,45 @@ function renderLogOverlay() {
   const body = ov.querySelector('.log-body');
   if(body) body.scrollTop = keepScroll;
 }
+// 모둠원별 표: 모둠 → 모둠원 번호 → 맡은 미션마다 정답/오답/힌트
+function logMemberHTML(list) {
+  const teams = {};
+  list.forEach(e => {
+    if(e.ok === null && !TEAM_ACTIVITY[e.m]) return;
+    // 예전 기록(번호 없음)은 그때 인원 설정으로 담당 번호를 다시 계산
+    const mem = e.member != null ? e.member : (TEAM_ACTIVITY[e.m] ? 0 : deviceTurn(e.m, e.team));
+    const t = teams[e.team] = teams[e.team] || {};
+    const r = t[mem] = t[mem] || {};
+    const c = r[e.m] = r[e.m] || { ok:0, wrong:0, hint:0 };
+    if(e.ok === true) c.ok++; else if(e.ok === false) c.wrong++;
+    c.hint = Math.max(c.hint, e.hint || 0);
+  });
+  const ids = Object.keys(teams).map(Number).sort((a, b) => a - b);
+  if(!ids.length) return '<div class="log-empty">아직 기록이 없어요.</div>';
+  const cell = c => c ? '<span class="lm-ok">✓' + c.ok + '</span>' + (c.wrong ? ' <span class="lm-bad">✗' + c.wrong + '</span>' : '') + (c.hint ? ' <span class="lm-hint">💡' + c.hint + '</span>' : '') : '';
+  return '<div class="lm-grid">' + ids.map(ti => {
+    const t = teams[ti];
+    const rows = Object.keys(t).map(Number).sort((a, b) => (a || 99) - (b || 99)).map(mem => {
+      const r = t[mem];
+      const ms = Object.keys(r).map(Number).sort((a, b) => a - b);
+      const wrong = ms.reduce((a, m) => a + r[m].wrong, 0);
+      return '<tr' + (wrong >= 3 ? ' class="lm-watch"' : '') + '><th>' + (mem ? '모둠원 ' + mem + '번' : '👥 모둠 전체') + '</th><td>'
+        + ms.map(m => '<div class="lm-m"><span class="lm-name">' + escHTML(LOG_MISSION_LABEL[m] || '') + '<small>' + escHTML(MISSION_MEASURE[m] || '') + '</small></span>' + cell(r[m]) + '</div>').join('') + '</td></tr>';
+    }).join('');
+    return '<div class="log-card"><div class="log-card-top"><span class="log-mission">' + logTeamLabel(ti) + '</span><span class="log-rate">' + teamSize(ti) + '명</span></div><table class="lm-table">' + rows + '</table></div>';
+  }).join('') + '</div>';
+}
 function downloadLogCSV() {
   const esc = v => {
     let x = String(v == null ? '' : v);
     if(/^[=+\-@]/.test(x)) x = "'" + x; // 엑셀 수식으로 실행되지 않게
     return '"' + x.replace(/"/g, '""') + '"';
   };
-  const head = ['시각', '반', '모둠', '미션', '문법 세트', '문항', '학생 답', '결과', '비고', '연 힌트 수', '기록한 기기'];
+  const head = ['시각', '반', '모둠', '모둠원(기기 담당)', '미션', '보는 것', '문법 세트', '문항', '학생 답', '결과', '비고', '연 힌트 수', '기록한 기기'];
   const lines = logEntries().map(e => [
     logTime(e.t, true), myRoom || '', (Number(e.team) + 1) + '모둠 ' + ((ISLANDS[e.team] || {}).name || ''),
-    LOG_MISSION_LABEL[e.m] || e.m, e.set || '', e.item, e.answer,
+    e.member ? e.member + '번' : (e.member === 0 ? '모둠 전체' : ''),
+    LOG_MISSION_LABEL[e.m] || e.m, MISSION_MEASURE[e.m] || '', e.set || '', e.item, e.answer,
     e.ok === true ? '정답' : e.ok === false ? '오답' : '', e.note || '', e.hint || 0, e.by || '',
   ].map(esc).join(','));
   const csv = '﻿' + [head.map(esc).join(',')].concat(lines).join('\r\n');
@@ -6268,15 +6605,15 @@ function showM7Review() {
 
     const gradeHtml = grade
       ? `<span style="background:${GRADE_COLOR[grade]}22;border:1px solid ${GRADE_COLOR[grade]}66;border-radius:10px;padding:.15rem .6rem;font-size:.8rem;color:${GRADE_COLOR[grade]};white-space:nowrap;">${GRADE_LABEL[grade]||grade}</span>`
-      : '<span style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.15rem .6rem;font-size:.8rem;color:var(--text3);">미채점</span>';
+      : '<span style="background:rgba(var(--ink-rgb),.06);border:1px solid rgba(var(--ink-rgb),.12);border-radius:10px;padding:.15rem .6rem;font-size:.8rem;color:var(--text3);">미채점</span>';
 
     const coinsHtml = coins != null
-      ? `<span style="font-size:.8rem;color:#fbbf24;">🪙 ${coins}코인</span>`
+      ? `<span style="font-size:.8rem;color:var(--t-yellow);">🪙 ${coins}코인</span>`
       : '';
 
     const textHtml = text
-      ? `<div style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;padding:.75rem;font-size:.9rem;color:var(--text);line-height:1.8;white-space:pre-wrap;font-family:'Noto Sans KR',sans-serif;max-height:160px;overflow-y:auto;">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`
-      : '<div style="background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.1);border-radius:6px;padding:.75rem;font-size:.9rem;color:var(--text3);text-align:center;">미제출</div>';
+      ? `<div style="background:rgba(var(--ink-rgb),.04);border:1px solid var(--border);border-radius:6px;padding:.75rem;font-size:.9rem;color:var(--text);line-height:1.8;white-space:pre-wrap;font-family:'Noto Sans KR',sans-serif;max-height:160px;overflow-y:auto;">${text.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`
+      : '<div style="background:rgba(var(--ink-rgb),.03);border:1px dashed rgba(var(--ink-rgb),.1);border-radius:6px;padding:.75rem;font-size:.9rem;color:var(--text3);text-align:center;">미제출</div>';
 
     const aiInfo = (state.m7ai && state.m7ai[ti]) || null;
     const aiHtml = aiInfo && aiInfo.last
@@ -6290,7 +6627,7 @@ function showM7Review() {
     return `<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.85rem;display:flex;flex-direction:column;gap:.5rem;">
       <div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;">
         <span style="font-size:1.06rem;">${isl.emoji}</span>
-        <span style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.04rem;letter-spacing:.05em;color:${isl.color};">${isl.name}</span>
+        <span style="font-family:'Bebas Neue','Do Hyeon',sans-serif;font-size:1.04rem;letter-spacing:.05em;color:${isl.color};">${isl.name}</span>
         ${gradeHtml}
         ${coinsHtml}
       </div>
@@ -6303,7 +6640,7 @@ function showM7Review() {
 
   ov.innerHTML = `
     <div style="display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;">
-      <div style="font-family:'Bebas Neue','Black Han Sans',sans-serif;font-size:1.1rem;letter-spacing:.1em;color:#a855f7;">📝 미션 8 · 탈출 안내문 (모둠별 응답)</div>
+      <div style="font-family:'Bebas Neue','Do Hyeon',sans-serif;font-size:1.1rem;letter-spacing:.1em;color:#a855f7;">📝 미션 8 · 탈출 안내문 (모둠별 응답)</div>
       <div style="flex:1;font-size:.8rem;color:var(--text3);">실시간 반영 — 채점 후 결과 포함</div>
       <button onclick="document.getElementById('m7ReviewOverlay').remove()" style="background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);border-radius:4px;padding:.3rem .8rem;font-size:.84rem;color:var(--danger);cursor:pointer;">✕ 닫기</button>
     </div>
@@ -6526,6 +6863,7 @@ if(DEMO) {
       + [1,2,3,4,5,6,7,8].map(m => '<option value="'+m+'">'+(m===5?'달 기지':'미션 '+(m>5?m-1:m))+'</option>').join('') + '</select>'
     : '<b>체험 모드</b> 저장되지 않아요 · <a href="?demo=1">처음으로</a>';
   document.body.appendChild(badge);
+  if(window._previewTitle) document.body.classList.add('preview');
   const lb = document.getElementById('loginBtn');
   if(lb) lb.innerHTML = '▶ 학생으로 체험 시작';
   updateLoginBtn();
@@ -6679,9 +7017,9 @@ function bgmToggle() {
   btn.id = 'bgmBtn';
   btn.textContent = '🔇';
   btn.title = '배경음악 켜기';
-  btn.style.cssText = 'position:fixed;bottom:1rem;right:1rem;z-index:260;background:rgba(10,14,26,.85);color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:50%;width:40px;height:40px;font-size:1.1rem;cursor:pointer;backdrop-filter:blur(6px);transition:border-color .2s;';
+  btn.style.cssText = 'position:fixed;bottom:1rem;right:1rem;z-index:260;background:rgba(var(--deep-rgb),.85);color:#fff;border:1px solid rgba(var(--ink-rgb),.18);border-radius:50%;width:40px;height:40px;font-size:1.1rem;cursor:pointer;backdrop-filter:blur(6px);transition:border-color .2s;';
   btn.onmouseenter = () => btn.style.borderColor = 'rgba(249,115,22,.7)';
-  btn.onmouseleave = () => btn.style.borderColor = 'rgba(255,255,255,.18)';
+  btn.onmouseleave = () => btn.style.borderColor = 'rgba(var(--ink-rgb),.18)';
   btn.onclick = bgmToggle;
   document.body.appendChild(btn);
 })();
