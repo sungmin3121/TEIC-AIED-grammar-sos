@@ -5527,9 +5527,16 @@ function genApply(set, mk, data) {
   if(mk === 'meta') {
     if(clean.titleEn && !set.titleEn) set.titleEn = clean.titleEn;
     if(clean.tagline) set.tagline = clean.tagline;
-  } else genMerge(set[mk], clean, GEN_FIELDS[mk]);
+  } else {
+    // 보기 카드가 글자만 온 경우 ['have','has',…] → [{word, kr}]
+    if(mk === 'm1' && Array.isArray(clean.options)) clean.options = clean.options.map(o => typeof o === 'string' ? { word: o, kr: '' } : o);
+    genMerge(set[mk], clean, GEN_FIELDS[mk]);
+  }
+  // 보기 뜻에 문법 이름(현재완료, 3인칭 단수 …)이 오면 정답을 알려 주는 셈이라 지운다
+  (set.m1.options || []).forEach(o => { if(o && GEN_GRAMMAR_TERM.test(o.kr || '')) o.kr = ''; });
   genDerive(set);
 }
+const GEN_GRAMMAR_TERM = /(형|시제|완료|단수|복수|인칭|동사|분사|원형|조동사|부정사|수동|능동|be동사)/;
 
 // 형식 검사 + 문항 점검. [{mk, level:'err'|'warn', msg}]
 function genChecks(set) {
@@ -5592,7 +5599,7 @@ function genChecks(set) {
       const word = (h, x) => new RegExp('(^|[^a-z])' + x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '([^a-z]|$)').test(low(h));
       if((set[k].hints || []).some(h => ans.some(x => word(h, x)))) warn(k, '힌트에 정답이 그대로 들어 있어요');
     });
-    if((set.m1.options || []).some(o => /(과거|현재|미래|완료|진행)형?/.test(o.kr || '') && /형|시제|완료/.test(o.kr || ''))) warn('m1', '보기 뜻에 문법 이름이 있어요 (정답 힌트가 될 수 있어요)');
+    if((set.m1.options || []).some(o => GEN_GRAMMAR_TERM.test(o.kr || ''))) warn('m1', '보기 뜻에 문법 이름이 있어요 (정답 힌트가 될 수 있어요)');
   } catch(e) { err('meta', '빠진 항목이 있어요 (' + e.message + ')'); }
   const v = validateGrammarSet(set);
   if(v && !out.some(x => x.level === 'err')) err('meta', v);
