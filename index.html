@@ -1043,6 +1043,19 @@ body.dark .tc2-help { background:#b42318 !important; }
 #demoBadge a { display:inline-block; padding:.55rem .2rem; }
 .intro-how summary, details > summary { min-height:44px; display:flex; align-items:center; }
 [role="button"][tabindex]:focus-visible { outline:2px solid var(--accent2); outline-offset:2px; }
+
+/* '지금 할 일' 쪽지 (서술 실험실 참고): 단계마다 할 일 한 문장을 메모 카드로 */
+.step-label.task-note { display:flex; flex-wrap:wrap; align-items:center; gap:.35rem .55rem; background:#fff4cf; border:1px solid #ecd58a; border-radius:10px;
+  padding:.65rem .9rem; margin-bottom:1rem; font-size:1.02rem; font-weight:700; color:#3b2f0e; box-shadow:0 2px 0 rgba(122,90,18,.12); }
+.tn-tag { background:#f2cf5b; color:#3b2f0e; border-radius:999px; padding:.12rem .6rem; font-size:.78rem; font-weight:700; }
+.tn-step { font-size:.78rem; font-weight:700; color:#7a5a12; letter-spacing:.02em; }
+body.dark .step-label.task-note { background:#2c2a1c; border-color:#6b5a26; color:#f3e7c0; box-shadow:none; }
+body.dark .tn-tag { background:#e2bd4a; color:#1d1606; }
+body.dark .tn-step { color:#e9d8a6; }
+@media (prefers-reduced-motion: no-preference) {
+  .step.active .task-note { animation:noteIn .45s cubic-bezier(.2,1.3,.4,1) both; }
+  @keyframes noteIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+}
 </style>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -2643,7 +2656,7 @@ function renderMission3(teamNum) {
 
     <!-- STEP 1: 매칭 -->
     <div class="step ${step===1?'active':''}" id="m3step1-${ti}">
-      <div class="step-label">STEP 1 · ${G.m3.stepLabel}</div>
+      <div class="step-label task-note"><span class="tn-tag">지금 할 일</span><span class="tn-step">STEP 1</span> ${G.m3.stepLabel}</div>
       <div class="wh-prompt" style="margin-bottom:1.25rem;">
         💬 <em>${G.m3.promptBefore}<span style="color:var(--accent-ink);">___</span>${G.m3.promptAfter}</em><br>
         <span style="font-size:.84rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">${G.m3.promptKr}</span>
@@ -2691,7 +2704,7 @@ function renderMission3(teamNum) {
 
     <!-- STEP 2: 음식 선택 -->
     <div class="step ${step===2?'active':''}" id="m3step2-${ti}">
-      <div class="step-label">STEP 2 · AI가 알려준 식량 정보를 보고 선택하세요</div>
+      <div class="step-label task-note"><span class="tn-tag">지금 할 일</span><span class="tn-step">STEP 2</span> AI가 알려준 식량 정보를 보고 선택하세요</div>
       <div class="mission-situation" style="margin-bottom:1rem;">
         🤖 AI: <em>"${G.m3.aiLine}"</em>
       </div>
@@ -2861,7 +2874,7 @@ function renderMission2(teamNum) {
 
     <!-- STEP 1 -->
     <div class="step ${step===1?'active':''}" id="m2step1-${ti}">
-      <div class="step-label">STEP 1 · 조각을 올바른 순서로 배열하세요</div>
+      <div class="step-label task-note"><span class="tn-tag">지금 할 일</span><span class="tn-step">STEP 1</span> 조각을 올바른 순서로 배열하세요</div>
       <div class="wh-prompt" style="margin-bottom:.75rem;">
         💬 <span style="color:var(--text3);font-size:.92rem;">"${M2_CORRECT.map(()=>'___').join(' ')}"</span><br>
         <span style="font-size:.84rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">${G.m2.promptKr}</span>
@@ -2894,7 +2907,7 @@ function renderMission2(teamNum) {
 
     <!-- STEP 2 -->
     <div class="step ${step===2?'active':''}" id="m2step2-${ti}">
-      <div class="step-label">STEP 2 · AI의 답변을 확인하고 선택하세요</div>
+      <div class="step-label task-note"><span class="tn-tag">지금 할 일</span><span class="tn-step">STEP 2</span> AI의 답변을 확인하고 선택하세요</div>
       <div class="mission-situation" style="margin-bottom:1.25rem;">
         🤖 AI: <em>"Here are 3 shelter options for ${isl.name}. Choose the safest one!"</em>
       </div>
@@ -3431,7 +3444,7 @@ function renderMission1(teamNum) {
 
     <!-- STEP 1: 의문사 선택 -->
     <div class="step ${state.missionStep[ti]===1?'active':''}" id="step1-${ti}">
-      <div class="step-label">STEP 1 · ${G.m1.stepLabel}</div>
+      <div class="step-label task-note"><span class="tn-tag">지금 할 일</span><span class="tn-step">STEP 1</span> ${G.m1.stepLabel}</div>
       <div class="wh-prompt">
         💬 ${G.m1.promptBefore}<span class="blank" id="blank-${ti}">___</span>${G.m1.promptAfter}<br>
         <span id="m1kr-${ti}" style="font-size:.84rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;">🇰🇷 우리말 뜻은 정답을 고르면 보여요</span>
@@ -3450,7 +3463,7 @@ function renderMission1(teamNum) {
 
     <!-- STEP 2: 선택지 -->
     <div class="step ${state.missionStep[ti]===2?'active':''}" id="step2-${ti}">
-      <div class="step-label">STEP 2 · AI의 답변을 확인하고 선택하세요</div>
+      <div class="step-label task-note"><span class="tn-tag">지금 할 일</span><span class="tn-step">STEP 2</span> AI의 답변을 확인하고 선택하세요</div>
       <div class="mission-situation" style="margin-bottom:1.25rem;">
         🤖 AI: <em>"There are 3 options. Choose wisely — your survival depends on it!"</em>
       </div>
@@ -4137,7 +4150,7 @@ function renderMission5(teamNum) {
         <div style="font-size:1.8rem;">${m5.emoji}</div>
       </div>
 
-      <div class="step-label">STEP 1 · <span class="m5-sec">${m5Seconds()}</span>초 안에 문장을 외우세요!</div>
+      <div class="step-label task-note"><span class="tn-tag">지금 할 일</span><span class="tn-step">STEP 1</span> <span class="m5-sec">${m5Seconds()}</span>초 안에 문장을 외우세요!</div>
       <div style="background:rgba(79,209,197,.08);border:1px solid rgba(79,209,197,.25);border-radius:8px;padding:.85rem 1rem;margin-bottom:1rem;font-size:.92rem;color:var(--accent2-ink);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
         📢 <strong>외우는 방법:</strong><br>
         문장을 모둠원끼리 나눠서 각자 한 부분씩 외우세요!<br>
@@ -4422,7 +4435,7 @@ function m6renderTeamA(ti, m6) {
   const shuffled = state.m6pieces[ti+'a'];
 
   return `
-    <div class="step-label">STEP 1 · 조각을 올바른 순서로 배열하세요</div>
+    <div class="step-label task-note"><span class="tn-tag">지금 할 일</span><span class="tn-step">STEP 1</span> 조각을 올바른 순서로 배열하세요</div>
     <div style="background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:8px;padding:.75rem;margin-bottom:1rem;">
       <span style="font-size:.82rem;color:var(--accent-ink);">주어진 문장: </span>
       <span style="font-family:'Noto Sans KR',sans-serif;font-size:.94rem;color:var(--text);">"${m6.teamA_given}"</span>
@@ -4464,7 +4477,7 @@ function m6renderTeamB(ti, m6) {
   if(!state.m6pieces[ti+'b2']) state.m6pieces[ti+'b2'] = [...m6.teamB_pieces2].sort(() => Math.random()-0.5);
 
   return `
-    <div class="step-label">STEP 1 · 두 문장의 조각을 각각 배열하세요</div>
+    <div class="step-label task-note"><span class="tn-tag">지금 할 일</span><span class="tn-step">STEP 1</span> 두 문장의 조각을 각각 배열하세요</div>
     <div style="font-size:.88rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:.75rem;background:var(--surface);border-radius:6px;padding:.65rem;">
       ${G.m6.teamBHint}
     </div>
@@ -4719,7 +4732,7 @@ function renderMission4(teamNum) {
 
     <!-- STEP 1: OX 판단 -->
     <div class="step ${step===1?'active':''}" id="m4step1-${ti}">
-      <div class="step-label">STEP 1 · 올바른 문장이면 ⭕, 틀린 문장이면 ❌</div>
+      <div class="step-label task-note"><span class="tn-tag">지금 할 일</span><span class="tn-step">STEP 1</span> 올바른 문장이면 ⭕, 틀린 문장이면 ❌</div>
       <div id="m4questions-${ti}">
         ${MISSION4_QUESTIONS.map((q,idx) => {
           const answered = state.m4answers[ti][idx] !== undefined;
