@@ -157,6 +157,11 @@ body.demo .teacher-link { display:none; }
 .team-cards-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.85rem; margin-bottom:1.5rem; }
 .team-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:.9rem 1rem; display:flex; align-items:center; gap:.75rem; cursor:pointer; transition:all .2s; }
 .team-card:hover { border-color:var(--card-color,var(--accent)); transform:translateY(-2px); }
+.team-card.locked { opacity:.5; cursor:not-allowed; filter:grayscale(.5); }
+.team-card.locked:hover { transform:none; border-color:var(--border); }
+.lobby-lock-note { margin:.5rem auto 1rem; padding:.55rem .9rem; max-width:34rem; border:1px solid var(--border); border-radius:10px; background:var(--surface); color:var(--text2); font-size:.9rem; text-align:center; }
+.lobby-lock-note[hidden] { display:none; }
+@media (prefers-reduced-motion:no-preference) { .lobby-lock-note.shake { animation:lockShake .35s; } @keyframes lockShake { 25% { transform:translateX(-5px); } 75% { transform:translateX(5px); } } }
 .team-card.active-team { border-color:var(--card-color,var(--accent)); box-shadow:0 0 0 2px var(--card-color,var(--accent)); }
 .tc-emoji { font-size:1.8rem; }
 .tc-info { flex:1; }
@@ -1348,8 +1353,9 @@ document.body.classList.add('site-' + window.GSOS_SITE);
     <div class="lobby-header">
       <div class="sos-badge">MISSION CONTROL</div>
       <div class="lobby-title">SURVIVAL HQ</div>
-      <div class="lobby-sub">섬이나 모둠 카드를 눌러 그 모둠 미션으로 가요</div>
+      <div class="lobby-sub" id="lobbySub">섬이나 모둠 카드를 눌러 그 모둠 미션으로 가요</div>
     </div>
+    <div class="lobby-lock-note" id="lobbyLockNote" hidden role="status">🔒 다른 모둠 화면은 볼 수 없어요. 우리 모둠 카드를 눌러 주세요.</div>
     <div class="team-cards-grid" id="lobbyCards"></div>
     <div class="lobby-map" id="lobbyMap"></div>
     <div class="mission-progress" style="display:none;">
@@ -1366,7 +1372,7 @@ document.body.classList.add('site-' + window.GSOS_SITE);
       </div>
     </div>
     <div class="bottom-bar">
-      <div class="bottom-bar-left">모둠 카드를 클릭해서 해당 모둠 미션 화면으로 이동</div>
+      <div class="bottom-bar-left" id="lobbyBarNote">모둠 카드를 클릭해서 해당 모둠 미션 화면으로 이동</div>
       <button class="btn-ghost" id="lobbyResetBtn" onclick="demoRestart()">↺ 처음부터 다시 시작하기</button>
     </div>
   </div>
@@ -2319,13 +2325,28 @@ function demoRestart() {
   if(!confirm('체험 기록을 모두 지우고 처음부터 다시 시작할까요?')) return;
   location.reload();
 }
-function lobbyEnter(i) { showScreen('mission'); initMission(i+1, state.teamMission[i]); }
+// 실제 수업에서 학생은 자기 모둠 화면만 열 수 있다 (다른 모둠 화면에서 눌러 버리면 그 모둠의 답이 바뀌므로).
+// 교사와 체험 모드(가상 모둠)는 모두 열 수 있다.
+function canEnterTeam(i) {
+  if(DEMO || myRole === 'teacher') return true;
+  return !!ROLE_TO_TEAM[myRole] && ROLE_TO_TEAM[myRole] - 1 === i;
+}
+function lobbyEnter(i) {
+  if(!canEnterTeam(i)) {
+    const n = document.getElementById('lobbyLockNote');
+    if(n) { n.hidden = false; n.classList.remove('shake'); void n.offsetWidth; n.classList.add('shake'); }
+    return;
+  }
+  showScreen('mission'); initMission(i+1, state.teamMission[i]);
+}
 function renderLobby() {
   const c = document.getElementById('lobbyCards');
   c.innerHTML = '';
   ISLANDS.forEach((isl,i) => {
     const div = document.createElement('div');
-    div.className = 'team-card';
+    const locked = !canEnterTeam(i);
+    div.className = 'team-card' + (locked ? ' locked' : (DEMO || myRole === 'teacher' ? '' : ' active-team'));
+    if(locked) { div.setAttribute('aria-disabled', 'true'); div.title = '다른 모둠 화면은 볼 수 없어요'; }
     div.style.setProperty('--card-color', isl.color);
     div.innerHTML = `
       <div class="tc-emoji">${isl.emoji}</div>
@@ -2335,12 +2356,16 @@ function renderLobby() {
       </div>
       <div class="tc-coins">
         <div class="tc-coin-num">${state.coins[i]}</div>
-        <div class="tc-coin-label">🪙 COINS</div>
+        <div class="tc-coin-label">${locked ? '🔒 우리 모둠 아님' : '🪙 COINS'}</div>
       </div>
     `;
     div.onclick = () => lobbyEnter(i);
     c.appendChild(div);
   });
+  const own = !(DEMO || myRole === 'teacher');
+  const sub = document.getElementById('lobbySub'), bar = document.getElementById('lobbyBarNote');
+  if(sub) sub.textContent = own ? '우리 모둠 카드나 우리 섬을 눌러 미션으로 가요 (다른 모둠 화면은 볼 수 없어요)' : '섬이나 모둠 카드를 눌러 그 모둠 미션으로 가요';
+  if(bar) bar.textContent = own ? '우리 모둠 카드를 눌러 미션 화면으로 이동' : '모둠 카드를 클릭해서 해당 모둠 미션 화면으로 이동';
   const lm = document.getElementById('lobbyMap');
   if(lm) lm.innerHTML = worldMapSVG({ onIsland: 'lobbyEnter' }) + worldLegendHTML();
   updateMissionProgress();
