@@ -1056,6 +1056,22 @@ body.dark .tn-step { color:#e9d8a6; }
   .step.active .task-note { animation:noteIn .45s cubic-bezier(.2,1.3,.4,1) both; }
   @keyframes noteIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
 }
+
+/* 내 문장 → AI 기기 대답 */
+.chat-x { display:flex; flex-direction:column; gap:.55rem; margin-bottom:1.15rem; }
+.chat-out { align-self:flex-end; max-width:78%; text-align:right; }
+.co-who { font-size:.78rem; color:var(--text3); margin-bottom:.2rem; }
+.co-bubble { display:inline-block; text-align:left; background:var(--accent2); color:#fff; font-weight:700; font-size:1.02rem; line-height:1.5; padding:.6rem .95rem; border-radius:16px 16px 4px 16px; box-shadow:0 2px 6px rgba(0,0,0,.08); }
+.chat-in { display:flex; gap:.6rem; align-items:flex-end; max-width:86%; }
+.chat-in .sos-bot { width:36px; height:48px; flex:0 0 auto; }
+.ci-bubble { background:var(--surface); border:1px solid var(--border); border-radius:16px 16px 16px 4px; padding:.6rem .95rem; font-size:.95rem; line-height:1.6; color:var(--text); }
+.ci-who { font-size:.74rem; font-weight:700; color:var(--accent2-ink); margin-bottom:.15rem; }
+@media (prefers-reduced-motion: no-preference) {
+  .step.active .chat-out { animation:chatIn .35s ease both; }
+  .step.active .chat-in { animation:chatIn .35s ease .55s both; }
+  @keyframes chatIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+}
+@media (max-width:520px) { .chat-out { max-width:92%; } .chat-in { max-width:100%; } }
 </style>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -2705,9 +2721,7 @@ function renderMission3(teamNum) {
     <!-- STEP 2: 음식 선택 -->
     <div class="step ${step===2?'active':''}" id="m3step2-${ti}">
       <div class="step-label task-note"><span class="tn-tag">지금 할 일</span><span class="tn-step">STEP 2</span> AI가 알려준 식량 정보를 보고 선택하세요</div>
-      <div class="mission-situation" style="margin-bottom:1rem;">
-        🤖 AI: <em>"${G.m3.aiLine}"</em>
-      </div>
+      ${chatExchangeHTML(ti, m3AskSentence(), '<em>' + G.m3.aiLine + '</em>')}
       ${state.items[ti].includes('antidote') ? '<div class="feedback-box show feedback-wrong" style="margin-bottom:.75rem;">🧪 해독제 효과: <strong>C번</strong>은 독이 있어요! ☠️ 피하세요!</div>' : ''}
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.25rem;">
         ${m3data.food.map((f,idx)=>{
@@ -2908,9 +2922,7 @@ function renderMission2(teamNum) {
     <!-- STEP 2 -->
     <div class="step ${step===2?'active':''}" id="m2step2-${ti}">
       <div class="step-label task-note"><span class="tn-tag">지금 할 일</span><span class="tn-step">STEP 2</span> AI의 답변을 확인하고 선택하세요</div>
-      <div class="mission-situation" style="margin-bottom:1.25rem;">
-        🤖 AI: <em>"Here are 3 shelter options for ${isl.name}. Choose the safest one!"</em>
-      </div>
+      ${chatExchangeHTML(ti, M2_CORRECT.join(' ').replace(/^./, c => c.toUpperCase()) + '!', '<em>Sure! Here are 3 shelter options for ' + isl.nameEn.toLowerCase().replace(/\b\w/g, c => c.toUpperCase()) + '. Choose the safest one!</em>')}
       <div class="choices" id="m2choices-${ti}">
         ${state.items[ti].includes('map') ? '<div class="feedback-box show feedback-correct" style="margin-bottom:.75rem;">🗺️ 지도 효과: 가장 안전한 선택지는 <strong>A번</strong>이에요!</div>' : ''}
         ${m2data.choices.map((ch,idx)=>`
@@ -3333,6 +3345,22 @@ function missionRibbonHTML() {
     + routeStripHTML(state.currentTeam) + '</div>';
 }
 // AI 기기 캐릭터 (이야기 속 '주머니 속 AI 기기'): 미션 상황을 말풍선으로 들려준다
+// ══ 내 문장 → AI 기기 대답 (서술 실험실 참고) ══
+// 학생이 완성한 문장이 '보낸 메시지'로 남고, AI 기기가 그 문장을 받아 대답한다.
+// 문법 세트의 문장을 그대로 쓰므로 어떤 문법 세트에서도 동작한다.
+function chatPlain(t) { return String(t || '').replace(/<[^>]*>/g, '').replace(/^\s*["“]\s*|\s*["”]\s*$/g, '').trim(); }
+function chatExchangeHTML(ti, mine, reply) {
+  const isl = ISLANDS[ti] || ISLANDS[0];
+  return '<div class="chat-x" aria-label="AI 기기와 주고받은 말">'
+    + '<div class="chat-out"><div class="co-who">' + isl.emoji + ' 우리 모둠</div><div class="co-bubble">' + escHTML(chatPlain(mine)) + '</div></div>'
+    + '<div class="chat-in">' + sosBotSVG('happy') + '<div class="ci-bubble"><div class="ci-who">AI 기기 · 응답</div>' + reply + '</div></div>'
+    + '</div>';
+}
+function m3AskSentence() {
+  const r = (G.m3.right || [])[0];
+  return r ? G.m3.promptBefore + r.correct + ' ' + r.text + G.m3.promptAfter : '';
+}
+
 function sosBotSVG(mood) {
   const mouth = mood === 'happy' ? '<path d="M17,33 Q24,39 31,33" />' : '<path d="M18,34 Q24,37 30,34" />';
   return '<svg class="sos-bot" viewBox="0 0 48 64" aria-hidden="true">'
@@ -3464,9 +3492,7 @@ function renderMission1(teamNum) {
     <!-- STEP 2: 선택지 -->
     <div class="step ${state.missionStep[ti]===2?'active':''}" id="step2-${ti}">
       <div class="step-label task-note"><span class="tn-tag">지금 할 일</span><span class="tn-step">STEP 2</span> AI의 답변을 확인하고 선택하세요</div>
-      <div class="mission-situation" style="margin-bottom:1.25rem;">
-        🤖 AI: <em>"There are 3 options. Choose wisely — your survival depends on it!"</em>
-      </div>
+      ${chatExchangeHTML(ti, G.m1.promptBefore + G.m1.answer + G.m1.promptAfter, '<em>Got it! There are 3 options. Choose wisely — your survival depends on it!</em>')}
       <div class="choices" id="choices-${ti}">
         ${isl.choices.map((ch,idx)=>`
           <button class="choice-btn" onclick="selectChoice(${ti},${idx})">
