@@ -2163,7 +2163,7 @@ const ISLANDS = [
   { id:'arctic', emoji:'🧊', name:'북극 섬', nameEn:'ARCTIC ISLAND', crisis:'눈보라 / 북극곰', color:'#38bdf8',
     choices:[
       { text:'🏔️ 빙하 위로 올라가기', sub:'Climb up the glacier', coins:2, item:'map' },
-      { text:'🏕️ 눈 동굴 찾기', sub:'Search for a snow cave', coins:1, item:null },
+      { text:'🕳️ 눈 동굴 찾기', sub:'Search for a snow cave', coins:1, item:null },
       { text:'🌊 얼음 아래 강 쪽으로 이동', sub:'Head toward the river under ice', coins:-1, item:null },
     ]},
   { id:'jungle', emoji:'🌴', name:'정글 섬', nameEn:'JUNGLE ISLAND', crisis:'홍수 / 재규어', color:'#22c55e',
@@ -2174,7 +2174,7 @@ const ISLANDS = [
     ]},
   { id:'desert', emoji:'🏜️', name:'사막 섬', nameEn:'DESERT ISLAND', crisis:'모래폭풍', color:'#f59e0b',
     choices:[
-      { text:'🏔️ 모래 언덕 올라가기', sub:'Climb the highest sand dune', coins:2, item:'map' },
+      { text:'🏜️ 모래 언덕 올라가기', sub:'Climb the highest sand dune', coins:2, item:'map' },
       { text:'🌵 선인장 군락 쪽으로 이동', sub:'Head toward cactus clusters', coins:1, item:null },
       { text:'☀️ 태양 방향으로 무작정 걷기', sub:'Walk straight toward the sun', coins:-1, item:null },
     ]},
@@ -2521,16 +2521,16 @@ const MISSION2_CHOICES = [
   { island:'arctic', choices:[
     { text:'🧊 눈 블록으로 이글루 짓기', sub:'Build an igloo with snow blocks', coins:2, item:'antidote' },
     { text:'🌲 얼어붙은 나뭇가지로 덮기', sub:'Cover with frozen branches', coins:1, item:null },
-    { text:'🏕️ 눈 속에 구덩이 파기', sub:'Dig a hole in the snow', coins:-1, item:null },
+    { text:'⛏️ 눈 속에 구덩이 파기', sub:'Dig a hole in the snow', coins:-1, item:null },
   ]},
   { island:'jungle', choices:[
     { text:'🌴 야자나무 잎으로 지붕 만들기', sub:'Make a roof with palm leaves', coins:2, item:'antidote' },
     { text:'🌿 덩굴로 벽 엮기', sub:'Weave walls with vines', coins:1, item:null },
-    { text:'🌲 나무 위에서 자기', sub:'Sleep in the tree', coins:-1, item:null },
+    { text:'🌳 나무 위에서 자기', sub:'Sleep in the tree', coins:-1, item:null },
   ]},
   { island:'desert', choices:[
     { text:'🪨 바위 그늘 아래 자리 잡기', sub:'Rest under a rock shade', coins:2, item:'antidote' },
-    { text:'🏕️ 모래 속에 구덩이 파기', sub:'Dig a hole in the sand', coins:1, item:null },
+    { text:'⛏️ 모래 속에 구덩이 파기', sub:'Dig a hole in the sand', coins:1, item:null },
     { text:'🌵 선인장으로 벽 세우기', sub:'Build walls with cactus', coins:-1, item:null },
   ]},
   { island:'ocean', choices:[
@@ -2574,14 +2574,14 @@ function hideHUD() {
 // ══ MISSION 3 DATA ══
 const MISSION3_DATA = [
   { island:'volcano', food:[
-    { name:'🌿 붉은 열매', what:'Red volcanic berries', where:'On the rocks near lava', how:'Eat it raw' },
+    { name:'🍒 붉은 열매', what:'Red volcanic berries', where:'On the rocks near lava', how:'Eat it raw' },
     { name:'🍄 화산재 버섯', what:'Ash mushrooms', where:'In the dark caves', how:'Roast it over lava' },
     { name:'🪲 특수 곤충', what:'Fire beetles', where:'Under the hot rocks', how:'Crush and boil it' },
   ]},
   { island:'arctic', food:[
     { name:'🐟 얼음 물고기', what:'Arctic fish', where:'In the hole on the iceberg', how:'Cook it with fire' },
-    { name:'🌿 뿌리채소', what:'Root vegetables', where:'Under the snow', how:'Boil it in water' },
-    { name:'🦭 북극 이끼', what:'Arctic moss', where:'On the rocks near the shore', how:'Eat it raw' },
+    { name:'🥕 뿌리채소', what:'Root vegetables', where:'Under the snow', how:'Boil it in water' },
+    { name:'🌱 북극 이끼', what:'Arctic moss', where:'On the rocks near the shore', how:'Eat it raw' },
   ]},
   { island:'jungle', food:[
     { name:'🥭 망고', what:'Mangoes', where:'At the top of tall trees', how:'Eat it raw' },
@@ -4140,11 +4140,11 @@ function m3RestoreResult(ti) {
 // 섬별 위기 상황(스토리)은 여기, 외울 문장(sentence/kr/key)은 문법 세트에서 가져와 합친다
 const MISSION5_STORY = [
   { crisis:'용암', emoji:'🌋', penalty:'용암에 아이템 소멸! 🌋' },
-  { crisis:'북극곰', emoji:'🧊', penalty:'북극곰이 코인 2개 가져감! 🐻' },
-  { crisis:'재규어', emoji:'🌴', penalty:'재규어한테 물려 코인 -2! 🐆' },
+  { crisis:'북극곰', emoji:'🐻‍❄️', penalty:'북극곰이 코인 2개 가져감! 🐻' },
+  { crisis:'재규어', emoji:'🐆', penalty:'재규어한테 물려 코인 -2! 🐆' },
   { crisis:'모래폭풍', emoji:'🏜️', penalty:'모래폭풍에 아이템 소멸! 🌪️' },
-  { crisis:'상어', emoji:'🌊', penalty:'상어한테 코인 -2! 🦈' },
-  { crisis:'티라노사우루스', emoji:'🦕', penalty:'티라노한테 밟혀 코인 -2! 🦕' },
+  { crisis:'상어', emoji:'🦈', penalty:'상어한테 코인 -2! 🦈' },
+  { crisis:'티라노사우루스', emoji:'🦖', penalty:'티라노한테 밟혀 코인 -2! 🦖' },
 ];
 let MISSION5_DATA = MISSION5_STORY.map((s, i) => Object.assign({}, s, G.m5.islands[i]));
 
