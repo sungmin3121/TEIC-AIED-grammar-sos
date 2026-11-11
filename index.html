@@ -47,11 +47,17 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--
 /* 해도의 위도·경도 격자 */
 body::before { content:''; position:fixed; inset:0; background-image:linear-gradient(rgba(var(--line-rgb),.035) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--line-rgb),.035) 1px, transparent 1px); background-size:96px 96px; pointer-events:none; z-index:0; }
 
+/* 실제 수업(학생·교사) 로비에는 '처음부터' 버튼을 두지 않는다: 반 전체가 지워질 수 있어서 */
+body:not(.demo) #lobbyResetBtn { display:none; }
 /* ── MAIN ── */
 #screen-main { align-items:center; justify-content:center; position:relative;
 background:radial-gradient(ellipse at 50% 0%,rgba(249,115,22,.15) 0%,transparent 60%),
 radial-gradient(ellipse at 80% 80%,rgba(79,209,197,.08) 0%,transparent 50%),var(--bg); }
 .float-bg { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+/* 로그인·로비·교사 화면용: 화면 전체에 고정, 내용 뒤(isolation 안에서 z-index -1)에 깔린다 */
+.screen.has-float { isolation:isolate; }
+.float-bg.fixed { position:fixed; z-index:-1; }
+@media (prefers-reduced-motion:reduce) { .float-bg span { animation:none; top:calc(var(--rest,50)*1%); } }
 .float-bg span { position:absolute; font-size:clamp(36px,7vw,72px); opacity:.06; animation:floatUp linear infinite; }
 @keyframes floatUp { 0%{transform:translateY(110vh) rotate(0deg)} 100%{transform:translateY(-20vh) rotate(360deg)} }
 .main-content { text-align:center; z-index:1; padding:2rem; }
@@ -1133,8 +1139,9 @@ document.body.classList.add('site-' + window.GSOS_SITE);
 
 <!-- ══ LOGIN SCREEN ══ -->
 
-<div id="screen-login" class="screen active" style="align-items:center;justify-content:center;
+<div id="screen-login" class="screen active has-float" style="align-items:center;justify-content:center;
   background:radial-gradient(ellipse at 50% 0%,rgba(249,115,22,.15) 0%,transparent 60%),var(--bg);">
+  <div class="float-bg fixed" aria-hidden="true"></div>
   <div class="login-wrap">
   <div class="login-left">
     <div class="sos-badge">🆘 SOS: SECURE OUR SURVIVAL</div>
@@ -1236,7 +1243,7 @@ document.body.classList.add('site-' + window.GSOS_SITE);
 <!-- ══ MAIN ══ -->
 
 <div id="screen-main" class="screen">
-  <div class="float-bg" id="floatBg"></div>
+  <div class="float-bg" id="floatBg" aria-hidden="true"></div>
   <div class="main-content">
     <div class="sos-badge">🆘 EMERGENCY BROADCAST</div>
     <div class="main-title">
@@ -1257,7 +1264,8 @@ document.body.classList.add('site-' + window.GSOS_SITE);
 </div>
 
 <!-- ══ TEACHER DASHBOARD ══ -->
-<div id="screen-teacher" class="screen" style="background:var(--bg);flex-direction:column;">
+<div id="screen-teacher" class="screen has-float" style="background:var(--bg);flex-direction:column;">
+  <div class="float-bg fixed" aria-hidden="true"></div>
   <!-- 상단 바: 수업 중에 자주 누르는 것만 -->
   <div class="td-topbar">
     <div class="td-brand">👩‍🏫 교사 대시보드</div>
@@ -1322,7 +1330,8 @@ document.body.classList.add('site-' + window.GSOS_SITE);
 
 <!-- ══ LOBBY ══ -->
 
-<div id="screen-lobby" class="screen">
+<div id="screen-lobby" class="screen has-float">
+  <div class="float-bg fixed" aria-hidden="true"></div>
   <div style="padding:1.5rem;flex:1;overflow-y:auto;">
     <div class="lobby-header">
       <div class="sos-badge">MISSION CONTROL</div>
@@ -1346,7 +1355,7 @@ document.body.classList.add('site-' + window.GSOS_SITE);
     </div>
     <div class="bottom-bar">
       <div class="bottom-bar-left">모둠 카드를 클릭해서 해당 모둠 미션 화면으로 이동</div>
-      <button class="btn-ghost" onclick="showScreen('main')">← 메인으로</button>
+      <button class="btn-ghost" id="lobbyResetBtn" onclick="demoRestart()">↺ 처음부터 다시 시작하기</button>
     </div>
   </div>
 </div>
@@ -2276,20 +2285,28 @@ function showScreen(id) {
 
 // ══ FLOAT BG ══
 function renderFloatBg() {
-  const bg = document.getElementById('floatBg');
   const emojis = ['🌋','🧊','🌴','🏜️','🌊','🦕','🆘','⚡','🤖','📡','🪙','🎲'];
-  bg.innerHTML = '';
-  for(let i=0;i<14;i++) {
-    const s = document.createElement('span');
-    s.textContent = emojis[i%emojis.length];
-    s.style.left = (Math.random()*100)+'%';
-    s.style.animationDuration = (9+Math.random()*12)+'s';
-    s.style.animationDelay = (-Math.random()*16)+'s';
-    bg.appendChild(s);
-  }
+  document.querySelectorAll('.float-bg').forEach(bg => {
+    bg.innerHTML = '';
+    for(let i=0;i<14;i++) {
+      const s = document.createElement('span');
+      s.textContent = emojis[i%emojis.length];
+      s.style.left = (Math.random()*100)+'%';
+      s.style.setProperty('--rest', Math.round(Math.random()*90));
+      s.style.animationDuration = (9+Math.random()*12)+'s';
+      s.style.animationDelay = (-Math.random()*16)+'s';
+      bg.appendChild(s);
+    }
+  });
 }
 
 // ══ LOBBY ══
+// 체험 모드 전용: 이 기기에서만 진행한 상태를 지우고 처음 화면으로 (실제 수업 방에서는 버튼 자체가 안 보인다)
+function demoRestart() {
+  if(!DEMO) return;
+  if(!confirm('체험 기록을 모두 지우고 처음부터 다시 시작할까요?')) return;
+  location.reload();
+}
 function lobbyEnter(i) { showScreen('mission'); initMission(i+1, state.teamMission[i]); }
 function renderLobby() {
   const c = document.getElementById('lobbyCards');
