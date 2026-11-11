@@ -810,7 +810,17 @@ font-family:'Noto Sans KR',sans-serif;
 .ms-land { fill:color-mix(in srgb, var(--isl) 30%, #2a3a3a); stroke:var(--sand); stroke-opacity:.45; stroke-width:1.2; }
 .ms-mark { font-size:26px; }
 .ms-reef { fill:none; stroke:rgba(79,209,197,.3); stroke-dasharray:2 4; }
-@media (max-width:520px) { .m-scene { opacity:.45; } }
+/* 미션 장면 사진: 글자가 있는 왼쪽은 반투명 판으로 덮어 읽기 쉽게 */
+.m-photo { background-size:cover; background-repeat:no-repeat; }
+.mission-header.has-scene { min-height:clamp(150px,19vw,200px); border-bottom:4px solid var(--isl-c, var(--border)); }
+.mission-header.has-scene::after { content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:linear-gradient(90deg, rgba(var(--deep-rgb),.86) 0%, rgba(var(--deep-rgb),.6) 42%, rgba(var(--deep-rgb),.08) 82%); }
+@media (max-width:520px) { .mission-header.has-scene::after { background:linear-gradient(90deg, rgba(var(--deep-rgb),.86) 0%, rgba(var(--deep-rgb),.5) 60%, rgba(var(--deep-rgb),.22) 100%); } }
+/* 접속·첫 화면 배경 그림: 아주 옅게 깔아서 글자 가독성에 영향 없게 */
+.screen-bg { position:fixed; inset:0; z-index:-2; pointer-events:none; background:url(assets/scenes/m5.webp) center/cover no-repeat; opacity:.3; }
+.screen-bg::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(var(--deep-rgb),.45) 0%, rgba(var(--deep-rgb),.82) 100%); }
+body.dark .screen-bg { opacity:.22; }
+@media (orientation:portrait) { .screen-bg { background-image:url(assets/scenes/hero.webp); } }
 .mission-header.has-scene .mission-title { text-shadow:0 2px 12px rgba(var(--deep-rgb),.8); max-width:70%; }
 .m-steps { display:flex; align-items:center; margin-top:.75rem; max-width:260px; }
 .ms-step { flex:0 0 auto; width:1.6rem; height:1.6rem; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:.78rem; font-weight:700;
@@ -1141,6 +1151,7 @@ document.body.classList.add('site-' + window.GSOS_SITE);
 
 <div id="screen-login" class="screen active has-float" style="align-items:center;justify-content:center;
   background:radial-gradient(ellipse at 50% 0%,rgba(249,115,22,.15) 0%,transparent 60%),var(--bg);">
+  <div class="screen-bg" aria-hidden="true"></div>
   <div class="float-bg fixed" aria-hidden="true"></div>
   <div class="login-wrap">
   <div class="login-left">
@@ -1242,7 +1253,8 @@ document.body.classList.add('site-' + window.GSOS_SITE);
 
 <!-- ══ MAIN ══ -->
 
-<div id="screen-main" class="screen">
+<div id="screen-main" class="screen has-float">
+  <div class="screen-bg" aria-hidden="true"></div>
   <div class="float-bg" id="floatBg" aria-hidden="true"></div>
   <div class="main-content">
     <div class="sos-badge">🆘 EMERGENCY BROADCAST</div>
@@ -3408,16 +3420,27 @@ function missionStepperHTML(main) {
   return '<div class="m-steps" aria-label="미션 단계 ' + (cur + 1) + ' / ' + steps.length + '">' + steps.map((_, i) =>
     '<span class="ms-step' + (i < cur ? ' done' : i === cur ? ' cur' : '') + '">' + (i < cur ? '✓' : (i + 1)) + '</span>').join('<span class="ms-bar"></span>') + '</div>';
 }
+// 미션별 장면 사진 (assets/scenes). 위기 대응(미션 5)은 섬마다 다른 장면. 숫자는 사진 안에서 보여 줄 세로 위치(%)
+const SCENE_POS = { m1:68, m2:66, m3:70, m4:72, moon:42, 'm5-volcano':30, 'm5-arctic':62, 'm5-jungle':40, 'm5-desert':50, 'm5-ocean':64, 'm5-dino':52, m6:46, m7:50 };
+function sceneKey(missionId, ti) {
+  const isl = ISLANDS[ti] || ISLANDS[0];
+  return ({1:'m1', 2:'m2', 3:'m3', 4:'m4', 5:'moon', 6:'m5-' + isl.id, 7:'m6', 8:'m7'})[missionId] || 'm1';
+}
+function missionScenePhoto(key) {
+  return '<div class="m-scene m-photo" aria-hidden="true" style="background-image:url(assets/scenes/' + key + '.webp);background-position:right ' + (SCENE_POS[key] || 50) + '%"></div>';
+}
 function decorateMission() {
   const main = document.getElementById('missionMain');
   if(!main) return;
   const headEl = main.querySelector(':scope > .mission-header');
   if(headEl) {
     const ti = state.currentTeam;
-    if(!headEl.querySelector('.m-scene') || headEl.dataset.team !== String(ti)) {
+    const key = sceneKey(state.currentMission, ti);
+    if(!headEl.querySelector('.m-scene') || headEl.dataset.scene !== key) {
       const old = headEl.querySelector('.m-scene'); if(old) old.remove();
-      headEl.insertAdjacentHTML('afterbegin', missionSceneSVG(ti));
-      headEl.dataset.team = String(ti);
+      headEl.insertAdjacentHTML('afterbegin', missionScenePhoto(key));
+      headEl.dataset.scene = key;
+      headEl.style.setProperty('--isl-c', (ISLANDS[ti] || ISLANDS[0]).color);
       headEl.classList.add('has-scene');
     }
     const sh = missionStepperHTML(main);
