@@ -930,6 +930,14 @@ body:not(.dark) .wm-land { fill:color-mix(in srgb, var(--isl) 40%, #f1e6c8); }
 body:not(.dark) .lobby-map, body:not(.dark) .td-map, body:not(.dark) .map-ov-body { background:#dcefec; }
 body:not(.dark) .wm-token circle { fill:#ffffff; }
 
+
+/* 첫 화면: 넓은 화면에서는 소개(왼쪽)와 접속(오른쪽)을 나란히 */
+.login-wrap { text-align:center; z-index:1; padding:2rem; max-width:480px; width:100%; }
+@media (min-width: 820px) {
+  .login-wrap { max-width:1000px; display:grid; grid-template-columns:1fr 1fr; gap:2.5rem; align-items:center; }
+  .login-left, .login-right { min-width:0; }
+  #screen-login { overflow-y:auto; }
+}
 </style>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -984,7 +992,8 @@ function toggleTheme() {
 
 <div id="screen-login" class="screen active" style="align-items:center;justify-content:center;
   background:radial-gradient(ellipse at 50% 0%,rgba(249,115,22,.15) 0%,transparent 60%),var(--bg);">
-  <div style="text-align:center;z-index:1;padding:2rem;max-width:480px;width:100%;">
+  <div class="login-wrap">
+  <div class="login-left">
     <div class="sos-badge">🆘 SOS: SECURE OUR SURVIVAL</div>
 
 <!-- 앱 소개 (처음 보는 사람용) -->
@@ -1007,6 +1016,8 @@ function toggleTheme() {
     </ol>
   </details>
 </div>
+  </div>
+  <div class="login-right">
 
     <div class="intro-step">접속하기 · 방 번호와 섬을 고르세요</div>
 
@@ -1075,6 +1086,7 @@ function toggleTheme() {
 </button>
 <div class="intro-foot">Grammar SOS · 2026 SNU TEIC AIED Challenge 출품작 · 학생 이름과 개인정보는 저장하지 않아요<span class="demo-exit"> · <a href="./">체험 끝내기</a></span><span class="teacher-link"> · <a href="#" onclick="openTeacherLogin(); return false;">선생님 접속</a></span></div>
 
+  </div>
   </div>
 </div>
 
@@ -6438,7 +6450,7 @@ function logHardItems(list) {
 }
 
 // 교사 대시보드 맨 위: 지금 볼 것 (여러 모둠이 틀린 표현, 막힌 모둠)
-// 도움이 필요한 모둠: 지금 미션에서 2번 이상 틀렸거나 힌트를 3개 이상 연 모둠
+// 도움이 필요한 모둠: 지금 미션에서 2번 이상 틀린 모둠 (힌트는 답을 맞힌 뒤에도 열어 볼 수 있어 기준에서 뺌)
 function teamNeedsHelp(i) {
   const m = state.teamMission[i] || 1;
   if(((state.completedMission || [])[i] || 0) >= m) return null;
@@ -6446,13 +6458,13 @@ function teamNeedsHelp(i) {
   const wrong = all.filter(e => e.team === i && e.m === m && e.ok === false).length;
   const hk = Object.keys(HINT_MISSION_ID).find(k => HINT_MISSION_ID[k] === m);
   const hints = hk ? hintCount(hk, i) : 0;
-  return (wrong >= 2 || hints >= 3) ? { i, m, wrong, hints } : { i, m, wrong, hints, ok: true };
+  return (wrong >= 2) ? { i, m, wrong, hints } : { i, m, wrong, hints, ok: true };
 }
 function renderTeacherFocus() {
   const box = document.getElementById('tdFocus');
   if(!box) return;
   const stuck = ISLANDS.map((_, i) => teamNeedsHelp(i)).filter(x => x && !x.ok)
-    .sort((a, b) => (b.wrong + b.hints) - (a.wrong + a.hints));
+    .sort((a, b) => (b.wrong - a.wrong) || (b.hints - a.hints));
   const hard = logHardItems(logEntries()).filter(g => g.teams.size >= 2);
   const stuckHtml = stuck.length ? stuck.map(x => '<button class="tdf-team" onclick="tdViewTeam(' + x.i + ')" style="--isl:' + ISLANDS[x.i].color + '">'
       + '<b>' + ISLANDS[x.i].emoji + ' ' + (x.i + 1) + '모둠</b><span>' + escHTML(LOG_MISSION_LABEL[x.m] || '')
