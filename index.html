@@ -1005,6 +1005,23 @@ body.site-demo:has(#screen-login.active) .demo-exit { display:none; }
 .mission-num { font-family:'Noto Sans KR',sans-serif; font-weight:500; letter-spacing:.02em; font-size:.82rem; }
 .mission-situation strong { font-family:'Noto Sans KR',sans-serif; font-weight:700; }
 .wh-prompt .blank { font-family:'Noto Sans KR',sans-serif; font-weight:700; }
+
+/* 수집 배지 (탐험 경로) */
+.sml-title { display:flex; align-items:center; justify-content:space-between; gap:.4rem; }
+.sml-badges { font-size:.74rem; font-weight:700; color:var(--accent2); background:color-mix(in srgb, var(--accent2) 12%, transparent); border-radius:999px; padding:.1rem .5rem; }
+.rt-done .rt-dot { fill:color-mix(in srgb, var(--accent2) 16%, var(--surface)); stroke:var(--accent2); stroke-width:2; }
+.rt-done .rt-emoji { font-size:16px; fill:initial; font-weight:400; }
+.rt-tick-bg { fill:var(--accent2); }
+.rt-tick { fill:#fff; font-size:9px; font-weight:700; font-family:'Noto Sans KR',sans-serif; }
+.rt-next .rt-dot { fill:rgba(var(--line-rgb),.07); stroke:rgba(var(--line-rgb),.35); stroke-dasharray:3 3; }
+.rt-q { font-size:15px; font-weight:700; fill:rgba(var(--line-rgb),.55); font-family:'Noto Sans KR',sans-serif; }
+.rt-next .rt-label { fill:rgba(var(--line-rgb),.5); letter-spacing:.1em; }
+.rs-next { border-style:dashed; color:rgba(var(--line-rgb),.6); font-weight:700; background:rgba(var(--line-rgb),.06); }
+.rs-done { background:color-mix(in srgb, var(--accent2) 16%, var(--surface)); }
+@media (prefers-reduced-motion: no-preference) {
+  .rt-new { animation:badgeGet .9s cubic-bezier(.2,1.6,.4,1) both; transform-box:fill-box; transform-origin:center; }
+  @keyframes badgeGet { 0% { transform:scale(.3) rotate(-25deg); opacity:0; } 60% { transform:scale(1.25) rotate(6deg); opacity:1; } 100% { transform:scale(1) rotate(0); } }
+}
 </style>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -3026,6 +3043,9 @@ function renderSidebar(teamNum) {
   // mission list
   const sml = document.getElementById('smlList');
   sml.innerHTML = routeMapSVG(teamNum-1);
+  const got = MISSIONS.filter((m, k) => routeStatus(teamNum-1, k) === 'done').length;
+  const st = document.querySelector('.sml-title');
+  if(st) st.innerHTML = '🗺️ 탐험 경로 <span class="sml-badges">배지 ' + got + ' / ' + MISSIONS.length + '</span>';
 }
 
 
@@ -3142,12 +3162,20 @@ function routeMapSVG(ti) {
     const cls = a.st === 'done' ? 'rt-line done' : 'rt-line';
     path += '<path class="' + cls + '" d="M' + a.x.toFixed(1) + ',' + a.y + ' C' + a.x.toFixed(1) + ',' + my + ' ' + b.x.toFixed(1) + ',' + my + ' ' + b.x.toFixed(1) + ',' + b.y + '"/>';
   }
+  // 수집 배지: 끝낸 미션은 그림 배지로 채워지고, 아직 안 간 곳은 '?' 실루엣으로 가려 둔다
+  const doneCount = nodes.filter(n => n.st === 'done').length;
+  const prevCount = (window.__badgeSeen || {})[ti];
+  (window.__badgeSeen = window.__badgeSeen || {})[ti] = doneCount;
   const dots = nodes.map(n => {
-    const label = n.m.name;
-    return '<g class="rt-node rt-' + n.st + '">'
-      + (n.st === 'cur' ? '<circle class="rt-halo" cx="' + n.x.toFixed(1) + '" cy="' + n.y + '" r="22"/>' : '')
-      + '<circle class="rt-dot" cx="' + n.x.toFixed(1) + '" cy="' + n.y + '" r="16"/>'
-      + '<text class="rt-emoji" x="' + n.x.toFixed(1) + '" y="' + n.y + '" text-anchor="middle" dominant-baseline="central">' + (n.st === 'done' ? '✓' : n.m.emoji) + '</text>'
+    const hidden = n.st === 'next';
+    const label = hidden ? '? ? ?' : n.m.name;
+    const isNew = n.st === 'done' && prevCount != null && n.k === doneCount - 1 && doneCount > prevCount;
+    const x = n.x.toFixed(1);
+    return '<g class="rt-node rt-' + n.st + (isNew ? ' rt-new' : '') + '"><title>' + escHTML(n.m.name) + '</title>'
+      + (n.st === 'cur' ? '<circle class="rt-halo" cx="' + x + '" cy="' + n.y + '" r="22"/>' : '')
+      + '<circle class="rt-dot" cx="' + x + '" cy="' + n.y + '" r="16"/>'
+      + '<text class="' + (hidden ? 'rt-q' : 'rt-emoji') + '" x="' + x + '" y="' + n.y + '" text-anchor="middle" dominant-baseline="central">' + (hidden ? '?' : n.m.emoji) + '</text>'
+      + (n.st === 'done' ? '<circle class="rt-tick-bg" cx="' + (n.x + 12).toFixed(1) + '" cy="' + (n.y - 12) + '" r="7"/><text class="rt-tick" x="' + (n.x + 12).toFixed(1) + '" y="' + (n.y - 12) + '" text-anchor="middle" dominant-baseline="central">✓</text>' : '')
       + '<text class="rt-label" x="' + (n.x + 28).toFixed(1) + '" y="' + (n.y + 4.5) + '">' + escHTML(label) + '</text>'
       + (n.st === 'cur' ? '<text class="rt-here" x="' + (n.x + 28).toFixed(1) + '" y="' + (n.y + 19) + '">지금 여기</text>' : '')
       + '</g>';
@@ -3161,7 +3189,7 @@ function routeStripHTML(ti) {
   if(!(ti >= 0)) return '';
   return '<div class="route-strip" aria-label="탐험 경로">' + MISSIONS.map((m, k) => {
     const st = routeStatus(ti, k);
-    return '<span class="rs-dot rs-' + st + '" title="' + escHTML(m.name) + '">' + (st === 'done' ? '✓' : m.emoji) + '</span>';
+    return '<span class="rs-dot rs-' + st + '" title="' + escHTML(st === 'next' ? '아직 모르는 곳' : m.name) + '">' + (st === 'next' ? '?' : m.emoji) + '</span>';
   }).join('<span class="rs-line"></span>') + '</div>';
 }
 
