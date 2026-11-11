@@ -938,6 +938,15 @@ body:not(.dark) .wm-token circle { fill:#ffffff; }
   .login-left, .login-right { min-width:0; }
   #screen-login { overflow-y:auto; }
 }
+
+/* 사이트별로 보이는 것 */
+.only-teacher { display:none; }
+body.site-teacher .only-teacher { display:inline; }
+body.site-teacher .only-student { display:none; }
+body.site-student .intro-demo, body.site-student .teacher-link, body.site-student #teacherLoginBox { display:none !important; }
+body.site-teacher .intro-demo, body.site-teacher .teacher-link, body.site-teacher #islandCard { display:none !important; }
+body.site-teacher #teacherLoginBox { display:block !important; }
+body.site-demo:has(#screen-login.active) .demo-exit { display:none; }
 </style>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -985,6 +994,14 @@ function toggleTheme() {
   if(b) { b.textContent = dark ? '☀️ 밝게' : '🌙 어둡게'; b.setAttribute('aria-pressed', String(dark)); }
 }
 </script>
+<script>
+// 사이트 셋으로 나눔: 학생(기본 주소) · 체험(?demo=1) · 교사(?teacher=1)
+window.GSOS_SITE = (function(){ const q = new URLSearchParams(location.search);
+  if(q.get('demo') === '1') return 'demo';
+  if(q.has('teacher')) return 'teacher';
+  return 'student'; })();
+document.body.classList.add('site-' + window.GSOS_SITE);
+</script>
 <button id="themeBtn" class="theme-btn" onclick="toggleTheme()" aria-pressed="false" title="화면 밝기 바꾸기">🌙 어둡게</button>
 <script>(function(){ const b=document.getElementById('themeBtn'); if(document.body.classList.contains('dark')) { b.textContent='☀️ 밝게'; b.setAttribute('aria-pressed','true'); } })();</script>
 
@@ -1019,7 +1036,7 @@ function toggleTheme() {
   </div>
   <div class="login-right">
 
-    <div class="intro-step">접속하기 · 방 번호와 섬을 고르세요</div>
+    <div class="intro-step"><span class="only-student">접속하기 · 방 번호와 섬을 고르세요</span><span class="only-teacher">선생님 접속 · PIN을 확인하고 방 번호를 고르세요</span></div>
 
 <!-- 체험 모드 안내 (?demo=1일 때만) -->
 <div id="demoPanel" class="demo-panel">
@@ -1041,7 +1058,7 @@ function toggleTheme() {
 </div>
 
 <!-- 섬 선택 (학생용) -->
-<div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem;text-align:left;">
+<div id="islandCard" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem;text-align:left;">
   <div style="font-size:.86rem;color:var(--text2);margin-bottom:.6rem;">🏝️ 우리 모둠 섬</div>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;">
     <button onclick="selectRole('volcano')" id="roleBtn-volcano" class="role-btn">
@@ -5057,6 +5074,9 @@ updateLoginBtn();
 }
 
 function selectRole(role) {
+// 교사 사이트에서는 교사로만, 학생 사이트에서는 섬(모둠)으로만 접속한다
+if(window.GSOS_SITE === 'student' && role === 'teacher') return;
+if(window.GSOS_SITE === 'teacher' && role !== 'teacher') return;
 if(role === 'teacher' && !teacherVerified()) { openTeacherLogin(); return; }
 myRole = role;
 updateSelectionVisuals();
@@ -6912,6 +6932,7 @@ function teacherMarkVerified() {
   try { sessionStorage.setItem(TEACHER_OK_KEY, TEACHER_PIN_HASH.slice(0, 16)); } catch(e) {}
 }
 function openTeacherLogin() {
+  if(window.GSOS_SITE !== 'teacher') return;
   const box = document.getElementById('teacherLoginBox');
   if(!box) return;
   box.style.display = 'block';
