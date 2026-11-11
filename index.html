@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Grammar SOS</title>
 <script src="https://www.youtube.com/iframe_api"></script>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&family=Do+Hyeon&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@400;500;700&family=Do+Hyeon&display=swap" rel="stylesheet">
 <style>
 :root {
   /* 밝은 해도 (기본): 모래빛 종이(bg) · 흰 카드(surface) · 진한 금빛 제목(sand) · 주황(accent) · 청록(accent2)
@@ -39,7 +39,7 @@ body.dark {
 }
 html { font-size: 17px; } /* 본문·버튼 글자 한 단계 크게 */
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Noto Sans KR','Space Mono',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; word-break:keep-all; }
+body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; word-break:keep-all; }
 .screen { display:none; min-height:100vh; flex-direction:column; }
 .screen.active { display:flex; }
 /* 해도의 위도·경도 격자 */
@@ -136,9 +136,9 @@ body.demo .teacher-link { display:none; }
 .btn-primary { background:var(--accent); color:#fff; font-size:1.3rem; letter-spacing:.15em; padding:.85rem 2.5rem; }
 .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(249,115,22,.4); }
 .btn-primary:active { transform:translateY(0); }
-.btn-secondary { background:transparent; color:var(--text2); border:1px solid var(--border); font-family:'Space Mono',monospace; font-size:.84rem; letter-spacing:.08em; padding:.55rem 1.4rem; border-radius:4px; cursor:pointer; transition:all .2s; margin-top:.75rem; }
+.btn-secondary { background:transparent; color:var(--text2); border:1px solid var(--border); font-family:'Noto Sans KR',sans-serif; font-size:.84rem; letter-spacing:.08em; padding:.55rem 1.4rem; border-radius:4px; cursor:pointer; transition:all .2s; margin-top:.75rem; }
 .btn-secondary:hover { border-color:var(--text3); color:var(--text); }
-.btn-ghost { background:transparent; color:var(--text3); border:1px solid var(--border); font-family:'Space Mono',monospace; font-size:.8rem; padding:.4rem .8rem; border-radius:4px; cursor:pointer; transition:all .2s; }
+.btn-ghost { background:transparent; color:var(--text3); border:1px solid var(--border); font-family:'Noto Sans KR',sans-serif; font-size:.8rem; padding:.4rem .8rem; border-radius:4px; cursor:pointer; transition:all .2s; }
 .btn-ghost:hover { color:var(--text); border-color:var(--text3); }
 
 /* ── LOBBY ── */
@@ -207,7 +207,7 @@ line-height:1.7;
 color:var(--text2);
 font-family:'Noto Sans KR',sans-serif;
 }
-.mission-situation strong { color:var(--accent); font-family:'Space Mono',monospace; }
+.mission-situation strong { color:var(--accent); font-family:'Noto Sans KR',sans-serif; }
 
 /* STEP SYSTEM */
 .step { display:none; }
@@ -218,7 +218,7 @@ font-family:'Noto Sans KR',sans-serif;
 /* STEP 1: 의문사 선택 */
 .step-label { font-size:.82rem; color:var(--text3); letter-spacing:.15em; text-transform:uppercase; margin-bottom:1rem; }
 .wh-prompt { font-size:1.1rem; color:var(--text2); margin-bottom:1.5rem; font-family:'Noto Sans KR',sans-serif; line-height:1.8; }
-.wh-prompt .blank { display:inline-block; background:rgba(249,115,22,.15); border:1px dashed var(--accent); border-radius:4px; padding:.1rem .8rem; min-width:80px; text-align:center; color:var(--accent); font-family:'Space Mono',monospace; font-size:1rem; vertical-align:middle; }
+.wh-prompt .blank { display:inline-block; background:rgba(249,115,22,.15); border:1px dashed var(--accent); border-radius:4px; padding:.1rem .8rem; min-width:80px; text-align:center; color:var(--accent); font-family:'Noto Sans KR',sans-serif; font-size:1rem; vertical-align:middle; }
 .wh-cards { display:flex; gap:.85rem; flex-wrap:wrap; margin-bottom:1.5rem; }
 .wh-card {
 background:var(--surface);
@@ -263,7 +263,7 @@ text-align:left;
 .choice-btn:hover .choice-letter, .choice-btn.chosen .choice-letter { color:var(--accent2); }
 .choice-text { flex:1; }
 .choice-main { font-size:1rem; color:var(--text); font-family:'Noto Sans KR',sans-serif; }
-.choice-sub { font-size:.84rem; color:var(--text3); margin-top:.2rem; font-family:'Space Mono',monospace; }
+.choice-sub { font-size:.84rem; color:var(--text3); margin-top:.2rem; font-family:'Noto Sans KR',sans-serif; }
 
 /* STEP 3: 결과 */
 .result-box { text-align:center; padding:2rem 1.5rem; background:linear-gradient(180deg, var(--surface) 0%, rgba(var(--deep-rgb),.6) 100%); border:1px solid var(--border); border-radius:16px; max-width:640px; margin:0 auto; position:relative; }
@@ -280,7 +280,7 @@ text-align:left;
 /* TEAM SELECTOR */
 .team-selector { background:var(--surface); border-bottom:1px solid var(--border); padding:.75rem 1.5rem; display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; position:sticky; top:0; z-index:50; }
 .ts-label { font-size:.76rem; color:var(--text3); letter-spacing:.1em; text-transform:uppercase; }
-.ts-btn { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:.3rem .7rem; font-size:.84rem; font-family:'Space Mono',monospace; color:var(--text3); cursor:pointer; transition:all .2s; }
+.ts-btn { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:.3rem .7rem; font-size:.84rem; font-family:'Noto Sans KR',sans-serif; color:var(--text3); cursor:pointer; transition:all .2s; }
 .ts-btn:hover { border-color:var(--text3); color:var(--text); }
 .ts-btn.active { border-color:var(--btn-color,var(--accent)); color:var(--btn-color,var(--accent)); background:rgba(var(--ink-rgb),.03); }
 
@@ -288,7 +288,7 @@ text-align:left;
 .hint-box { margin:.75rem 0 1rem; display:flex; flex-direction:column; gap:.4rem; align-items:flex-start; }
 .hint-btn { background:rgba(250,204,21,.1); border:1px solid rgba(250,204,21,.4); color:var(--t-yellow); border-radius:6px; padding:.45rem .9rem; font-size:.9rem; font-family:'Noto Sans KR',sans-serif; cursor:pointer; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
 .hint-btn:hover { background:rgba(250,204,21,.18); }
-.hint-count { font-family:'Space Mono',monospace; font-size:.8rem; opacity:.75; margin-left:.25rem; }
+.hint-count { font-family:'Noto Sans KR',sans-serif; font-size:.8rem; opacity:.75; margin-left:.25rem; }
 .hint-item { display:flex; gap:.55rem; align-items:flex-start; width:100%; box-sizing:border-box; background:rgba(250,204,21,.06); border-left:3px solid #facc15; border-radius:4px; padding:.5rem .75rem; font-size:.92rem; line-height:1.65; color:var(--text2); font-family:'Noto Sans KR',sans-serif; }
 .hint-item strong { color:var(--text); }
 .hint-num { flex-shrink:0; width:1.25rem; height:1.25rem; border-radius:50%; background:#facc15; color:#111; font-size:.8rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-top:.1rem; }
@@ -341,7 +341,7 @@ text-align:left;
 .gen-card-btns { display:flex; gap:.35rem; flex-wrap:nowrap; flex-shrink:0; }
 .gen-card-btns .log-btn, .gen-card-btns .gen-check { white-space:nowrap; }
 .gen-edit-btn { align-self:flex-start; background:transparent; border:1px solid var(--accent2); color:var(--accent2); border-radius:6px; padding:.35rem .8rem; font-size:.86rem; cursor:pointer; font-family:'Noto Sans KR',sans-serif; }
-.gen-tpl { margin:.5rem 0; padding:.5rem .65rem; border-left:3px solid var(--accent2); background:var(--surface2); border-radius:4px; font-family:'Space Mono',monospace; font-size:.82rem; line-height:1.7; }
+.gen-tpl { margin:.5rem 0; padding:.5rem .65rem; border-left:3px solid var(--accent2); background:var(--surface2); border-radius:4px; font-family:'Noto Sans KR',sans-serif; font-size:.82rem; line-height:1.7; }
 .gen-tpl small { display:block; font-family:'Noto Sans KR',sans-serif; color:var(--text2); }
 .gen-modal { position:fixed; inset:0; z-index:600; background:rgba(0,0,0,.45); display:flex; align-items:center; justify-content:center; padding:1rem; }
 .gen-modal-box { width:min(680px,100%); max-height:calc(100vh - 2rem); overflow:auto; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1rem 1.1rem; display:flex; flex-direction:column; gap:.7rem; box-shadow:0 20px 50px rgba(0,0,0,.35); }
@@ -357,7 +357,7 @@ text-align:left;
 .gen-sum { font-size:.88rem; line-height:1.65; color:var(--text); word-break:break-word; }
 .gen-sum small { color:var(--text3); }
 .gen-sum u { color:var(--accent2); text-decoration-thickness:2px; }
-.gen-pill { display:inline-block; border:1px solid rgba(79,209,197,.35); border-radius:10px; padding:0 .45rem; margin:.1rem 0; font-size:.8rem; font-family:'Space Mono',monospace; color:var(--text2); }
+.gen-pill { display:inline-block; border:1px solid rgba(79,209,197,.35); border-radius:10px; padding:0 .45rem; margin:.1rem 0; font-size:.8rem; font-family:'Noto Sans KR',sans-serif; color:var(--text2); }
 .gen-pill.trap { border-color:rgba(239,68,68,.45); color:var(--t-red); }
 .gen-edit summary { cursor:pointer; font-size:.84rem; color:var(--accent2); margin:.2rem 0; }
 .gen-edit[open] { display:flex; flex-direction:column; gap:.55rem; }
@@ -365,7 +365,7 @@ text-align:left;
 /* 응답 기록 (교사) */
 .log-head { display:flex; align-items:center; flex-wrap:wrap; gap:.5rem; padding:.75rem 1rem; background:var(--surface); border-bottom:1px solid var(--border); flex-shrink:0; }
 .log-title { font-family:'Bebas Neue','Do Hyeon',sans-serif; font-size:1.1rem; letter-spacing:.08em; color:var(--t-yellow); flex:1; white-space:nowrap; }
-.log-count { font-family:'Space Mono',monospace; font-size:.82rem; color:var(--text3); letter-spacing:0; margin-left:.35rem; }
+.log-count { font-family:'Noto Sans KR',sans-serif; font-size:.82rem; color:var(--text3); letter-spacing:0; margin-left:.35rem; }
 .log-select { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:.3rem .5rem; font-size:.84rem; color:var(--text); }
 .log-btn { background:rgba(250,204,21,.1); border:1px solid rgba(250,204,21,.35); border-radius:4px; padding:.3rem .75rem; font-size:.84rem; color:var(--t-yellow); cursor:pointer; white-space:nowrap; }
 .log-close { background:rgba(239,68,68,.12); border-color:rgba(239,68,68,.25); color:var(--danger); }
@@ -380,7 +380,7 @@ text-align:left;
 .log-rate { font-size:.8rem; color:var(--danger); }
 .log-item { font-size:.9rem; color:var(--text); line-height:1.5; }
 .log-wrongs { display:flex; flex-wrap:wrap; gap:.3rem; }
-.log-wrong { background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.25); border-radius:10px; padding:.1rem .5rem; font-size:.84rem; color:var(--t-red); font-family:'Space Mono',monospace; }
+.log-wrong { background:rgba(239,68,68,.08); border:1px solid rgba(239,68,68,.25); border-radius:10px; padding:.1rem .5rem; font-size:.84rem; color:var(--t-red); font-family:'Noto Sans KR',sans-serif; }
 .log-wrong b { color:var(--text); font-weight:700; }
 .log-draft { border-left:3px solid rgba(168,85,247,.5); padding:.25rem 0 .25rem .6rem; }
 .log-draft-head { font-size:.76rem; color:var(--t-violet2); }
@@ -390,7 +390,7 @@ text-align:left;
 .log-table th { text-align:left; background:var(--surface); color:var(--text3); font-weight:600; padding:.45rem .55rem; border-bottom:1px solid var(--border); white-space:nowrap; }
 .log-table td { padding:.4rem .55rem; border-bottom:1px solid rgba(var(--ink-rgb),.05); vertical-align:top; white-space:nowrap; }
 .log-table td.log-wrap { white-space:normal; word-break:break-word; max-width:280px; }
-.log-ans { font-family:'Space Mono',monospace; color:var(--text); }
+.log-ans { font-family:'Noto Sans KR',sans-serif; color:var(--text); }
 .log-note { font-family:'Noto Sans KR',sans-serif; font-size:.74rem; color:var(--text3); margin-top:.1rem; }
 .log-empty { font-size:.88rem; color:var(--text3); padding:.5rem 0; }
 .log-foot { font-size:.8rem; color:var(--text3); margin-top:1rem; line-height:1.6; }
@@ -408,12 +408,12 @@ text-align:left;
 .ai-sec-title { font-size:.82rem; color:var(--t-violet2); letter-spacing:.05em; margin-bottom:.3rem; }
 .ai-text { font-size:.95rem; color:var(--text); line-height:1.65; }
 .ai-chips { display:flex; flex-wrap:wrap; gap:.35rem; }
-.ai-chip { background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.35); color:var(--t-green); border-radius:12px; padding:.15rem .6rem; font-size:.88rem; font-family:'Space Mono',monospace; }
+.ai-chip { background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.35); color:var(--t-green); border-radius:12px; padding:.15rem .6rem; font-size:.88rem; font-family:'Noto Sans KR',sans-serif; }
 .ai-fix { background:rgba(var(--ink-rgb),.03); border-radius:6px; padding:.5rem .65rem; margin-bottom:.35rem; font-size:.92rem; line-height:1.6; }
-.ai-old { color:var(--t-red); text-decoration:line-through; text-decoration-color:rgba(248,113,113,.6); font-family:'Space Mono',monospace; }
-.ai-new { color:var(--t-green); font-family:'Space Mono',monospace; }
+.ai-old { color:var(--t-red); text-decoration:line-through; text-decoration-color:rgba(248,113,113,.6); font-family:'Noto Sans KR',sans-serif; }
+.ai-new { color:var(--t-green); font-family:'Noto Sans KR',sans-serif; }
 .ai-why { font-size:.88rem; color:var(--text2); margin-top:.15rem; }
-.ai-mark { color:var(--t-yellow); font-family:'Space Mono',monospace; text-decoration:underline wavy rgba(251,191,36,.7); text-underline-offset:3px; }
+.ai-mark { color:var(--t-yellow); font-family:'Noto Sans KR',sans-serif; text-decoration:underline wavy rgba(251,191,36,.7); text-underline-offset:3px; }
 .ai-ask { font-size:.9rem; color:var(--text); margin-top:.3rem; }
 .ai-head { display:flex; justify-content:space-between; flex-wrap:wrap; gap:.25rem .75rem; font-size:.78rem; color:var(--t-violet); border-bottom:1px solid rgba(168,85,247,.2); padding-bottom:.45rem; }
 .ai-head span + span { color:var(--text3); }
@@ -443,7 +443,7 @@ background:rgba(249,115,22,.12);
 border:1px solid rgba(249,115,22,.3);
 border-radius:6px;
 padding:.4rem .8rem;
-font-family:'Space Mono',monospace;
+font-family:'Noto Sans KR',sans-serif;
 font-size:.96rem;
 color:var(--accent);
 cursor:pointer;
@@ -528,7 +528,7 @@ background: rgba(79,209,197,.12);
 border: 1px solid rgba(79,209,197,.3);
 border-radius: 6px;
 padding: .3rem .7rem;
-font-family: 'Space Mono', monospace;
+font-family:'Noto Sans KR',sans-serif;
 font-size: .92rem;
 color: var(--accent2);
 white-space: nowrap;
@@ -550,7 +550,7 @@ background: var(--surface);
 border: 1px solid var(--border);
 border-radius: 6px;
 padding: .6rem 1rem;
-font-family: 'Space Mono', monospace;
+font-family:'Noto Sans KR',sans-serif;
 font-size: .96rem;
 color: var(--text);
 outline: none;
@@ -587,7 +587,7 @@ transition: all .25s;
 .m4-btns { display: flex; gap: .5rem; }
 .m4-ox-btn {
 border: none; border-radius: 6px; padding: .4rem 1.2rem;
-font-family: 'Space Mono', monospace; font-size: .92rem;
+font-family:'Noto Sans KR',sans-serif; font-size: .92rem;
 cursor: pointer; transition: all .2s;
 }
 .m4-o { background: rgba(34,197,94,.15); color: var(--success); border: 1px solid rgba(34,197,94,.3); }
@@ -634,7 +634,7 @@ padding: .35rem .75rem;
 font-size: .88rem;
 color: var(--text3);
 backdrop-filter: blur(8px);
-font-family: 'Space Mono', monospace;
+font-family:'Noto Sans KR',sans-serif;
 }
 
 
@@ -643,7 +643,7 @@ font-family: 'Space Mono', monospace;
    - 한글 제목은 Black Han Sans(표지판 같은 굵은 글씨), 본문은 Noto Sans KR, 영어 숫자·코인은 Bebas Neue
    - 한글 라벨은 대문자·자간 늘림을 쓰지 않는다 */
 .mission-title { font-family:var(--kr-display); font-weight:400; font-size:2.1rem; letter-spacing:0; line-height:1.2; }
-.mission-num { font-family:'Space Mono',monospace; font-size:.8rem; letter-spacing:.06em; text-transform:none; color:var(--text3); }
+.mission-num { font-family:'Noto Sans KR',sans-serif; font-size:.8rem; letter-spacing:.06em; text-transform:none; color:var(--text3); }
 .step-label { font-size:.9rem; letter-spacing:0; text-transform:none; color:var(--text2); font-weight:700; }
 .sml-title, .sidebar-coin-label, .sidebar-items-label, .lobby-sub { letter-spacing:0; text-transform:none; font-size:.82rem; color:var(--text2); font-weight:500; }
 .sidebar-island-name { font-family:var(--kr-display); font-size:1.35rem; letter-spacing:0; }
@@ -703,7 +703,7 @@ font-family: 'Space Mono', monospace;
 .wm-island:focus { outline:none; }
 .wm-compass circle { fill:none; stroke:rgba(var(--line-rgb),.3); }
 .wm-compass path { fill:rgba(var(--line-rgb),.45); }
-.wm-compass text { fill:rgba(var(--line-rgb),.55); font-size:13px; font-family:'Space Mono',monospace; }
+.wm-compass text { fill:rgba(var(--line-rgb),.55); font-size:13px; font-family:'Noto Sans KR',sans-serif; }
 .wm-legend { display:flex; flex-wrap:wrap; gap:.4rem 1.1rem; justify-content:center; font-size:.84rem; color:var(--text2); margin-top:.5rem; }
 .wm-legend .lg { display:inline-block; width:.7rem; height:.7rem; border-radius:50%; margin-right:.35rem; vertical-align:-.05rem; }
 .lg-done { background:var(--accent2); } .lg-cur { background:var(--accent); } .lg-next { border:1.5px solid rgba(var(--line-rgb),.5); }
@@ -783,7 +783,7 @@ font-family: 'Space Mono', monospace;
 .wu-quote { margin:0 0 .9rem; background:var(--surface); border-left:4px solid var(--accent2); border-radius:0 12px 12px 0; padding:1rem 1.2rem; font-size:1.35rem; line-height:1.7; color:var(--text); }
 .wu-quote mark { background:rgba(255,122,26,.22); color:var(--t-orange); border-radius:4px; padding:0 .15rem; }
 .wu-chips { display:flex; flex-wrap:wrap; gap:.5rem; }
-.wu-chip { background:rgba(79,209,197,.1); border:1px solid rgba(79,209,197,.35); border-radius:999px; padding:.3rem .9rem; font-size:1.1rem; color:var(--text); font-family:'Space Mono',monospace; }
+.wu-chip { background:rgba(79,209,197,.1); border:1px solid rgba(79,209,197,.35); border-radius:999px; padding:.3rem .9rem; font-size:1.1rem; color:var(--text); font-family:'Noto Sans KR',sans-serif; }
 .wu-chip small { color:var(--accent2); font-family:'Noto Sans KR',sans-serif; }
 .wu-empty { color:var(--text3); font-size:1rem; padding:.4rem 0; }
 .wu-picker { border-top:1px solid var(--border); padding-top:.75rem; }
@@ -947,6 +947,64 @@ body.site-student .intro-demo, body.site-student .teacher-link, body.site-studen
 body.site-teacher .intro-demo, body.site-teacher .teacher-link, body.site-teacher #islandCard { display:none !important; }
 body.site-teacher #teacherLoginBox { display:block !important; }
 body.site-demo:has(#screen-login.active) .demo-exit { display:none; }
+
+
+/* ══════════ 디자인 정리 (11/11) ══════════
+   1) 떠 있는 버튼은 오른쪽 아래 도구 막대 하나로 모으고, 화면 아래에 그만큼 여백을 둔다
+   2) 교사 화면: 실행 버튼은 청록 한 색, 나머지는 회색 테두리. 빨강은 경고·지우기에만
+   3) 학생 미션 화면: 머리 장면·말풍선을 낮추고 사이드바는 경로만 남겨, 문제와 답이 한 화면에
+   4) 글꼴: 본문체(Noto Sans KR) + 한글 제목체(Do Hyeon), 로고·숫자만 Bebas Neue */
+
+/* 1. 도구 막대 */
+.util-dock { position:fixed; right:.75rem; bottom:.75rem; z-index:260; display:flex; align-items:center; gap:.4rem; pointer-events:none; }
+.util-dock > * { pointer-events:auto; }
+.util-dock .theme-btn { position:static; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+.util-dock #demoBadge { position:static; transform:none; }
+.dock-btn { background:var(--surface); color:var(--text2); border:1px solid var(--border); cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.08); font-family:'Noto Sans KR',sans-serif; }
+.dock-round { width:38px; height:38px; border-radius:50%; font-size:1.05rem; display:inline-flex; align-items:center; justify-content:center; padding:0; }
+.dock-accent { background:var(--accent); color:#fff; border-color:var(--accent); }
+.dock-btn:hover, .util-dock .theme-btn:hover { border-color:var(--accent2); }
+/* 도구 막대 높이만큼 화면 아래 여백 (마지막 줄이 가려지지 않게) */
+.mission-main, #screen-lobby, #screen-login, #screen-teacher > div[style*="overflow-y:auto"] { padding-bottom:4.5rem !important; }
+.mission-sidebar { padding-bottom:4.5rem; }
+@media (max-width:520px) {
+  .util-dock { right:.5rem; bottom:.5rem; gap:.3rem; }
+  .util-dock .theme-btn { position:static; top:auto; left:auto; }
+  .util-dock #demoBadge { font-size:.7rem; padding:.3rem .6rem; }
+  .dock-round { width:34px; height:34px; font-size:.95rem; }
+}
+
+/* 2. 교사 화면 색 위계 */
+.td-tbtn-wrap { color:var(--text); border-color:var(--border); font-weight:400; }
+.td-tbtn-set.on { background:var(--text); border-color:var(--text); color:var(--bg); }
+.td-apply, .td-apply-warm { background:var(--accent2); }
+.td-gen-btn { background:transparent; border:1px solid var(--accent2); color:var(--accent2); border-radius:6px; padding:.38rem .8rem; font-size:.86rem; }
+.td-lib-btn { border-radius:6px; padding:.38rem .7rem; }
+.td-lib-del { color:var(--danger); border-color:color-mix(in srgb, var(--danger) 35%, transparent); }
+.td-settings .td-set-note { color:var(--text3); }
+
+/* 3. 학생 미션 화면: 문제와 답이 한 화면에 */
+@media (min-width:769px) {
+  .mission-layout { grid-template-columns:236px 1fr; }
+  .mission-sidebar { padding:1rem .9rem 4.5rem; gap:.75rem; }
+  /* 섬·코인·가방은 위쪽 HUD에 이미 있으므로 사이드바에서는 경로만 */
+  .sidebar-island, .sidebar-coins, .sidebar-items { display:none; }
+  .mission-main { padding:1.25rem 1.75rem 4.5rem; }
+  .mission-main > * { max-width:880px; }
+}
+.mission-header.has-scene { padding:.8rem 1.1rem .75rem; margin-bottom:.8rem; border-radius:12px; }
+.mission-header.has-scene .mission-title { font-size:1.75rem; }
+.m-steps { margin-top:.5rem; }
+.bot-row { margin-bottom:1.1rem; gap:.7rem; }
+.sos-bot { width:40px; height:54px; }
+.bot-row > .mission-situation, .mission-situation { padding:.8rem 1.05rem; font-size:.93rem; line-height:1.65; }
+.step-label { margin-bottom:.7rem; }
+.wh-prompt { margin-bottom:1rem; }
+
+/* 4. 글꼴 */
+.mission-num { font-family:'Noto Sans KR',sans-serif; font-weight:500; letter-spacing:.02em; font-size:.82rem; }
+.mission-situation strong { font-family:'Noto Sans KR',sans-serif; font-weight:700; }
+.wh-prompt .blank { font-family:'Noto Sans KR',sans-serif; font-weight:700; }
 </style>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -1002,6 +1060,7 @@ window.GSOS_SITE = (function(){ const q = new URLSearchParams(location.search);
   return 'student'; })();
 document.body.classList.add('site-' + window.GSOS_SITE);
 </script>
+<div id="utilDock" class="util-dock"></div>
 <button id="themeBtn" class="theme-btn" onclick="toggleTheme()" aria-pressed="false" title="화면 밝기 바꾸기">🌙 어둡게</button>
 <script>(function(){ const b=document.getElementById('themeBtn'); if(document.body.classList.contains('dark')) { b.textContent='☀️ 밝게'; b.setAttribute('aria-pressed','true'); } })();</script>
 
@@ -2323,7 +2382,7 @@ function showWaitingForTeams(ti, toMission) {
         </div>
       </div>
       <div style="font-size:.88rem;color:var(--text3);font-family:\'Noto Sans KR\',sans-serif;margin-bottom:.75rem;">${done}/6 모둠 완료 — 모두 완료되면 자동으로 다음 미션이 시작돼요!</div>
-      <button onclick="inAppRefresh()" style="background:rgba(var(--ink-rgb),.07);border:1px solid rgba(var(--ink-rgb),.15);border-radius:8px;padding:.5rem 1.25rem;font-size:.9rem;color:var(--text2);cursor:pointer;font-family:'Space Mono',monospace;">🔄 현황 새로고침</button>
+      <button onclick="inAppRefresh()" style="background:rgba(var(--ink-rgb),.07);border:1px solid rgba(var(--ink-rgb),.15);border-radius:8px;padding:.5rem 1.25rem;font-size:.9rem;color:var(--text2);cursor:pointer;font-family:'Noto Sans KR',sans-serif;">🔄 현황 새로고침</button>
     </div>`;
 }
 
@@ -2577,7 +2636,7 @@ function renderMission3(teamNum) {
             const matchedStyle = matched ? 'opacity:.35;pointer-events:none;' : '';
             return '<div class="wh-card" style="min-width:unset;margin-bottom:.5rem;'+matchedStyle+'"'
               +' onclick="m3SelectVerb('+ti+','+jsArg(v.text)+','+jsArg(v.correct)+')">  '
-              +'<div style="font-family:monospace;font-size:.96rem;">'+v.text+'</div>'
+              +'<div style="font-family:Noto Sans KR,sans-serif;font-weight:700;font-size:1.02rem;">'+v.text+'</div>'
               +'</div>';
           }).join('')}
         </div>
@@ -2721,7 +2780,7 @@ function m3Pick(ti, idx){
         <div class="result-box">
           <span class="result-emoji">${base.emoji}</span>
           <div class="result-title">${base.title}</div>
-          <div style="font-size:.96rem;color:var(--accent2);margin:.25rem 0 .75rem;font-family:monospace;">${islandDesc}</div>
+          <div style="font-size:.96rem;color:var(--accent2);margin:.25rem 0 .75rem;font-family:'Noto Sans KR',sans-serif;">${islandDesc}</div>
           <div class="result-coin ${coinClass}">${coins>0?'+'+coins:coins} 🪙</div>
               ${roll===5?'<div class="result-item">'+ITEMS['lucky'].emoji+' '+ITEMS['lucky'].name+' 획득!</div>':''}
           <div class="result-desc">${base.desc}</div>
@@ -2782,7 +2841,7 @@ function renderMission2(teamNum) {
             draggable="true" ondragstart="m2DragStart(event,${jsArg(p)},${ti})"
             onclick="m2Click(${jsArg(p)},${ti})" id="m2p-${ti}-${i}"
             ${state.m2dropped[ti].includes(p)?'style="min-width:unset;padding:.55rem .9rem;cursor:grab;opacity:.3;pointer-events:none;"':''}>
-            <div style="font-family:monospace;font-size:.96rem;">${p}</div>
+            <div style="font-family:'Noto Sans KR',sans-serif;font-weight:700;font-size:1.02rem;">${p}</div>
           </div>
         `).join('')}
       </div>
@@ -3975,7 +4034,7 @@ function m3RestoreResult(ti) {
     <div class="result-box">
       <span class="result-emoji">${base.emoji}</span>
       <div class="result-title">${base.title}</div>
-      <div style="font-size:.96rem;color:var(--accent2);margin:.25rem 0 .75rem;font-family:monospace;">${islandDesc}</div>
+      <div style="font-size:.96rem;color:var(--accent2);margin:.25rem 0 .75rem;font-family:'Noto Sans KR',sans-serif;">${islandDesc}</div>
       <div class="result-coin ${coinClass}">${coins>0?'+'+coins:coins} 🪙</div>
       ${saved.roll===5?'<div class="result-item">'+ITEMS['lucky'].emoji+' '+ITEMS['lucky'].name+' 획득!</div>':''}
       <div class="result-desc">${base.desc}</div>
@@ -4038,11 +4097,11 @@ function renderMission5(teamNum) {
       </div>
 
       <div id="m5sentenceBox-${ti}" style="background:var(--surface);border:1px solid var(--accent);border-radius:8px;padding:1.25rem;margin-bottom:1rem;position:relative;">
-        <div style="font-size:1.04rem;color:var(--text);line-height:1.8;font-family:'Space Mono',monospace;">"${m5.sentence}"</div>
+        <div style="font-size:1.04rem;color:var(--text);line-height:1.8;font-family:'Noto Sans KR',sans-serif;">"${m5.sentence}"</div>
         <div style="font-size:.9rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">${m5.kr}</div>
         <div style="margin-top:.75rem;padding:.4rem .75rem;background:rgba(249,115,22,.1);border-radius:4px;display:inline-block;">
           <span style="font-size:.8rem;color:var(--text3);">핵심 표현: </span>
-          <span style="font-size:.92rem;color:var(--accent);font-family:'Space Mono',monospace;font-weight:700;">${G.m5.keyPrefix}${m5.key}</span>
+          <span style="font-size:.92rem;color:var(--accent);font-family:'Noto Sans KR',sans-serif;font-weight:700;">${G.m5.keyPrefix}${m5.key}</span>
         </div>
       </div>
 
@@ -4067,7 +4126,7 @@ function renderMission5(teamNum) {
       <div style="background:var(--surface);border:2px dashed var(--border);border-radius:8px;padding:1.5rem;text-align:center;margin-bottom:1rem;">
         <div style="font-size:.92rem;color:var(--text3);margin-bottom:.5rem;font-family:'Noto Sans KR',sans-serif;">문장이 가려졌어요! 기억나는 대로 발화하세요</div>
         <div style="font-family:'Bebas Neue','Do Hyeon',sans-serif;font-size:1.5rem;letter-spacing:.1em;color:var(--text3);">??? ??? ??? ??? ???</div>
-        <div style="font-size:.84rem;color:var(--accent);margin-top:.75rem;font-family:'Space Mono',monospace;">힌트: ${G.m5.keyPrefix}${m5.key}</div>
+        <div style="font-size:.84rem;color:var(--accent);margin-top:.75rem;font-family:'Noto Sans KR',sans-serif;">힌트: ${G.m5.keyPrefix}${m5.key}</div>
       </div>
       <div style="font-size:.92rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:1rem;background:var(--surface);border-radius:8px;padding:.85rem;">
         📢 <strong>발화 방법:</strong> 모둠원이 릴레이로 문장을 이어서 완성하세요!<br>
@@ -4176,7 +4235,7 @@ function m5RenderResult(ti, success) {
       </div>
       <div style="background:var(--surface);border-radius:8px;padding:.85rem;margin:.75rem 0;text-align:left;">
         <div style="font-size:.8rem;color:var(--text3);margin-bottom:.35rem;">정답 문장:</div>
-        <div style="font-size:.92rem;color:var(--accent2);font-family:'Space Mono',monospace;line-height:1.6;">"${m5.sentence}"</div>
+        <div style="font-size:.92rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;line-height:1.6;">"${m5.sentence}"</div>
       </div>
       <div style="display:flex;gap:.75rem;justify-content:center;">
         <button class="btn-ghost" onclick="showScreen('lobby')">← 로비로</button>
@@ -4278,7 +4337,7 @@ function renderMission6(teamNum) {
       </div>
       <div style="background:var(--surface);border-radius:8px;padding:1rem;margin-bottom:1rem;">
         <div style="font-size:.8rem;color:var(--text3);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.1em;">완성 대화:</div>
-        <div style="font-size:.94rem;color:var(--accent2);font-family:'Space Mono',monospace;line-height:2;">
+        <div style="font-size:.94rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;line-height:2;">
           <span style="color:${ISLANDS[MISSION6_PAIRS[ti].teamA].color};">${ISLANDS[MISSION6_PAIRS[ti].teamA].emoji}</span> "${m6.teamA_full}"<br>
           <span style="color:${ISLANDS[MISSION6_PAIRS[ti].teamB].color};">${ISLANDS[MISSION6_PAIRS[ti].teamB].emoji}</span> "${m6.teamB_full}"
         </div>
@@ -4316,7 +4375,7 @@ function m6renderTeamA(ti, m6) {
     <div class="step-label">STEP 1 · 조각을 올바른 순서로 배열하세요</div>
     <div style="background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:8px;padding:.75rem;margin-bottom:1rem;">
       <span style="font-size:.82rem;color:var(--accent);">주어진 문장: </span>
-      <span style="font-family:'Space Mono',monospace;font-size:.94rem;color:var(--text);">"${m6.teamA_given}"</span>
+      <span style="font-family:'Noto Sans KR',sans-serif;font-size:.94rem;color:var(--text);">"${m6.teamA_given}"</span>
     </div>
     <div style="font-size:.9rem;color:var(--text2);font-family:'Noto Sans KR',sans-serif;margin-bottom:.75rem;">
       👆 위 문장 뒤에 이어질 질문을 조각을 배열해서 완성하세요!
@@ -4334,7 +4393,7 @@ function m6renderTeamA(ti, m6) {
         const used=pc<=dc;
         return '<div class="wh-card" style="min-width:unset;padding:.45rem .75rem;cursor:grab;'+(used?'opacity:.3;pointer-events:none;':'')+'"'
           +' draggable="true" ondragstart="m6DragStartA(event,' +jsArg(p)+ ','+ti+')" onclick="m6ClickA(' +jsArg(p)+ ','+ti+')">'
-          +'<div style="font-family:Space Mono,monospace;font-size:.94rem;">'+p+'</div>'
+          +'<div style="font-family:Noto Sans KR,sans-serif;font-size:.94rem;">'+p+'</div>'
           +'</div>';
       }).join('')}
     </div>
@@ -4374,7 +4433,7 @@ function m6renderTeamB(ti, m6) {
         const used=pc<=dc;
         return '<div class="wh-card" style="min-width:unset;padding:.45rem .75rem;cursor:grab;'+(used?'opacity:.3;pointer-events:none;':'')+'"'
           +' draggable="true" ondragstart="m6DragStartB1(event,' +jsArg(p)+ ','+ti+')" onclick="m6ClickB1(' +jsArg(p)+ ','+ti+')">'
-          +'<div style="font-family:Space Mono,monospace;font-size:.94rem;">'+p+'</div>'
+          +'<div style="font-family:Noto Sans KR,sans-serif;font-size:.94rem;">'+p+'</div>'
           +'</div>';
       }).join('')}
     </div>
@@ -4393,7 +4452,7 @@ function m6renderTeamB(ti, m6) {
         const used=pc<=dc;
         return '<div class="wh-card" style="min-width:unset;padding:.45rem .75rem;cursor:grab;'+(used?'opacity:.3;pointer-events:none;':'')+'"'
           +' draggable="true" ondragstart="m6DragStartB2(event,' +jsArg(p)+ ','+ti+')" onclick="m6ClickB2(' +jsArg(p)+ ','+ti+')">'
-          +'<div style="font-family:Space Mono,monospace;font-size:.94rem;">'+p+'</div>'
+          +'<div style="font-family:Noto Sans KR,sans-serif;font-size:.94rem;">'+p+'</div>'
           +'</div>';
       }).join('')}
     </div>
@@ -4558,7 +4617,7 @@ function m6RenderResult(ti, success) {
       </div>
       <div style="background:var(--surface);border-radius:8px;padding:.85rem;margin:.75rem 0;text-align:left;">
         <div style="font-size:.8rem;color:var(--text3);margin-bottom:.4rem;">완성 대화:</div>
-        <div style="font-size:.9rem;color:var(--accent2);font-family:'Space Mono',monospace;line-height:1.8;">
+        <div style="font-size:.9rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
           "${m6.teamA_full}"<br>"${m6.teamB_full}"
         </div>
       </div>
@@ -4835,7 +4894,7 @@ function renderMission7(teamNum) {
       <!-- 템플릿 -->
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-bottom:1rem;">
         <div style="font-size:.8rem;color:var(--text3);margin-bottom:.6rem;letter-spacing:.1em;text-transform:uppercase;">📄 템플릿 (참고용 — 자유롭게 변형 가능)</div>
-        <div style="font-size:.9rem;color:var(--text2);line-height:2.1;font-family:'Space Mono',monospace;">
+        <div style="font-size:.9rem;color:var(--text2);line-height:2.1;font-family:'Noto Sans KR',sans-serif;">
           ${m7TemplateNoExamples(G.m7.templateHtml).split('{island}').join(isl.name)}
         </div>
       </div>
@@ -5025,7 +5084,7 @@ function showM7WaitingFinal() {
         </div>
       </div>
       <div style="font-size:.88rem;color:var(--text3);font-family:'Noto Sans KR',sans-serif;margin-bottom:.75rem;">${doneCount}/6 모둠 완료 — 모두 완료되면 자동으로 최종 결과가 나타나요!</div>
-      <button onclick="inAppRefresh()" style="background:rgba(var(--ink-rgb),.07);border:1px solid rgba(var(--ink-rgb),.15);border-radius:8px;padding:.5rem 1.25rem;font-size:.9rem;color:var(--text2);cursor:pointer;font-family:'Space Mono',monospace;">🔄 현황 새로고침</button>
+      <button onclick="inAppRefresh()" style="background:rgba(var(--ink-rgb),.07);border:1px solid rgba(var(--ink-rgb),.15);border-radius:8px;padding:.5rem 1.25rem;font-size:.9rem;color:var(--text2);cursor:pointer;font-family:'Noto Sans KR',sans-serif;">🔄 현황 새로고침</button>
     </div>`;
 }
 
@@ -5442,7 +5501,7 @@ if(lbl) lbl.textContent = myRoom+'반';
 if(!window.__tdSettingsInit) {
   window.__tdSettingsInit = true;
   let saved = null; try { saved = localStorage.getItem('gsos_td_settings'); } catch(e) {}
-  tdToggleSettings(saved == null ? true : saved === '1'); // 처음에는 펼쳐 두고, 접으면 기억
+  tdToggleSettings(saved === '1'); // 처음에는 접어 두고, 펼치면 기억 (모둠 상황이 먼저 보이게)
 }
 libraryLoad();
 renderGrammarSelector();
@@ -6252,7 +6311,7 @@ if(document.getElementById('teacherBackBtn')) return;
 const btn = document.createElement('button');
 btn.id = 'teacherBackBtn';
 btn.textContent = '📊 대시보드';
-btn.style.cssText = 'position:fixed;top:.5rem;left:50%;transform:translateX(-50%);z-index:300;background:var(--accent);color:#fff;border:none;border-radius:20px;padding:.35rem 1rem;font-size:.84rem;cursor:pointer;font-family:"Space Mono",monospace;box-shadow:0 2px 8px rgba(249,115,22,.4);';
+btn.style.cssText = 'position:fixed;top:.5rem;left:50%;transform:translateX(-50%);z-index:300;background:var(--accent);color:#fff;border:none;border-radius:20px;padding:.35rem 1rem;font-size:.84rem;cursor:pointer;font-family:"Noto Sans KR",sans-serif;box-shadow:0 2px 8px rgba(249,115,22,.4);';
 btn.onclick = showTeacherDashboard;
 document.body.appendChild(btn);
 }
@@ -6722,9 +6781,10 @@ const btn = document.createElement('button');
 btn.id = 'teacherFloatBtn';
 btn.textContent = '👩‍🏫';
 btn.title = '교사 제어 패널';
-btn.style.cssText = 'position:fixed;bottom:1rem;left:1rem;z-index:200;background:var(--accent);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 12px rgba(249,115,22,.4);';
+btn.className = 'dock-btn dock-round dock-accent';
 btn.onclick = showTeacherPanel;
-document.body.appendChild(btn);
+const dock = document.getElementById('utilDock');
+if(dock) dock.insertBefore(btn, dock.firstChild); else document.body.appendChild(btn);
 }
 
 // ══ 체험 모드 (?demo=1) ══
@@ -7080,6 +7140,14 @@ function bgmToggle() {
   btn.onmouseleave = () => btn.style.borderColor = 'rgba(var(--ink-rgb),.18)';
   btn.onclick = bgmToggle;
   document.body.appendChild(btn);
+  // 떠 있는 버튼은 오른쪽 아래 도구 막대 한 곳에 모은다 (내용을 가리지 않게)
+  const dock = document.getElementById('utilDock');
+  if(dock) {
+    btn.style.cssText = '';
+    btn.className = 'dock-btn dock-round';
+    ['demoBadge', 'themeBtn'].forEach(id => { const el = document.getElementById(id); if(el) dock.appendChild(el); });
+    dock.appendChild(btn);
+  }
 })();
 </script>
 
