@@ -6945,7 +6945,7 @@ function teacherShowRole() {
   const f = document.getElementById('teacherPinForm'); if(f) f.style.display = 'none';
   const m = document.getElementById('teacherPinMsg');
   if(m) { m.className = 'tpin-msg ok'; m.textContent = '✅ 교사 인증됨 · 방 번호를 고르고 접속하세요'; }
-  const b = document.getElementById('roleBtn-teacher'); if(b) b.style.display = 'block';
+  // 인증되면 교사 역할이 바로 정해지므로 '교사로 접속' 버튼은 따로 보이지 않는다
   selectRole('teacher');
 }
 async function teacherPinHash(pin) {
