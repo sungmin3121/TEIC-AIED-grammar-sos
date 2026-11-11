@@ -2356,6 +2356,7 @@ async function inAppRefresh() {
     const savedHints = state.hints, savedAi = state.m7ai;
     Object.assign(state, remote);
     sanitizeState();
+    refreshM5Seconds();
     mergeNestedKeys(nestedKeys, savedNested);
     state.hints = mergeRemoteHints(remote.hints, savedHints);
     state.m7ai = mergeRemoteHints(remote.m7ai, savedAi);
@@ -4009,14 +4010,14 @@ function renderMission5(teamNum) {
   const main = document.getElementById('missionMain');
   main.innerHTML = `
     <div class="mission-header">
-      <div class="mission-num">MISSION 05 / 07 · ⭐⭐⭐ ${String(G.m5.typeLabel).replace('7초', m5Seconds() + '초')}</div>
+      <div class="mission-num">MISSION 05 / 07 · ⭐⭐⭐ ${String(G.m5.typeLabel).replace('7초', '<span class="m5-sec">' + m5Seconds() + '</span>초')}</div>
       <div class="mission-title">⚡ 위기 대응</div>
     </div>
     <div class="mission-situation">
       Danger! A sudden crisis is hitting your island.<br>
-      <strong>You have ${m5Seconds()} seconds to memorize the sentence, then say it out loud!</strong>
+      <strong>You have <span class="m5-sec">${m5Seconds()}</span> seconds to memorize the sentence, then say it out loud!</strong>
       <div style="font-size:.88rem;color:var(--text3);margin-top:.5rem;font-family:'Noto Sans KR',sans-serif;">
-        위기 상황이다! ${m5Seconds()}초 안에 문장을 외우고, 화면이 가려지면 모둠원 릴레이로 발화하세요!
+        위기 상황이다! <span class="m5-sec">${m5Seconds()}</span>초 안에 문장을 외우고, 화면이 가려지면 모둠원 릴레이로 발화하세요!
       </div>
     </div>
 
@@ -4027,13 +4028,13 @@ function renderMission5(teamNum) {
         <div style="font-size:1.8rem;">${m5.emoji}</div>
       </div>
 
-      <div class="step-label">STEP 1 · ${m5Seconds()}초 안에 문장을 외우세요!</div>
+      <div class="step-label">STEP 1 · <span class="m5-sec">${m5Seconds()}</span>초 안에 문장을 외우세요!</div>
       <div style="background:rgba(79,209,197,.08);border:1px solid rgba(79,209,197,.25);border-radius:8px;padding:.85rem 1rem;margin-bottom:1rem;font-size:.92rem;color:var(--accent2);font-family:'Noto Sans KR',sans-serif;line-height:1.8;">
         📢 <strong>외우는 방법:</strong><br>
         문장을 모둠원끼리 나눠서 각자 한 부분씩 외우세요!<br>
         예: 1번 사람 → <em>"${G.m5.memoExampleA}"</em><br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2번 사람 → <em>"${G.m5.memoExampleB}"</em><br>
-        ${m5Seconds()}초 후 화면이 가려지면 모둠원 모두 함께 이어서 발화하세요!
+        <span class="m5-sec">${m5Seconds()}</span>초 후 화면이 가려지면 모둠원 모두 함께 이어서 발화하세요!
       </div>
 
       <div id="m5sentenceBox-${ti}" style="background:var(--surface);border:1px solid var(--accent);border-radius:8px;padding:1.25rem;margin-bottom:1rem;position:relative;">
@@ -4097,6 +4098,17 @@ function tdSetExtraTime(on) {
   state.extraTime = !!on;
   fbSaveState();
   updateTeacherDashboard();
+}
+
+// 교사가 '시간 넉넉하게'를 바꾸면 이미 열려 있는 미션 5 화면의 초 표시도 바로 맞춘다 (타이머가 돌기 전에만)
+function refreshM5Seconds() {
+  const sec = String(m5Seconds());
+  document.querySelectorAll('.m5-sec').forEach(el => { el.textContent = sec; });
+  document.querySelectorAll('[id^="m5timer-"]').forEach(el => {
+    const ti = el.id.slice(8);
+    const btn = document.getElementById('m5startBtn-' + ti);
+    if(!btn || !btn.disabled) el.textContent = sec;
+  });
 }
 
 function m5StartTimer(ti) {
@@ -5193,6 +5205,7 @@ for(const k of nestedKeys) savedNested[k] = state[k] ? {...state[k]} : {};
 const savedHints = state.hints, savedAi = state.m7ai;
 Object.assign(state, remote);
 sanitizeState();
+refreshM5Seconds();
 // remote의 다른 팀 데이터 + 내 최신 로컬 데이터를 병합
 mergeNestedKeys(nestedKeys, savedNested);
 state.hints = mergeRemoteHints(remote.hints, savedHints);
